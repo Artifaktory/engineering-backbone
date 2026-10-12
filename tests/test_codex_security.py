@@ -105,6 +105,35 @@ class CodexSecurityTests(unittest.TestCase):
                                          {path.relative_to(case_root): path.read_bytes()
                                           for path in case_root.rglob('*') if path.is_file()})
 
+    def test_case_variant_codex_file_entries_fail_without_rewriting_links_or_targets(self):
+        for location in ('', 'packages/web/'):
+            for kind, filename in (('file', '.CODEX'), ('symlink', '.CoDeX')):
+                with self.subTest(location=location, kind=kind):
+                    case_root = Path(self.temp.name) / f'file-case-{bool(location)}-{kind}'
+                    codex_fixture(case_root)
+                    if location:
+                        write(case_root, location + '.codex/agents/local.toml',
+                              'name = "project_owned"\n')
+                    target = write(case_root, 'application-target.txt', 'Project-owned target bytes.\n')
+                    alias = case_root / (location + filename)
+                    if kind == 'symlink':
+                        alias.symlink_to(target)
+                    else:
+                        alias.write_text('Project-owned ordinary file bytes.\n')
+                    original_link = alias.readlink() if alias.is_symlink() else None
+                    originals = {path.relative_to(case_root): path.read_bytes()
+                                 for path in case_root.rglob('*') if path.is_file()}
+                    for source in (False, True):
+                        errors = codex_errors(case_root, source=source)
+                        self.assertTrue(any('case-variant Codex native path' in error
+                                            for error in errors), errors)
+                        self.assertEqual(originals,
+                                         {path.relative_to(case_root): path.read_bytes()
+                                          for path in case_root.rglob('*') if path.is_file()})
+                        self.assertEqual(kind == 'symlink', alias.is_symlink())
+                        if original_link is not None:
+                            self.assertEqual(original_link, alias.readlink())
+
     def test_native_unicode_whitespace_is_trimmed_for_reserved_names(self):
         for whitespace in (' ', '\t', '\n', '\u0085', '\u00a0', '\u2003', '\u3000'):
             with self.subTest(whitespace=repr(whitespace)):

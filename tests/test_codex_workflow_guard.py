@@ -130,6 +130,37 @@ class CodexWorkflowGuardTests(unittest.TestCase):
                     self.assert_historical_bundle_unchanged()
                     shutil.rmtree(project)
 
+    def test_case_variant_codex_file_entries_are_rejected_by_historical_workflow(self):
+        for location in ('', 'packages/web/'):
+            if location:
+                self.write(location + '.codex/agents/local.toml', 'name = "project_owned"\n')
+            for kind, filename in (('file', '.CODEX'), ('symlink', '.CoDeX')):
+                with self.subTest(location=location, kind=kind):
+                    target = self.write('application-target.txt', 'Project-owned target bytes.\n')
+                    relative = location + filename
+                    alias = self.candidate / relative
+                    if kind == 'symlink':
+                        alias.symlink_to(target)
+                    else:
+                        alias.write_text('Project-owned ordinary file bytes.\n')
+                    original_link = alias.readlink() if alias.is_symlink() else None
+                    originals = {path.relative_to(self.candidate): path.read_bytes()
+                                 for path in self.candidate.rglob('*') if path.is_file()}
+                    legacy = self.run_old_validator()
+                    self.assertEqual(0, legacy.returncode, legacy.stdout + legacy.stderr)
+                    result = self.assert_guard_rejects()
+                    self.assertIn(relative, result.stderr)
+                    self.assertIn('case-variant Codex native path', result.stderr)
+                    self.assertEqual(originals,
+                                     {path.relative_to(self.candidate): path.read_bytes()
+                                      for path in self.candidate.rglob('*') if path.is_file()})
+                    self.assertEqual(kind == 'symlink', alias.is_symlink())
+                    if original_link is not None:
+                        self.assertEqual(original_link, alias.readlink())
+                    self.assert_historical_bundle_unchanged()
+                    alias.unlink()
+                    target.unlink()
+
     def test_old_tooling_cannot_approve_config_alias_or_reserved_fallback(self):
         role = self.write('role-files/review.toml',
                           'name = "backbone_reviewer"\n'

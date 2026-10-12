@@ -45,6 +45,30 @@ The initial unmerged identity above is not retained in the workflow's approved
 history. The five already reviewed previous identities are unchanged by repair.
 Independent Delta evidence is separate from these deterministic results.
 
+## External CP-1 repair checks
+
+The external published Full found case-equivalent native file/symlink-to-file
+entries omitted from directory enumeration. [CP-1 was confirmed before repair](codex-security-triage.md#external-published-full-cp-1).
+The same case-path check now examines directories and filenames; no native
+role-name, extension or runtime boundary changed.
+
+Focused source/consumer and actual historical-workflow suites: 35 tests,
+14.140 seconds, exit 0. Source validator, previous merged-base validator,
+compiler/current pin, actionlint and whitespace checks each exited 0.
+
+The first complete rerun executed 173 tests in 168.923 seconds and exited 1:
+one fixture checkout failed with `No space left on device`. This environmental
+failure is retained rather than reported as PASS. After test cleanup, filesystem
+inspection reported approximately 13 GiB available; one abandoned Copier clone
+was removed only after confirming its origin was a finished backbone workflow
+fixture. The complete rerun with that changed resource state passed: **173 tests,
+170.547 seconds, exit 0**. The failed attempt remains recorded. No tests were
+removed or skipped.
+
+CP-1 current toolchain identity:
+`ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb`.
+No unmerged intermediate identity is added to approved history.
+
 ## Acceptance coverage
 
 - AC-1/AC-2: Root, recursive and nested reserved names, explicit declarations,

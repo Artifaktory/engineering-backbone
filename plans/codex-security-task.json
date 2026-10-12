@@ -8,13 +8,14 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "8d4728d92a0125452b223f2fa99226fc8fc8cd0d",
-    "head_revision": "168dbc2a498f93261df6541642ec56807743c727"
+    "head_revision": "2f6bfc0335eb0bba85c69cb7d72c53053517f6c1"
   },
   "approved_sources": [
     "Human request 2026-10-12: protect Codex name collisions and add only concrete remaining related security controls; established checks/review/Delta/PR workflow",
     "Read-only comparison and primary released Codex source evidence in plans/codex-security.md",
     "Existing AGENTS.md, policy/core.md and CONTRIBUTING.md operating contract",
-    "Confirmed CB-1/CS-1 Full triage and independent successful Delta: docs/reviews/codex-security-result.md"
+    "Confirmed CB-1/CS-1 Full triage and independent successful Delta: docs/reviews/codex-security-result.md",
+    "Confirmed external CP-1 triage and bounded independent Delta: docs/reviews/codex-security-triage.md and docs/reviews/codex-security-result.md"
   ],
   "scope": {
     "include": [

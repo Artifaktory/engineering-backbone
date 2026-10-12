@@ -181,13 +181,13 @@ def codex_errors(root, trusted_base=None, *, source=False):
     # Every repository-contained .codex folder can form a later project layer
     # when Codex starts from that working directory. Git internals are not input.
     folders = []
-    for directory, subdirs, _ in os.walk(root, followlinks=False, onerror=traversal_error):
+    for directory, subdirs, filenames in os.walk(root, followlinks=False, onerror=traversal_error):
         subdirs[:] = [name for name in subdirs if name != '.git']
         # Source run evidence can contain isolated historical checkouts. Keep
         # the existing source-only artifact exclusion; consumers have no exemption.
         if source and Path(directory) == root and 'artifacts' in subdirs:
             subdirs.remove('artifacts')
-        for name in subdirs:
+        for name in subdirs + filenames:
             if name.casefold() == '.codex' and name != '.codex':
                 errors.append(f'{Path(directory).relative_to(root) / name}: case-variant Codex native path is ambiguous; use .codex')
         if '.codex' in subdirs:

@@ -47,10 +47,40 @@ implementer defaults retain their bytes. See [actual check results](codex-securi
 33 focused tests and 171 complete-suite tests pass, along with source/old-base
 validation, rendered fingerprint, actionlint and whitespace checks.
 
-Current fingerprint:
+Reviewed fingerprint before the external CP-1 repair:
 `302ff94fc067313877a8047456ed354707701e9b50e2c1f8445acfd1a8aeba73`.
 The five reviewed previous identities are retained; no unmerged intermediate
 identity was approved. One Full round and one confirmed repair round were used.
+
+## External CP-1 and bounded repair Delta
+
+Published head `d61f96a6ff0816255a7371f0e0b4c7328ac51962` matched local final
+`ed780777a59c6e84c556f72239f300a49d274a36` exactly by tree. Its advisory provider
+Full identified [CP-1](codex-security-triage.md#external-published-full-cp-1), P2:
+case-variant files/symlinks-to-files were omitted from the directory-only casing
+check. Independent triage confirmed this portable checkout/availability defect.
+
+The two-line production repair inspects `subdirs + filenames` without following
+links or changing names/extensions. Repaired local head:
+`2f6bfc0335eb0bba85c69cb7d72c53053517f6c1`.
+Prior-to-repaired Delta SHA-256:
+`a9f8ffca284cebef02fd66c04ffe3af47e7211605b35e6377a1f7c3d5b233828`.
+Both independent reviewers verified that hash and reported **CP-1 FIXED;
+NO CONFIRMED IN-SCOPE FINDINGS** in the repair/direct regressions.
+
+Behavior Delta independently ran four tests in 4.142 seconds, exit 0; security
+Delta ran four tests in 2.723 seconds, exit 0. Both verified the compiled repair
+and preservation. Broader checks were pending during those reviews and were not
+fabricated as PASS. The later complete retry passed 173 tests in 170.547 seconds;
+the initial environmental storage failure remains in the check record. Focused
+suites passed 35 tests in 14.140 seconds. Publication was held until the actual
+complete success.
+
+Current fingerprint:
+`ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb`.
+Five approved historical identities remain; neither unmerged intermediate pin
+is promoted to history. The chain used one local Full round, one advisory
+published Full and two confirmed repair rounds with bounded independent Deltas.
 
 ## Publication and remaining evidence
 

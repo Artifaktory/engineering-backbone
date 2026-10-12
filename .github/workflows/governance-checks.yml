@@ -73,7 +73,7 @@ jobs:
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: '302ff94fc067313877a8047456ed354707701e9b50e2c1f8445acfd1a8aeba73'
+          CURRENT_TOOLCHAIN_SHA256: 'ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb'
           PREVIOUS_TOOLCHAIN_SHA256: '["91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321","5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
         run: |
           set -euo pipefail
@@ -279,13 +279,13 @@ jobs:
               # Every repository-contained .codex folder can form a later project layer
               # when Codex starts from that working directory. Git internals are not input.
               folders = []
-              for directory, subdirs, _ in os.walk(root, followlinks=False, onerror=traversal_error):
+              for directory, subdirs, filenames in os.walk(root, followlinks=False, onerror=traversal_error):
                   subdirs[:] = [name for name in subdirs if name != '.git']
                   # Source run evidence can contain isolated historical checkouts. Keep
                   # the existing source-only artifact exclusion; consumers have no exemption.
                   if source and Path(directory) == root and 'artifacts' in subdirs:
                       subdirs.remove('artifacts')
-                  for name in subdirs:
+                  for name in subdirs + filenames:
                       if name.casefold() == '.codex' and name != '.codex':
                           errors.append(f'{Path(directory).relative_to(root) / name}: case-variant Codex native path is ambiguous; use .codex')
                   if '.codex' in subdirs:
