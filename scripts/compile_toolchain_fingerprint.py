@@ -29,17 +29,23 @@ FORMAT = 'engineering-backbone-toolchain-v1'
 
 COPILOT_START = '# BEGIN COMPILED COPILOT GUARD'
 COPILOT_END = '# END COMPILED COPILOT GUARD'
+CODEX_START = '# BEGIN COMPILED CODEX GUARD'
+CODEX_END = '# END COMPILED CODEX GUARD'
 
 
-def copilot_function(source: Path = ROOT):
+def guard_function(name: str, source: Path = ROOT):
     """Extract trusted source text without importing or executing its module."""
     content = (source / 'scripts/validate.py').read_text(encoding='utf-8')
     tree = ast.parse(content)
-    matches = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == 'copilot_errors']
+    matches = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == name]
     if len(matches) != 1:
-        raise ValueError('Expected exactly one self-contained Copilot guard function')
+        raise ValueError(f'Expected exactly one self-contained {name} guard function')
     node = matches[0]
     return '\n'.join(content.splitlines()[node.lineno - 1:node.end_lineno])
+
+
+def copilot_function(source: Path = ROOT):
+    return guard_function('copilot_errors', source)
 
 
 def compiled_copilot_guard(source: Path = ROOT):
@@ -53,6 +59,16 @@ def replace_copilot_guard(workflow: str, source: Path = ROOT):
     refreshed, count = pattern.subn(lambda match: match.group(1) + compiled + '\n' + match.group(2), workflow)
     if count != 1:
         raise ValueError('Expected exactly one compiled Copilot workflow guard block')
+    return refreshed
+
+
+def replace_codex_guard(workflow: str, source: Path = ROOT):
+    pattern = re.compile(r'(?m)^(          ' + re.escape(CODEX_START) + r'\n).*?(^          ' + re.escape(CODEX_END) + r'$)', re.S)
+    compiled = '\n'.join('          ' + line if line else ''
+                         for line in guard_function('codex_errors', source).splitlines())
+    refreshed, count = pattern.subn(lambda match: match.group(1) + compiled + '\n' + match.group(2), workflow)
+    if count != 1:
+        raise ValueError('Expected exactly one compiled Codex workflow guard block')
     return refreshed
 
 
@@ -105,11 +121,15 @@ def main(argv=None):
         if count != 1:
             parser.error('Expected exactly one current workflow fingerprint literal')
         text = replace_copilot_guard(text, args.source.resolve())
+        text = replace_codex_guard(text, args.source.resolve())
         workflow_path.write_text(text, encoding='utf-8')
     if args.check:
         text = workflow_path.read_text(encoding='utf-8')
         if replace_copilot_guard(text, args.source.resolve()) != text:
             print('FAIL: compiled Copilot workflow guard is stale; regenerate trusted source guard')
+            return 1
+        if replace_codex_guard(text, args.source.resolve()) != text:
+            print('FAIL: compiled Codex workflow guard is stale; regenerate trusted source guard')
             return 1
         workflow = yaml.safe_load(text)
         step = next(step for step in workflow['jobs']['validate']['steps']

@@ -264,10 +264,11 @@ class WorkflowTests(unittest.TestCase):
                 result = self.validate()
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         # The three original fixture identities remain exact; the reviewed
-        # preceding main validator is additionally retained for the Copilot
-        # upgrade. An explicit authority set catches accidental expansion.
+        # preceding Codex and merged Copilot validators remain usable during
+        # the security upgrade. Keep the authority set explicit.
         preceding = "5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a"
-        self.assertEqual(set(previous), set(observed) | {preceding})
+        merged_copilot = "91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321"
+        self.assertEqual(set(previous), set(observed) | {preceding, merged_copilot})
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
 
     def test_historical_compatibility_survives_clean_single_commit_clone(self):

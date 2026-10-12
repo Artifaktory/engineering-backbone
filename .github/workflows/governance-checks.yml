@@ -73,8 +73,8 @@ jobs:
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: '91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321'
-          PREVIOUS_TOOLCHAIN_SHA256: '["5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
+          CURRENT_TOOLCHAIN_SHA256: 'ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb'
+          PREVIOUS_TOOLCHAIN_SHA256: '["91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321","5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
         run: |
           set -euo pipefail
           trusted_root="$GITHUB_WORKSPACE/trusted-base"
@@ -150,6 +150,212 @@ jobs:
           python -I -m pip install --require-hashes -r .engineering-backbone/requirements.lock
           # New native contracts remain checked when the base validator is old.
           # The guard is compiled trusted text, never imported from either snapshot.
+          python -I - <<'CODEX_PYTHON'
+          import os, sys
+          from pathlib import Path
+          # BEGIN COMPILED CODEX GUARD
+          def codex_errors(root, trusted_base=None, *, source=False):
+              """Inspect managed Codex identities without trusting candidate executable code.
+
+              This function is also compiled into the pinned consumer workflow, where an
+              approved historical validator cannot supply the new native identity checks.
+              It checks repository layers and declared defaults, not live parent permissions.
+              """
+              import json
+              import os
+              from pathlib import Path
+              import tomllib
+
+              root = Path(root).absolute()
+              base = Path(trusted_base).absolute() if trusted_base is not None else None
+              roles = {f'backbone_{role}': f'.codex/agents/backbone-{role}.toml'
+                       for role in ('planner', 'implementer', 'reviewer')}
+              errors = []
+              # Rust str::trim uses Unicode White_Space. Python str.strip additionally
+              # removes U+001C..U+001F, which must not change a native role's identity.
+              whitespace = '\t\n\v\f\r \u0085\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000'
+
+              def safe(path, *, directory=False):
+                  try:
+                      relative = path.relative_to(root)
+                  except ValueError:
+                      errors.append(f'{path}: Codex identity path is outside its snapshot')
+                      return False
+                  components = [root] + [root.joinpath(*relative.parts[:index])
+                                         for index in range(1, len(relative.parts) + 1)]
+                  try:
+                      if any(part.is_symlink() for part in components):
+                          errors.append(f'{relative}: Codex identity path must have no symlink ancestors')
+                          return False
+                      if not path.resolve().is_relative_to(root.resolve()):
+                          errors.append(f'{relative}: Codex identity path resolves outside its snapshot')
+                          return False
+                      if not (path.is_dir() if directory else path.is_file()):
+                          errors.append(f'missing required file: {relative}' if not directory and not path.exists()
+                                        else f'{relative}: Codex identity path must be a regular ' + ('directory' if directory else 'file'))
+                          return False
+                  except (OSError, ValueError, RuntimeError) as exc:
+                      errors.append(f'{relative}: cannot inspect Codex identity path: {exc}')
+                      return False
+                  return True
+
+              def selected(owner):
+                  path = owner / '.engineering-backbone/project.json'
+                  # A trusted base may be a different snapshot; check its own ancestry.
+                  relative = path.relative_to(owner)
+                  components = [owner] + [owner.joinpath(*relative.parts[:index])
+                                          for index in range(1, len(relative.parts) + 1)]
+                  def unique(pairs):
+                      out = {}
+                      for key, value in pairs:
+                          if key in out:
+                              raise ValueError('duplicate project JSON key: ' + key)
+                          out[key] = value
+                      return out
+                  try:
+                      if any(part.is_symlink() for part in components) or not path.is_file():
+                          raise ValueError('Codex adapter facts must be regular with no symlink ancestors')
+                      data = json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=unique)
+                      agents = data.get('agents') if isinstance(data, dict) else None
+                      if not isinstance(agents, dict) or set(agents) != {'codex', 'copilot'} or any(type(value) is not bool for value in agents.values()):
+                          raise ValueError('agents require exact boolean codex/copilot facts')
+                      return agents['codex']
+                  except (OSError, UnicodeError, ValueError) as exc:
+                      errors.append(f'{relative}: {exc}')
+                      return None
+
+              enabled = selected(root)
+              before = selected(base) if base is not None else False
+              if before is True and enabled is not True:
+                  errors.append('adapter regression: trusted-base enabled codex must remain enabled')
+              if enabled is not True and before is not True:
+                  return errors
+              safe(root / 'AGENTS.md')
+
+              def read_toml(path):
+                  if not safe(path):
+                      return None
+                  try:
+                      return tomllib.loads(path.read_text(encoding='utf-8'))
+                  except (OSError, UnicodeError, ValueError) as exc:
+                      errors.append(f'{path.relative_to(root)}: invalid Codex identity TOML: {exc}')
+                      return None
+
+              def identity(path, data, fallback=None):
+                  if data is None:
+                      return None
+                  value = data.get('name')
+                  if value is not None and not isinstance(value, str):
+                      errors.append(f'{path.relative_to(root)}: Codex role name must be a string')
+                      return None
+                  name = value.strip(whitespace) if isinstance(value, str) else ''
+                  if not name:
+                      name = fallback
+                  if not name:
+                      errors.append(f'{path.relative_to(root)}: Codex role requires a nonempty name')
+                  return name
+
+              for name, relative in roles.items():
+                  path = root / relative
+                  data = read_toml(path)
+                  if data is None:
+                      continue
+                  allowed = {'name', 'description', 'developer_instructions', 'sandbox_mode'}
+                  if set(data) - allowed:
+                      errors.append(f'{relative}: unapproved keys (model, credentials and permission overrides are prohibited): {sorted(set(data) - allowed)}')
+                  for key in ('name', 'description', 'developer_instructions'):
+                      if not isinstance(data.get(key), str) or not data[key].strip():
+                          errors.append(f'{relative}: required nonempty string {key}')
+                  if data.get('name') != name:
+                      errors.append(f'{relative}: incorrect native agent name')
+                  mode = 'workspace-write' if name == 'backbone_implementer' else 'read-only'
+                  modes = {mode, 'read-only'} if not source else {mode}
+                  if not isinstance(data.get('sandbox_mode'), str) or data['sandbox_mode'] not in modes:
+                      errors.append(f'{relative}: sandbox_mode must be {mode}' + (' or the stricter read-only' if len(modes) > 1 else ''))
+
+              def traversal_error(exc):
+                  errors.append(f'cannot inspect Codex identity namespace: {exc}')
+
+              # Every repository-contained .codex folder can form a later project layer
+              # when Codex starts from that working directory. Git internals are not input.
+              folders = []
+              for directory, subdirs, filenames in os.walk(root, followlinks=False, onerror=traversal_error):
+                  subdirs[:] = [name for name in subdirs if name != '.git']
+                  # Source run evidence can contain isolated historical checkouts. Keep
+                  # the existing source-only artifact exclusion; consumers have no exemption.
+                  if source and Path(directory) == root and 'artifacts' in subdirs:
+                      subdirs.remove('artifacts')
+                  for name in subdirs + filenames:
+                      if name.casefold() == '.codex' and name != '.codex':
+                          errors.append(f'{Path(directory).relative_to(root) / name}: case-variant Codex native path is ambiguous; use .codex')
+                  if '.codex' in subdirs:
+                      folder = Path(directory) / '.codex'
+                      if safe(folder, directory=True):
+                          folders.append(folder)
+
+              for folder in folders:
+                  try:
+                      for path in folder.iterdir():
+                          canonical = path.name.casefold()
+                          if canonical in {'agents', 'config.toml'} and path.name != canonical:
+                              errors.append(f'{path.relative_to(root)}: case-variant Codex native path is ambiguous; use {canonical}')
+                  except OSError as exc:
+                      traversal_error(exc)
+                  agents_dir = folder / 'agents'
+                  if agents_dir.exists() or agents_dir.is_symlink():
+                      if safe(agents_dir, directory=True):
+                          for directory, subdirs, filenames in os.walk(agents_dir, followlinks=False, onerror=traversal_error):
+                              current = Path(directory)
+                              subdirs[:] = [name for name in subdirs if safe(current / name, directory=True)]
+                              for filename in filenames:
+                                  if Path(filename).suffix != '.toml':
+                                      continue
+                                  path = current / filename
+                                  name = identity(path, read_toml(path))
+                                  if name in roles and path != root / roles[name]:
+                                      errors.append(f'{path.relative_to(root)}: reserved managed Codex role name {name}')
+
+                  config = folder / 'config.toml'
+                  if not config.exists() and not config.is_symlink():
+                      continue
+                  data = read_toml(config)
+                  if data is None:
+                      continue
+                  declarations = data.get('agents', {})
+                  if not isinstance(declarations, dict):
+                      errors.append(f'{config.relative_to(root)}: Codex agents declarations must be a table')
+                      continue
+                  for declared, settings in declarations.items():
+                      # Scalar [agents] fields are global orchestration settings, not roles.
+                      if not isinstance(settings, dict):
+                          if declared in roles:
+                              errors.append(f'{config.relative_to(root)}: reserved managed Codex declaration {declared} requires its canonical config_file')
+                          continue
+                      reference = settings.get('config_file')
+                      if reference is None:
+                          if declared in roles:
+                              errors.append(f'{config.relative_to(root)}: reserved managed Codex declaration {declared} requires its canonical config_file')
+                          continue
+                      if not isinstance(reference, str) or not reference:
+                          errors.append(f'{config.relative_to(root)}: Codex role {declared} config_file must be a nonempty path')
+                          continue
+                      path = folder / reference
+                      referenced = read_toml(path)
+                      if referenced is None:
+                          continue
+                      name = identity(path, referenced, fallback=declared)
+                      if declared in roles or name in roles:
+                          if declared not in roles or name != declared or path.resolve() != (root / roles[declared]).resolve():
+                              errors.append(f'{config.relative_to(root)}: reserved managed Codex declaration/effective name {declared} must reference its corresponding canonical role')
+              return errors
+          # END COMPILED CODEX GUARD
+          workspace = Path(os.environ['GITHUB_WORKSPACE'])
+          errors = codex_errors(workspace / 'candidate', workspace / 'trusted-base')
+          if errors:
+              for error in errors:
+                  print('::error::' + error, file=sys.stderr)
+              sys.exit(1)
+          CODEX_PYTHON
           python -I - <<'COPILOT_PYTHON'
           import os, sys
           from pathlib import Path
