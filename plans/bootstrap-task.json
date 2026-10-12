@@ -1,0 +1,35 @@
+{
+  "schema_version": "1",
+  "id": "BB-BOOTSTRAP-001",
+  "title": "Bootstrap the shared engineering control plane",
+  "objective": "Publish one reviewable PR with portable governance, Codex/Copilot profiles, planning formats, safe consumer adoption and own validation workflows.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "396737eea7cc2d69b654917dfb62e39541c7ac3a",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "Human task-owner request on 2026-10-12 authorizing this repository bootstrap and PR publication; no merge or release",
+    "Artifaktory/Artifaktory@0307348366e900605b66f442e2075901e979ddb1",
+    "Artifaktory/Tars@6dc0ee4ef712f6f1b26a11f180c36d6434a759c1"
+  ],
+  "scope": {"include": ["**"], "exclude": ["artifacts/**", ".venv/**"]},
+  "acceptance": [
+    {"id": "AC-1", "description": "Portable policy and planning/check/review formats with pinned source provenance", "verification": "hybrid", "status": "pending", "evidence": []},
+    {"id": "AC-2", "description": "Native Codex and Copilot roles with restricted reviewer defaults", "verification": "hybrid", "status": "pending", "evidence": []},
+    {"id": "AC-3", "description": "Real consumer creation/update/preservation tests across distinct project metadata", "verification": "automatic", "status": "pending", "evidence": []},
+    {"id": "AC-4", "description": "Own pinned CI, trusted-base policy guard and adversarial checks", "verification": "hybrid", "status": "pending", "evidence": []},
+    {"id": "AC-5", "description": "Explicit release/readiness/settings boundaries with no downstream rollout", "verification": "manual", "status": "pending", "evidence": []},
+    {"id": "AC-6", "description": "Independent Full/triage/repair/Delta evidence and a published PR", "verification": "hybrid", "status": "pending", "evidence": []}
+  ],
+  "validation": {
+    "commands": ["python scripts/validate.py", "python -m unittest discover -s tests -v", "git diff --check"],
+    "manual_evidence": ["Independent frozen-snapshot reviews", "Actual GitHub CI and repository-control readback", "Native product runtime discovery remains unexecuted"]
+  },
+  "execution_budget": {"max_iterations": 8},
+  "stop_conditions": ["Unresolved P0/P1 finding", "Failed required check", "Unsafe overwrite of consumer policy", "Scope or authorization conflict"],
+  "forbidden_actions": ["Merge or auto-merge", "Release or deploy", "Downstream repository writes", "Secret commits", "Force push or destructive cleanup"],
+  "status": "active"
+}

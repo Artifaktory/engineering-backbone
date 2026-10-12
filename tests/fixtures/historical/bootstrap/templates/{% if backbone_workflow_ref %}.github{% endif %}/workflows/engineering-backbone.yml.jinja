@@ -1,0 +1,12 @@
+name: Engineering Backbone
+on:
+  pull_request:
+  push:
+    branches: [{{ base_branch | tojson }}]
+permissions:
+  contents: read
+jobs:
+  governance:
+    uses: Artifaktory/engineering-backbone/.github/workflows/governance-checks.yml@{{ backbone_workflow_ref | lower }}
+    permissions:
+      contents: read

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-backbone:core-policy",
+  "title": "core-policy",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "invariants": {
+      "type": "object",
+      "properties": {
+        "human_merge_required": {
+          "const": true
+        },
+        "human_release_required": {
+          "const": true
+        },
+        "independent_review_required": {
+          "const": true
+        },
+        "triage_before_fix": {
+          "const": true
+        },
+        "delta_after_fix": {
+          "const": true
+        },
+        "local_policy_may_only_strengthen": {
+          "const": true
+        },
+        "automatic_downstream_apply": {
+          "const": false
+        }
+      },
+      "required": [
+        "human_merge_required",
+        "human_release_required",
+        "independent_review_required",
+        "triage_before_fix",
+        "delta_after_fix",
+        "local_policy_may_only_strengthen",
+        "automatic_downstream_apply"
+      ],
+      "additionalProperties": {
+        "const": true
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "version",
+    "invariants"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,2 @@
+# Original Git blob IDs require unchanged checkout bytes for immutable fixtures.
+* -text -filter -working-tree-encoding

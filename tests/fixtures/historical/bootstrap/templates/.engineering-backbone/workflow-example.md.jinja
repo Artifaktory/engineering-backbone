@@ -1,0 +1,31 @@
+# Activate a pinned governance workflow after review
+
+The template does not enable a workflow by default. After a baseline is reviewed,
+merged and available at a known commit, add this caller using that full 40-character
+SHA instead of `PIN_APPROVED_COMMIT`. Confirm private-repository workflow access
+with the owner first. A valid-looking SHA alone is not proof of approval or access.
+
+```yaml
+name: Engineering Backbone
+on:
+  pull_request:
+  push:
+    branches: [{{ base_branch | tojson }}]
+permissions:
+  contents: read
+jobs:
+  governance:
+    uses: Artifaktory/engineering-backbone/.github/workflows/governance-checks.yml@PIN_APPROVED_COMMIT
+    permissions:
+      contents: read
+```
+
+Alternatively, pass a reviewed SHA as `backbone_workflow_ref` during installation.
+Existing `.github/workflows/engineering-backbone.yml` is preserved. Review and
+activate it manually in the same adoption PR. There are no secrets or private source
+checkout tokens in this workflow: it validates the caller's generated bundle.
+Keep language-specific checks in the consuming project's existing CI.
+
+`backbone_workflow_ref` is installation-only. Changing activation or an existing
+pin needs a separate reviewed workflow migration and explicit saved-answer
+reconciliation; an ordinary Copier baseline update rejects that selection change.

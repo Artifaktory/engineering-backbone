@@ -1,0 +1,9 @@
+# Keep the eight attested toolchain files byte-stable despite parent transforms.
+validate.py text eol=lf -filter -working-tree-encoding
+requirements.txt text eol=lf -filter -working-tree-encoding
+requirements.lock text eol=lf -filter -working-tree-encoding
+schemas/core-policy.schema.json text eol=lf -filter -working-tree-encoding
+schemas/project.schema.json text eol=lf -filter -working-tree-encoding
+schemas/task-packet.schema.json text eol=lf -filter -working-tree-encoding
+schemas/review-evidence.schema.json text eol=lf -filter -working-tree-encoding
+schemas/requirement.schema.json text eol=lf -filter -working-tree-encoding

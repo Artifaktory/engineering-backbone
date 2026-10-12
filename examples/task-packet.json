@@ -1,0 +1,54 @@
+{
+  "schema_version": "1",
+  "id": "TASK-EXAMPLE",
+  "title": "Example scoped change",
+  "objective": "Add a project-specific verification step using the approved requirement.",
+  "role": "implementer",
+  "risk": "medium",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": null,
+    "head_revision": null
+  },
+  "approved_sources": [
+    "requirements/REQ-EXAMPLE.json"
+  ],
+  "scope": {
+    "include": [
+      "src/**",
+      "tests/**"
+    ],
+    "exclude": [
+      ".github/workflows/**",
+      ".engineering-backbone/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "The described behavior has a reproducible verification record.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python -m unittest discover -s tests -v"
+    ],
+    "manual_evidence": [
+      "Record the user-visible behavior against AC-1."
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 3
+  },
+  "stop_conditions": [
+    "Stop if implementation requires paths outside the approved scope."
+  ],
+  "forbidden_actions": [
+    "Do not merge or release.",
+    "Do not weaken the inherited policy."
+  ],
+  "status": "planned"
+}

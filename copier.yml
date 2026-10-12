@@ -1,0 +1,95 @@
+_min_copier_version: "9.11.3"
+_subdirectory: templates
+_answers_file: .engineering-backbone/copier-answers.yml
+_external_data:
+  installed_answers: "{{ _copier_conf.answers_file }}"
+_exclude:
+  - _partials
+_skip_if_exists:
+  - AGENTS.md
+  - "**/AGENTS.md"
+  - .github/copilot-instructions.md
+  - ".codex/agents/**"
+  - ".github/agents/**"
+  - .github/workflows/engineering-backbone.yml
+  - .engineering-backbone/project.json
+
+project_name:
+  type: str
+  default: project
+  help: Repository name (letters, digits, dot, underscore or hyphen).
+  validator: >-
+    {% if not (project_name | regex_search('^[A-Za-z][A-Za-z0-9._-]{0,79}$')) %}
+    Use a repository name of 1 to 80 characters, beginning with a letter.
+    {% endif %}
+base_branch:
+  type: str
+  default: main
+  help: Target branch for reviewed pull requests.
+  validator: >-
+    {% if not (base_branch | regex_search('^[A-Za-z0-9][A-Za-z0-9._/-]{0,119}\\Z')) or base_branch == 'HEAD' or '..' in base_branch or '//' in base_branch or '/.' in base_branch or base_branch.endswith('/') or base_branch.endswith('.') or (base_branch | regex_search('\\.lock(?:/|$)')) %}
+    Use a valid single-line Git branch name without dot-prefixed, .lock or empty components.
+    {% endif %}
+validation_command:
+  type: str
+  default: python -m unittest discover -s tests -v
+  help: Existing local validation command; recorded as metadata, never executed by Copier.
+  validator: >-
+    {% if not validation_command.strip() or not (validation_command | regex_search('^[^\x00-\x1f\x7f]{1,500}$')) %}
+    Provide a nonempty single-line command of at most 500 characters without control characters.
+    {% endif %}
+language:
+  type: str
+  default: unspecified
+  help: Language or language combination; descriptive metadata only.
+  validator: >-
+    {% if not language.strip() or not (language | regex_search('^[^\x00-\x1f\x7f]{1,120}$')) %}
+    Provide single-line language metadata of at most 120 characters without control characters.
+    {% endif %}
+has_frontend:
+  type: bool
+  default: false
+  help: Record whether the project has a frontend; does not create application workflows.
+has_backend:
+  type: bool
+  default: false
+  help: Record whether the project has a backend; does not create application workflows.
+use_codex:
+  type: bool
+  default: true
+  help: Add Codex instructions and three native role profiles if their files do not exist.
+  validator: >-
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and ('use_codex' not in previous or use_codex != previous.use_codex) %}
+    use_codex is installation-only; use a separate reviewed adapter migration and reconcile project facts and answers.
+    {% endif %}
+use_copilot:
+  type: bool
+  default: true
+  help: Add Copilot instructions and three native role profiles if their files do not exist.
+  validator: >-
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and ('use_copilot' not in previous or use_copilot != previous.use_copilot) %}
+    use_copilot is installation-only; use a separate reviewed adapter migration and reconcile project facts and answers.
+    {% endif %}
+backbone_workflow_ref:
+  type: str
+  default: ""
+  help: Optional reviewed 40-character commit SHA; blank leaves workflow activation manual.
+  validator: >-
+    {% if backbone_workflow_ref and not (backbone_workflow_ref | regex_search('^[0-9a-fA-F]{40}$')) %}
+    Leave blank or provide a reviewed full 40-character Git commit SHA.
+    {% endif %}
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and ('backbone_workflow_ref' not in previous or backbone_workflow_ref | lower != previous.backbone_workflow_ref | lower) %}
+    backbone_workflow_ref is installation-only; change workflow activation or its pin in a separate reviewed migration and reconcile answers.
+    {% endif %}
+
+_message_after_copy: >-
+  Review .engineering-backbone/project.json and the generated instruction fragments.
+  Existing agent instructions and profiles were preserved. Manually integrate the
+  fragments into stronger local governance before claiming adoption.
+_message_after_update: >-
+  Review the diff of .engineering-backbone/core.md, core.json and instruction fragments.
+  Existing native instructions, role profiles and project facts were preserved;
+  refresh them manually in the same reviewed update PR when needed.

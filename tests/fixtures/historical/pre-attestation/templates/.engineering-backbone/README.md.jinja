@@ -1,0 +1,48 @@
+# Engineering Backbone adoption
+
+This directory contains the selected foundation and project facts. Language and
+frontend/backend flags are descriptive metadata; they do not invent application
+commands, workflows or required infrastructure.
+
+- Review [project facts](project.json) and the [canonical policy](core.md).
+- Integrate [agent guidance](AGENTS.fragment.md) and
+  [Copilot guidance](Copilot.fragment.md) into existing stronger instructions.
+- Existing `AGENTS.md`, Copilot instructions, native role profiles and project
+  facts are preserved, including during updates. New files are created only when
+  absent. Later baseline changes therefore require a reviewed manual refresh of
+  those entrypoints/profiles; a successful Copier update alone is not full adoption.
+- Commit `copier-answers.yml` and use an explicit reviewed Git commit or release
+  reference for updates. Review core and fragment changes, refresh protected files
+  as needed, and run project checks before merging the update PR.
+- Never use automatic merge or publish the baseline from the generated project.
+
+The template has no tasks, migrations or shell hooks. The validation command is
+recorded as data; Copier never runs it. Native role definitions need a supported
+local Codex/Copilot client and runtime verification. GitHub code-review settings
+must be configured separately.
+
+Install the generated validator's pinned, hashed dependencies in an isolated
+Python 3.12 environment:
+`python -m pip install --require-hashes -r .engineering-backbone/requirements.lock`.
+Then run `python .engineering-backbone/validate.py --root .`. The companion
+`requirements.txt` records direct dependencies; lock compilation is central
+maintenance, not a template execution hook.
+
+From the consumer repository, invoke updates with the namespaced answers file:
+`copier update --answers-file .engineering-backbone/copier-answers.yml --vcs-ref APPROVED_COMMIT`.
+Replace the reference with a reviewed commit; this command prepares a diff for review.
+
+The installation choices `use_codex`, `use_copilot`, and `backbone_workflow_ref`
+cannot change during a normal template update. The update rejects such changes
+before consumer rendering. Adapter changes require their own reviewed migration
+of native files, project facts and installation choices. Do not edit or remove
+answers merely to bypass this guard.
+
+For a first adoption, leave the workflow choice empty and merge the reviewed seed
+bundle with the caller inactive. Add the pinned caller from
+[the workflow example](workflow-example.md) in a separate activation PR. A manually
+maintained caller can be activated, removed or repinned through a reviewed workflow
+migration without changing the saved template-generation choice. The shared gate
+executes only the trusted consumer base's validator and dependencies; absent or
+partial baselines fail closed. SHA values render in lowercase and existing caller
+pins remain preserved during ordinary Copier updates.

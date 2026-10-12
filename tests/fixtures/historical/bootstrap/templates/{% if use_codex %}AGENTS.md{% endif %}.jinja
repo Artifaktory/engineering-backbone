@@ -1,0 +1,18 @@
+# Project agent instructions
+
+{% set core_link = '.engineering-backbone/core.md' %}
+{% set project_link = '.engineering-backbone/project.json' %}
+{% include 'templates/_partials/essential.md.jinja' %}
+
+## Project validation
+
+Validation command (JSON-quoted): {{ validation_command | tojson }}.
+This is project metadata: inspect the command and its prerequisites before running it.
+Frontend/backend flags do not add checks automatically.
+
+## Code Review Rules
+
+Prioritize correctness, security, compatibility and direct regressions. Report
+findings with evidence, severity, affected path, failure condition and validation.
+For Delta Review, use the confirmed finding IDs and changed commit range; include
+direct regressions from the fixes and request a new Full Review if scope expands.

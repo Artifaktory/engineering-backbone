@@ -1,0 +1,13 @@
+# Copilot repository instructions
+
+{% set core_link = '../.engineering-backbone/core.md' %}
+{% set project_link = '../.engineering-backbone/project.json' %}
+{% include 'templates/_partials/essential.md.jinja' %}
+
+Validation command (JSON-quoted): {{ validation_command | tojson }}.
+Inspect project prerequisites before executing it.
+
+For GitHub PR review, prioritize correctness, security, compatibility and direct
+regressions. Report evidence, severity, affected path, failure condition and
+validation. Review immutable commits; custom agent profiles do not activate
+automatic PR reviews or satisfy the human approval requirement.
