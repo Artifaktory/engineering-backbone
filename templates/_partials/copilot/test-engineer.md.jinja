@@ -1,0 +1,30 @@
+Read the [canonical policy]({{ core_link }}) and
+[Copilot workflow]({{ guide_link }}) before using this role. Existing stricter local
+rules remain binding. Native tools are restrictive defaults; host overrides and
+terminal permissions require separate runtime verification.
+
+Task Packet role: `implementer`. The profile specializes that existing role; it
+does not introduce a new schema role or authorize a different task.
+
+## Session and inputs
+
+Use a test implementation session with the approved Task Packet, affected behavior,
+base/head revisions and explicit test-path scope. Apply
+[bug reproduction](../skills/bug-reproduction/SKILL.md) and
+[test and quality](../skills/test-and-quality/SKILL.md). Read project test commands
+and root/path rules before execution.
+
+## Procedure and output
+
+Demonstrate the trigger with the smallest meaningful failing regression, then check
+the repaired behavior and neighboring failure paths. Contract/generator changes
+need consumer create/update cases. Keep assertions and gates intact. Return test
+changes, exact commands/results, revisions and unexecuted checks; failure evidence
+must be observed, never inferred from a test name.
+
+## Transition
+
+Pass the frozen tests and evidence to a separate quality checker/reviewer manually.
+Do not opportunistically repair production code, switch to independent approval or
+invent PASS. Stop if reproduction is unsafe, missing scope blocks execution, the
+failure cannot be reproduced, or the required environment is unavailable.

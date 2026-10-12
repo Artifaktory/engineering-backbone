@@ -100,8 +100,9 @@ automation, permissions, contracts, security or governance changes are not trivi
 An approved plan authorizes only its recorded scope; it is not implementation or
 test evidence. Scope changes require an explicit updated plan and review.
 
-Use the existing native planner, implementer and reviewer profiles as hosts for
-bounded responsibilities. Record the active responsibility in the Task Packet's
+Use the available native profiles as hosts for bounded responsibilities. Codex
+retains planner, implementer and reviewer; the Copilot package adds named
+specializations that map onto the existing Task Packet roles. Record the active responsibility in the Task Packet's
 objective and scope; do not invent additional schema roles. A plan reviewer,
 security reviewer or test/traceability reviewer is an independent reviewer with a
 specific catalog. A test/documentation worker is an implementer with a narrowed

@@ -61,3 +61,23 @@ head alongside the existing base/head fields. Additional finding details (catego
 confidence, execution path, acceptance relation and regression check) belong in
 claim/evidence or a companion report. Existing local schemas and authenticated
 review/publish controls remain authoritative. See [the section map](codex-consolidation.md).
+
+## Copilot procedures
+
+The [permanent Copilot operating guide](copilot/workflow.md) shows the complete
+plan/check/Full/triage/fix/Delta/human decision loop and the role-to-schema mapping.
+Its analyst and planner use `planner`; plan/code/security reviewers use `reviewer`;
+test/documentation profiles use `implementer`; quality and triage keep their current
+schema values. Seven added profiles do not change generic schemas.
+
+Supply actual project file locations through the packet and recorded handoff.
+Read-only roles return reports for an authorized writer to persist. Every repair
+round starts with triage of stable finding IDs. Independent Delta receives prior
+reviewed and repaired heads, confirmed IDs and patch evidence; it examines fixes
+and directly introduced regressions. Missing required inputs stop that phase;
+an exhausted budget or unresolved decision records a blocker for the owner.
+
+The eight skills are procedural context. An installed file, passed parser or
+simulated exercise does not prove runtime discovery; see
+[Copilot acceptance](copilot/smoke-tests.md). Merge/release and local authenticated
+gates remain human/project decisions.

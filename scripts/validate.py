@@ -56,6 +56,357 @@ def read_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_keys)
 
 
+def copilot_errors(root, trusted_base=None, *, source=False):
+    """Self-contained Copilot checks compiled into the pinned workflow.
+
+    Every registry and permission limit below belongs to trusted source/workflow
+    bytes. This function reads candidate data only; it imports no candidate code.
+    Legacy three-role consumers remain valid until the extended package is seeded.
+    Native permissions express host tool budgets, not a filesystem sandbox.
+    """
+    import json
+    import os
+    from pathlib import Path
+    import re
+    from urllib.parse import unquote, urlsplit
+    import yaml
+
+    original = ('planner', 'implementer', 'reviewer')
+    extended = ('analyst', 'plan-reviewer', 'test-engineer', 'quality-checker',
+                'security-reviewer', 'documentation', 'finding-triage')
+    budgets = {role: {'read', 'search'} for role in original + extended}
+    budgets['implementer'] |= {'edit', 'execute'}
+    budgets['test-engineer'] |= {'edit', 'execute'}
+    budgets['quality-checker'] |= {'execute'}
+    budgets['documentation'] |= {'edit'}
+    skills = ('task-intake', 'implementation-plan', 'bug-reproduction',
+              'test-and-quality', 'code-review', 'finding-triage',
+              'delta-review', 'docs-traceability')
+    core_rules = ('governance', 'tests', 'docs')
+    rules = core_rules + ('python', 'frontend')
+    role_paths = {role: f'.github/agents/backbone-{role}.agent.md' for role in budgets}
+    skill_paths = {skill: f'.github/skills/{skill}/SKILL.md' for skill in skills}
+    rule_paths = {rule: f'.github/instructions/backbone-{rule}.instructions.md' for rule in rules}
+    managed = list(role_paths.values()) + list(skill_paths.values()) + list(rule_paths.values())
+    extra = [role_paths[role] for role in extended] + list(skill_paths.values()) + list(rule_paths.values())
+    mandatory = list(role_paths.values()) + list(skill_paths.values()) + [rule_paths[rule] for rule in core_rules]
+    errors = []
+    root = Path(root).absolute()
+    base = Path(trusted_base).absolute() if trusted_base is not None else None
+
+    def safe(path, owner):
+        try:
+            relative = path.relative_to(owner)
+        except ValueError:
+            errors.append(f'{path}: managed file is outside its snapshot')
+            return False
+        components = [owner] + [owner.joinpath(*relative.parts[:index]) for index in range(1, len(relative.parts) + 1)]
+        if any(part.is_symlink() for part in components) or not path.is_file():
+            errors.append(f'{relative}: managed Copilot file must be regular with no symlink ancestors')
+            return False
+        if not path.resolve().is_relative_to(owner.resolve()):
+            errors.append(f'{relative}: managed Copilot file resolves outside its snapshot')
+            return False
+        return True
+
+    def selected(owner):
+        path = owner / '.engineering-backbone/project.json'
+        if not safe(path, owner):
+            return None
+        def unique(pairs):
+            result = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError('duplicate project JSON key: ' + key)
+                result[key] = value
+            return result
+        try:
+            data = json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=unique)
+            value = data.get('agents') if isinstance(data, dict) else None
+            if not isinstance(value, dict) or set(value) != {'codex', 'copilot'} or any(type(item) is not bool for item in value.values()):
+                raise ValueError('agents require exact boolean codex/copilot facts')
+            return value['copilot']
+        except (OSError, UnicodeError, ValueError) as exc:
+            errors.append(f'{path.relative_to(owner)}: {exc}')
+            return None
+
+    enabled = selected(root)
+    before = selected(base) if base is not None else False
+    if before is True and enabled is not True:
+        errors.append('adapter regression: trusted-base enabled copilot must remain enabled')
+    if enabled is not True and before is not True:
+        return errors
+    safe(root / '.github/copilot-instructions.md', root)
+    # Supported hosts may merge profiles by the header name as well as the
+    # filename. Reserve both namespaces without imposing managed tool or body
+    # rules on unrelated local profiles. Never rewrite or follow local aliases.
+    class UniqueLoader(yaml.SafeLoader):
+        pass
+    def mapping(loader, node, deep=False):
+        loader.flatten_mapping(node)
+        result = {}
+        for key_node, value_node in node.value:
+            key = loader.construct_object(key_node, deep=deep)
+            if not isinstance(key, str):
+                raise ValueError('frontmatter keys must be strings')
+            if key in result:
+                raise ValueError('duplicate YAML key: ' + key)
+            result[key] = loader.construct_object(value_node, deep=deep)
+        return result
+    UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
+    def native_name(path):
+        if not safe(path, root):
+            return None
+        try:
+            # Inspect the optional header only. Unrelated tools, models, hooks,
+            # metadata and body links remain outside the managed role contract.
+            with path.open(encoding='utf-8') as stream:
+                first = stream.readline(131073).lstrip('\ufeff')
+                if first.strip() != '---':
+                    return None
+                lines = []
+                length = 0
+                for line in stream:
+                    if line.strip() == '---':
+                        break
+                    length += len(line)
+                    if length > 131072:
+                        raise ValueError('native frontmatter exceeds the namespace inspection limit')
+                    lines.append(line)
+                else:
+                    raise ValueError('unterminated YAML frontmatter')
+            data = yaml.load(''.join(lines), Loader=UniqueLoader)
+            if data is None:
+                return None
+            if not isinstance(data, dict):
+                raise ValueError('native frontmatter must be a mapping')
+            name = data.get('name')
+            if name is not None and not isinstance(name, str):
+                raise ValueError('native name must be a string when present')
+            if name is None:
+                # The supported native parser preserves a present empty scalar
+                # as ''. PyYAML uses None instead; reserve that ambiguity
+                # conservatively, while an absent name keeps service fallback.
+                return '' if 'name' in data else None
+            return name.strip().casefold()
+        except (OSError, UnicodeError, ValueError, TypeError, RecursionError, yaml.YAMLError) as exc:
+            errors.append(f'{path.relative_to(root)}: native Copilot namespace cannot be inspected; reviewed manual reconciliation required ({exc})')
+            return None
+
+    directory = root / '.github/agents'
+    if not directory.is_symlink() and not directory.parent.is_symlink() and directory.is_dir():
+        identities = {'backbone-' + role: Path(relative).name for role, relative in role_paths.items()}
+        try:
+            profiles = sorted(directory.iterdir(), key=lambda item: item.name)
+        except OSError as exc:
+            errors.append(f'.github/agents: native Copilot namespace cannot be inspected; reviewed manual reconciliation required ({exc})')
+            profiles = []
+        for path in profiles:
+            name = path.name.casefold()
+            suffix = '.agent.md' if name.endswith('.agent.md') else '.md' if name.endswith('.md') else None
+            if suffix is None:
+                continue
+            if path.is_symlink():
+                safe(path, root)
+                continue
+            if not path.is_file():
+                continue
+            identity = name[:-len(suffix)]
+            if identity in identities and path.name != identities[identity]:
+                errors.append(f'{path.relative_to(root)}: alternate or ambiguous managed Copilot role identity; keep the canonical {identities[identity]} and reconcile this local profile in a reviewed manual migration')
+            header_name = native_name(path)
+            if header_name in identities and path.name != identities[header_name]:
+                errors.append(f'{path.relative_to(root)}: reserved managed Copilot header name {header_name}; keep the canonical {identities[header_name]} and reconcile this local profile in a reviewed manual migration')
+            if header_name == '' and not name.endswith('.chatmode.md'):
+                # The supported CLI bridge falls back only for an explicitly
+                # blank name. It truncates at the first .agent.md marker before
+                # trying .chatmode.md, rather than stripping the final suffix.
+                # The inspected CLI bridge skips exact legacy .chatmode.md files.
+                fallback = name
+                for marker in ('.agent.md', '.chatmode.md'):
+                    index = name.find(marker)
+                    if index > 0:
+                        fallback = name[:index]
+                        break
+                fallback = fallback.strip().casefold()
+                if fallback in identities and path.name != identities[fallback]:
+                    errors.append(f'{path.relative_to(root)}: reserved managed Copilot blank-name fallback {fallback}; keep the canonical {identities[fallback]} and reconcile this local profile in a reviewed manual migration')
+    if base is not None and before is True:
+        installed = list(managed)
+        for relative in skill_paths.values():
+            directory = (base / relative).parent
+            # Known managed companion resources share the same preservation
+            # boundary as SKILL.md. Unrelated project skill folders stay local.
+            for current, subdirs, files in os.walk(directory, followlinks=False):
+                for name in subdirs:
+                    if (Path(current) / name).is_symlink():
+                        errors.append(f'{Path(current).relative_to(base) / name}: trusted managed Copilot directory cannot be symlinked')
+                installed.extend(str((Path(current) / name).relative_to(base)) for name in files)
+        for relative in sorted(set(installed)):
+            previous = base / relative
+            if previous.exists() or previous.is_symlink():
+                safe(previous, base)
+                if not (root / relative).exists() and not (root / relative).is_symlink():
+                    errors.append(f'{relative}: installed Copilot asset cannot disappear; removal requires a separately reviewed governance migration')
+    skill_directories = [str(Path(relative).parent) for relative in skill_paths.values()]
+    package = source or any((root / relative).exists() or (root / relative).is_symlink()
+                            for relative in extra + skill_directories)
+    required = mandatory if package else [role_paths[role] for role in original]
+    for relative in required:
+        if not (root / relative).exists() and not (root / relative).is_symlink():
+            errors.append(f'missing required Copilot package file: {relative}')
+
+    conflict = re.compile(r'^(?:<<<<<<<(?: |$)|>>>>>>>(?: |$)|\|\|\|\|\|\|\|(?: |$))', re.M)
+    link = re.compile(r'!?\[[^\]\n]*\]\(\s*(<[^>]+>|[^\s)]+)(?:\s+["\'][^\n]*?["\'])?\s*\)')
+    reference = re.compile(r'^\s{0,3}\[[^\]\n]+\]:\s*(<[^>]+>|[^\s]+)', re.M)
+
+    def text(path):
+        if not safe(path, root):
+            return None
+        label = str(path.relative_to(root))
+        try:
+            content = path.read_text(encoding='utf-8')
+            if len(content) > 131072:
+                raise ValueError('managed content exceeds 128 KiB')
+        except (OSError, UnicodeError, ValueError) as exc:
+            errors.append(f'{label}: {exc}')
+            return None
+        if conflict.search(content):
+            errors.append(f'{label}: unresolved merge conflict marker')
+        if path.suffix == '.md':
+            prose = re.sub(r'```.*?```|~~~.*?~~~', '', content, flags=re.S)
+            for match in list(link.finditer(prose)) + list(reference.finditer(prose)):
+                target = match.group(1).strip('<>')
+                parsed = urlsplit(target)
+                if parsed.scheme or parsed.netloc or target.startswith(('#', '${')):
+                    continue
+                relative = unquote(parsed.path)
+                if not relative:
+                    continue
+                linked = (path.parent / relative).resolve()
+                if relative.startswith('/') or not linked.is_relative_to(root.resolve()) or not linked.exists():
+                    errors.append(f'{label}: broken local Markdown link {target}')
+        return content
+
+    def frontmatter(relative):
+        content = text(root / relative)
+        if content is None:
+            return None, ''
+        try:
+            match = re.match(r'\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)', content, re.S)
+            if not match:
+                raise ValueError('missing YAML frontmatter')
+            data = yaml.load(match.group(1), Loader=UniqueLoader)
+            body = content[match.end():].strip()
+            if not isinstance(data, dict):
+                raise ValueError('frontmatter must be a mapping')
+            if not body:
+                raise ValueError('missing agent instructions or skill/rule body')
+            return data, body
+        except (ValueError, TypeError, yaml.YAMLError) as exc:
+            errors.append(f'{relative}: {exc}')
+            return None, ''
+
+    def string(data, key, relative, limit):
+        value = data.get(key)
+        if not isinstance(value, str) or not value.strip() or len(value) > limit or '\x00' in value:
+            errors.append(f'{relative}: required nonempty string {key} (maximum {limit} characters)')
+            return False
+        return True
+
+    for role, relative in role_paths.items():
+        if not (root / relative).exists() and not (root / relative).is_symlink():
+            continue
+        data, body = frontmatter(relative)
+        if data is None:
+            continue
+        allowed = {'name', 'description', 'tools'}
+        if role in extended:
+            allowed |= {'handoffs', 'user-invocable', 'disable-model-invocation'}
+        if set(data) - allowed:
+            errors.append(f'{relative}: unapproved frontmatter keys: {sorted(set(data) - allowed)}')
+        string(data, 'name', relative, 64)
+        string(data, 'description', relative, 1024)
+        if data.get('name') != 'backbone-' + role:
+            errors.append(f'{relative}: incorrect native agent name')
+        tools = data.get('tools')
+        valid = isinstance(tools, list) and bool(tools) and all(isinstance(item, str) for item in tools)
+        if valid:
+            valid = len(tools) == len(set(tools)) and (set(tools) == budgets[role] if source else set(tools).issubset(budgets[role]))
+        if not valid:
+            errors.append(f'{relative}: tools must be ' + ('exactly ' if source else 'a nonempty unique subset of ') + str(sorted(budgets[role])) + '; planner/reviewer cannot edit, execute, or delegate')
+        if role in extended and len(body) < 60:
+            errors.append(f'{relative}: meaningful agent instructions require at least 60 characters')
+        for key in ('user-invocable', 'disable-model-invocation'):
+            if key in data and type(data[key]) is not bool:
+                errors.append(f'{relative}: {key} must be boolean')
+        if 'handoffs' in data:
+            handoffs = data['handoffs']
+            if not isinstance(handoffs, list) or not handoffs or len(handoffs) > 10:
+                errors.append(f'{relative}: handoffs must be a nonempty list of at most ten entries')
+            else:
+                for handoff in handoffs:
+                    if not isinstance(handoff, dict) or set(handoff) != {'label', 'agent', 'prompt', 'send'}:
+                        errors.append(f'{relative}: handoff requires only label, agent, prompt, send')
+                        continue
+                    string(handoff, 'label', relative, 120)
+                    string(handoff, 'prompt', relative, 2048)
+                    target = handoff['agent']
+                    if not isinstance(target, str) or target not in {'backbone-' + item for item in budgets}:
+                        errors.append(f'{relative}: handoff target must be a known backbone role')
+                    if handoff['send'] is not False:
+                        errors.append(f'{relative}: handoffs require send: false; automatic handoffs are prohibited')
+    for skill, relative in skill_paths.items():
+        if not (root / relative).exists() and not (root / relative).is_symlink():
+            continue
+        data, body = frontmatter(relative)
+        if data is None:
+            continue
+        if set(data) != {'name', 'description'}:
+            errors.append(f'{relative}: skill frontmatter requires only name and description')
+        string(data, 'name', relative, 64)
+        string(data, 'description', relative, 1024)
+        if data.get('name') != skill:
+            errors.append(f'{relative}: skill name must match its folder')
+        if len(body) < 100 or not re.search(r'^#{1,6} ', body, re.M):
+            errors.append(f'{relative}: meaningful skill body requires headings and at least 100 characters')
+        # Companion resources are owned by this managed skill only. Never follow
+        # directory links or exempt other files hidden under a known skill path.
+        directory = (root / relative).parent
+        for current, subdirs, files in os.walk(directory, followlinks=False):
+            for name in subdirs:
+                if (Path(current) / name).is_symlink():
+                    errors.append(f'{Path(current).relative_to(root) / name}: managed Copilot directory cannot be symlinked')
+            for name in files:
+                path = Path(current) / name
+                if path != root / relative:
+                    text(path)
+    for rule, relative in rule_paths.items():
+        if not (root / relative).exists() and not (root / relative).is_symlink():
+            continue
+        data, body = frontmatter(relative)
+        if data is None:
+            continue
+        if 'applyTo' not in data or set(data) - {'description', 'applyTo'}:
+            errors.append(f'{relative}: instruction frontmatter requires applyTo and only optional description')
+        if 'description' in data:
+            string(data, 'description', relative, 1024)
+        if string(data, 'applyTo', relative, 2048):
+            patterns = [item.strip() for item in data['applyTo'].split(',')]
+            invalid = any(not item or item.startswith(('/', '\\', '!')) or '\\' in item or ':' in item
+                          or any(char.isspace() or ord(char) < 32 for char in item)
+                          or any(part in {'.', '..'} for part in item.split('/'))
+                          or any(not part for part in item.split('/'))
+                          or any(char in item for char in '[]{}()')
+                          or not re.search(r'[^*?/]', item)
+                          for item in patterns)
+            if invalid or len(patterns) != len(set(patterns)):
+                errors.append(f'{relative}: applyTo must use unique scoped repository-relative glob patterns')
+        if len(body) < 60:
+            errors.append(f'{relative}: meaningful instruction body requires at least 60 characters')
+    return errors
+
+
 class RepositoryValidator:
     def __init__(self, root: Path, trusted_base: Path | None = None, *, mode: str | None = None):
         # Default identity belongs to the executing trusted bundle, never a
@@ -224,40 +575,7 @@ class RepositoryValidator:
                     allowed_modes.add("read-only")
                 if not isinstance(data.get("sandbox_mode"), str) or data["sandbox_mode"] not in allowed_modes:
                     self.error(f"{relative}: sandbox_mode must be {mode}" + (" or the stricter read-only" if len(allowed_modes) > 1 else ""))
-        if agents.get("copilot") is True:
-            self.required_file(".github/copilot-instructions.md")
-            for role in NATIVE_ROLES:
-                relative = f".github/agents/backbone-{role}.agent.md"
-                if not self.required_file(relative):
-                    continue
-                try:
-                    content = (self.root / relative).read_text(encoding="utf-8")
-                    match = re.match(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)", content, re.S)
-                    if not match:
-                        raise ValueError("missing YAML frontmatter")
-                    data = yaml.safe_load(match.group(1))
-                    if not isinstance(data, dict):
-                        raise ValueError("frontmatter must be a mapping")
-                    if not content[match.end():].strip():
-                        raise ValueError("missing agent instructions")
-                except (OSError, ValueError, yaml.YAMLError) as exc:
-                    self.error(f"{relative}: {exc}")
-                    continue
-                if set(data) - {"name", "description", "tools"}:
-                    self.error(f"{relative}: unapproved frontmatter keys: {sorted(set(data)-{'name','description','tools'})}")
-                for key in ("name", "description"):
-                    if not isinstance(data.get(key), str) or not data[key].strip():
-                        self.error(f"{relative}: required nonempty string {key}")
-                if data.get("name") != f"backbone-{role}":
-                    self.error(f"{relative}: incorrect native agent name")
-                tools = data.get("tools")
-                allowed = {"read", "search", "edit", "execute"} if role == "implementer" else {"read", "search"}
-                valid = isinstance(tools, list) and bool(tools) and all(isinstance(t, str) for t in tools)
-                if valid:
-                    valid = len(tools) == len(set(tools)) and (set(tools) == allowed if self.source else set(tools).issubset(allowed))
-                if not valid:
-                    requirement = "exactly" if self.source else "a nonempty unique subset of"
-                    self.error(f"{relative}: tools must be {requirement} {sorted(allowed)}; planner/reviewer cannot edit, execute, or delegate")
+        self.errors.extend(copilot_errors(self.root, self.trusted_base, source=self.source))
 
     def walk(self):
         paths = []
@@ -275,9 +593,11 @@ class RepositoryValidator:
             # prose is project-owned. Application files are outside this tool
             # contract; only managed bundle artifacts and selected native
             # profiles receive link/conflict/schema checks.
-            for adapter, extension, folder in (("codex", "toml", ".codex/agents"), ("copilot", "agent.md", ".github/agents")):
-                if self.agents.get(adapter) is True:
-                    paths.extend(self.root / folder / f"backbone-{role}.{extension}" for role in NATIVE_ROLES if (self.root / folder / f"backbone-{role}.{extension}").is_file())
+            if self.agents.get("codex") is True:
+                paths.extend(self.root / ".codex/agents" / f"backbone-{role}.toml" for role in NATIVE_ROLES
+                             if (self.root / ".codex/agents" / f"backbone-{role}.toml").is_file())
+            # copilot_errors owns its exact native registry, including ancestor
+            # safety, conflict and link checks; unrelated .github files stay local.
             workflow = self.root / ".github/workflows/engineering-backbone.yml"
             if workflow.is_file():
                 paths.append(workflow)

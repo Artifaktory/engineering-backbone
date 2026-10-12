@@ -11,6 +11,8 @@ _skip_if_exists:
   - .github/copilot-instructions.md
   - ".codex/agents/**"
   - ".github/agents/**"
+  - ".github/skills/**"
+  - ".github/instructions/**"
   - .github/workflows/engineering-backbone.yml
   - .engineering-backbone/project.json
 
@@ -66,12 +68,31 @@ use_codex:
 use_copilot:
   type: bool
   default: true
-  help: Add Copilot instructions and three native role profiles if their files do not exist.
+  help: Add Copilot instructions, ten native roles, eight skills and selected path rules when absent.
   validator: >-
     {% set previous = _external_data.installed_answers %}
     {% if previous and ('use_copilot' not in previous or use_copilot != previous.use_copilot) %}
     use_copilot is installation-only; use a separate reviewed adapter migration and reconcile project facts and answers.
     {% endif %}
+copilot_python_profile:
+  type: bool
+  default: false
+  help: Add optional Python path instructions; no runtime or test command is installed.
+  validator: >-
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and copilot_python_profile != previous.get('copilot_python_profile', false) %}
+    copilot_python_profile is installation-only; legacy answers mean false. Use a separate reviewed profile migration.
+    {% endif %}
+copilot_frontend_profile:
+  type: bool
+  default: false
+  help: Add optional frontend path instructions; framework and paths remain project-owned.
+  validator: >-
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and copilot_frontend_profile != previous.get('copilot_frontend_profile', false) %}
+    copilot_frontend_profile is installation-only; legacy answers mean false. Use a separate reviewed profile migration.
+    {% endif %}
+
 backbone_workflow_ref:
   type: str
   default: ""
@@ -87,9 +108,9 @@ backbone_workflow_ref:
 
 _message_after_copy: >-
   Review .engineering-backbone/project.json and the generated instruction fragments.
-  Existing agent instructions and profiles were preserved. Manually integrate the
+  Existing native instructions, profiles, Copilot skills and path rules were preserved. Manually integrate the
   fragments into stronger local governance before claiming adoption.
 _message_after_update: >-
   Review the diff of .engineering-backbone/core.md, core.json and instruction fragments.
-  Existing native instructions, role profiles and project facts were preserved;
+  Existing native instructions, profiles, skills, path rules and project facts were preserved;
   refresh them manually in the same reviewed update PR when needed.

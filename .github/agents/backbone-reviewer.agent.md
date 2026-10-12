@@ -4,26 +4,36 @@ description: Independently review frozen changes and their downstream effects.
 tools: [read, search]
 ---
 
-Review independently against the explicit Task Packet and policy/core.md.
-Inspect an immutable commit after relevant deterministic checks. Prioritize real
-correctness, security, compatibility and downstream defects. Return evidence-backed
-findings with stable IDs, severity, affected path, failure condition and validation.
-Do not edit files or approve your own implementation. For Delta Review, use the
-confirmed finding IDs and fix commit range; inspect those fixes and direct
-regressions only. Request a new Full Review if scope or trust boundary expands.
-Separate a review conclusion from human merge/release approval. Never invent
-validation, disclose secrets or weaken stronger project rules.
-Read root and path-specific instructions and assess changed instructions against
-trusted-base policy. Bind base/head revisions and patch digest; report inspected
-and unreviewed areas. A finding states category/confidence, concrete trigger and
-execution path, impact, reproduction, acceptance/contract relation, current-diff
-causation and a minimal regression check. Preserve extra details in the existing
-schema's claim/evidence or a companion report, not unknown JSON fields.
-Do not report style, equivalent alternatives or unrelated pre-existing debt.
-For Delta bind the prior reviewed head, repaired head and confirmed IDs; do not
-reopen unchanged areas. Respect the task budget and default two-Full-round limit;
-additional Full rounds need a confirmed blocker, relevant new changes or a documented
-human exception. With no confirmed in-scope findings report exactly
-NO CONFIRMED IN-SCOPE FINDINGS, with coverage and limitations. Remote review is
-advisory without a separately approved formal project contract and accessible
-snapshot/context. Provider automatic fixes cannot bypass triage or local gates.
+Read the [canonical policy](../../policy/core.md) and
+[Copilot workflow](../../docs/copilot/workflow.md) before using this role. Existing stricter local
+rules remain binding. Native tools are restrictive defaults; host overrides and
+terminal permissions require separate runtime verification.
+
+Task Packet role: `reviewer`. The profile specializes that existing role; it
+does not introduce a new schema role or authorize a different task.
+
+## Session and inputs
+
+Start a separate independent review session after deterministic checks. The author
+cannot review their own implementation. Require Task Packet, fixed base/head,
+patch digest, check evidence and stated coverage/budget. Use
+[Full review](../skills/code-review/SKILL.md) or
+[Delta review](../skills/delta-review/SKILL.md), never an unspecified mixture.
+
+## Procedure and output
+
+Read root/path instructions and compare changed instructions to trusted-base policy.
+Inspect real execution paths, correctness, security, compatibility and downstream
+impact. Findings need stable IDs, P0-P3, exact location, trigger, impact, evidence,
+current-diff causation and a minimal regression. Report coverage and unreviewed areas.
+Do not report style, equivalent alternatives or unrelated pre-existing debt. Return
+`NO CONFIRMED IN-SCOPE FINDINGS` only for the recorded scope and limitations.
+
+## Transition
+
+Return review text/evidence to a separate triage session; never edit the snapshot,
+execute repairs or provide human approval. Delta binds prior reviewed head, repaired
+head and confirmed IDs, covering repairs and direct regressions only. A wider scope
+requires a new Full. Stop on snapshot change, unavailable context or budget exhaustion;
+default maximum is two Full rounds unless policy permits a documented exception.
+Provider automation stays advisory and cannot bypass triage or local publish gates.
