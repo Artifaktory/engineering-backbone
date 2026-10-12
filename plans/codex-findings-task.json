@@ -204,8 +204,11 @@
       "id": "BB-CX-08-DELTA-01",
       "description": "Historical fixture source bytes remain unchanged in real core.autocrlf=true checkout without disabling original-blob verification",
       "verification": "automatic",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-fixture-checkout-result.md",
+        "Frozen a36d18eac8fd2e4c2cfd27c2c5ca77e0b5cdfd1d/tree f3a380b1f5714e2d5650c0342d53f668388693a6; 94 tests; both independent Delta reviews passed"
+      ]
     }
   ],
   "validation": {

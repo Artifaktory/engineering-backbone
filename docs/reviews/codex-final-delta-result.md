@@ -59,3 +59,8 @@ These are observed local/model-session results. Publication, GitHub-hosted CI an
 final provider re-review are verified separately on PR 1 after publication. Human
 merge/release approval, external protection settings and client discovery remain
 separate operational controls. No downstream write, merge or release was performed.
+
+The subsequent real CRLF source-checkout probe exposed a direct fixture-byte
+regression. Its limited correction and independent results are recorded in
+[the fixture checkout Delta](codex-fixture-checkout-result.md). Current consumer
+tooling and its fingerprint remain unchanged.
