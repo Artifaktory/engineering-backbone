@@ -140,6 +140,62 @@ class ValidationTests(unittest.TestCase):
         self.mutate_json("policy/core.json", lambda data: data["invariants"].update(security_review_required=True))
         self.assertEqual([], validate_root(self.root, base))
 
+    def test_candidate_canonical_policy_alias_is_rejected(self):
+        for mode in ("source", "consumer"):
+            if mode == "consumer":
+                self.make_consumer()
+            relative = "policy/core.json" if mode == "source" else ".engineering-backbone/core.json"
+            path = self.root / relative
+            content = path.read_text()
+            self.write("strict-core.json", content)
+            path.unlink()
+            path.symlink_to("../../candidate/strict-core.json")
+            self.assertTrue(path.resolve().is_relative_to(self.root))
+            self.reject("canonical policy must be a regular file", mode=mode)
+            path.unlink()
+            self.write(relative, content)
+
+    def test_promoted_trusted_policy_cannot_alias_next_candidate(self):
+        for mode in ("source", "consumer"):
+            if mode == "consumer":
+                self.make_consumer()
+            relative = "policy/core.json" if mode == "source" else ".engineering-backbone/core.json"
+            base = Path(self.temp.name) / ("base-" + mode)
+            shutil.copytree(self.root, base)
+            path = base / relative
+            strict = json.loads(path.read_text())
+            strict["invariants"]["local_security_review_required"] = True
+            path.write_text(json.dumps(strict))
+            self.reject("trusted-base invariant local_security_review_required", base, mode=mode)
+            # The candidate removes an extra strict rule. A promoted alias makes
+            # the base comparison read that same weakened candidate payload.
+            self.write("strict-core.json", (self.root / relative).read_text())
+            path.unlink()
+            path.symlink_to("../../candidate/strict-core.json")
+            self.assertFalse(path.resolve().is_relative_to(base))
+            self.reject("trusted base has no readable policy", base, mode=mode)
+            self.reject("canonical policy must be a regular file", base, mode=mode)
+
+    def test_trusted_policy_directory_alias_is_rejected(self):
+        for mode in ("source", "consumer"):
+            if mode == "consumer":
+                self.make_consumer()
+            directory = "policy" if mode == "source" else ".engineering-backbone"
+            base = Path(self.temp.name) / ("base-" + mode)
+            shutil.copytree(self.root, base)
+            shutil.move(base / directory, base / "owned-policy")
+            (base / directory).symlink_to("owned-policy", target_is_directory=True)
+            self.reject("canonical policy must be a regular file", base, mode=mode)
+
+    def test_consumer_regular_stronger_policy_is_preserved(self):
+        self.make_consumer()
+        base = Path(self.temp.name) / "base"
+        self.mutate_json(".engineering-backbone/core.json", lambda data: data["invariants"].update(local_security_review_required=True))
+        shutil.copytree(self.root, base)
+        self.assertEqual([], validate_root(self.root, base, mode="consumer"))
+        self.mutate_json(".engineering-backbone/core.json", lambda data: data["invariants"].pop("local_security_review_required"))
+        self.reject("trusted-base invariant local_security_review_required", base, mode="consumer")
+
     def test_base_without_policy_requires_explicit_bootstrap(self):
         base = Path(self.temp.name) / "base"
         base.mkdir()

@@ -1,0 +1,6 @@
+name = "backbone_implementer"
+description = "Implement scoped changes, run deterministic checks and repair confirmed findings."
+sandbox_mode = "workspace-write"
+{% set policy_path = '.engineering-backbone/core.md' %}
+{% set role_text %}{% include 'templates/_partials/implementer.md.jinja' %}{% endset %}
+developer_instructions = {{ role_text | tojson }}

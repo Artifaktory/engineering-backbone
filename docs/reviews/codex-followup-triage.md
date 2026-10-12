@@ -43,3 +43,49 @@ No private-source checkout credential, provider key, candidate hook, arbitrary
 allowlist input or automatic downstream update is added. The next frozen review
 covers these repairs, their new tooling-identity contract and direct regressions;
 unchanged foundation areas are not re-reviewed.
+
+## Direct regression: policy ownership after promotion
+
+BB-CX-07-DELTA-02 is a confirmed P1 discovered during the final ownership probe
+and independently reproduced by `codex_delta_security` before repair. The base is
+local `dc1459fe44499e2f72b9cedde74884cd5a17eeb9`, tree
+`2727bd2a2c0f7a10bca749165f29a9a50021343b`, identical to published `abb280c`.
+
+A candidate canonical `core.json` symlink to `../../candidate/strict-core.json`
+initially resolves inside the candidate and contains the strict base policy. The
+actual workflow returns 0. After promotion preserving that symlink into
+`trusted-base`, it points into the next candidate. Removing a custom true invariant
+from the target also returns 0: the supposedly trusted comparison now reads the
+candidate's rules. Current and previously approved tooling both reproduce this;
+an independently owned regular strict base rejects the same removal with exit 1.
+
+This is a direct gap in BB-CX-07's protected promotion contract. Repair requires
+regular canonical policy files in both snapshots before dependency or validator
+execution, plus current-validator policy ownership and containment checks. Policy
+values remain project-specific and unhashed; ordinary stronger JSON policies stay
+supported. Refresh the current tooling identity, retain the previously reviewed
+coherent identity, and independently Delta-review the correction and its direct
+regressions. No new trust boundary or unrelated foundation work is introduced.
+
+## Subsequent provider compatibility findings
+
+Codex review `5488022625` inspected published `abb280c` and reported two direct
+regressions in the follow-up compatibility mechanism.
+
+| ID | Severity | Provider thread | Trigger and triage |
+| --- | --- | --- | --- |
+| BB-CX-08 | P1 | [4245880365](https://github.com/Artifaktory/engineering-backbone/pull/1#discussion_r4245880365) | Historical test sources are loaded with `git archive` from development-tree objects. A clean squash checkout lacks those objects; tests fail despite valid tooling. Confirm by isolating a single-commit checkout before replacing the dependency with durable historical fixtures. |
+| BB-CX-09 | P2 | [4245880378](https://github.com/Artifaktory/engineering-backbone/pull/1#discussion_r4245880378) | Bundle attributes set text/eol but inherit independent parent content filters and working-tree encodings. Confirm the actual transformed checkout before clearing those attributes only on the eight attested files. |
+
+Both repair decisions remain within BB-CX-07's existing compatibility contract.
+Preserve exact historical tooling identities and real Copier upgrade coverage;
+protect managed bytes while retaining application-owned attributes. Reproduction
+results and the immutable review snapshot are recorded with the next Delta result.
+
+Both subsequent provider findings were confirmed before their repairs. BB-CX-08:
+a fresh one-commit source repository had none of the three historical trees; the
+actual historical compatibility test failed with `git archive` exit 128. BB-CX-09:
+real Git checkouts with an inherited content filter or UTF-16LE encoding changed
+the managed toolchain digest; application files also received their intended
+transformations. The fixes package unchanged historical source blobs with verified
+provenance and unset only content-transform attributes on attested file paths.

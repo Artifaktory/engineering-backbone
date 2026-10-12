@@ -73,8 +73,8 @@ jobs:
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: 'ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9'
-          PREVIOUS_TOOLCHAIN_SHA256: '["444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa"]'
+          CURRENT_TOOLCHAIN_SHA256: '5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a'
+          PREVIOUS_TOOLCHAIN_SHA256: '["444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
         run: |
           set -euo pipefail
           trusted_root="$GITHUB_WORKSPACE/trusted-base"
@@ -129,6 +129,9 @@ jobs:
                   raise ValueError('Invalid workflow-owned toolchain fingerprint authority')
               workspace = Path(os.environ['GITHUB_WORKSPACE'])
               base, candidate = workspace / 'trusted-base', workspace / 'candidate'
+              for root in (base, candidate):
+                  regular(root, 'core.json')
+                  regular(root, 'core.md')
               base_digest, candidate_digest = digest(base), digest(candidate)
               if base_digest not in [current] + previous:
                   raise ValueError('Trusted base toolchain fingerprint is not approved by this pinned workflow')

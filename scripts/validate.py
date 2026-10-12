@@ -130,10 +130,22 @@ class RepositoryValidator:
     def policy_path(self, root: Path):
         return root / "policy" / "core.json" if self.source else root / ".engineering-backbone" / "core.json"
 
+    def read_policy(self, root: Path):
+        path = self.policy_path(root)
+        # A link that belongs to today's candidate can point into tomorrow's
+        # candidate after promotion. Canonical policy must belong to its snapshot.
+        if path.is_symlink() or path.parent.is_symlink():
+            raise ValueError("canonical policy must be a regular file in its own repository")
+        if not path.resolve().is_relative_to(root):
+            raise ValueError("policy resolves outside its own repository")
+        return read_json(path)
+
     def policy(self):
         path = self.policy_path(self.root)
-        policy = self.load(path)
-        if policy is None:
+        try:
+            policy = self.read_policy(self.root)
+        except (OSError, ValueError) as exc:
+            self.error(f"{self.label(path)}: {exc}")
             return
         self.validate_data("core-policy", policy, self.label(path))
         invariants = policy.get("invariants", {}) if isinstance(policy, dict) else {}
@@ -142,8 +154,7 @@ class RepositoryValidator:
                 self.error(f"{self.label(path)}: mandatory policy invariant {key} must be {value}")
         if self.trusted_base is not None:
             try:
-                base_path = self.policy_path(self.trusted_base)
-                base = read_json(base_path)
+                base = self.read_policy(self.trusted_base)
             except (OSError, ValueError) as exc:
                 self.error(f"BOOTSTRAP: trusted base has no readable policy; explicit bootstrap review is required ({exc})")
                 return

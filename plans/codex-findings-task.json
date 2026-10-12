@@ -2,19 +2,21 @@
   "schema_version": "1",
   "id": "BB-CODEX-REPAIR-001",
   "title": "Repair Codex findings and follow-up trust-promotion gaps on PR 1",
-  "objective": "Repair confirmed findings from Codex reviews 5487154028 and 5487485660, including adapter-selection monotonicity, reachable manual consumer checks and attested tooling promotion; independently review changed repairs and direct regressions, then update PR 1 and request re-review without merge or release.",
+  "objective": "Repair all confirmed Codex findings and direct promotion/compatibility regressions; independently Delta-review changed repairs, update PR 1 and complete provider re-review without merge or release.",
   "role": "implementer",
   "risk": "high",
   "repository": {
     "base_branch": "main",
-    "base_revision": "6542ad3f76ae35fa5475fad998a7aa2967225496",
+    "base_revision": "dc1459fe44499e2f72b9cedde74884cd5a17eeb9",
     "head_revision": null
   },
   "approved_sources": [
     "Human request on 2026-10-12 authorizes scoped fixes, independent Delta review, PR 1 update and Codex re-review; no merge or release",
     "Codex review 5487154028 on Artifaktory/engineering-backbone PR 1 at 6982e4a53185b5fcba48b17db10a59a3eaca83ee",
     "Local base d568bf820ab9d49a9bff34edb2cab32755cfca3a has the identical published Git tree da5e4b16db198a583ca252f109d33778de0a3f78",
-    "Codex review 5487485660 at published 3a2e3c83954cff3f7402fad7293b58c4524ae21a; local 6542ad3f76ae35fa5475fad998a7aa2967225496 has identical tree d28d6972fa999e785af13b315ce4daf570c73aea"
+    "Codex review 5487485660 at published 3a2e3c83954cff3f7402fad7293b58c4524ae21a; local 6542ad3f76ae35fa5475fad998a7aa2967225496 has identical tree d28d6972fa999e785af13b315ce4daf570c73aea",
+    "Independent security confirmation of BB-CX-07-DELTA-02 on dc1459/tree2727, identical to published abb280c; actual current and legacy workflow alias promotion both pass before repair",
+    "Codex review 5488022625 at published abb280ca0334264ddf1d8fc6b67ce5b9bfea203e: historical fixtures after squash and inherited Git content filters"
   ],
   "scope": {
     "include": [
@@ -104,33 +106,83 @@
       "id": "BB-CX-05",
       "description": "Trusted provider selections cannot be silently disabled; initial opt-out and valid strengthening remain supported",
       "verification": "automatic",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-followup-result.md",
+        "PR 1 abb280ca0334264ddf1d8fc6b67ce5b9bfea203e; GitHub CI 38220256315 passed 84 tests"
+      ]
     },
     {
       "id": "BB-CX-06",
       "description": "Both shipped consumer callers expose the documented workflow_dispatch trigger",
       "verification": "automatic",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-followup-result.md",
+        "PR 1 abb280ca0334264ddf1d8fc6b67ce5b9bfea203e; GitHub CI 38220256315 passed 84 tests"
+      ]
     },
     {
       "id": "BB-CX-07",
       "description": "Pinned reusable workflow rejects poisoned base/candidate tooling before execution and supports coherent reviewed updates",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-followup-result.md",
+        "PR 1 abb280ca0334264ddf1d8fc6b67ce5b9bfea203e; GitHub CI 38220256315 passed 84 tests"
+      ]
     },
     {
       "id": "AC-FOLLOWUP-DELTA",
       "description": "Independent frozen review verifies the three follow-up fixes and direct regressions",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-followup-result.md",
+        "PR 1 abb280ca0334264ddf1d8fc6b67ce5b9bfea203e; GitHub CI 38220256315 passed 84 tests"
+      ]
     },
     {
       "id": "AC-FOLLOWUP-PR",
       "description": "Publish reviewed follow-up on PR 1 and verify CI/provider re-review",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "PR 1 abb280ca0334264ddf1d8fc6b67ce5b9bfea203e; GitHub CI 38220256315 passed 84 tests",
+        "Codex re-review 5488022625 completed; two follow-up findings recorded as BB-CX-08/09"
+      ]
+    },
+    {
+      "id": "BB-CX-07-DELTA-02",
+      "description": "Canonical policy files remain independently owned by each snapshot; alias promotion cannot replace trusted policy with next-candidate content, including legacy approved validators",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "BB-CX-08",
+      "description": "Historical compatibility fixtures remain available in clean squash/shallow checkouts without unreachable development Git objects",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "BB-CX-09",
+      "description": "Inherited Git content filters and working-tree encoding cannot transform attested tooling; application attributes remain intact",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-FINAL-DELTA",
+      "description": "Independent frozen Delta confirms BB-CX-07-DELTA-02 and BB-CX-08/09 repairs and direct regressions",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-FINAL-PR",
+      "description": "Publish final reviewed tree on PR 1, verify successful CI and complete final Codex re-review",
       "verification": "hybrid",
       "status": "pending",
       "evidence": []

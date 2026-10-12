@@ -1,14 +1,13 @@
 """Execute the actual reusable-workflow shell payloads against real Git consumers."""
 from __future__ import annotations
 
-import io
+import hashlib
 import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
-import tarfile
 import tempfile
 import unittest
 
@@ -24,7 +23,32 @@ STEPS = {step['name']: step for step in WORKFLOW['jobs']['validate']['steps']}
 PREVIOUS_TREES = {
     'bootstrap': 'da5e4b16db198a583ca252f109d33778de0a3f78',
     'pre-attestation': 'd28d6972fa999e785af13b315ce4daf570c73aea',
+    'attested-review': '2727bd2a2c0f7a10bca749165f29a9a50021343b',
 }
+HISTORICAL_FIXTURES = ROOT / 'tests/fixtures/historical'
+
+
+def historical_source(destination, version):
+    """Reconstruct immutable Copier inputs without requiring Git history objects."""
+    manifest = json.loads((HISTORICAL_FIXTURES / 'manifest.json').read_text())
+    if manifest['format'] != 'engineering-backbone-historical-source-v1':
+        raise ValueError('Unknown historical fixture format')
+    record = manifest['versions'][version]
+    if record['source_tree'] != PREVIOUS_TREES[version]:
+        raise ValueError('Historical fixture tree provenance mismatch')
+    baseline = manifest['baseline']
+    shutil.copytree(HISTORICAL_FIXTURES / baseline, destination, symlinks=True)
+    if version != baseline:
+        shutil.copytree(HISTORICAL_FIXTURES / version, destination, dirs_exist_ok=True, symlinks=True)
+    paths = {path.relative_to(destination).as_posix(): path for path in destination.rglob('*') if path.is_file()}
+    if set(paths) != set(record['files']):
+        raise ValueError('Historical fixture input paths do not match the original source')
+    for name, path in paths.items():
+        content = path.read_bytes()
+        digest = hashlib.sha1(b'blob ' + str(len(content)).encode() + b'\0' + content).hexdigest()
+        if path.is_symlink() or digest != record['files'][name]:
+            raise ValueError('Historical fixture differs from original Git blob: ' + name)
+    return record
 
 
 def git(root, *args):
@@ -217,11 +241,7 @@ class WorkflowTests(unittest.TestCase):
     def legacy_source(self, version):
         source = self.workspace / ('legacy-source-' + version)
         if not source.exists():
-            source.mkdir()
-            archive = subprocess.run(['git', 'archive', '--format=tar', PREVIOUS_TREES[version]],
-                                     cwd=ROOT, capture_output=True, check=True).stdout
-            with tarfile.open(fileobj=io.BytesIO(archive)) as packed:
-                packed.extractall(source, filter='data')
+            historical_source(source, version)
         return source
 
     def use_legacy_base(self, version='pre-attestation', **data):
@@ -239,10 +259,33 @@ class WorkflowTests(unittest.TestCase):
             with self.subTest(version=version):
                 self.use_legacy_base(version)
                 observed.append(bundle_digest(self.trusted))
+                manifest = json.loads((HISTORICAL_FIXTURES / 'manifest.json').read_text())
+                self.assertEqual(observed[-1], manifest['versions'][version]['rendered_toolchain_sha256'])
                 result = self.validate()
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual(set(previous), set(observed))
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
+
+    def test_historical_compatibility_survives_clean_single_commit_clone(self):
+        # Squash merging and new repositories need not contain our original
+        # local tree objects. Execute the real copy and upgrade checks there.
+        seed = self.workspace / 'single-commit-source'
+        shutil.copytree(ROOT, seed, ignore=shutil.ignore_patterns('.git', '__pycache__', 'artifacts', '.venv'))
+        initialize(seed)
+        commit(seed, 'Single squashed source snapshot')
+        checkout = self.workspace / 'clean-source-clone'
+        git(self.workspace, 'clone', '--no-local', str(seed), str(checkout))
+        self.assertEqual(git(checkout, 'rev-list', '--count', 'HEAD'), '1')
+        for tree in PREVIOUS_TREES.values():
+            probe = subprocess.run(['git', 'cat-file', '-e', tree], cwd=checkout, capture_output=True)
+            self.assertNotEqual(probe.returncode, 0, tree)
+        result = subprocess.run([
+            sys.executable, '-m', 'unittest',
+            'tests.test_workflows.WorkflowTests.test_approved_historical_copies_match_authority_and_remain_usable',
+            'tests.test_workflows.WorkflowTests.test_real_copier_upgrade_accepts_coherent_tooling_and_preserves_local_facts',
+            '-v',
+        ], cwd=checkout, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_legacy_base_cannot_disable_any_previously_enabled_provider(self):
         for codex, copilot in ((False, True), (True, False), (False, False)):
@@ -342,6 +385,47 @@ class WorkflowTests(unittest.TestCase):
                     self.assertNotIn('Requirement already satisfied', result.stdout)
             shutil.rmtree(snapshot)
             shutil.copytree(original, snapshot)
+
+    def test_policy_alias_is_rejected_before_pip_and_after_simulated_promotion(self):
+        for filename in ('core.json', 'core.md'):
+            with self.subTest(filename=filename):
+                self.use_legacy_base('pre-attestation')
+                for root in (self.trusted, self.candidate):
+                    self.mutate('.engineering-backbone/core.json',
+                                lambda d: d['invariants'].update(security_review_required=True), root)
+                original = self.candidate / '.engineering-backbone' / filename
+                target = self.candidate / ('strict-' + filename)
+                target.write_bytes(original.read_bytes())
+                original.unlink()
+                # In the first snapshot this resolves inside candidate. After a
+                # symlink-preserving merge copy it aliases the next candidate.
+                original.symlink_to('../../candidate/' + target.name)
+                first = self.validate()
+                self.assertNotEqual(first.returncode, 0)
+                self.assertIn('symlinked managed file: ' + filename, first.stderr)
+                self.assertNotIn('Requirement already satisfied', first.stdout)
+                shutil.rmtree(self.trusted)
+                shutil.copytree(self.candidate, self.trusted, symlinks=True)
+                if filename == 'core.json':
+                    data = json.loads(target.read_text())
+                    data['invariants'].pop('security_review_required')
+                    target.write_text(json.dumps(data) + '\n')
+                else:
+                    target.write_text('Next candidate changed the aliased policy document.\n')
+                second = self.validate()
+                self.assertNotEqual(second.returncode, 0)
+                self.assertIn('symlinked managed file: ' + filename, second.stderr)
+                self.assertNotIn('Requirement already satisfied', second.stdout)
+
+    def test_regular_strict_policy_data_and_document_remain_supported(self):
+        self.use_legacy_base('pre-attestation')
+        for root in (self.trusted, self.candidate):
+            self.mutate('.engineering-backbone/core.json',
+                        lambda d: d['invariants'].update(security_review_required=True), root)
+            with (root / '.engineering-backbone/core.md').open('a') as policy:
+                policy.write('\nProject security review is mandatory.\n')
+        result = self.validate()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_real_copier_upgrade_accepts_coherent_tooling_and_preserves_local_facts(self):
         source = self.legacy_source('pre-attestation')

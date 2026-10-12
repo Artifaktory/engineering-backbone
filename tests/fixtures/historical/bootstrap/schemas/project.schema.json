@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-backbone:project",
+  "title": "project",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$"
+        },
+        "base_branch": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^\\s~^:?*\\[\\\\]+$"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "has_frontend": {
+          "type": "boolean"
+        },
+        "has_backend": {
+          "type": "boolean"
+        },
+        "validation_command": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name",
+        "base_branch",
+        "language",
+        "has_frontend",
+        "has_backend",
+        "validation_command"
+      ],
+      "additionalProperties": false
+    },
+    "agents": {
+      "type": "object",
+      "properties": {
+        "codex": {
+          "type": "boolean"
+        },
+        "copilot": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "codex",
+        "copilot"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "project",
+    "agents"
+  ],
+  "additionalProperties": false
+}

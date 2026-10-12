@@ -63,7 +63,8 @@ The consumer branch of the reusable workflow also executes only the trusted
 consumer revision's validator, schemas and dependency lock, with `--trusted-base`.
 Before dependencies or validator execution, the pinned workflow independently
 attests all eight tooling files in both snapshots against its own coherent
-fingerprints and checks monotonic provider selections. Unknown base tooling,
+fingerprints and checks monotonic provider selections. Both canonical policy files
+must be regular files owned by each snapshot before any tooling executes. Unknown base tooling,
 poisoned candidate tooling, mixed versions and inherited-provider disablement fail
 closed, including when the previous validator predates those checks. First adoption needs a
 reviewed seed PR with the caller inactive, followed by a separate activation PR.
@@ -92,6 +93,7 @@ The initial retained entries were calculated from these actual Git trees:
 | --- | --- | --- |
 | Bootstrap review, local `d568bf8` / published `6982e4a` | `da5e4b16db198a583ca252f109d33778de0a3f78` | `444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566` |
 | First repair review, local `6542ad3` / published `3a2e3c8` | `d28d6972fa999e785af13b315ce4daf570c73aea` | `92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa` |
+| Tooling review, local `dc1459f` / published `abb280c` | `2727bd2a2c0f7a10bca749165f29a9a50021343b` | `ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9` |
 
 These are reviewed PR snapshots, not declarations that releases or downstream
 adoption are approved. Consumer candidate tooling can stay at its approved base

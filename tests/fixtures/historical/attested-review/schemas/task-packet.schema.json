@@ -1,0 +1,330 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-backbone:task-packet",
+  "title": "task-packet",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role": {
+      "enum": [
+        "planner",
+        "implementer",
+        "reviewer",
+        "quality_checker",
+        "triage"
+      ]
+    },
+    "risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "repository": {
+      "type": "object",
+      "properties": {
+        "base_branch": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!HEAD$)(?![-/.])(?!.*[/]\\.)(?!.*\\.lock(?:/|$))(?!.*\\.\\.)(?!.*//)(?!.*@\\{)(?!.*[/.]$)[^\\u0000-\\u0020\\u007f~^:?*\\[\\\\]+(?![\\s\\S])"
+        },
+        "base_revision": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "head_revision": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "required": [
+        "base_branch",
+        "base_revision",
+        "head_revision"
+      ],
+      "additionalProperties": false
+    },
+    "approved_sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "include",
+        "exclude"
+      ],
+      "additionalProperties": false
+    },
+    "acceptance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verification": {
+            "enum": [
+              "automatic",
+              "manual",
+              "hybrid"
+            ]
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "pass",
+              "fail",
+              "blocked"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "id",
+          "description",
+          "verification",
+          "status",
+          "evidence"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "pass"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "evidence": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 1
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "manual_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "commands",
+        "manual_evidence"
+      ],
+      "additionalProperties": false
+    },
+    "execution_budget": {
+      "type": "object",
+      "properties": {
+        "max_iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        }
+      },
+      "required": [
+        "max_iterations"
+      ],
+      "additionalProperties": false
+    },
+    "stop_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "forbidden_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "active",
+        "blocked",
+        "ready_for_review",
+        "completed"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "objective",
+    "role",
+    "risk",
+    "repository",
+    "approved_sources",
+    "scope",
+    "acceptance",
+    "validation",
+    "execution_budget",
+    "stop_conditions",
+    "forbidden_actions",
+    "status"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "completed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "repository": {
+            "properties": {
+              "base_revision": {
+                "type": "string"
+              },
+              "head_revision": {
+                "type": "string"
+              }
+            }
+          },
+          "acceptance": {
+            "items": {
+              "properties": {
+                "status": {
+                  "const": "pass"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "properties": {
+              "status": {
+                "const": "ready_for_review"
+              }
+            }
+          },
+          {
+            "properties": {
+              "status": {
+                "const": "active"
+              },
+              "role": {
+                "const": "reviewer"
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "repository": {
+            "properties": {
+              "base_revision": {
+                "type": "string"
+              },
+              "head_revision": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Keep the eight attested toolchain files byte-stable on Windows and Linux.
+validate.py text eol=lf
+requirements.txt text eol=lf
+requirements.lock text eol=lf
+schemas/core-policy.schema.json text eol=lf
+schemas/project.schema.json text eol=lf
+schemas/task-packet.schema.json text eol=lf
+schemas/review-evidence.schema.json text eol=lf
+schemas/requirement.schema.json text eol=lf
