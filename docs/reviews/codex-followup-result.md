@@ -63,3 +63,9 @@ provider re-review and publication readback are recorded separately on PR 1 afte
 publication. External caller protection, human merge/release approval, workflow
 sharing and native-client discovery remain separate operational controls.
 No downstream write, merge, release or deployment was performed.
+
+A later focused ownership probe and Codex review `5488022625` identified a
+remaining canonical-policy alias and two compatibility regressions at the
+subsequently published snapshot. They were separately confirmed, corrected and
+independently checked in [the final Delta result](codex-final-delta-result.md).
+The results above describe their original frozen subject, not the later repair.
