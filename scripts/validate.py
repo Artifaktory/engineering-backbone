@@ -22,7 +22,8 @@ from jsonschema.exceptions import SchemaError
 
 SCRIPT_DIRECTORY = Path(__file__).resolve().parent
 BUNDLE = SCRIPT_DIRECTORY.parent if SCRIPT_DIRECTORY.name == "scripts" else SCRIPT_DIRECTORY
-DEFAULT_ROOT = BUNDLE.parent if BUNDLE.name == ".engineering-backbone" else BUNDLE
+DEFAULT_MODE = "consumer" if BUNDLE.name == ".engineering-backbone" else "source"
+DEFAULT_ROOT = BUNDLE.parent if DEFAULT_MODE == "consumer" else BUNDLE
 POLICY_FLOOR = {
     "human_merge_required": True,
     "human_release_required": True,
@@ -56,7 +57,15 @@ def read_json(path: Path):
 
 
 class RepositoryValidator:
-    def __init__(self, root: Path, trusted_base: Path | None = None):
+    def __init__(self, root: Path, trusted_base: Path | None = None, *, mode: str | None = None):
+        # Default identity belongs to the executing trusted bundle, never a
+        # candidate-controlled filename. The explicit API mode is for trusted
+        # callers and fixtures; there is deliberately no CLI mode override.
+        selected_mode = DEFAULT_MODE if mode is None else mode
+        if selected_mode not in {"source", "consumer"}:
+            raise ValueError("validator mode must be source or consumer")
+        self.source = selected_mode == "source"
+        self.agents = {}
         self.root = root.resolve()
         self.trusted_base = trusted_base.resolve() if trusted_base is not None else None
         self.errors: list[str] = []
@@ -118,10 +127,8 @@ class RepositoryValidator:
                 if len(ids) != len(set(ids)):
                     self.error(f"{label}: acceptance criterion IDs must be unique")
 
-    @staticmethod
-    def policy_path(root: Path):
-        source = root / "policy" / "core.json"
-        return source if source.is_file() else root / ".engineering-backbone" / "core.json"
+    def policy_path(self, root: Path):
+        return root / "policy" / "core.json" if self.source else root / ".engineering-backbone" / "core.json"
 
     def policy(self):
         path = self.policy_path(self.root)
@@ -161,6 +168,7 @@ class RepositoryValidator:
         if not isinstance(project, dict) or not isinstance(project.get("agents"), dict):
             return
         agents = project["agents"]
+        self.agents = agents
         if agents.get("codex") is True:
             self.required_file("AGENTS.md")
             for role in NATIVE_ROLES:
@@ -181,8 +189,11 @@ class RepositoryValidator:
                 if data.get("name") != f"backbone_{role}":
                     self.error(f"{relative}: incorrect native agent name")
                 mode = "workspace-write" if role == "implementer" else "read-only"
-                if data.get("sandbox_mode") != mode:
-                    self.error(f"{relative}: sandbox_mode must be {mode}")
+                allowed_modes = {mode}
+                if not self.source and role == "implementer":
+                    allowed_modes.add("read-only")
+                if not isinstance(data.get("sandbox_mode"), str) or data["sandbox_mode"] not in allowed_modes:
+                    self.error(f"{relative}: sandbox_mode must be {mode}" + (" or the stricter read-only" if len(allowed_modes) > 1 else ""))
         if agents.get("copilot") is True:
             self.required_file(".github/copilot-instructions.md")
             for role in NATIVE_ROLES:
@@ -211,14 +222,30 @@ class RepositoryValidator:
                     self.error(f"{relative}: incorrect native agent name")
                 tools = data.get("tools")
                 allowed = {"read", "search", "edit", "execute"} if role == "implementer" else {"read", "search"}
-                if not isinstance(tools, list) or any(not isinstance(t, str) for t in tools) or set(tools) != allowed or len(tools) != len(allowed):
-                    self.error(f"{relative}: tools must be exactly {sorted(allowed)}; planner/reviewer cannot edit, execute, or delegate")
+                valid = isinstance(tools, list) and bool(tools) and all(isinstance(t, str) for t in tools)
+                if valid:
+                    valid = len(tools) == len(set(tools)) and (set(tools) == allowed if self.source else set(tools).issubset(allowed))
+                if not valid:
+                    requirement = "exactly" if self.source else "a nonempty unique subset of"
+                    self.error(f"{relative}: tools must be {requirement} {sorted(allowed)}; planner/reviewer cannot edit, execute, or delegate")
 
     def walk(self):
         paths = []
-        for directory, subdirs, filenames in os.walk(self.root, followlinks=False):
+        search_root = self.root if self.source else self.root / ".engineering-backbone"
+        for directory, subdirs, filenames in os.walk(search_root, followlinks=False):
             subdirs[:] = [name for name in subdirs if name not in IGNORED]
             paths.extend(Path(directory) / name for name in filenames)
+        if not self.source:
+            # Standing entrypoints are required by adapters(), but their local
+            # prose is project-owned. Application files are outside this tool
+            # contract; only managed bundle artifacts and selected native
+            # profiles receive link/conflict/schema checks.
+            for adapter, extension, folder in (("codex", "toml", ".codex/agents"), ("copilot", "agent.md", ".github/agents")):
+                if self.agents.get(adapter) is True:
+                    paths.extend(self.root / folder / f"backbone-{role}.{extension}" for role in NATIVE_ROLES if (self.root / folder / f"backbone-{role}.{extension}").is_file())
+            workflow = self.root / ".github/workflows/engineering-backbone.yml"
+            if workflow.is_file():
+                paths.append(workflow)
         return paths
 
     def dependencies(self, source):
@@ -381,7 +408,7 @@ class RepositoryValidator:
         if project is not None:
             self.validate_data("project", project, self.label(project_path))
             self.adapters(project)
-        source = (self.root / "policy" / "core.json").is_file()
+        source = self.source
         self.required_file("policy/core.md" if source else ".engineering-backbone/core.md")
         self.workflows(source)
         self.dependencies(source)
@@ -410,8 +437,8 @@ class RepositoryValidator:
         return self.errors
 
 
-def validate_root(root: Path | str, trusted_base: Path | str | None = None):
-    return RepositoryValidator(Path(root), Path(trusted_base) if trusted_base is not None else None).run()
+def validate_root(root: Path | str, trusted_base: Path | str | None = None, *, mode: str | None = None):
+    return RepositoryValidator(Path(root), Path(trusted_base) if trusted_base is not None else None, mode=mode).run()
 
 
 def main(argv=None):

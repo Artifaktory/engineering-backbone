@@ -7,6 +7,6 @@ permissions:
   contents: read
 jobs:
   governance:
-    uses: Artifaktory/engineering-backbone/.github/workflows/governance-checks.yml@{{ backbone_workflow_ref }}
+    uses: Artifaktory/engineering-backbone/.github/workflows/governance-checks.yml@{{ backbone_workflow_ref | lower }}
     permissions:
       contents: read

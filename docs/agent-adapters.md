@@ -41,6 +41,20 @@ The answers file is intentionally namespaced. From the consumer repository use
 `copier update --answers-file .engineering-backbone/copier-answers.yml --vcs-ref APPROVED_COMMIT`.
 The explicit answers-file option is required for update discovery.
 
+Adapter selection (`use_codex`, `use_copilot`) and workflow activation/pin
+(`backbone_workflow_ref`) are installation-only choices. Copier reads the installed
+answers with its built-in external-data support and rejects changes to those choices
+before rendering into the consumer. This prevents conditional selection changes
+from deleting native policies despite Copier's skip-if-exists behavior. A fresh copy
+may report the expected missing installed-answers warning.
+
+Changing an adapter or workflow requires a separate reviewed migration: deliberately
+edit native files, reconcile `.engineering-backbone/project.json` and Copier answers,
+and verify the resulting consumer before merge. Do not alter or remove the answers
+file merely to bypass the guard. A baseline update keeps the current installation
+choices. Case-only workflow SHA input is normalized to lowercase in the generated
+caller. The template does not change an existing workflow's reviewed pin automatically.
+
 The consumer receives the centrally compiled `requirements.lock` with exact direct
 and transitive versions and hashes. In an isolated Python 3.12 environment, install
 with `python -m pip install --require-hashes -r .engineering-backbone/requirements.lock`,

@@ -12,6 +12,8 @@ approved sources, immutable revisions when available, scope, acceptance verifica
 commands/manual evidence, budget, stop conditions and forbidden actions.
 Implementation can start with a known base and no head yet; formal review freezes
 both revisions. Completed delivery needs actual evidence and completed acceptance.
+Review-ready packets and active reviewer packets require both immutable revisions;
+an active implementation packet can still have an unfinished head.
 
 ## Requirement format
 

@@ -63,14 +63,17 @@ class CopierTests(unittest.TestCase):
         )
         return target
 
-    def validate(self, target):
-        result = subprocess.run(
+    def validation_result(self, target):
+        return subprocess.run(
             [sys.executable, str(target / ".engineering-backbone/validate.py"), "--root", str(target)],
             cwd=target,
             env=os.environ.copy(),
             text=True,
             capture_output=True,
         )
+
+    def validate(self, target):
+        result = self.validation_result(target)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_python_cli_and_typescript_frontend_have_native_profiles(self):
@@ -223,6 +226,119 @@ class CopierTests(unittest.TestCase):
         self.assertNotIn("PIN_APPROVED_COMMIT", text)
         self.assertNotIn("secrets:", text)
         self.validate(target)
+
+    def test_uppercase_workflow_sha_is_normalized_and_consumer_validates(self):
+        ref = "ABCDEF0123456789" * 2 + "ABCDEF01"
+        target = self.copy(backbone_workflow_ref=ref)
+        workflow = (target / ".github/workflows/engineering-backbone.yml").read_text()
+        self.assertIn("governance-checks.yml@" + ref.lower(), workflow)
+        self.assertNotIn("governance-checks.yml@" + ref, workflow)
+        self.validate(target)
+
+    def test_conditional_selection_updates_reject_before_consumer_mutation(self):
+        # Reproduce the supported HEAD update that previously deleted stricter
+        # preexisting instructions even though they matched _skip_if_exists.
+        # Start consumers on a pre-fix fixture with no immutable-choice guard.
+        config_path = self.source / "copier.yml"
+        fixed_config = config_path.read_text()
+        legacy_config = yaml.safe_load(fixed_config)
+        legacy_config.pop("_external_data")
+        for field in ("use_codex", "use_copilot"):
+            legacy_config[field].pop("validator")
+        legacy_config["backbone_workflow_ref"]["validator"] = legacy_config[
+            "backbone_workflow_ref"
+        ]["validator"].split("{% set previous", 1)[0]
+        config_path.write_text(yaml.safe_dump(legacy_config, sort_keys=False))
+        commit(self.source, "Pre-fix template fixture v0.1.1")
+        git(self.source, "tag", "v0.1.1")
+        config_path.write_text(fixed_config)
+        with (self.source / "policy/core.md").open("a") as stream:
+            stream.write("\nReviewed fixture update.\n")
+        commit(self.source, "Template fixture v0.2.0")
+        git(self.source, "tag", "v0.2.0")
+        cases = (
+            ("use_codex", True, False),
+            ("use_copilot", True, False),
+            ("backbone_workflow_ref", "a" * 40, ""),
+            ("use_codex", False, True),
+            ("use_copilot", False, True),
+            ("backbone_workflow_ref", "", "a" * 40),
+        )
+        for index, (field, initial, requested) in enumerate(cases):
+            with self.subTest(field=field, initial=initial, requested=requested):
+                target = self.workspace / f"existing-switch-{index}"
+                target.mkdir()
+                sentinels = {
+                    "AGENTS.md": "Strict preexisting agent policy must remain.\n",
+                    "nested/AGENTS.md": "Strict nested policy must remain.\n",
+                    ".github/copilot-instructions.md": "Strict preexisting Copilot policy must remain.\n",
+                    ".codex/agents/backbone-reviewer.toml": "# Strict existing Codex reviewer\n",
+                    ".github/agents/backbone-reviewer.agent.md": "Strict existing Copilot reviewer\n",
+                    ".github/workflows/engineering-backbone.yml": "# Existing protected workflow\n",
+                }
+                for relative, content in sentinels.items():
+                    path = target / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(content)
+                run_copy(
+                    str(self.source), target, data={field: initial}, vcs_ref="v0.1.1",
+                    defaults=True, quiet=True, skip_tasks=True, overwrite=True,
+                )
+                initialize(target)
+                commit(target, "Consumer with strict preexisting governance")
+                before = {
+                    path.relative_to(target): path.read_bytes()
+                    for path in target.rglob("*")
+                    if path.is_file() and ".git" not in path.relative_to(target).parts
+                }
+                with self.assertRaisesRegex(ValueError, "installation-only"):
+                    run_update(
+                        target, answers_file=".engineering-backbone/copier-answers.yml",
+                        vcs_ref="HEAD", data={field: requested}, defaults=True,
+                        quiet=True, skip_tasks=True, overwrite=True,
+                    )
+                after = {
+                    path.relative_to(target): path.read_bytes()
+                    for path in target.rglob("*")
+                    if path.is_file() and ".git" not in path.relative_to(target).parts
+                }
+                self.assertEqual(after, before)
+                self.assertEqual(git(target, "status", "--porcelain"), "")
+                for relative, content in sentinels.items():
+                    self.assertEqual((target / relative).read_text(), content)
+
+    def test_consumer_accepts_unrelated_app_content_and_stricter_native_permissions(self):
+        target = self.copy()
+        for relative, content in {
+            "policy/core.json": '{"application": "unrelated business policy"}\n',
+            "examples/api-response.json": '{"items": []}\n',
+            "README.md": "[Site documentation](/docs)\n",
+            "AGENTS.md": "Stricter local guidance with [project link](local-doc-not-managed.md).\n",
+        }.items():
+            path = target / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content)
+        reviewer = target / ".github/agents/backbone-reviewer.agent.md"
+        reviewer.write_text(reviewer.read_text().replace("tools: [read, search]", "tools: [read]"))
+        implementer = target / ".codex/agents/backbone-implementer.toml"
+        implementer.write_text(implementer.read_text().replace('sandbox_mode = "workspace-write"', 'sandbox_mode = "read-only"'))
+        self.validate(target)
+
+    def test_consumer_rejects_managed_contract_and_reviewer_failures(self):
+        cases = (
+            (".engineering-backbone/README.md", "[Missing managed documentation](missing.md)\n", "broken local Markdown link"),
+            (".engineering-backbone/tasks/invalid.json", '{"schema_version": "1", "scope": {}}\n', "required property"),
+            (".github/agents/backbone-reviewer.agent.md", "---\nname: backbone-reviewer\ndescription: Unsafe reviewer\ntools: [edit]\n---\nReview.\n", "tools"),
+        )
+        for relative, content, expected in cases:
+            with self.subTest(path=relative):
+                target = self.copy()
+                path = target / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content)
+                result = self.validation_result(target)
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertIn(expected, result.stdout + result.stderr)
 
     def test_no_executable_template_hooks(self):
         config = yaml.safe_load((self.source / "copier.yml").read_text())

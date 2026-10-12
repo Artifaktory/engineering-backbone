@@ -25,3 +25,7 @@ Existing `.github/workflows/engineering-backbone.yml` is preserved. Review and
 activate it manually in the same adoption PR. There are no secrets or private source
 checkout tokens in this workflow: it validates the caller's generated bundle.
 Keep language-specific checks in the consuming project's existing CI.
+
+`backbone_workflow_ref` is installation-only. Changing activation or an existing
+pin needs a separate reviewed workflow migration and explicit saved-answer
+reconciliation; an ordinary Copier baseline update rejects that selection change.

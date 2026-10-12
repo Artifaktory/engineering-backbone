@@ -46,8 +46,20 @@ class ValidationTests(unittest.TestCase):
         mutation(data)
         self.write(relative, data)
 
-    def reject(self, fragment, trusted_base=None):
-        errors = validate_root(self.root, trusted_base)
+    def make_consumer(self):
+        managed = self.root / ".engineering-backbone"
+        for filename in ("core.json", "core.md"):
+            shutil.move(self.root / "policy" / filename, managed / filename)
+        shutil.rmtree(self.root / "policy")
+        for filename in ("requirements.txt", "requirements.lock"):
+            shutil.move(self.root / filename, managed / filename)
+        for directory in ("schemas", "examples"):
+            shutil.move(self.root / directory, managed / directory)
+        self.write("AGENTS.md", "Read [policy](.engineering-backbone/core.md).\n")
+        self.write(".github/copilot-instructions.md", "Read [policy](../.engineering-backbone/core.md).\n")
+
+    def reject(self, fragment, trusted_base=None, *, mode=None):
+        errors = validate_root(self.root, trusted_base, mode=mode)
         self.assertTrue(errors, "mutation was unexpectedly accepted")
         self.assertTrue(any(fragment in error for error in errors), errors)
 
@@ -245,16 +257,78 @@ jobs:
         self.reject("secrets: inherit")
 
     def test_unrelated_consumer_workflows_are_not_restricted(self):
-        source_policy = self.root / "policy"
-        shutil.copy2(source_policy / "core.json", self.root / ".engineering-backbone/core.json")
-        shutil.copy2(source_policy / "core.md", self.root / ".engineering-backbone/core.md")
-        shutil.rmtree(source_policy)
-        for filename in ("requirements.txt", "requirements.lock"):
-            shutil.move(self.root / filename, self.root / ".engineering-backbone" / filename)
-        self.write("AGENTS.md", "Read [.engineering-backbone policy](.engineering-backbone/core.md).\n")
-        self.write(".github/copilot-instructions.md", "Read [policy](../.engineering-backbone/core.md).\n")
+        self.make_consumer()
         self.write(".github/workflows/deploy.yml", "on: [workflow_dispatch]\npermissions: write-all\njobs: {}\n")
+        self.assertEqual([], validate_root(self.root, mode="consumer"))
+
+    def test_review_ready_and_active_reviewer_require_frozen_revisions(self):
+        path = "examples/task-packet.json"
+        original = json.loads((self.root / path).read_text())
+        for status, role in (("ready_for_review", "implementer"), ("active", "reviewer")):
+            with self.subTest(status=status, role=role):
+                packet = {**original, "status": status, "role": role}
+                self.write(path, packet)
+                self.reject("base_revision")
+                self.reject("head_revision")
+                packet["repository"] = {**original["repository"], "base_revision": "a" * 40, "head_revision": "b" * 40}
+                self.write(path, packet)
+                self.assertEqual([], validate_root(self.root))
+        original["status"] = "active"
+        self.write(path, original)
         self.assertEqual([], validate_root(self.root))
+
+    def test_consumer_ordinary_policy_and_application_content_are_unrelated(self):
+        self.make_consumer()
+        self.write("policy/core.json", {"application": "ordinary local policy"})
+        self.write("examples/api-response.json", {"message": "application example"})
+        self.write("plans/application-plan.json", {"plan": "ordinary local application plan"})
+        self.write("README.md", "[Site docs](/docs). [Local page](not-generated.md)\n<<<<<<< application-example\n")
+        self.write("AGENTS.md", "[Project conventions](/docs) and [local page](not-generated.md).\n")
+        self.write(".github/copilot-instructions.md", "[Project conventions](/docs).\n")
+        self.assertEqual([], validate_root(self.root, mode="consumer"))
+        self.mutate_json(".engineering-backbone/core.json", lambda data: data["invariants"].update(human_merge_required=False))
+        self.reject("human_merge_required", mode="consumer")
+
+    def test_candidate_vendored_marker_cannot_bypass_source_policy_guard(self):
+        self.write(".engineering-backbone/validate.py", "# Consumer marker candidate\n")
+        self.write(".engineering-backbone/core.json", {"schema_version": "1", "version": "0.1.0", "invariants": dict(POLICY_FLOOR)})
+        self.mutate_json("policy/core.json", lambda data: data["invariants"].update(human_merge_required=False))
+        self.reject("human_merge_required")
+
+    def test_consumer_still_checks_managed_links_artifacts_and_conflicts(self):
+        self.make_consumer()
+        self.write(".engineering-backbone/README.md", "[Missing managed guide](missing.md).\n")
+        self.reject("broken local Markdown link", mode="consumer")
+        self.mutate_json(".engineering-backbone/examples/task-packet.json", lambda data: data.update(status="ready_for_review"))
+        self.reject("base_revision", mode="consumer")
+        self.write(".engineering-backbone/core.md", "<<<<<<< candidate\nManaged policy\n")
+        self.reject("unresolved merge conflict marker", mode="consumer")
+
+    def test_consumer_allows_stricter_native_permissions_only(self):
+        self.make_consumer()
+        reviewer = self.root / ".github/agents/backbone-reviewer.agent.md"
+        original = reviewer.read_text()
+        reviewer.write_text(original.replace("tools: [read, search]", "tools: [read]"))
+        implementer = self.root / ".codex/agents/backbone-implementer.toml"
+        implementer.write_text(implementer.read_text().replace('"workspace-write"', '"read-only"'))
+        self.assertEqual([], validate_root(self.root, mode="consumer"))
+        for tools in ("[]", "[read, read]", "[read, edit]", "[read, execute]", "[read, agent/*]", "[unknown]"):
+            with self.subTest(tools=tools):
+                reviewer.write_text(original.replace("tools: [read, search]", f"tools: {tools}"))
+                self.reject("nonempty unique subset", mode="consumer")
+        reviewer.write_text(original.replace("tools: [read, search]\n", ""))
+        self.reject("nonempty unique subset", mode="consumer")
+        reviewer.write_text(original.replace("tools: [read, search]", "tools: [read]"))
+        implementer.write_text(implementer.read_text().replace('"read-only"', '"danger-full-access"'))
+        self.reject("sandbox_mode", mode="consumer")
+
+    def test_source_native_profiles_retain_exact_defaults(self):
+        reviewer = self.root / ".github/agents/backbone-reviewer.agent.md"
+        reviewer.write_text(reviewer.read_text().replace("tools: [read, search]", "tools: [read]"))
+        self.reject("tools must be exactly")
+        implementer = self.root / ".codex/agents/backbone-implementer.toml"
+        implementer.write_text(implementer.read_text().replace('"workspace-write"', '"read-only"'))
+        self.reject("sandbox_mode must be workspace-write")
 
 
 if __name__ == "__main__":

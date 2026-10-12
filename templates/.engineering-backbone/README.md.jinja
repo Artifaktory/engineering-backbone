@@ -31,3 +31,10 @@ maintenance, not a template execution hook.
 From the consumer repository, invoke updates with the namespaced answers file:
 `copier update --answers-file .engineering-backbone/copier-answers.yml --vcs-ref APPROVED_COMMIT`.
 Replace the reference with a reviewed commit; this command prepares a diff for review.
+
+The installation choices `use_codex`, `use_copilot`, and `backbone_workflow_ref`
+cannot change during a normal template update. The update rejects such changes
+before consumer rendering. Changing an adapter or activating/removing/repinning a workflow
+requires its own reviewed migration with native files, project facts and saved
+answers reconciled explicitly. Do not edit or remove answers merely to bypass this
+guard. SHA values render in lowercase; existing workflow pins remain protected.

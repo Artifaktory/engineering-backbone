@@ -20,6 +20,9 @@ the copy/update operation. Never put a token in the URL, answers file or command
 Questions record project name, base branch, validation command, language and
 frontend/backend metadata, selected providers and optional reviewed workflow SHA.
 Project metadata does not execute commands or create domain-specific app workflows.
+Provider selection and initial workflow activation are installation-only choices.
+An ordinary update rejects changing them before writing the consumer; use a
+separate reviewed migration to change provider selection or reconcile local facts.
 
 ## Generated ownership
 
@@ -35,6 +38,9 @@ On an existing project, review and integrate the fragments into the existing
 entrypoints. Reconcile conflicting instructions by retaining the stricter policy.
 Preservation prevents overwrites but does not guarantee automatic adoption of a new
 rule: changed entrypoints/role permissions need a reviewed manual refresh.
+Inspect the complete update diff for renamed/removed upstream files as well: the
+Copier overwrite-skip mechanism is not a general protection against template-path
+removal. Release review and consumer PR review must catch such migrations.
 
 ## Validate the copied bundle
 

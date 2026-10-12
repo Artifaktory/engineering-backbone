@@ -22,6 +22,8 @@ Application language, frontend/backend presence and test commands remain project
 facts. A CLI project receives no invented frontend/backend commands. Existing
 stricter instructions are preserved and must be explicitly integrated with the
 new fragments. Generated profiles do not activate GitHub review bots.
+Provider selection is fixed during ordinary updates; a change needs a separately
+reviewed migration. Safe stricter local role permissions remain valid.
 
 ```mermaid
 flowchart TD

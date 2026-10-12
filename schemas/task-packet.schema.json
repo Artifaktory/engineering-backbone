@@ -287,6 +287,43 @@
           }
         }
       }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "properties": {
+              "status": {
+                "const": "ready_for_review"
+              }
+            }
+          },
+          {
+            "properties": {
+              "status": {
+                "const": "active"
+              },
+              "role": {
+                "const": "reviewer"
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "repository": {
+            "properties": {
+              "base_revision": {
+                "type": "string"
+              },
+              "head_revision": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }
