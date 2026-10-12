@@ -5,8 +5,9 @@ repositories. Start with Codex and Copilot, scoped planning and verifiable check
 add a shared capability only when real projects need it.
 
 **Candidate 0.1.0 — not a published or downstream-approved release.**
-The foundation and reference consolidation are merged; the Copilot extension is
-reviewed as a separate PR. No consumer repository is changed by this delivery.
+The foundation, Codex/Copilot adapters and native identity repairs are merged.
+The shared workflow kit is an additive delivery. No consumer repository is changed
+by this delivery.
 
 ## Included in the first delivery
 
@@ -19,6 +20,7 @@ reviewed as a separate PR. No consumer repository is changed by this delivery.
 | [Copier adoption](docs/adoption.md) | Optional providers, local project facts, preserved instructions and reviewed updates |
 | [Own validation workflow](.github/workflows/quality.yml) | Schemas, adversarial tests, real consumer upgrades and trusted-base policy checks |
 | [Reusable governance workflow](.github/workflows/governance-checks.yml) | Validate a copied consumer bundle without credentials for the private source repository |
+| [Shared workflow kit](docs/workflows/README.md) | Strict common checks, declared language/capability profiles, scheduled maintenance and inactive release/deployment examples |
 
 Application language, frontend/backend presence and test commands remain project
 facts. A CLI project receives no invented frontend/backend commands. Existing
@@ -91,6 +93,7 @@ Use Python 3.12 in an isolated environment:
 python -m pip install --require-hashes -r requirements.lock
 python scripts/validate.py
 python scripts/compile_toolchain_fingerprint.py --check
+python scripts/compile_workflow_kit.py --check
 python -m unittest discover -s tests -v
 git diff --check
 ```

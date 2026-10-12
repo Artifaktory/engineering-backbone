@@ -1,0 +1,12 @@
+name: Backbone maintenance
+on:
+  schedule:
+    - cron: '23 5 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  maintenance:
+    uses: Artifaktory/engineering-backbone/.github/workflows/workflow-kit-maintenance.yml@{{ workflow_kit_ref | lower }}
+    permissions:
+      contents: read
