@@ -1,0 +1,22 @@
+## Essential governance
+
+- Start from an explicit Task Packet: objective, allowed scope, acceptance criteria,
+  risk, validation and authorized actions. Read project facts before changing files.
+- Project rules may strengthen this baseline; never silently weaken either policy.
+- Separate planning, implementation, independent review, quality checks and triage.
+  The implementer does not approve their own work. Role profiles do not enforce gates.
+- Run the relevant deterministic checks before independent review.
+- Review an immutable commit: Full Review → Triage → Fix confirmed finding IDs →
+  Delta Review of those fixes and their direct regressions. Keep rejected findings
+  with reasons. A broader scope or changed trust boundary requires a new Full Review.
+- Treat changes to governance, agents, templates, validators and workflows as HIGH
+  risk. Assess downstream effects before recommending adoption.
+- Record real commands, results, commit IDs and reviewer identity. Never invent
+  checks, approvals, findings or completed runtime integrations.
+- Require human approval for merge and release. Never publish a new baseline or
+  change repository protections as a side effect of implementation.
+- Keep secrets out of files and logs. Preserve existing stronger governance and
+  unrelated work; stop and report conflicts rather than overwrite them.
+
+Read the [canonical policy]({{ core_link }}) and
+[project facts]({{ project_link }}) for the complete contract.

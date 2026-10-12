@@ -1,0 +1,12 @@
+{{ {
+  "schema_version": "1",
+  "project": {
+    "name": project_name,
+    "base_branch": base_branch,
+    "language": language,
+    "has_frontend": has_frontend,
+    "has_backend": has_backend,
+    "validation_command": validation_command
+  },
+  "agents": {"codex": use_codex, "copilot": use_copilot}
+} | tojson(indent=2) }}

@@ -1,0 +1,53 @@
+name: Backbone quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backbone-quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  foundation:
+    name: Foundation checks
+    uses: ./.github/workflows/governance-checks.yml
+    with:
+      source_mode: true
+
+  trusted-policy:
+    name: Trusted base policy
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout trusted base snapshot
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: trusted-base
+          persist-credentials: false
+      - name: Checkout candidate snapshot
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: candidate
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Check policy with base-owned validator
+        run: |
+          if [ -f trusted-base/scripts/validate.py ]; then
+            python -m pip install --require-hashes -r trusted-base/requirements.lock
+            python trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base
+          else
+            echo '::notice::Bootstrap base contains no validator; independent human bootstrap review is required.'
+            echo 'Bootstrap: no existing trusted policy gate. Human review and repository protection setup are required before release.' >> "$GITHUB_STEP_SUMMARY"
+          fi

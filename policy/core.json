@@ -1,0 +1,13 @@
+{
+  "schema_version": "1",
+  "version": "0.1.0",
+  "invariants": {
+    "human_merge_required": true,
+    "human_release_required": true,
+    "independent_review_required": true,
+    "triage_before_fix": true,
+    "delta_after_fix": true,
+    "local_policy_may_only_strengthen": true,
+    "automatic_downstream_apply": false
+  }
+}

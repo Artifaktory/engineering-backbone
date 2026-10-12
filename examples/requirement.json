@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "id": "REQ-EXAMPLE",
+  "title": "Scoped verification evidence",
+  "type": "technical",
+  "statement": "A change has traceable acceptance criteria and recorded verification evidence.",
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "description": "Each completed criterion references reproducible evidence."
+    }
+  ],
+  "approval": "draft",
+  "implementation": "not_started",
+  "verification": {
+    "mode": "hybrid",
+    "status": "not_run",
+    "evidence": []
+  }
+}

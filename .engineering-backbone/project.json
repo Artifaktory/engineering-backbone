@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "project": {
+    "name": "engineering-backbone",
+    "base_branch": "main",
+    "language": "Python tooling; language-neutral governance",
+    "has_frontend": false,
+    "has_backend": false,
+    "validation_command": "python scripts/validate.py && python -m unittest discover -s tests -v"
+  },
+  "agents": {"codex": true, "copilot": true}
+}

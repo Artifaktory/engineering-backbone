@@ -1,0 +1,261 @@
+"""Adversarial tests for structural contracts, not runtime agent compliance."""
+from __future__ import annotations
+
+import json
+import shutil
+import tempfile
+import unittest
+from pathlib import Path
+
+from scripts.validate import BUNDLE, POLICY_FLOOR, validate_root
+
+
+class ValidationTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name) / "candidate"
+        self.root.mkdir()
+        self.write("policy/core.json", {"schema_version": "1", "version": "0.1.0", "invariants": dict(POLICY_FLOOR)})
+        self.write("policy/core.md", "# Shared policy\n")
+        self.write(".engineering-backbone/project.json", {
+            "schema_version": "1",
+            "project": {"name": "example", "base_branch": "main", "language": "Python", "has_frontend": False,
+                        "has_backend": False, "validation_command": "python -m unittest discover -s tests -v"},
+            "agents": {"codex": True, "copilot": True},
+        })
+        self.write("AGENTS.md", "Read [the policy](policy/core.md).\n")
+        self.write(".github/copilot-instructions.md", "Read [the policy](../policy/core.md).\n")
+        for role in ("planner", "implementer", "reviewer"):
+            mode = "workspace-write" if role == "implementer" else "read-only"
+            self.write(f".codex/agents/backbone-{role}.toml", f'name = "backbone_{role}"\ndescription = "Scoped {role}"\nsandbox_mode = "{mode}"\ndeveloper_instructions = "Read the shared policy before acting."\n')
+            tools = "[read, search, edit, execute]" if role == "implementer" else "[read, search]"
+            self.write(f".github/agents/backbone-{role}.agent.md", f"---\nname: backbone-{role}\ndescription: Scoped {role}\ntools: {tools}\n---\nRead the shared policy.\n")
+        for filename in ("requirements.txt", "requirements.lock"):
+            shutil.copy2(BUNDLE / filename, self.root / filename)
+        for directory in ("schemas", "examples"):
+            shutil.copytree(BUNDLE / directory, self.root / directory)
+
+    def write(self, path, data):
+        file = self.root / path
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_text(json.dumps(data, indent=2) + "\n" if isinstance(data, dict) else data, encoding="utf-8")
+
+    def mutate_json(self, relative, mutation):
+        data = json.loads((self.root / relative).read_text())
+        mutation(data)
+        self.write(relative, data)
+
+    def reject(self, fragment, trusted_base=None):
+        errors = validate_root(self.root, trusted_base)
+        self.assertTrue(errors, "mutation was unexpectedly accepted")
+        self.assertTrue(any(fragment in error for error in errors), errors)
+
+    def test_valid_source_and_examples(self):
+        self.assertEqual([], validate_root(self.root))
+
+    def test_weakened_or_removed_policy_is_rejected(self):
+        self.mutate_json("policy/core.json", lambda data: data["invariants"].update(human_merge_required=False))
+        self.reject("human_merge_required")
+        self.mutate_json("policy/core.json", lambda data: data["invariants"].pop("delta_after_fix"))
+        self.reject("delta_after_fix")
+
+    def test_automatic_downstream_apply_is_rejected(self):
+        self.mutate_json("policy/core.json", lambda data: data["invariants"].update(automatic_downstream_apply=True))
+        self.reject("automatic_downstream_apply")
+
+    def test_trusted_base_additional_invariant_cannot_be_removed(self):
+        base = Path(self.temp.name) / "base"
+        shutil.copytree(self.root, base)
+        path = base / "policy/core.json"
+        policy = json.loads(path.read_text())
+        policy["invariants"]["security_review_required"] = True
+        path.write_text(json.dumps(policy))
+        self.reject("trusted-base invariant security_review_required", base)
+
+    def test_stronger_new_invariant_is_allowed(self):
+        base = Path(self.temp.name) / "base"
+        shutil.copytree(self.root, base)
+        self.mutate_json("policy/core.json", lambda data: data["invariants"].update(security_review_required=True))
+        self.assertEqual([], validate_root(self.root, base))
+
+    def test_base_without_policy_requires_explicit_bootstrap(self):
+        base = Path(self.temp.name) / "base"
+        base.mkdir()
+        self.reject("BOOTSTRAP", base)
+
+    def test_candidate_schema_cannot_relax_executing_validator(self):
+        self.write("schemas/core-policy.schema.json", {"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object"})
+        self.mutate_json("policy/core.json", lambda data: data.update(version="forged"))
+        self.reject("version")
+
+    def test_invalid_schema_and_example_are_rejected(self):
+        self.write("schemas/invalid.schema.json", {"type": "made-up"})
+        self.reject("invalid JSON schema")
+        self.mutate_json("examples/task-packet.json", lambda data: data.update(role="autonomous_merger"))
+        self.reject("role")
+
+    def test_task_scope_cannot_escape_repository(self):
+        self.mutate_json("examples/task-packet.json", lambda data: data["scope"].update(include=["../another-repo/**"]))
+        self.reject("scope.include")
+
+    def test_missing_scope_is_rejected(self):
+        self.mutate_json("examples/task-packet.json", lambda data: data.pop("scope"))
+        self.reject("unrecognized governance JSON artifact")
+
+    def test_completed_task_needs_frozen_revisions_and_evidence(self):
+        self.mutate_json("examples/task-packet.json", lambda data: data.update(status="completed"))
+        self.reject("base_revision")
+        self.mutate_json("examples/task-packet.json", lambda data: data["acceptance"][0].update(status="pass"))
+        self.reject("evidence")
+
+    def test_passed_requirement_needs_evidence_and_implementation(self):
+        self.mutate_json("examples/requirement.json", lambda data: data["verification"].update(status="pass"))
+        self.reject("evidence")
+        self.reject("implementation")
+
+    def test_review_cannot_self_certify_independence(self):
+        self.mutate_json("examples/review-evidence.json", lambda data: data.update(implementer=data["reviewers"][0]["id"]))
+        self.reject("their own independent reviewer")
+
+    def test_forged_no_findings_without_pass_evidence_is_rejected(self):
+        self.mutate_json("examples/review-evidence.json", lambda data: data.update(outcome="no_findings"))
+        self.reject("checks.0.status")
+        self.mutate_json("examples/review-evidence.json", lambda data: data["checks"][0].update(status="pass"))
+        self.reject("evidence")
+
+    def test_delta_review_needs_finding_and_regression_scope(self):
+        self.mutate_json("examples/review-evidence.json", lambda data: data.update(kind="delta"))
+        self.reject("delta")
+
+    def test_fixed_finding_requires_confirmed_triage(self):
+        finding = {"id": "F-1", "severity": "P1", "location": {"path": "src/feature.py", "line": 1},
+                   "claim": "Boundary is bypassed", "evidence": ["Review reproduction"],
+                   "triage": "untriaged", "disposition": "fixed"}
+        self.mutate_json("examples/review-evidence.json", lambda data: data.update(outcome="changes_requested", findings=[finding]))
+        self.reject("triage")
+
+    def test_missing_reviewer_and_unsafe_codex_sandbox_are_rejected(self):
+        path = self.root / ".codex/agents/backbone-reviewer.toml"
+        content = path.read_text()
+        path.unlink()
+        self.reject("missing required file")
+        path.write_text(content.replace('"read-only"', '"workspace-write"'))
+        self.reject("sandbox_mode must be read-only")
+
+    def test_codex_cannot_pin_model_or_credentials(self):
+        path = self.root / ".codex/agents/backbone-reviewer.toml"
+        path.write_text(path.read_text() + 'model = "override"\n')
+        self.reject("unapproved keys")
+
+    def test_copilot_reviewer_cannot_execute_or_delegate(self):
+        path = self.root / ".github/agents/backbone-reviewer.agent.md"
+        for forbidden in ("execute", "edit", "agent/*"):
+            original = path.read_text()
+            path.write_text(original.replace("tools: [read, search]", f"tools: [read, search, {forbidden}]"))
+            self.reject("tools must be exactly")
+            path.write_text(original)
+
+    def test_disabled_adapter_does_not_require_entrypoints(self):
+        self.mutate_json(".engineering-backbone/project.json", lambda data: data.update(agents={"codex": False, "copilot": False}))
+        shutil.rmtree(self.root / ".codex")
+        shutil.rmtree(self.root / ".github")
+        (self.root / "AGENTS.md").unlink()
+        self.assertEqual([], validate_root(self.root))
+
+    def test_broken_relative_markdown_link_is_rejected(self):
+        self.write("README.md", "See [policy](policy/missing.md).\n")
+        self.reject("broken local Markdown link")
+
+    def test_escaped_symlink_is_rejected(self):
+        external = Path(self.temp.name) / "external.md"
+        external.write_text("External")
+        (self.root / "external.md").symlink_to(external)
+        self.reject("resolves outside the repository")
+
+    def test_source_template_conflict_marker_is_rejected(self):
+        self.write("template/file.md.jinja", "<<<<<<< conflicting-head\nunsafe\n>>>>>>> conflicting-base\n")
+        self.reject("unresolved merge conflict marker")
+
+    def test_duplicate_json_keys_are_rejected(self):
+        self.write("policy/core.json", '{"schema_version":"1","schema_version":"1"}')
+        self.reject("duplicate JSON key")
+
+    def test_commands_are_data_and_are_never_executed(self):
+        marker = self.root / "EXECUTED"
+        self.mutate_json(".engineering-backbone/project.json", lambda data: data["project"].update(validation_command="touch EXECUTED"))
+        self.mutate_json("examples/task-packet.json", lambda data: data["validation"].update(commands=["touch EXECUTED"]))
+        self.assertEqual([], validate_root(self.root))
+        self.assertFalse(marker.exists())
+
+    def test_core_and_config_reject_source_domains_or_machine_paths(self):
+        self.mutate_json(".engineering-backbone/project.json", lambda data: data["project"].update(validation_command="python /workspace/private/check.py"))
+        self.reject("absolute machine path")
+        self.mutate_json(".engineering-backbone/project.json", lambda data: data["project"].update(validation_command="curl https://github.com/Artifaktory/Tars/private"))
+        self.reject("source-project domain")
+
+    def test_direct_dependency_bump_requires_lock_regeneration(self):
+        path = self.root / "requirements.txt"
+        path.write_text(path.read_text().replace("jsonschema==4.26.0", "jsonschema==4.27.0"))
+        self.reject("dependency lock mismatch")
+
+    def test_lock_rejects_unhashed_unpinned_or_external_installs(self):
+        path = self.root / "requirements.lock"
+        original = path.read_text()
+        for bad_entry in ("unsafe==1.0", "unsafe>=1.0", "--index-url https://example.invalid", "unsafe @ git+https://example.invalid/project.git"):
+            with self.subTest(entry=bad_entry):
+                path.write_text(original + "\n" + bad_entry + "\n")
+                self.reject("exact == pins")
+        path.write_text(original)
+
+    def workflow(self, change=""):
+        self.write(".github/workflows/backbone-ci.yml", """name: Backbone
+on: [pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@0000000000000000000000000000000000000000
+        with:
+          persist-credentials: false
+      - run: python scripts/validate.py
+""" + change)
+
+    def test_workflow_security_rejects_mutable_actions_and_credentials(self):
+        self.workflow()
+        self.assertEqual([], validate_root(self.root))
+        path = self.root / ".github/workflows/backbone-ci.yml"
+        original = path.read_text()
+        path.write_text(original.replace("@" + "0" * 40, "@main"))
+        self.reject("full commit SHA")
+        path.write_text(original.replace("persist-credentials: false", "persist-credentials: true"))
+        self.reject("persist-credentials")
+
+    def test_workflow_security_rejects_privileged_events_and_permissions(self):
+        self.workflow()
+        path = self.root / ".github/workflows/backbone-ci.yml"
+        original = path.read_text()
+        path.write_text(original.replace("pull_request", "pull_request_target"))
+        self.reject("pull_request_target")
+        path.write_text(original.replace("contents: read", "contents: write"))
+        self.reject("read-only contents")
+        path.write_text(original.replace("    runs-on:", "    secrets: inherit\n    runs-on:"))
+        self.reject("secrets: inherit")
+
+    def test_unrelated_consumer_workflows_are_not_restricted(self):
+        source_policy = self.root / "policy"
+        shutil.copy2(source_policy / "core.json", self.root / ".engineering-backbone/core.json")
+        shutil.copy2(source_policy / "core.md", self.root / ".engineering-backbone/core.md")
+        shutil.rmtree(source_policy)
+        for filename in ("requirements.txt", "requirements.lock"):
+            shutil.move(self.root / filename, self.root / ".engineering-backbone" / filename)
+        self.write("AGENTS.md", "Read [.engineering-backbone policy](.engineering-backbone/core.md).\n")
+        self.write(".github/copilot-instructions.md", "Read [policy](../.engineering-backbone/core.md).\n")
+        self.write(".github/workflows/deploy.yml", "on: [workflow_dispatch]\npermissions: write-all\njobs: {}\n")
+        self.assertEqual([], validate_root(self.root))
+
+
+if __name__ == "__main__":
+    unittest.main()

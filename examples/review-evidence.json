@@ -1,0 +1,25 @@
+{
+  "schema_version": "1",
+  "id": "REVIEW-EXAMPLE",
+  "kind": "full",
+  "subject": {
+    "base_revision": "0000000000000000000000000000000000000000",
+    "head_revision": "1111111111111111111111111111111111111111"
+  },
+  "implementer": "example-implementer",
+  "reviewers": [
+    {
+      "id": "example-reviewer",
+      "role": "independent_reviewer"
+    }
+  ],
+  "outcome": "pending",
+  "checks": [
+    {
+      "name": "Independent scoped review",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "findings": []
+}
