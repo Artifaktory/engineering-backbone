@@ -35,3 +35,22 @@ changed in a PR must also be assessed against the trusted base policy.
 Custom agent profiles do not activate automatic GitHub PR review. Product review
 settings and runtime discovery are separate. AI approval is advice; human merge and
 release approval remains required even if a product can submit an approving review.
+
+## Shared source-project operating contract
+
+Discover root and applicable path instructions; adapters and skills follow the
+canonical policy. Resolve unexpected repository overrides. Independently review
+non-trivial implementation plans before implementation. Record required/optional
+reviewers, budgets and stop conditions without broadening authorized scope.
+
+Reviews bind base/head revisions and a patch digest, report coverage/unreviewed
+areas, and require concrete execution paths, impact, evidence and diff causation.
+Delta uses the prior reviewed head, repaired head and confirmed IDs. Do not reopen
+unchanged areas; use at most two Full rounds unless a confirmed blocker, relevant
+new changes or a documented human exception justify another. Remote reviews remain
+advisory without a separately approved formal project contract; automatic reviews
+or fixes never bypass local stops and triage.
+
+Closeout maps acceptance to actual evidence or pending/blocked/failed states.
+Preserve installed local Publish-Go, signatures and history gates; the backbone
+does not implement or authenticate them. Structural PASS is not semantic review.

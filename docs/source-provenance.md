@@ -91,3 +91,12 @@ claim their signatures, history retention, publish gates or agent runtime contro
 are installed or enforced. Structural/consumer tests do not prove a semantic
 review occurred. Human decisions and repository controls remain separate from
 schema validation; actual bootstrap checks and reviews must be reported separately.
+
+## Follow-up complete ecosystem mapping
+
+The bootstrap's 26-file reference table above remains its historical extraction
+record. The follow-up [complete bounded inventories](source-inventory/README.md)
+map 501 Tars and 418 Artifaktory source files individually, including current
+Artifaktory staging and its comparison to main. The [section consolidation map](codex-consolidation.md)
+records what is actually integrated and what remains local or deferred. Inspection
+coverage and source contradictions are explicit; tree inventory is not code review.

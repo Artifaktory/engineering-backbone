@@ -128,3 +128,16 @@ Verified on 2026-10-12; formats may evolve:
 - [Copilot custom-agent configuration](https://docs.github.com/en/copilot/reference/custom-agents-configuration)
 - [Copilot instruction support](https://docs.github.com/en/copilot/reference/custom-instructions-support)
 - [Copilot code review](https://docs.github.com/en/copilot/concepts/agents/code-review)
+
+## Consolidated source-project contract
+
+[The consolidation map](codex-consolidation.md) identifies the shared sections now
+present in native profiles and generated fragments, and the controls retained in
+each project. Planner, implementer and reviewer stay the only native roles.
+Specialized responsibilities use a narrowed Task Packet/catalog; current schemas
+are not extended by inventing role values or unknown evidence fields. Keep richer
+review metadata in existing claim/evidence fields or a companion report.
+
+Native files remain protected on update. Refreshing `.engineering-backbone/core.md`
+and instruction fragments does not refresh protected native role bodies. Reconcile
+approved common changes manually in the consumer PR, preserving stricter rules.
