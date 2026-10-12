@@ -45,7 +45,12 @@ Managed files use lowercase `backbone-*` names in `.github/agents/` with the
 canonical `.agent.md` suffix. Alternative `.md` or case spellings of those reserved
 identities require reviewed manual reconciliation; they are preserved, never
 automatically deleted or silently allowed to shadow the restricted profile.
-Unrelated project-native role names remain valid. The packet's `role`
+Reserved frontmatter `name` values under another filename also require that
+reconciliation: supported hosts can resolve/merge by the header name. Ambiguous
+or uninspectable declarations fail the namespace check without following links.
+An empty header's client filename fallback is checked for reserved names too.
+Unrelated native names retain their own metadata, tools and body instructions.
+The packet's `role`
 uses existing schema values; the selected profile records its specialization.
 
 | Profile | Task Packet role | Responsibility and result |

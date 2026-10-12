@@ -109,3 +109,14 @@ GitHub PR-CI and the external Codex provider result are verified after publicati
 and recorded separately in the PR closeout. AC-6 remains pending in the committed
 pre-publication packet until that evidence exists. No source-project write, live
 client result, merge, release or downstream rollout is claimed.
+
+## Later external publication review
+
+The first published head received two external findings. Their independent triage
+and bounded follow-up scope are recorded in
+[publication triage](copilot-publication-triage.md); the Full/Delta conclusions above
+describe their original frozen snapshots, not the outcome of that later review.
+[Publication record 1](https://github.com/Artifaktory/engineering-backbone/pull/6#issuecomment-6125165400)
+binds the complete initial remote head/tree/patch and an exact reviewer packet.
+Each subsequent publication requires its own immutable record outside the measured
+tree, avoiding a self-referential evidence commit.

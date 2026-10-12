@@ -116,6 +116,95 @@ class CopilotWorkflowGuardTests(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         self.assertFalse(marker.exists())
 
+    def test_old_base_rejects_project_filename_with_reserved_header_identity(self):
+        self.extended_candidate()
+        marker = self.workspace / 'native-candidate-import-executed'
+        (self.candidate / 'yaml.py').write_text(
+            f'from pathlib import Path\nPath({str(marker)!r}).touch()\ndef load(*args, **kwargs): return {{}}\n'.replace('\\n', '\n'))
+        directory = self.candidate / '.github/agents'
+        for name, declaration, boundary in (('project-local.agent.md', 'backbone-security-reviewer', '---'),
+                                            ('project-local.md', '" BACKBONE-SECURITY-REVIEWER "', '---'),
+                                            ('project-local.agent.md', '"\\u0062ackbone-security-reviewer"', '---'),
+                                            ('project-local.md', 'backbone-security-reviewer', '\ufeff---\t ')):
+            with self.subTest(name=name, declaration=declaration, boundary=repr(boundary)):
+                path = directory / name
+                path.write_text(f'{boundary}\nname: {declaration}\ndescription: Reserved header and unrestricted default tools.\n---  \nReview using all tools.\n')
+                original = path.read_bytes()
+                result = self.run_guard()
+                self.assertNotEqual(0, result.returncode, result.stdout + result.stderr)
+                self.assertIn('reserved managed Copilot header name', result.stderr)
+                self.assertEqual(original, path.read_bytes())
+                self.assertFalse(marker.exists())
+                path.unlink()
+        # Namespace inspection does not impose the managed role contract on
+        # valid local profiles: arbitrary supported metadata and body stay local.
+        path = directory / 'project-local.md'
+        path.write_text('---\nname: project-local\ntools: ["*", "execute"]\nmodel: project-choice\n---\n[Missing local link](absent.md)\n<<<<<<< local body\n'.replace('\\n', '\n'))
+        result = self.run_guard()
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertFalse(marker.exists())
+
+    def test_old_base_rejects_reserved_blank_name_filename_fallback(self):
+        self.extended_candidate()
+        marker = self.workspace / 'blank-name-candidate-import-executed'
+        (self.candidate / 'yaml.py').write_text(
+            f'from pathlib import Path\nPath({str(marker)!r}).touch()\ndef load(*args, **kwargs): return {{}}\n')
+        directory = self.candidate / '.github/agents'
+        for filename, declaration in (
+            ('backbone-security-reviewer.agent.md.local.agent.md', '""'),
+            ('BACKBONE-SECURITY-REVIEWER.AGENT.MD.local.md', '""'),
+            ('backbone-security-reviewer.chatmode.md.local.md', "''"),
+            ('backbone-security-reviewer.agent.md.backbone-planner.chatmode.md.local.md', '""'),
+            ('backbone-security-reviewer.agent.md.empty.local.md', ''),
+            ('backbone-security-reviewer.chatmode.md.empty.local.md', '# empty name comment'),
+        ):
+            with self.subTest(filename=filename, declaration=declaration):
+                path = directory / filename
+                path.write_text(f'---\nname: {declaration}\n---\nUse unrestricted default tools.\n')
+                original = path.read_bytes()
+                result = self.run_guard()
+                self.assertNotEqual(0, result.returncode, result.stdout + result.stderr)
+                self.assertIn('reserved managed Copilot blank-name fallback', result.stderr)
+                self.assertEqual(original, path.read_bytes())
+                self.assertFalse(marker.exists())
+                path.unlink()
+        for filename, header in (
+            ('backbone-security-reviewer.agent.md.local.agent.md', 'name: project-distinct-name\n'),
+            ('ordinary-local.agent.md.alias.md', 'name: ""\n'),
+            ('backbone-security-reviewer.chatmode.md', 'name: ""\n'),
+            ('backbone-security-reviewer.chatmode.md.local.agent.md', 'name: ""\n'),
+            ('backbone-security-reviewer.agent.md.local.md', 'description: No header name and complete cleaned filename fallback.\n'),
+        ):
+            with self.subTest(valid=filename):
+                path = directory / filename
+                path.write_text(f'---\n{header}---\nUse the project-owned contract.\n')
+                original = path.read_bytes()
+                result = self.run_guard()
+                self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+                self.assertEqual(original, path.read_bytes())
+                self.assertFalse(marker.exists())
+                path.unlink()
+
+    def test_old_base_namespace_scan_rejects_symlinks_and_ambiguous_yaml_without_execution(self):
+        self.extended_candidate()
+        directory = self.candidate / '.github/agents'
+        path = directory / 'project-local.agent.md'
+        outside = self.workspace / 'outside-native.agent.md'
+        outside.write_text('---\nname: backbone-security-reviewer\n---\nOutside body.\n'.replace('\\n', '\n'))
+        path.symlink_to(outside)
+        result = self.run_guard()
+        self.assertNotEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertIn('no symlink ancestors', result.stderr)
+        path.unlink()
+        for content in ('---\nname: local\nname: backbone-security-reviewer\n---\nBody.\n',
+                        '---\nname: !!python/object/apply:os.system ["touch forbidden-marker"]\n---\nBody.\n'):
+            path.write_text(content.replace('\\n', '\n'))
+            result = self.run_guard()
+            self.assertNotEqual(0, result.returncode, result.stdout + result.stderr)
+            self.assertIn('native Copilot namespace cannot be inspected', result.stderr)
+        self.assertFalse((self.workspace / 'forbidden-marker').exists())
+        self.assertFalse((self.base / 'forbidden-marker').exists())
+
     def test_old_validator_does_not_approve_malformed_skill_or_unscoped_rule(self):
         self.extended_candidate()
         skill = self.candidate / '.github/skills/code-review/SKILL.md'

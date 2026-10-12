@@ -189,8 +189,15 @@ separate authorized work.
 
 Managed `backbone-*` roles use canonical lowercase `.agent.md` filenames. Copilot
 also supports `.md` profiles, so the workflow guard rejects alternate spellings or
-case variants of those reserved role identities rather than trusting ambiguous
-configuration. Existing local alternates remain preserved on disk; reconcile them
-manually into the canonical file in the reviewed adoption PR, keeping stronger
+case variants of those reserved role identities, including reserved frontmatter
+`name` values under project-owned filenames, rather than trusting ambiguous
+configuration. Both filename and header names participate in supported clients'
+role discovery. Native declarations must be safely inspectable; ambiguous YAML or
+linked files require explicit reconciliation. Existing local alternates remain
+preserved on disk; reconcile them manually into the canonical file in the reviewed
+adoption PR, keeping stronger
 instructions/permissions. Never delete a local policy merely to obtain a green gate.
-Unrelated project-native agent names remain outside this reserved-name contract.
+Unrelated project-native agents retain their own tools, metadata and body rules;
+the namespace scan checks identity without imposing managed-role tool budgets.
+Client filename fallbacks for an empty header also cannot resolve to a reserved
+managed identity under a noncanonical filename.

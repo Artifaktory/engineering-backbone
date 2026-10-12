@@ -73,7 +73,7 @@ jobs:
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: '827c3cc0475146eb5e2b1263f118842e1d12d6a14ac9f6dff3b9d723cc4f466b'
+          CURRENT_TOOLCHAIN_SHA256: '91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321'
           PREVIOUS_TOOLCHAIN_SHA256: '["5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
         run: |
           set -euo pipefail
@@ -235,21 +235,100 @@ jobs:
               if enabled is not True and before is not True:
                   return errors
               safe(root / '.github/copilot-instructions.md', root)
-              # Copilot supports both .md and .agent.md profiles. Identity comes from
-              # the filename, so an alternate spelling can bypass canonical tool budgets
-              # even when its display name and omitted tools look like a managed role.
-              # Keep such local files intact and require reviewed manual reconciliation.
+              # Supported hosts may merge profiles by the header name as well as the
+              # filename. Reserve both namespaces without imposing managed tool or body
+              # rules on unrelated local profiles. Never rewrite or follow local aliases.
+              class UniqueLoader(yaml.SafeLoader):
+                  pass
+              def mapping(loader, node, deep=False):
+                  loader.flatten_mapping(node)
+                  result = {}
+                  for key_node, value_node in node.value:
+                      key = loader.construct_object(key_node, deep=deep)
+                      if not isinstance(key, str):
+                          raise ValueError('frontmatter keys must be strings')
+                      if key in result:
+                          raise ValueError('duplicate YAML key: ' + key)
+                      result[key] = loader.construct_object(value_node, deep=deep)
+                  return result
+              UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
+              def native_name(path):
+                  if not safe(path, root):
+                      return None
+                  try:
+                      # Inspect the optional header only. Unrelated tools, models, hooks,
+                      # metadata and body links remain outside the managed role contract.
+                      with path.open(encoding='utf-8') as stream:
+                          first = stream.readline(131073).lstrip('\ufeff')
+                          if first.strip() != '---':
+                              return None
+                          lines = []
+                          length = 0
+                          for line in stream:
+                              if line.strip() == '---':
+                                  break
+                              length += len(line)
+                              if length > 131072:
+                                  raise ValueError('native frontmatter exceeds the namespace inspection limit')
+                              lines.append(line)
+                          else:
+                              raise ValueError('unterminated YAML frontmatter')
+                      data = yaml.load(''.join(lines), Loader=UniqueLoader)
+                      if data is None:
+                          return None
+                      if not isinstance(data, dict):
+                          raise ValueError('native frontmatter must be a mapping')
+                      name = data.get('name')
+                      if name is not None and not isinstance(name, str):
+                          raise ValueError('native name must be a string when present')
+                      if name is None:
+                          # The supported native parser preserves a present empty scalar
+                          # as ''. PyYAML uses None instead; reserve that ambiguity
+                          # conservatively, while an absent name keeps service fallback.
+                          return '' if 'name' in data else None
+                      return name.strip().casefold()
+                  except (OSError, UnicodeError, ValueError, TypeError, RecursionError, yaml.YAMLError) as exc:
+                      errors.append(f'{path.relative_to(root)}: native Copilot namespace cannot be inspected; reviewed manual reconciliation required ({exc})')
+                      return None
+
               directory = root / '.github/agents'
-              if directory.is_dir() and not directory.is_symlink() and not directory.parent.is_symlink():
+              if not directory.is_symlink() and not directory.parent.is_symlink() and directory.is_dir():
                   identities = {'backbone-' + role: Path(relative).name for role, relative in role_paths.items()}
-                  for path in sorted(directory.iterdir(), key=lambda item: item.name):
-                      if not path.is_file() and not path.is_symlink():
-                          continue
+                  try:
+                      profiles = sorted(directory.iterdir(), key=lambda item: item.name)
+                  except OSError as exc:
+                      errors.append(f'.github/agents: native Copilot namespace cannot be inspected; reviewed manual reconciliation required ({exc})')
+                      profiles = []
+                  for path in profiles:
                       name = path.name.casefold()
                       suffix = '.agent.md' if name.endswith('.agent.md') else '.md' if name.endswith('.md') else None
-                      identity = name[:-len(suffix)] if suffix is not None else None
+                      if suffix is None:
+                          continue
+                      if path.is_symlink():
+                          safe(path, root)
+                          continue
+                      if not path.is_file():
+                          continue
+                      identity = name[:-len(suffix)]
                       if identity in identities and path.name != identities[identity]:
                           errors.append(f'{path.relative_to(root)}: alternate or ambiguous managed Copilot role identity; keep the canonical {identities[identity]} and reconcile this local profile in a reviewed manual migration')
+                      header_name = native_name(path)
+                      if header_name in identities and path.name != identities[header_name]:
+                          errors.append(f'{path.relative_to(root)}: reserved managed Copilot header name {header_name}; keep the canonical {identities[header_name]} and reconcile this local profile in a reviewed manual migration')
+                      if header_name == '' and not name.endswith('.chatmode.md'):
+                          # The supported CLI bridge falls back only for an explicitly
+                          # blank name. It truncates at the first .agent.md marker before
+                          # trying .chatmode.md, rather than stripping the final suffix.
+                          # The inspected CLI bridge skips exact legacy .chatmode.md files.
+                          fallback = name
+                          for marker in ('.agent.md', '.chatmode.md'):
+                              index = name.find(marker)
+                              if index > 0:
+                                  fallback = name[:index]
+                                  break
+                          fallback = fallback.strip().casefold()
+                          if fallback in identities and path.name != identities[fallback]:
+                              errors.append(f'{path.relative_to(root)}: reserved managed Copilot blank-name fallback {fallback}; keep the canonical {identities[fallback]} and reconcile this local profile in a reviewed manual migration')
               if base is not None and before is True:
                   installed = list(managed)
                   for relative in skill_paths.values():
@@ -275,20 +354,6 @@ jobs:
                   if not (root / relative).exists() and not (root / relative).is_symlink():
                       errors.append(f'missing required Copilot package file: {relative}')
 
-              class UniqueLoader(yaml.SafeLoader):
-                  pass
-              def mapping(loader, node, deep=False):
-                  loader.flatten_mapping(node)
-                  result = {}
-                  for key_node, value_node in node.value:
-                      key = loader.construct_object(key_node, deep=deep)
-                      if not isinstance(key, str):
-                          raise ValueError('frontmatter keys must be strings')
-                      if key in result:
-                          raise ValueError('duplicate YAML key: ' + key)
-                      result[key] = loader.construct_object(value_node, deep=deep)
-                  return result
-              UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
               conflict = re.compile(r'^(?:<<<<<<<(?: |$)|>>>>>>>(?: |$)|\|\|\|\|\|\|\|(?: |$))', re.M)
               link = re.compile(r'!?\[[^\]\n]*\]\(\s*(<[^>]+>|[^\s)]+)(?:\s+["\'][^\n]*?["\'])?\s*\)')
               reference = re.compile(r'^\s{0,3}\[[^\]\n]+\]:\s*(<[^>]+>|[^\s]+)', re.M)

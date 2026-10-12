@@ -229,6 +229,112 @@ class CopilotValidationTests(unittest.TestCase):
         alias.unlink()
         self.assertEqual([], self.errors())
 
+    def test_local_filename_cannot_redeclare_reserved_header_name(self):
+        directory = self.root / '.github/agents'
+        for filename, declaration in (
+            ('local.agent.md', 'backbone-security-reviewer'),
+            ('local.md', '" BACKBONE-SECURITY-REVIEWER "'),
+            ('local.agent.md', '"\\u0062ackbone-security-reviewer"'),
+            ('local.md', '"\\u0062ackbone-planner"'),
+        ):
+            with self.subTest(filename=filename, declaration=declaration):
+                path = directory / filename
+                path.write_text(f'---\nname: {declaration}\ndescription: Project filename with unrestricted reserved identity.\n---\nReview using all tools.\n'.replace('\\n', '\n'))
+                original = path.read_bytes()
+                self.reject('reserved managed Copilot header name')
+                self.assertEqual(original, path.read_bytes())
+                path.unlink()
+
+    def test_native_blank_name_fallback_reserves_supported_marker_prefixes(self):
+        for extended in (True, False):
+            shutil.rmtree(self.root)
+            copilot_fixture(self.root, extended=extended)
+            directory = self.root / '.github/agents'
+            for filename, declaration in (
+                ('backbone-security-reviewer.agent.md.local.agent.md', '""'),
+                ('BACKBONE-SECURITY-REVIEWER.AGENT.MD.local.md', '" \t "'),
+                ('backbone-security-reviewer.chatmode.md.local.md', "''"),
+                ('backbone-security-reviewer.agent.md.backbone-planner.chatmode.md.local.md', '""'),
+                ('backbone-security-reviewer.agent.md.empty.local.md', ''),
+                ('backbone-security-reviewer.chatmode.md.empty.local.md', '# empty name comment'),
+            ):
+                with self.subTest(extended=extended, filename=filename):
+                    path = directory / filename
+                    path.write_text(f'---\nname: {declaration}\n---\nUse unrestricted default tools.\n')
+                    original = path.read_bytes()
+                    self.reject('reserved managed Copilot blank-name fallback')
+                    self.assertEqual(original, path.read_bytes())
+                    path.unlink()
+            for filename, header in (
+                ('backbone-security-reviewer.agent.md.local.agent.md', 'name: project-distinct-name\n'),
+                ('ordinary-local.agent.md.alias.md', 'name: ""\n'),
+                ('backbone-security-reviewer.chatmode.md', 'name: ""\n'),
+                # The bridge searches for .agent.md before .chatmode.md even
+                # when the chatmode marker appears earlier in this basename.
+                ('backbone-security-reviewer.chatmode.md.local.agent.md', 'name: ""\n'),
+                ('backbone-security-reviewer.agent.md.local.md', 'description: No name; service supplies the cleaned complete filename.\n'),
+            ):
+                with self.subTest(extended=extended, valid=filename):
+                    path = directory / filename
+                    path.write_text(f'---\n{header}---\nProject-owned configuration.\n')
+                    original = path.read_bytes()
+                    self.assertEqual([], self.errors())
+                    self.assertEqual(original, path.read_bytes())
+                    path.unlink()
+
+    def test_native_namespace_normalizes_delimiter_whitespace_and_bom(self):
+        path = self.root / '.github/agents/project-whitespace.agent.md'
+        for opening, closing in (('---   ', '---\t'), ('\ufeff---\t', '  ---  '), ('  ---\t ', '---')):
+            with self.subTest(opening=repr(opening), closing=repr(closing)):
+                path.write_text(f'{opening}\nname: backbone-security-reviewer\n{closing}\nUnrestricted local alias.\n')
+                original = path.read_bytes()
+                self.reject('reserved managed Copilot header name')
+                self.assertEqual(original, path.read_bytes())
+                path.unlink()
+
+    def test_legacy_three_roles_reserve_extended_header_names(self):
+        shutil.rmtree(self.root)
+        copilot_fixture(self.root, extended=False)
+        path = self.root / '.github/agents/local.md'
+        path.write_text('---\nname: backbone-security-reviewer\n---\nReview this legacy consumer.\n'.replace('\\n', '\n'))
+        self.reject('reserved managed Copilot header name')
+        path.unlink()
+        self.assertEqual([], self.errors())
+
+    def test_native_namespace_scan_preserves_unrelated_metadata_tools_and_body(self):
+        directory = self.root / '.github/agents'
+        bodies = (
+            '---\nname: project-local-review\ntools: ["*", "execute", "github/*"]\nmodel: arbitrary-project-model\nmcp-servers: {local: {command: project-owned}}\n---\n[Project-owned missing link](absent.md)\n<<<<<<< project-owned body\n',
+            '---\ndescription: Header has no name and uses its local filename.\ntarget: vscode\n---\nProject-owned body.\n',
+            '# Local profile without frontmatter\nProject-owned instructions.\n',
+        )
+        for index, body in enumerate(bodies):
+            path = directory / f'project-{index}.agent.md'
+            path.write_text(body.replace('\\n', '\n'))
+            original = path.read_bytes()
+            self.assertEqual([], self.errors())
+            self.assertEqual(original, path.read_bytes())
+
+    def test_native_namespace_duplicate_unsafe_or_uninspectable_header_requires_manual_reconciliation(self):
+        path = self.root / '.github/agents/project-local.md'
+        variants = (
+            '---\nname: local\nname: backbone-security-reviewer\n---\nLocal body.\n',
+            '---\nname: !!python/object/apply:os.system ["touch forbidden-marker"]\n---\nLocal body.\n',
+            '---\nname: [backbone-security-reviewer]\n---\nLocal body.\n',
+            '---\nname: backbone-security-reviewer\n',
+        )
+        for body in variants:
+            with self.subTest(body=body):
+                path.write_text(body.replace('\\n', '\n'))
+                original = path.read_bytes()
+                self.reject('native Copilot namespace cannot be inspected')
+                self.assertEqual(original, path.read_bytes())
+        path.unlink()
+        outside = Path(self.temp.name) / 'outside-profile.md'
+        outside.write_text('---\nname: backbone-security-reviewer\n---\nOutside body.\n'.replace('\\n', '\n'))
+        path.symlink_to(outside)
+        self.reject('no symlink ancestors')
+
     def test_managed_links_conflicts_and_companion_resources_are_checked_unrelated_files_ignored(self):
         path = self.root / '.github/skills/code-review/reference.md'
         path.write_text('[Missing reference](absent.md)\n<<<<<<< candidate\n')

@@ -8,11 +8,12 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "1ffebdfff4f5cc24e7ffcfff5a4dcf88d554f4c8",
-    "head_revision": "ee4bbd23b663494fc7d413f5338618250a5a9e71"
+    "head_revision": "761620292c8c1c56256617b90051f55bd2bb9303"
   },
   "approved_sources": [
     "Human request 2026-10-12: implement researched Copilot package using practical examples, document diagram/readme, run checks and Full/triage/fix/Delta before publishing PR",
-    "Current official GitHub/VS Code documentation and pinned practical examples in docs/copilot/source-provenance.md"
+    "Current official GitHub/VS Code documentation and pinned practical examples in docs/copilot/source-provenance.md",
+    "Confirmed CE-1/CS-2 external-review triage: docs/reviews/copilot-publication-triage.md"
   ],
   "scope": {
     "include": [
@@ -87,8 +88,8 @@
       "verification": "hybrid",
       "status": "pass",
       "evidence": [
-        "docs/reviews/copilot-development-result.md",
-        "docs/copilot/workflow.md"
+        "docs/reviews/copilot-publication-result.md",
+        "docs/reviews/copilot-development-result.md"
       ]
     },
     {
