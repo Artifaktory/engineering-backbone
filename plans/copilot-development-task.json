@@ -1,0 +1,134 @@
+{
+  "schema_version": "1",
+  "id": "BB-COPILOT-003",
+  "title": "Copilot-native standard development roles and skills",
+  "objective": "Ship ten Copilot roles, eight procedural skills, selectable path instructions, documented workflow diagrams and client setup, safe native-file ownership and structural/consumer checks in one independently reviewed PR.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "1ffebdfff4f5cc24e7ffcfff5a4dcf88d554f4c8",
+    "head_revision": "ee4bbd23b663494fc7d413f5338618250a5a9e71"
+  },
+  "approved_sources": [
+    "Human request 2026-10-12: implement researched Copilot package using practical examples, document diagram/readme, run checks and Full/triage/fix/Delta before publishing PR",
+    "Current official GitHub/VS Code documentation and pinned practical examples in docs/copilot/source-provenance.md"
+  ],
+  "scope": {
+    "include": [
+      ".github/agents/**",
+      ".github/skills/**",
+      ".github/instructions/**",
+      ".github/copilot-instructions.md",
+      "templates/**",
+      "copier.yml",
+      "scripts/validate.py",
+      "scripts/compile_toolchain_fingerprint.py",
+      ".github/workflows/governance-checks.yml",
+      "tests/**",
+      "docs/**",
+      "README.md",
+      "CONTRIBUTING.md",
+      "policy/core.md",
+      "plans/copilot-*"
+    ],
+    "exclude": [
+      "tests/fixtures/historical/**",
+      ".codex/**",
+      "requirements*",
+      "schemas/**",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Ten Copilot-native roles with explicit tool budgets and distinct responsibilities mapped to current Task Packet roles",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/copilot-development-result.md",
+        "docs/copilot/workflow.md"
+      ]
+    },
+    {
+      "id": "AC-2",
+      "description": "Eight Copilot skills with specific triggers, inputs, outputs, stop rules and local workflow references",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/copilot-development-result.md",
+        "docs/copilot/workflow.md"
+      ]
+    },
+    {
+      "id": "AC-3",
+      "description": "Optional Python/frontend path rules with existing native skills/instructions/profile preservation on creation and updates",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/copilot-development-result.md",
+        "docs/copilot/workflow.md"
+      ]
+    },
+    {
+      "id": "AC-4",
+      "description": "README and distributed Copilot guide contain same complete review loop diagram, source patterns and host capability/smoke guide",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/copilot-development-result.md",
+        "docs/copilot/workflow.md"
+      ]
+    },
+    {
+      "id": "AC-5",
+      "description": "Positive/negative structural validation and real create/update compatibility tests; coherent trusted tooling fingerprint upgrade",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/copilot-development-result.md",
+        "docs/copilot/workflow.md"
+      ]
+    },
+    {
+      "id": "AC-6",
+      "description": "Independent Full/triage/fix/Delta evidence, one published PR and verified GitHub CI/provider status",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "actionlint",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Pinned source inventory and extraction review",
+      "Two independent frozen-snapshot Full reviews and Delta after confirmed repairs",
+      "GitHub CI and Codex provider review; runtime client smoke not executed"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Unresolved P0/P1 finding",
+    "Failed required check",
+    "Unsafe overwrite of consumer policy",
+    "Scope or authorization conflict"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Downstream repository writes",
+    "Secret commits",
+    "Force push or destructive cleanup"
+  ],
+  "status": "ready_for_review"
+}

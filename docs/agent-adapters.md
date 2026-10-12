@@ -11,23 +11,34 @@ bodies into native files; provider profiles do not constitute a new orchestrator
 | Implementer | `.codex/agents/backbone-implementer.toml` | `.github/agents/backbone-implementer.agent.md` |
 | Independent Full or Delta reviewer | `.codex/agents/backbone-reviewer.toml` | `.github/agents/backbone-reviewer.agent.md` |
 
-The planner returns a Task Packet/plan; the implementer owns scoped changes and
-actual validation; the reviewer reports findings read-only. Quality checking and
-triage remain explicitly separate stages. Delta review is a scoped reviewer
-invocation with confirmed finding IDs and a repair commit range, not a fourth agent.
+The three Codex profiles retain their existing contract. Copilot additionally has
+analyst, plan reviewer, test engineer, quality checker, security reviewer,
+documentation and finding triage profiles: ten roles total. Its eight procedural
+skills and core/optional path rules are defined in
+[the Copilot operating guide](copilot/workflow.md). Specializations map to existing
+Task Packet roles; generic schemas are not expanded. The planner returns a plan,
+the implementer owns scoped changes and the reviewer reports findings read-only.
+Delta is a reviewer invocation with confirmed IDs and a repair range, using its
+own skill rather than an additional profile.
 No model, reasoning, credential, MCP server or machine-specific settings are forced.
 
 ## Installation and updates
 
-Select adapters with `use_codex` and `use_copilot`. The language and frontend/backend
-answers record project facts; they do not generate application infrastructure.
+Select adapters with `use_codex` and `use_copilot`. Select optional technical rules
+with `copilot_python_profile` and `copilot_frontend_profile` (both default false);
+core governance/test/docs path rules accompany Copilot. The language and
+frontend/backend answers record facts; they do not select rules implicitly or
+generate application infrastructure.
 The template has no tasks, migrations, custom Jinja extensions or shell hooks.
 
 Copier creates native entrypoints and profiles only when absent. It preserves all
 existing `AGENTS.md` files, Copilot instructions, profiles in both native agent
-directories, and `.engineering-backbone/project.json`. It always updates the
+directories, Copilot skills/path instructions, and `.engineering-backbone/project.json`.
+The same ownership rule applies to existing three-role consumers and new extended
+installations. Copier always updates the
 canonical core and `AGENTS.fragment.md` / `Copilot.fragment.md` under
-`.engineering-backbone/`. Those fragments are integration material; neither product
+`.engineering-backbone/`, plus the neutral `copilot-guide.md`. These are integration
+material; neither product
 loads them automatically. During initial adoption and later updates, manually
 refresh the protected native files through a reviewed PR, preserving stricter
 local rules. Keep project facts and Copier answers consistent when they change.
@@ -42,7 +53,9 @@ The answers file is intentionally namespaced. From the consumer repository use
 The explicit answers-file option is required for update discovery.
 
 Adapter selection (`use_codex`, `use_copilot`) and the template-generated workflow
-choice (`backbone_workflow_ref`) are installation-only choices. Copier reads the installed
+choice (`backbone_workflow_ref`), along with the two optional Copilot profile
+choices, are installation-only. Missing profile answers in legacy bundles mean
+false. Copier reads the installed
 answers with its built-in external-data support and rejects changes to those choices
 before rendering into the consumer. This prevents conditional selection changes
 from deleting native policies despite Copier's skip-if-exists behavior. A fresh copy
@@ -86,19 +99,19 @@ Codex GitHub review integration require separate verification/setup. Parent live
 permission overrides can supersede a child's read-only default. Do not use elevated
 runtime permissions as a substitute for a controlled independent review.
 
-Copilot roles use `.github/agents/*.agent.md`: YAML frontmatter has `description`,
-`name` and explicit tools; Markdown supplies instructions. Planner/reviewer tools are
-`read` and `search`; implementer adds `edit` and `execute`. Omitting `tools` enables
-all available tools, so the restricted roles set it explicitly. GitHub cloud agent
-does not currently use VS Code `handoffs`; this baseline does not rely on them.
+Copilot profiles use `.github/agents/*.agent.md`; skills use
+`.github/skills/<name>/SKILL.md`; path rules use
+`.github/instructions/*.instructions.md` with `applyTo`. Explicit tools limit
+available operations; they are not a filesystem sandbox. In particular a quality
+checker with `execute` can write through commands and must obey its approved scope.
+The existing three profiles remain compatible; additional roles use deliberate
+manual transitions and optional `send: false` handoffs, with fresh reviewer sessions.
 
-Copilot support differs across GitHub, CLI and IDE features. Its native custom
-reviewer is selectable; it does not automatically become the PR code-review bot.
-Copilot Code Review consumes supported standing instructions and requires product
-access and separate automatic-review settings/rulesets. It reads PR instructions
-from the head branch, so changed instructions must be assessed against trusted base
-governance. Copilot approvals can technically count with an optional preview
-setting; this project's human approval requirement still applies.
+Copilot support differs across hosts and versions. Use
+[the client matrix](copilot/clients.md) for PyCharm/JetBrains, VS Code Local versus
+Agent Host, CLI, cloud agent and PR review. A native reviewer does not automatically
+become the PR bot; product access and review settings are separate. Assess changed
+instructions against trusted-base policy, and retain human merge approval.
 
 Codex combines instruction files root-to-current-directory; Copilot documents
 nearest `AGENTS.md` precedence for agent instructions. Use the common root baseline
@@ -111,12 +124,11 @@ ask it to list active instructions and available `backbone_*` roles. Start the
 planner or reviewer and check that it reports its role and scoped boundaries without
 writing files. Repeat from any relevant nested directory.
 
-In Copilot, verify the repository instruction appears in response references and
-the three custom agents are available for selection in the intended client. Select
-the reviewer, verify it cannot access edit/execute tools, and request review of a
-frozen test commit. GitHub automatic PR review is tested separately in an authorized
-PR. Record product/client version, revision and observed behavior. CI parsing only
-establishes file structure, not runtime loading or AI review quality.
+For Copilot follow [the runtime smoke checklist](copilot/smoke-tests.md): verify
+all ten selected profiles, eight skill procedures, applicable rules and real tool
+calls in the intended client. Capture actual versions and observations. GitHub
+automatic PR review is tested separately in an authorized PR. CI parsing and
+instruction simulations do not establish runtime loading or review quality.
 
 ## Official references
 
@@ -133,9 +145,9 @@ Verified on 2026-10-12; formats may evolve:
 
 [The consolidation map](codex-consolidation.md) identifies the shared sections now
 present in native profiles and generated fragments, and the controls retained in
-each project. Planner, implementer and reviewer stay the only native roles.
-Specialized responsibilities use a narrowed Task Packet/catalog; current schemas
-are not extended by inventing role values or unknown evidence fields. Keep richer
+each project. Codex keeps its three profiles; Copilot's ten native profiles map
+specialized responsibilities to a narrowed Task Packet using existing schema role
+values. Do not invent role values or unknown evidence fields. Keep richer
 review metadata in existing claim/evidence fields or a companion report.
 
 Native files remain protected on update. Refreshing `.engineering-backbone/core.md`

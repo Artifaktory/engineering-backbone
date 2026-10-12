@@ -80,3 +80,12 @@ approved, use [the adoption procedure](adoption.md) in a separate project PR:
 
 Existing native files are protected during copy/update; new core/fragments are
 refreshed. No source project is edited and no downstream update is auto-applied.
+
+## Subsequent Copilot-specific expansion
+
+The three-role description above records the earlier Codex consolidation. The
+subsequent [Copilot package](copilot/workflow.md) supplies ten native Copilot
+responsibilities and eight procedural skills, mapped onto unchanged Task Packet
+schema roles. Codex keeps its existing three profiles. The original preservation
+and local-control boundaries still apply; Copilot distribution and client behavior
+are detailed in [its adapter guide](agent-adapters.md).

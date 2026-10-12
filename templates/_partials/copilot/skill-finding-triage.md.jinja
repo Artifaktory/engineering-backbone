@@ -1,0 +1,27 @@
+Read the [canonical policy]({{ core_link }}) and
+[Copilot workflow]({{ guide_link }}). This skill supplies a procedure, not additional
+permissions, authority or independent approval. Preserve stricter project rules.
+
+## Inputs and output
+
+Inputs: Task Packet, immutable review report, base/head/patch digest, stable IDs,
+coverage and evidence. Output: triage report preserving all IDs and classifications
+confirmed, rejected or requiring a human decision, with reasons and evidence. A
+read-only triage session returns text to an authorized owner for persistence.
+
+## Procedure
+
+1. Check each claim against the actual contract, concrete trigger, execution path,
+   impact and current diff; distinguish missing evidence from a proven defect.
+2. Confirm in-scope defects, reject unsupported/style/unrelated claims with reasons,
+   and identify owner decisions without guessing the answer.
+3. For confirmed IDs, record the smallest authorized repair, regression check and
+   whether scope/contract/trust changes require a separately scoped new Full.
+4. Pass confirmed IDs and the prior reviewed head to a separate implementer session;
+   preserve original review evidence for independent Delta.
+
+## Stops and negative cases
+
+Stop for unresolved owner decisions, missing snapshot/evidence or budget exhaustion.
+Do not delete findings, silently mark them resolved, edit code/tests or auto-fix.
+A classification does not prove a repair or grant merge/release approval.

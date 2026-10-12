@@ -7,6 +7,7 @@ fingerprints are explicit reviewed workflow literals, not consumer-supplied inpu
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import json
 from pathlib import Path
@@ -25,6 +26,35 @@ FILES = (
     'schemas/requirement.schema.json',
 )
 FORMAT = 'engineering-backbone-toolchain-v1'
+
+COPILOT_START = '# BEGIN COMPILED COPILOT GUARD'
+COPILOT_END = '# END COMPILED COPILOT GUARD'
+
+
+def copilot_function(source: Path = ROOT):
+    """Extract trusted source text without importing or executing its module."""
+    content = (source / 'scripts/validate.py').read_text(encoding='utf-8')
+    tree = ast.parse(content)
+    matches = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == 'copilot_errors']
+    if len(matches) != 1:
+        raise ValueError('Expected exactly one self-contained Copilot guard function')
+    node = matches[0]
+    return '\n'.join(content.splitlines()[node.lineno - 1:node.end_lineno])
+
+
+def compiled_copilot_guard(source: Path = ROOT):
+    function = copilot_function(source)
+    return '\n'.join('          ' + line if line else '' for line in function.splitlines())
+
+
+def replace_copilot_guard(workflow: str, source: Path = ROOT):
+    pattern = re.compile(r'(?m)^(          ' + re.escape(COPILOT_START) + r'\n).*?(^          ' + re.escape(COPILOT_END) + r'$)', re.S)
+    compiled = compiled_copilot_guard(source)
+    refreshed, count = pattern.subn(lambda match: match.group(1) + compiled + '\n' + match.group(2), workflow)
+    if count != 1:
+        raise ValueError('Expected exactly one compiled Copilot workflow guard block')
+    return refreshed
+
 
 
 def bundle_digest(root: Path):
@@ -74,9 +104,14 @@ def main(argv=None):
         text, count = re.subn(r"CURRENT_TOOLCHAIN_SHA256: '[0-9a-f]{64}'", f"CURRENT_TOOLCHAIN_SHA256: '{digest}'", text)
         if count != 1:
             parser.error('Expected exactly one current workflow fingerprint literal')
+        text = replace_copilot_guard(text, args.source.resolve())
         workflow_path.write_text(text, encoding='utf-8')
     if args.check:
-        workflow = yaml.safe_load(workflow_path.read_text(encoding='utf-8'))
+        text = workflow_path.read_text(encoding='utf-8')
+        if replace_copilot_guard(text, args.source.resolve()) != text:
+            print('FAIL: compiled Copilot workflow guard is stale; regenerate trusted source guard')
+            return 1
+        workflow = yaml.safe_load(text)
         step = next(step for step in workflow['jobs']['validate']['steps']
                     if step.get('name') == 'Validate generated consumer with trusted tooling')
         if step['env']['CURRENT_TOOLCHAIN_SHA256'] != digest:

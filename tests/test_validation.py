@@ -32,6 +32,27 @@ class ValidationTests(unittest.TestCase):
             self.write(f".codex/agents/backbone-{role}.toml", f'name = "backbone_{role}"\ndescription = "Scoped {role}"\nsandbox_mode = "{mode}"\ndeveloper_instructions = "Read the shared policy before acting."\n')
             tools = "[read, search, edit, execute]" if role == "implementer" else "[read, search]"
             self.write(f".github/agents/backbone-{role}.agent.md", f"---\nname: backbone-{role}\ndescription: Scoped {role}\ntools: {tools}\n---\nRead the shared policy.\n")
+        # Source completeness now includes the Copilot package. Use minimal
+        # valid contract fixtures so these tests retain their original mutation.
+        for role in ("analyst", "plan-reviewer", "test-engineer", "quality-checker",
+                     "security-reviewer", "documentation", "finding-triage"):
+            tools = "[read, search]"
+            if role == "test-engineer":
+                tools = "[read, search, edit, execute]"
+            elif role == "quality-checker":
+                tools = "[read, search, execute]"
+            elif role == "documentation":
+                tools = "[read, search, edit]"
+            self.write(f".github/agents/backbone-{role}.agent.md",
+                       f"---\nname: backbone-{role}\ndescription: Scoped {role}\ntools: {tools}\n---\nRead the shared policy for the authorized task and report actual evidence without broadening scope.\n")
+        for skill in ("task-intake", "implementation-plan", "bug-reproduction", "test-and-quality",
+                      "code-review", "finding-triage", "delta-review", "docs-traceability"):
+            self.write(f".github/skills/{skill}/SKILL.md",
+                       f"---\nname: {skill}\ndescription: Execute {skill} for a scoped task.\n---\n# Task\nRead the Task Packet, scope and accepted inputs. Report actual evidence, execution status and coverage gaps; stop on missing authorization or context.\n")
+        for rule, pattern in (("governance", "policy/**"), ("tests", "tests/**"), ("docs", "docs/**")):
+            self.write(f".github/instructions/backbone-{rule}.instructions.md",
+                       f'---\ndescription: Scoped {rule} guidance.\napplyTo: "{pattern}"\n---\nRead the applicable scoped policy and preserve inherited permissions and honest evidence for this task.\n')
+        self.write("docs/copilot/workflow.md", "# Copilot workflow\nUse independent review and preserve local gates.\n")
         for filename in ("requirements.txt", "requirements.lock"):
             shutil.copy2(BUNDLE / filename, self.root / filename)
         for directory in ("schemas", "examples"):
@@ -309,7 +330,10 @@ class ValidationTests(unittest.TestCase):
                     errors = validate_root(candidate, base, mode=mode)
                     for adapter in disabled:
                         expected = "AGENTS.md" if adapter == "codex" else ".github/copilot-instructions.md"
-                        self.assertTrue(any(f"missing required file: {expected}" in error for error in errors), errors)
+                        self.assertTrue(any(
+                            f"missing required file: {expected}" in error
+                            or (adapter == "copilot" and f"{expected}: managed Copilot file must be regular" in error)
+                            for error in errors), errors)
 
     def test_disabled_flags_cannot_hide_installed_adapter_permissions_or_content(self):
         self.make_consumer()

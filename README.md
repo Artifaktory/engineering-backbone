@@ -4,15 +4,17 @@ Versioned, reusable agent governance and engineering building blocks for softwar
 repositories. Start with Codex and Copilot, scoped planning and verifiable checks;
 add a shared capability only when real projects need it.
 
-**Bootstrap candidate 0.1.0 — not a published or downstream-approved release.**
-The initial delivery is one reviewable PR. No consumer repository is changed.
+**Candidate 0.1.0 — not a published or downstream-approved release.**
+The foundation and reference consolidation are merged; the Copilot extension is
+reviewed as a separate PR. No consumer repository is changed by this delivery.
 
 ## Included in the first delivery
 
 | Building block | Purpose |
 | --- | --- |
 | [Shared policy](policy/core.md) | Scope, roles, checks, Full/Triage/Fix/Delta, truthful evidence and human gates |
-| [Codex and Copilot adapters](docs/agent-adapters.md) | Native planner, implementer and reviewer profiles with restricted defaults |
+| [Codex and Copilot adapters](docs/agent-adapters.md) | Three Codex profiles and ten specialized Copilot profiles with explicit tool budgets |
+| [Copilot operating guide](docs/copilot/workflow.md) | Eight procedural skills, permanent delivery loop, handoffs and local project integration |
 | [Planning and evidence formats](docs/planning.md) | Task Packet, requirement status and review evidence schemas/examples |
 | [Copier adoption](docs/adoption.md) | Optional providers, local project facts, preserved instructions and reviewed updates |
 | [Own validation workflow](.github/workflows/quality.yml) | Schemas, adversarial tests, real consumer upgrades and trusted-base policy checks |
@@ -24,6 +26,51 @@ stricter instructions are preserved and must be explicitly integrated with the
 new fragments. Generated profiles do not activate GitHub review bots.
 Provider selection is fixed during ordinary updates; a change needs a separately
 reviewed migration. Safe stricter local role permissions remain valid.
+
+## Copilot: how work proceeds
+
+Use [the permanent operating guide](docs/copilot/workflow.md) for responsibilities,
+inputs, evidence and stop conditions. Roles select who does the work; skills supply
+the procedure. Each independent review starts a separate session on a frozen
+snapshot. Optional handoff buttons are navigation, not an orchestrator or approval.
+
+```mermaid
+flowchart TD
+    A["Scoped Task Packet and acceptance"] --> P["Plan and independent plan review"]
+    P --> I["Implementation and meaningful tests"]
+    I --> C["Deterministic checks and frozen snapshot"]
+    C --> R["Independent Full review"]
+    R --> T["Triage findings with evidence"]
+    T --> B{"Unresolved decision or exhausted budget?"}
+    B -->|"Yes"| S["Stop and record blocker for owner"]
+    B -->|"No"| F{"Confirmed findings remain?"}
+    F -->|"Yes"| X["Fix confirmed IDs and rerun relevant checks"]
+    X --> D["Independent Delta: fixes and direct regressions"]
+    D --> T
+    F -->|"No"| E["Closeout: acceptance and actual evidence"]
+    E --> H["PR and human merge decision"]
+```
+
+Required failures stop the current phase. Confirmed repairs go through triage,
+checks and Delta; broader scope needs a new Full. A clean review does not replace
+acceptance evidence or human merge approval. An exhausted budget records a blocker.
+
+The package learns from pinned practical implementations in **Microsoft VS Code,
+Microsoft Skills, Awesome Copilot and Spec Kit**; see
+[source patterns and licenses](docs/copilot/source-provenance.md). Framework paths,
+fixed models and permissive reviewer tools from those examples are not assumed.
+[The client matrix](docs/copilot/clients.md) separates PyCharm, VS Code Local,
+Copilot Agent Host, CLI, cloud agent and the GitHub PR bot.
+[Runtime smoke tests](docs/copilot/smoke-tests.md) remain unexecuted in this environment;
+structural CI and instruction simulations cannot prove Copilot discovery.
+
+Copier always distributes the same workflow as
+`.engineering-backbone/copilot-guide.md`, including when Copilot is unselected as
+reference material. Native entrypoints, roles, skills and path instructions remain
+protected on update and need explicit local integration. Python/frontend rules are
+optional installation choices; GitHub automatic review is configured separately.
+
+## Reuse in a project
 
 ```mermaid
 flowchart TD

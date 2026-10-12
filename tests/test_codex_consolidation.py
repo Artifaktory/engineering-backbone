@@ -96,6 +96,19 @@ class CodexConsolidationTests(unittest.TestCase):
         ):
             self.assertIn(clause, text)
 
+    def assert_copilot_reviewer_contract(self, text):
+        text = " ".join(text.split())
+        for clause in (
+            "Start a separate independent review session",
+            "fixed base/head, patch digest",
+            "current-diff causation",
+            "Report coverage and unreviewed areas",
+            "prior reviewed head, repaired head and confirmed IDs",
+            "default maximum is two Full rounds",
+            "Provider automation stays advisory and cannot bypass triage",
+        ):
+            self.assertIn(clause, text)
+
     def assert_shared_fragments(self, target):
         for fragment in ("AGENTS.fragment.md", "Copilot.fragment.md"):
             text = " ".join((target / ".engineering-backbone" / fragment).read_text().split())
@@ -125,7 +138,14 @@ class CodexConsolidationTests(unittest.TestCase):
                     codex = codex_profile(root, role)
                     copilot, copilot_body = copilot_profile(root, role)
                     self.assertEqual(codex["developer_instructions"].strip(), expected)
-                    self.assertEqual(copilot_body, expected)
+                    # Copilot has native procedural roles, with unchanged tool
+                    # budgets; Codex continues to use the shared baseline body.
+                    copilot_partial = environment.get_template(f"templates/_partials/copilot/{role}.md.jinja")
+                    copilot_expected = copilot_partial.render(
+                        core_link="../../policy/core.md" if root == self.source else "../../.engineering-backbone/core.md",
+                        guide_link="../../docs/copilot/workflow.md" if root == self.source else "../../.engineering-backbone/copilot-guide.md",
+                    ).strip()
+                    self.assertEqual(copilot_body, copilot_expected)
                     self.assertEqual(set(codex), {"name", "description", "sandbox_mode", "developer_instructions"})
                     mode = "workspace-write" if role == "implementer" else "read-only"
                     tools = ["read", "search", "edit", "execute"] if role == "implementer" else ["read", "search"]
@@ -187,7 +207,7 @@ class CodexConsolidationTests(unittest.TestCase):
                     if codex:
                         self.assert_reviewer_contract(codex_profile(target, "reviewer")["developer_instructions"])
                     if copilot:
-                        self.assert_reviewer_contract(copilot_profile(target, "reviewer")[1])
+                        self.assert_copilot_reviewer_contract(copilot_profile(target, "reviewer")[1])
                     self.assert_shared_fragments(target)
                     self.validate(target)
 

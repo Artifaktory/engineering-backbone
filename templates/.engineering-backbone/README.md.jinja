@@ -7,8 +7,12 @@ commands, workflows or required infrastructure.
 - Review [project facts](project.json) and the [canonical policy](core.md).
 - Integrate [agent guidance](AGENTS.fragment.md) and
   [Copilot guidance](Copilot.fragment.md) into existing stronger instructions.
+- [Copilot operating guide and diagram](copilot-guide.md) record the permanent
+  plan/check/Full/triage/fix/Delta/human-decision loop. The guide is reference material
+  when Copilot is not selected and is not automatically loaded by the product.
 - Existing `AGENTS.md`, Copilot instructions, native role profiles and project
-  facts are preserved, including during updates. New files are created only when
+  facts, Copilot skills and path rules are preserved, including during updates.
+  New files are created only when
   absent. Later baseline changes therefore require a reviewed manual refresh of
   those entrypoints/profiles; a successful Copier update alone is not full adoption.
 - Commit `copier-answers.yml` and use an explicit reviewed Git commit or release
@@ -21,6 +25,14 @@ recorded as data; Copier never runs it. Native role definitions need a supported
 local Codex/Copilot client and runtime verification. GitHub code-review settings
 must be configured separately.
 
+When selected, Copilot supplies ten profiles and eight procedural skills, with
+the original planner/implementer/reviewer kept compatible. Core governance/test/docs
+path instructions accompany Copilot; Python/frontend examples are separately
+selected and do not impose an application framework or commands. Tool budgets do
+not enforce path isolation; an execute-capable quality checker can write via shell
+and must follow approved packet commands and scope. Independent reviews require
+separate sessions and frozen revisions, even where handoff buttons are available.
+
 Install the generated validator's pinned, hashed dependencies in an isolated
 Python 3.12 environment:
 `python -m pip install --require-hashes -r .engineering-backbone/requirements.lock`.
@@ -32,7 +44,8 @@ From the consumer repository, invoke updates with the namespaced answers file:
 `copier update --answers-file .engineering-backbone/copier-answers.yml --vcs-ref APPROVED_COMMIT`.
 Replace the reference with a reviewed commit; this command prepares a diff for review.
 
-The installation choices `use_codex`, `use_copilot`, and `backbone_workflow_ref`
+The installation choices `use_codex`, `use_copilot`, `backbone_workflow_ref`,
+`copilot_python_profile` and `copilot_frontend_profile`
 cannot change during a normal template update. The update rejects such changes
 before consumer rendering. Adapter changes require their own reviewed migration
 of native files, project facts and installation choices. Do not edit or remove
@@ -49,6 +62,9 @@ complete validator/schema/dependency tuples against workflow-owned fingerprints.
 When these managed tools change, include the matching new reviewed workflow pin
 and its explicit previous-base compatibility entry in the same upgrade PR.
 Project facts, stricter policy and native instructions are validated separately.
+For an old three-role consumer upgrading to the extended Copilot package, that
+matching workflow pin must also contain the workflow-owned new-asset guard; the
+old base validator alone cannot validate the added profiles, skills and path rules.
 Scoped `.gitattributes` preserves LF only for the eight attested tooling files.
 SHA values render in lowercase and existing caller pins remain preserved during
 ordinary Copier updates.

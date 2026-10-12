@@ -18,11 +18,14 @@ copier copy --vcs-ref APPROVED_COMMIT gh:Artifaktory/engineering-backbone .
 Normal authenticated Git/Copier access to this private repository is required for
 the copy/update operation. Never put a token in the URL, answers file or command.
 Questions record project name, base branch, validation command, language and
-frontend/backend metadata, selected providers and optional reviewed workflow SHA.
+frontend/backend metadata, selected providers, optional Copilot Python/frontend
+instruction profiles and an optional reviewed workflow SHA. The two technical
+profile choices default false; they do not infer frameworks or path layouts from
+language metadata. Copilot includes three core governance/test/docs path rules.
 For a project with no trusted bundle yet, leave the workflow SHA empty and follow
 the two-stage bootstrap below; an active caller in the first adoption PR fails closed.
 Project metadata does not execute commands or create domain-specific app workflows.
-Provider selection and initial workflow activation are installation-only choices.
+Provider/profile selection and initial workflow generation are installation-only choices.
 An ordinary update rejects changing them before writing the consumer; use a
 separate reviewed migration to change provider selection or reconcile local facts.
 
@@ -32,7 +35,9 @@ separate reviewed migration to change provider selection or reconcile local fact
 | --- | --- |
 | `.engineering-backbone/core.md`, `core.json`, validator, schemas, requirements/lock and scoped `.gitattributes` | Backbone-owned, refreshed by Copier |
 | `.engineering-backbone/AGENTS.fragment.md`, `Copilot.fragment.md` | Always-refreshed additions for explicit local integration |
-| Root `AGENTS.md`, Copilot entrypoint and native agent profiles | Created when absent; existing files preserved |
+| `.engineering-backbone/copilot-guide.md` | Always-refreshed neutral operating guide, including diagram; reference only if Copilot unselected |
+| Root `AGENTS.md`, Copilot entrypoint and native agent profiles | Created when absent; existing files preserved, including the original three Copilot profiles |
+| Copilot `.github/skills/**` and `.github/instructions/**` | Selected missing files created; existing native files preserved for reviewed manual refresh |
 | `.engineering-backbone/project.json` | Existing local project facts preserved |
 | `.github/workflows/engineering-backbone.yml` | Optional actual-SHA caller; existing file preserved |
 
@@ -53,7 +58,8 @@ python .engineering-backbone/validate.py --root .
 
 Run the project's own tests separately. For Codex/Copilot, verify the native files
 are discovered by the actual supported installed client; syntax validation is not
-runtime evidence. See [adapter limits](agent-adapters.md).
+runtime evidence. See [adapter limits](agent-adapters.md),
+[Copilot client differences](copilot/clients.md) and [runtime acceptance](copilot/smoke-tests.md).
 
 ## First adoption: establish trust before activating CI
 
@@ -91,6 +97,11 @@ The workflow separately enforces exact boolean provider facts and prevents
 turning off a provider enabled in the base, including with older approved
 validators. `source_mode` is restricted to the backbone repository. Hashes express
 provenance under the reviewed workflow pin; they do not replace human approval.
+The updated immutable workflow also owns the Copilot extended-asset guard: a
+candidate cannot supply its own profile registry or bypass new role/skill/rule
+checks with an old trusted-base validator. Legacy three-role installations remain
+supported; an extended package must be complete and retains installed extended
+assets across subsequent ordinary changes.
 The generated `.engineering-backbone/.gitattributes` keeps only the eight tooling
 files at LF line endings, so Windows checkout conversion does not change their
 attestation. Application files retain their existing Git attributes.
@@ -149,3 +160,37 @@ Source maintainers regenerate the current workflow literal with
 literal against actual rendered working-tree output. Previous fingerprints are
 explicitly reviewed compatibility entries, never automatically extended.
 No universal updater bot or automatic downstream application is installed.
+
+## Copilot extended-package migration
+
+The new package adds seven profiles and eight skills while retaining the original
+planner, implementer and reviewer. Before upgrading a three-role consumer, inventory
+its protected native files and source/path overrides. Use a clean reviewed update
+PR, inspect every newly created role/skill/rule and reconcile the refreshed
+Copilot fragment and guide into local native instructions. Existing files are
+preserved; a common instruction change is not automatically active in them.
+
+Include the matching reviewed reusable-workflow commit in the same tooling upgrade
+PR; its previous-tooling list must accept the installed base, and its workflow-owned
+Copilot guard must validate new assets even when the installed validator has only
+the old three-role checks. Do not upgrade the bundle against an older unamended
+workflow and call it enforced. The guard validates structure and maximum native
+permissions; it cannot prove a client's instruction semantics or tool binding.
+
+Legacy answers without `copilot_python_profile` or `copilot_frontend_profile` are
+treated as false. Ordinary updates cannot change these choices. To add a technical
+rule later, use a separately reviewed manual native-rule migration (which need not
+alter saved Copier choices), or an explicit reviewed template-configuration
+migration. Do not delete/edit the answers file to bypass installation-only guards.
+GitHub bot activation, runtime client setup, hooks and downstream writes remain
+separate authorized work.
+
+### Managed Copilot name reconciliation
+
+Managed `backbone-*` roles use canonical lowercase `.agent.md` filenames. Copilot
+also supports `.md` profiles, so the workflow guard rejects alternate spellings or
+case variants of those reserved role identities rather than trusting ambiguous
+configuration. Existing local alternates remain preserved on disk; reconcile them
+manually into the canonical file in the reviewed adoption PR, keeping stronger
+instructions/permissions. Never delete a local policy merely to obtain a green gate.
+Unrelated project-native agent names remain outside this reserved-name contract.

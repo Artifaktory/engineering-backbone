@@ -1,0 +1,27 @@
+Read the [canonical policy]({{ core_link }}) and
+[Copilot workflow]({{ guide_link }}). This skill supplies a procedure, not additional
+permissions, authority or independent approval. Preserve stricter project rules.
+
+## Inputs and output
+
+Inputs: frozen base/head, Task Packet, acceptance criteria, approved check commands,
+prerequisites and test-path scope. Output: check/evidence report with commands, exit
+codes, revisions, acceptance coverage, unexecuted checks and limitations. Test
+engineers may edit scoped tests; quality checkers record evidence without repairs.
+
+## Procedure
+
+1. Confirm snapshot, prerequisites and applicable policy. Select targeted checks,
+   affected suites and required broader checks proportionally to risk.
+2. For fixes, require an observed failing regression and repaired run. For control
+   plane/contract changes, exercise real create/update and negative input paths.
+3. Run approved commands only. Keep assertions, coverage, timeouts and gates intact;
+   terminal access does not authorize unrelated command-side writes.
+4. Record actual results and map every acceptance item to evidence or pending,
+   blocked or failed status. Hand frozen check evidence to independent review.
+
+## Stops and negative cases
+
+Stop on changed snapshot, unsafe command, missing prerequisite or failed required
+check. Explain any retry; unchanged failures are investigated, not rerun for green.
+A structural PASS proves neither Copilot discovery nor product runtime behavior.

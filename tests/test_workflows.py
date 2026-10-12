@@ -263,7 +263,11 @@ class WorkflowTests(unittest.TestCase):
                 self.assertEqual(observed[-1], manifest['versions'][version]['rendered_toolchain_sha256'])
                 result = self.validate()
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(set(previous), set(observed))
+        # The three original fixture identities remain exact; the reviewed
+        # preceding main validator is additionally retained for the Copilot
+        # upgrade. An explicit authority set catches accidental expansion.
+        preceding = "5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a"
+        self.assertEqual(set(previous), set(observed) | {preceding})
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
 
     def test_historical_compatibility_survives_clean_single_commit_clone(self):

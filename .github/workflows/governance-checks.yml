@@ -73,8 +73,8 @@ jobs:
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: '5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a'
-          PREVIOUS_TOOLCHAIN_SHA256: '["444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
+          CURRENT_TOOLCHAIN_SHA256: '827c3cc0475146eb5e2b1263f118842e1d12d6a14ac9f6dff3b9d723cc4f466b'
+          PREVIOUS_TOOLCHAIN_SHA256: '["5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
         run: |
           set -euo pipefail
           trusted_root="$GITHUB_WORKSPACE/trusted-base"
@@ -148,6 +148,304 @@ jobs:
           # Never import from, install dependencies from, or execute the candidate.
           cd "$trusted_root"
           python -I -m pip install --require-hashes -r .engineering-backbone/requirements.lock
+          # New native contracts remain checked when the base validator is old.
+          # The guard is compiled trusted text, never imported from either snapshot.
+          python -I - <<'COPILOT_PYTHON'
+          import os, sys
+          from pathlib import Path
+          # BEGIN COMPILED COPILOT GUARD
+          def copilot_errors(root, trusted_base=None, *, source=False):
+              """Self-contained Copilot checks compiled into the pinned workflow.
+
+              Every registry and permission limit below belongs to trusted source/workflow
+              bytes. This function reads candidate data only; it imports no candidate code.
+              Legacy three-role consumers remain valid until the extended package is seeded.
+              Native permissions express host tool budgets, not a filesystem sandbox.
+              """
+              import json
+              import os
+              from pathlib import Path
+              import re
+              from urllib.parse import unquote, urlsplit
+              import yaml
+
+              original = ('planner', 'implementer', 'reviewer')
+              extended = ('analyst', 'plan-reviewer', 'test-engineer', 'quality-checker',
+                          'security-reviewer', 'documentation', 'finding-triage')
+              budgets = {role: {'read', 'search'} for role in original + extended}
+              budgets['implementer'] |= {'edit', 'execute'}
+              budgets['test-engineer'] |= {'edit', 'execute'}
+              budgets['quality-checker'] |= {'execute'}
+              budgets['documentation'] |= {'edit'}
+              skills = ('task-intake', 'implementation-plan', 'bug-reproduction',
+                        'test-and-quality', 'code-review', 'finding-triage',
+                        'delta-review', 'docs-traceability')
+              core_rules = ('governance', 'tests', 'docs')
+              rules = core_rules + ('python', 'frontend')
+              role_paths = {role: f'.github/agents/backbone-{role}.agent.md' for role in budgets}
+              skill_paths = {skill: f'.github/skills/{skill}/SKILL.md' for skill in skills}
+              rule_paths = {rule: f'.github/instructions/backbone-{rule}.instructions.md' for rule in rules}
+              managed = list(role_paths.values()) + list(skill_paths.values()) + list(rule_paths.values())
+              extra = [role_paths[role] for role in extended] + list(skill_paths.values()) + list(rule_paths.values())
+              mandatory = list(role_paths.values()) + list(skill_paths.values()) + [rule_paths[rule] for rule in core_rules]
+              errors = []
+              root = Path(root).absolute()
+              base = Path(trusted_base).absolute() if trusted_base is not None else None
+
+              def safe(path, owner):
+                  try:
+                      relative = path.relative_to(owner)
+                  except ValueError:
+                      errors.append(f'{path}: managed file is outside its snapshot')
+                      return False
+                  components = [owner] + [owner.joinpath(*relative.parts[:index]) for index in range(1, len(relative.parts) + 1)]
+                  if any(part.is_symlink() for part in components) or not path.is_file():
+                      errors.append(f'{relative}: managed Copilot file must be regular with no symlink ancestors')
+                      return False
+                  if not path.resolve().is_relative_to(owner.resolve()):
+                      errors.append(f'{relative}: managed Copilot file resolves outside its snapshot')
+                      return False
+                  return True
+
+              def selected(owner):
+                  path = owner / '.engineering-backbone/project.json'
+                  if not safe(path, owner):
+                      return None
+                  def unique(pairs):
+                      result = {}
+                      for key, value in pairs:
+                          if key in result:
+                              raise ValueError('duplicate project JSON key: ' + key)
+                          result[key] = value
+                      return result
+                  try:
+                      data = json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=unique)
+                      value = data.get('agents') if isinstance(data, dict) else None
+                      if not isinstance(value, dict) or set(value) != {'codex', 'copilot'} or any(type(item) is not bool for item in value.values()):
+                          raise ValueError('agents require exact boolean codex/copilot facts')
+                      return value['copilot']
+                  except (OSError, UnicodeError, ValueError) as exc:
+                      errors.append(f'{path.relative_to(owner)}: {exc}')
+                      return None
+
+              enabled = selected(root)
+              before = selected(base) if base is not None else False
+              if before is True and enabled is not True:
+                  errors.append('adapter regression: trusted-base enabled copilot must remain enabled')
+              if enabled is not True and before is not True:
+                  return errors
+              safe(root / '.github/copilot-instructions.md', root)
+              # Copilot supports both .md and .agent.md profiles. Identity comes from
+              # the filename, so an alternate spelling can bypass canonical tool budgets
+              # even when its display name and omitted tools look like a managed role.
+              # Keep such local files intact and require reviewed manual reconciliation.
+              directory = root / '.github/agents'
+              if directory.is_dir() and not directory.is_symlink() and not directory.parent.is_symlink():
+                  identities = {'backbone-' + role: Path(relative).name for role, relative in role_paths.items()}
+                  for path in sorted(directory.iterdir(), key=lambda item: item.name):
+                      if not path.is_file() and not path.is_symlink():
+                          continue
+                      name = path.name.casefold()
+                      suffix = '.agent.md' if name.endswith('.agent.md') else '.md' if name.endswith('.md') else None
+                      identity = name[:-len(suffix)] if suffix is not None else None
+                      if identity in identities and path.name != identities[identity]:
+                          errors.append(f'{path.relative_to(root)}: alternate or ambiguous managed Copilot role identity; keep the canonical {identities[identity]} and reconcile this local profile in a reviewed manual migration')
+              if base is not None and before is True:
+                  installed = list(managed)
+                  for relative in skill_paths.values():
+                      directory = (base / relative).parent
+                      # Known managed companion resources share the same preservation
+                      # boundary as SKILL.md. Unrelated project skill folders stay local.
+                      for current, subdirs, files in os.walk(directory, followlinks=False):
+                          for name in subdirs:
+                              if (Path(current) / name).is_symlink():
+                                  errors.append(f'{Path(current).relative_to(base) / name}: trusted managed Copilot directory cannot be symlinked')
+                          installed.extend(str((Path(current) / name).relative_to(base)) for name in files)
+                  for relative in sorted(set(installed)):
+                      previous = base / relative
+                      if previous.exists() or previous.is_symlink():
+                          safe(previous, base)
+                          if not (root / relative).exists() and not (root / relative).is_symlink():
+                              errors.append(f'{relative}: installed Copilot asset cannot disappear; removal requires a separately reviewed governance migration')
+              skill_directories = [str(Path(relative).parent) for relative in skill_paths.values()]
+              package = source or any((root / relative).exists() or (root / relative).is_symlink()
+                                      for relative in extra + skill_directories)
+              required = mandatory if package else [role_paths[role] for role in original]
+              for relative in required:
+                  if not (root / relative).exists() and not (root / relative).is_symlink():
+                      errors.append(f'missing required Copilot package file: {relative}')
+
+              class UniqueLoader(yaml.SafeLoader):
+                  pass
+              def mapping(loader, node, deep=False):
+                  loader.flatten_mapping(node)
+                  result = {}
+                  for key_node, value_node in node.value:
+                      key = loader.construct_object(key_node, deep=deep)
+                      if not isinstance(key, str):
+                          raise ValueError('frontmatter keys must be strings')
+                      if key in result:
+                          raise ValueError('duplicate YAML key: ' + key)
+                      result[key] = loader.construct_object(value_node, deep=deep)
+                  return result
+              UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
+              conflict = re.compile(r'^(?:<<<<<<<(?: |$)|>>>>>>>(?: |$)|\|\|\|\|\|\|\|(?: |$))', re.M)
+              link = re.compile(r'!?\[[^\]\n]*\]\(\s*(<[^>]+>|[^\s)]+)(?:\s+["\'][^\n]*?["\'])?\s*\)')
+              reference = re.compile(r'^\s{0,3}\[[^\]\n]+\]:\s*(<[^>]+>|[^\s]+)', re.M)
+
+              def text(path):
+                  if not safe(path, root):
+                      return None
+                  label = str(path.relative_to(root))
+                  try:
+                      content = path.read_text(encoding='utf-8')
+                      if len(content) > 131072:
+                          raise ValueError('managed content exceeds 128 KiB')
+                  except (OSError, UnicodeError, ValueError) as exc:
+                      errors.append(f'{label}: {exc}')
+                      return None
+                  if conflict.search(content):
+                      errors.append(f'{label}: unresolved merge conflict marker')
+                  if path.suffix == '.md':
+                      prose = re.sub(r'```.*?```|~~~.*?~~~', '', content, flags=re.S)
+                      for match in list(link.finditer(prose)) + list(reference.finditer(prose)):
+                          target = match.group(1).strip('<>')
+                          parsed = urlsplit(target)
+                          if parsed.scheme or parsed.netloc or target.startswith(('#', '${')):
+                              continue
+                          relative = unquote(parsed.path)
+                          if not relative:
+                              continue
+                          linked = (path.parent / relative).resolve()
+                          if relative.startswith('/') or not linked.is_relative_to(root.resolve()) or not linked.exists():
+                              errors.append(f'{label}: broken local Markdown link {target}')
+                  return content
+
+              def frontmatter(relative):
+                  content = text(root / relative)
+                  if content is None:
+                      return None, ''
+                  try:
+                      match = re.match(r'\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)', content, re.S)
+                      if not match:
+                          raise ValueError('missing YAML frontmatter')
+                      data = yaml.load(match.group(1), Loader=UniqueLoader)
+                      body = content[match.end():].strip()
+                      if not isinstance(data, dict):
+                          raise ValueError('frontmatter must be a mapping')
+                      if not body:
+                          raise ValueError('missing agent instructions or skill/rule body')
+                      return data, body
+                  except (ValueError, TypeError, yaml.YAMLError) as exc:
+                      errors.append(f'{relative}: {exc}')
+                      return None, ''
+
+              def string(data, key, relative, limit):
+                  value = data.get(key)
+                  if not isinstance(value, str) or not value.strip() or len(value) > limit or '\x00' in value:
+                      errors.append(f'{relative}: required nonempty string {key} (maximum {limit} characters)')
+                      return False
+                  return True
+
+              for role, relative in role_paths.items():
+                  if not (root / relative).exists() and not (root / relative).is_symlink():
+                      continue
+                  data, body = frontmatter(relative)
+                  if data is None:
+                      continue
+                  allowed = {'name', 'description', 'tools'}
+                  if role in extended:
+                      allowed |= {'handoffs', 'user-invocable', 'disable-model-invocation'}
+                  if set(data) - allowed:
+                      errors.append(f'{relative}: unapproved frontmatter keys: {sorted(set(data) - allowed)}')
+                  string(data, 'name', relative, 64)
+                  string(data, 'description', relative, 1024)
+                  if data.get('name') != 'backbone-' + role:
+                      errors.append(f'{relative}: incorrect native agent name')
+                  tools = data.get('tools')
+                  valid = isinstance(tools, list) and bool(tools) and all(isinstance(item, str) for item in tools)
+                  if valid:
+                      valid = len(tools) == len(set(tools)) and (set(tools) == budgets[role] if source else set(tools).issubset(budgets[role]))
+                  if not valid:
+                      errors.append(f'{relative}: tools must be ' + ('exactly ' if source else 'a nonempty unique subset of ') + str(sorted(budgets[role])) + '; planner/reviewer cannot edit, execute, or delegate')
+                  if role in extended and len(body) < 60:
+                      errors.append(f'{relative}: meaningful agent instructions require at least 60 characters')
+                  for key in ('user-invocable', 'disable-model-invocation'):
+                      if key in data and type(data[key]) is not bool:
+                          errors.append(f'{relative}: {key} must be boolean')
+                  if 'handoffs' in data:
+                      handoffs = data['handoffs']
+                      if not isinstance(handoffs, list) or not handoffs or len(handoffs) > 10:
+                          errors.append(f'{relative}: handoffs must be a nonempty list of at most ten entries')
+                      else:
+                          for handoff in handoffs:
+                              if not isinstance(handoff, dict) or set(handoff) != {'label', 'agent', 'prompt', 'send'}:
+                                  errors.append(f'{relative}: handoff requires only label, agent, prompt, send')
+                                  continue
+                              string(handoff, 'label', relative, 120)
+                              string(handoff, 'prompt', relative, 2048)
+                              target = handoff['agent']
+                              if not isinstance(target, str) or target not in {'backbone-' + item for item in budgets}:
+                                  errors.append(f'{relative}: handoff target must be a known backbone role')
+                              if handoff['send'] is not False:
+                                  errors.append(f'{relative}: handoffs require send: false; automatic handoffs are prohibited')
+              for skill, relative in skill_paths.items():
+                  if not (root / relative).exists() and not (root / relative).is_symlink():
+                      continue
+                  data, body = frontmatter(relative)
+                  if data is None:
+                      continue
+                  if set(data) != {'name', 'description'}:
+                      errors.append(f'{relative}: skill frontmatter requires only name and description')
+                  string(data, 'name', relative, 64)
+                  string(data, 'description', relative, 1024)
+                  if data.get('name') != skill:
+                      errors.append(f'{relative}: skill name must match its folder')
+                  if len(body) < 100 or not re.search(r'^#{1,6} ', body, re.M):
+                      errors.append(f'{relative}: meaningful skill body requires headings and at least 100 characters')
+                  # Companion resources are owned by this managed skill only. Never follow
+                  # directory links or exempt other files hidden under a known skill path.
+                  directory = (root / relative).parent
+                  for current, subdirs, files in os.walk(directory, followlinks=False):
+                      for name in subdirs:
+                          if (Path(current) / name).is_symlink():
+                              errors.append(f'{Path(current).relative_to(root) / name}: managed Copilot directory cannot be symlinked')
+                      for name in files:
+                          path = Path(current) / name
+                          if path != root / relative:
+                              text(path)
+              for rule, relative in rule_paths.items():
+                  if not (root / relative).exists() and not (root / relative).is_symlink():
+                      continue
+                  data, body = frontmatter(relative)
+                  if data is None:
+                      continue
+                  if 'applyTo' not in data or set(data) - {'description', 'applyTo'}:
+                      errors.append(f'{relative}: instruction frontmatter requires applyTo and only optional description')
+                  if 'description' in data:
+                      string(data, 'description', relative, 1024)
+                  if string(data, 'applyTo', relative, 2048):
+                      patterns = [item.strip() for item in data['applyTo'].split(',')]
+                      invalid = any(not item or item.startswith(('/', '\\', '!')) or '\\' in item or ':' in item
+                                    or any(char.isspace() or ord(char) < 32 for char in item)
+                                    or any(part in {'.', '..'} for part in item.split('/'))
+                                    or any(not part for part in item.split('/'))
+                                    or any(char in item for char in '[]{}()')
+                                    or not re.search(r'[^*?/]', item)
+                                    for item in patterns)
+                      if invalid or len(patterns) != len(set(patterns)):
+                          errors.append(f'{relative}: applyTo must use unique scoped repository-relative glob patterns')
+                  if len(body) < 60:
+                      errors.append(f'{relative}: meaningful instruction body requires at least 60 characters')
+              return errors
+          # END COMPILED COPILOT GUARD
+          workspace = Path(os.environ['GITHUB_WORKSPACE'])
+          errors = copilot_errors(workspace / 'candidate', workspace / 'trusted-base')
+          for error in errors:
+              print('::error::' + error, file=sys.stderr)
+          if errors:
+              sys.exit(1)
+          COPILOT_PYTHON
           python -I "$trusted_root/.engineering-backbone/validate.py" \
             --root "$candidate_root" --trusted-base "$trusted_root"
       - name: Check committed patch whitespace
