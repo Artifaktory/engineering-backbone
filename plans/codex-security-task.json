@@ -1,0 +1,153 @@
+{
+  "schema_version": "1",
+  "id": "BB-CODEX-SECURITY-004",
+  "title": "Protect Codex managed role identities",
+  "objective": "Reject repository-native Codex role substitutions through duplicate names, config declarations and ambiguous native paths, including historical-tooling consumer CI; retain existing roles and honest runtime-permission limits.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "8d4728d92a0125452b223f2fa99226fc8fc8cd0d",
+    "head_revision": "168dbc2a498f93261df6541642ec56807743c727"
+  },
+  "approved_sources": [
+    "Human request 2026-10-12: protect Codex name collisions and add only concrete remaining related security controls; established checks/review/Delta/PR workflow",
+    "Read-only comparison and primary released Codex source evidence in plans/codex-security.md",
+    "Existing AGENTS.md, policy/core.md and CONTRIBUTING.md operating contract",
+    "Confirmed CB-1/CS-1 Full triage and independent successful Delta: docs/reviews/codex-security-result.md"
+  ],
+  "scope": {
+    "include": [
+      "scripts/validate.py",
+      "scripts/compile_toolchain_fingerprint.py",
+      ".github/workflows/governance-checks.yml",
+      "tests/test_codex*",
+      "tests/test_validation.py",
+      "tests/test_workflows.py",
+      "tests/test_copilot_workflow_guard.py",
+      "docs/agent-adapters.md",
+      "docs/reviews/codex-security*",
+      "CONTRIBUTING.md",
+      "plans/codex-security*"
+    ],
+    "exclude": [
+      "tests/fixtures/historical/**",
+      ".codex/**",
+      ".github/agents/**",
+      ".github/skills/**",
+      "templates/**",
+      "requirements*",
+      "schemas/**",
+      "policy/**",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Root/nested native aliases cannot occupy reserved managed names",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-security-checks.md"
+      ]
+    },
+    {
+      "id": "AC-2",
+      "description": "Config declarations and effective referenced names cannot substitute managed roles",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-security-checks.md"
+      ]
+    },
+    {
+      "id": "AC-3",
+      "description": "Native path and identity ambiguities fail closed without candidate execution",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-security-checks.md"
+      ]
+    },
+    {
+      "id": "AC-4",
+      "description": "Canonical references, unrelated valid local roles and stronger implementer defaults stay compatible and byte-preserved",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-security-checks.md"
+      ]
+    },
+    {
+      "id": "AC-5",
+      "description": "Compiled workflow rejects substitutions with historical approved consumer tooling and cannot be suppressed by candidate flags/imports",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-security-checks.md"
+      ]
+    },
+    {
+      "id": "AC-6",
+      "description": "Guard compilation, coherent rendered fingerprint and existing generated-consumer/create/update suites pass",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-security-checks.md"
+      ]
+    },
+    {
+      "id": "AC-7",
+      "description": "Documentation accurately limits structural assurance and records runtime permission/discovery evidence gaps",
+      "verification": "manual",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-security-checks.md"
+      ]
+    },
+    {
+      "id": "AC-8",
+      "description": "Independent plan/Full/triage/Delta records and a reviewed PR with actual checks",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": [
+        "docs/reviews/codex-security-result.md",
+        "docs/reviews/codex-security-checks.md"
+      ]
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "actionlint",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Independent read-only plan review",
+      "Independent frozen-snapshot behavior and security Full reviews, triage and Delta after confirmed repairs",
+      "Client version/discovery/permission smoke is unexecuted unless the intended client is available"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Unresolved confirmed finding",
+    "Failed required check",
+    "Unexpected overwrite of local policy or role/config bytes",
+    "Scope or authorization conflict"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Downstream repository writes",
+    "New role/skill rollout or unrelated cleanup",
+    "Secret commits",
+    "Force push or destructive cleanup"
+  ],
+  "status": "ready_for_review"
+}

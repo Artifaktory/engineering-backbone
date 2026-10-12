@@ -1,8 +1,10 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
-Task Packet. The active Copilot delivery uses [its Task Packet](plans/copilot-development-task.json)
-and [its plan](plans/copilot-development.md). The preceding Codex consolidation is
+Task Packet. The active Codex identity-security repair uses
+[its Task Packet](plans/codex-security-task.json) and [its plan](plans/codex-security.md).
+The preceding Copilot delivery uses [its Task Packet](plans/copilot-development-task.json)
+and [its plan](plans/copilot-development.md). The earlier Codex consolidation is
 recorded in [its plan](plans/codex-consolidation.md). The original bootstrap remains recorded
 in [plans/bootstrap-task.json](plans/bootstrap-task.json) and [plans/bootstrap.md](plans/bootstrap.md). Keep shared policy distinct from
 project-specific branches, domain rules, commands and permissions.

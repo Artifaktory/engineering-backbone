@@ -92,12 +92,15 @@ centrally during dependency maintenance; Copier never runs that compiler or hook
 ## Native formats and limits
 
 Codex roles use standalone TOML under `.codex/agents/` with required `name`,
-`description` and `developer_instructions`. Planner/reviewer default to
-`sandbox_mode = "read-only"`; implementer defaults to `workspace-write`. Current
-local Codex clients load these profiles for spawned sessions. Older clients and
-Codex GitHub review integration require separate verification/setup. Parent live
-permission overrides can supersede a child's read-only default. Do not use elevated
-runtime permissions as a substitute for a controlled independent review.
+`description` and `developer_instructions`. Planner/reviewer declare
+`sandbox_mode = "read-only"`; implementer declares `workspace-write` (a consumer
+may retain the stricter `read-only`). These are checked policy intentions, not
+observed confinement. In the inspected Codex release, role application preserves
+parent permissions; live session choices also affect child permissions. Start
+independent review in a parent session with appropriate read-only permissions and
+verify the intended client/version. Older clients and Codex GitHub review
+integration require separate verification/setup. See the pinned
+[role-authority source evidence](../plans/codex-security.md#primary-source-evidence).
 
 Copilot profiles use `.github/agents/*.agent.md`; skills use
 `.github/skills/<name>/SKILL.md`; path rules use
@@ -117,12 +120,57 @@ Codex combines instruction files root-to-current-directory; Copilot documents
 nearest `AGENTS.md` precedence for agent instructions. Use the common root baseline
 and reviewed stronger local additions; do not assume identical nested resolution.
 
+## Codex managed identity boundary
+
+The names `backbone_planner`, `backbone_implementer` and `backbone_reviewer` belong
+to their corresponding root `.codex/agents/backbone-*.toml` files. Validation
+inspects recursive native TOMLs and nested regular repository `.codex` project layers;
+native names are trimmed and case-sensitive. Additional files cannot claim these
+names, even when the three canonical files themselves remain valid.
+Case-equivalent noncanonical spellings of `.codex`, its `agents` directory or
+`config.toml` are rejected, including when canonical and alternate paths coexist:
+case-insensitive hosts can resolve them despite a Linux checkout treating them as
+distinct paths. Reconcile the spelling through a reviewed PR without overwriting
+local bytes. Role-name and discovered `.toml` extension case sensitivity remain
+unchanged.
+
+Local `.codex/config.toml` declarations are checked too: a reserved declaration
+must reference its corresponding canonical file. Referenced files anywhere inside
+the snapshot are inspected for their effective name; a missing/blank referenced
+name falls back to the exact declaration key. Unrelated valid roles and settings
+remain project-owned and byte-preserved. Invalid identity data, uninspectable
+references, symlinked native paths/ancestors and traversal errors stop validation;
+reconcile them through a reviewed local PR rather than overwriting them on update.
+The pinned workflow carries the same trusted guard, including when an approved
+older consumer validator is installed. Candidate code is not imported to inspect
+native data.
+
+Source mode retains the existing root `artifacts/` raw-evidence exclusion, including
+historical review checkouts; those are not supported source execution directories.
+Consumer mode has no such exception. Explicit config-file references are inspected
+even when they target source artifacts. Host-global and live session configuration
+remain outside repository validation and need the intended-client check below.
+Generic application directory symlinks remain project-owned and are not traversed
+to certify external trees. Codex can retain a logical cwd beneath such an alias and
+load additional layers; reconcile any intended aliased agent working directory
+separately before relying on managed identities. This guard does not certify every
+possible logical working directory.
+
 ## Runtime discovery smoke check
 
 After installation, start a new supported Codex session at the repository root and
-ask it to list active instructions and available `backbone_*` roles. Start the
-planner or reviewer and check that it reports its role and scoped boundaries without
-writing files. Repeat from any relevant nested directory.
+record its exact version, active instructions, selected profile paths and available
+`backbone_*` roles. Start the planner or reviewer in a controlled independent
+read-only parent session; inspect actual effective permissions and tool behavior
+alongside its reported boundaries. Repeat from relevant nested directories and
+check local/global configuration overrides. A role's own statement that it is
+read-only is not a permission test. Use a separately authorized disposable checkout
+for any write-denial probe, and retain the observed result rather than inferring
+it from TOML. No live Codex client check was executed for the identity-security
+repair; its evidence is structural tests and inspected released source.
+Record a governed cwd without unreviewed directory-symlink ancestors. A launch
+through an application directory alias needs separate native-layer reconciliation,
+even when ordinary snapshot validation passes.
 
 For Copilot follow [the runtime smoke checklist](copilot/smoke-tests.md): verify
 all ten selected profiles, eight skill procedures, applicable rules and real tool
