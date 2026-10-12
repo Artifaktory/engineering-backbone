@@ -123,16 +123,18 @@ class WorkflowTests(unittest.TestCase):
                 file = self.trusted / '.engineering-backbone' / missing
                 original = file.read_bytes()
                 file.unlink()
-                result = self.validate(PATH=str(fake_bin) + os.pathsep + original_path)
-                self.assertNotEqual(result.returncode, 0)
-                self.assertIn('No complete trusted consumer baseline', result.stdout)
-                self.assertFalse(python_marker.exists())
+                for event in ('pull_request', 'workflow_dispatch'):
+                    result = self.validate(EVENT_NAME=event, PATH=str(fake_bin) + os.pathsep + original_path)
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn('No complete trusted consumer baseline', result.stdout)
+                    self.assertFalse(python_marker.exists())
                 file.write_bytes(original)
         shutil.rmtree(self.trusted)
-        result = self.validate(PATH=str(fake_bin) + os.pathsep + original_path)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn('workflow inactive', result.stdout)
-        self.assertFalse(python_marker.exists())
+        for event in ('pull_request', 'workflow_dispatch'):
+            result = self.validate(EVENT_NAME=event, PATH=str(fake_bin) + os.pathsep + original_path)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('workflow inactive', result.stdout)
+            self.assertFalse(python_marker.exists())
 
     def test_source_mode_cannot_bypass_consumer_gate(self):
         step = 'Check workflow mode and event'
@@ -146,10 +148,63 @@ class WorkflowTests(unittest.TestCase):
         base = STEPS['Checkout trusted consumer snapshot']['with']
         self.assertEqual(head['ref'], '${{ github.event.pull_request.head.sha || github.sha }}')
         self.assertEqual(head['fetch-depth'], 0)
-        self.assertEqual(base['ref'], '${{ github.event.pull_request.base.sha || github.event.before || github.sha }}')
+        self.assertEqual(base['ref'], '${{ github.event.pull_request.base.sha || github.event.before }}')
         self.assertFalse(head['persist-credentials'])
         self.assertFalse(base['persist-credentials'])
-        self.assertIn("github.event_name == 'workflow_dispatch'", STEPS['Checkout trusted consumer snapshot']['if'])
+        self.assertNotIn("workflow_dispatch", STEPS['Checkout trusted consumer snapshot']['if'])
+        dispatch = STEPS['Checkout trusted consumer default branch']
+        self.assertEqual(dispatch['if'], "${{ !inputs.source_mode && github.event_name == 'workflow_dispatch' }}")
+        self.assertEqual(dispatch['with']['ref'], 'refs/heads/${{ github.event.repository.default_branch }}')
+        self.assertFalse(dispatch['with']['persist-credentials'])
+
+    def dispatch_snapshots(self, *, malicious):
+        # The workflow's actual ref mapping selects default-branch tooling even
+        # when dispatch selects a different feature commit as the candidate.
+        repository = self.workspace / 'dispatch-repository'
+        shutil.copytree(self.trusted, repository)
+        initialize(repository)
+        default_name = 'reviewed-default'
+        git(repository, 'branch', '-m', default_name)
+        reviewed = commit(repository, 'Reviewed default-branch bundle')
+        git(repository, 'checkout', '-b', 'unapproved-feature')
+        marker = self.workspace / 'dispatch-candidate-executed'
+        if malicious:
+            (repository / '.engineering-backbone/validate.py').write_text(
+                f'from pathlib import Path\nPath({str(marker)!r}).touch()\nprint("forged dispatch PASS")\n')
+            (repository / '.engineering-backbone/requirements.lock').write_text('# empty candidate lock\n')
+            self.mutate('.engineering-backbone/core.json',
+                        lambda d: d['invariants'].update(human_merge_required=False), repository)
+        else:
+            self.mutate('.engineering-backbone/core.json', lambda d: d.update(version='0.1.1'), repository)
+        selected = commit(repository, 'Selected dispatch candidate')
+        candidate_ref = STEPS['Checkout candidate snapshot']['with']['ref']
+        self.assertEqual(candidate_ref, '${{ github.event.pull_request.head.sha || github.sha }}')
+        dispatch_ref = STEPS['Checkout trusted consumer default branch']['with']['ref']
+        trusted_ref = dispatch_ref.replace('${{ github.event.repository.default_branch }}', default_name)
+        self.assertEqual(git(repository, 'rev-parse', trusted_ref), reviewed)
+        self.assertNotEqual(reviewed, selected)
+        shutil.rmtree(self.candidate)
+        shutil.rmtree(self.trusted)
+        git(repository, 'checkout', '--detach', selected)
+        shutil.copytree(repository, self.candidate, ignore=shutil.ignore_patterns('.git'))
+        git(repository, 'checkout', '--detach', trusted_ref)
+        shutil.copytree(repository, self.trusted, ignore=shutil.ignore_patterns('.git'))
+        return marker
+
+    def test_dispatch_selected_feature_cannot_supply_trusted_tooling(self):
+        marker = self.dispatch_snapshots(malicious=True)
+        result = self.validate(EVENT_NAME='workflow_dispatch')
+        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('human_merge_required', result.stdout + result.stderr)
+        self.assertIn('dependency manifest is empty', result.stdout + result.stderr)
+        self.assertFalse(marker.exists())
+        self.assertNotIn('forged dispatch PASS', result.stdout)
+
+    def test_dispatch_valid_selected_feature_uses_default_branch_tooling(self):
+        marker = self.dispatch_snapshots(malicious=False)
+        result = self.validate(EVENT_NAME='workflow_dispatch')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertFalse(marker.exists())
 
     def whitespace_fixture(self, *, first_commit=False, bad=True):
         shutil.rmtree(self.candidate)

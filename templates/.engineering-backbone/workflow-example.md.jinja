@@ -37,7 +37,9 @@ Copier baseline update rejects changing that selection.
 
 PR checks compare explicit base/head revisions. Push checks compare the previous
 push commit to the current commit; a zero previous SHA cannot supply trusted
-consumer tooling. Manual dispatch is revalidation of an operator-selected approved
-snapshot, with whitespace checked against its parent (or the empty tree for a root
-commit), not proof of a policy transition. Source mode is reserved for the backbone
+consumer tooling. Manual dispatch validates the selected candidate using the
+repository default branch's trusted bundle; an unmerged selected commit cannot
+supply its own trusted tooling. Whitespace is checked against the selected
+commit's parent (or the empty tree for a root commit), while policy is compared
+against the default branch. Source mode is reserved for the backbone
 repository. Keep the caller and its immutable pin under protected human review.

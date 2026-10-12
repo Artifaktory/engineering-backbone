@@ -59,13 +59,15 @@ machine invariants after bootstrap without trusting a newly weakened head valida
 The README-only initial base has no validator: the job emits an explicit bootstrap
 notice requiring independent human review rather than claiming a pre-existing gate.
 
-The consumer branch of the reusable workflow also executes only the previous
+The consumer branch of the reusable workflow also executes only the trusted
 consumer revision's validator, schemas and dependency lock, with `--trusted-base`.
 It fails before execution if that baseline is incomplete; first adoption needs a
 reviewed seed PR with the caller inactive, followed by a separate activation PR.
-Consumer callers cannot select source mode. Manual dispatch revalidates a selected
-approved snapshot and its latest committed patch; it does not certify an update
-against an earlier trusted revision. See [adoption](adoption.md) for the event matrix.
+Consumer callers cannot select source mode. Manual dispatch always uses the
+repository default branch's bundle as trusted tooling, even when the candidate is
+an unmerged feature commit. Its whitespace check covers the selected commit's
+latest patch; the trusted policy comparison uses the default branch. See
+[adoption](adoption.md) for the event matrix.
 
 The workflow itself can be changed in a PR. Protected external approval/check
 settings and independent review are still needed to prevent bypass. Format/evidence

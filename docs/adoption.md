@@ -86,12 +86,14 @@ repository, so a consumer cannot use it to bypass this boundary.
 | Pull request | PR base SHA | PR base SHA to PR head SHA |
 | Push | Previous push SHA (`before`) | Previous SHA to current SHA |
 | First push with zero `before` | No baseline: consumer gate fails closed | Empty tree to current SHA |
-| Manual dispatch | Operator-selected, already-approved snapshot | Selected commit's parent to selected commit, or empty tree for a root commit |
+| Manual dispatch | Repository default branch, independently of the selected candidate | Selected commit's parent to selected commit, or empty tree for a root commit |
 
-Dispatch is read-only revalidation of an operator-selected approved snapshot; it
-is not evidence that a policy transition passed the previous revision's guard.
-PR/push checks establish that comparison. Unsupported events or invalid revision
-contexts fail rather than falling back to a clean-worktree diff.
+Dispatch validates the operator-selected candidate using the complete bundle on
+the repository's default branch. Selecting an unmerged feature commit does not
+make its validator or dependencies trusted. The whitespace range still covers the
+selected commit's latest patch. This compares policy against the default branch,
+not against the candidate's preceding commit; PR/push checks use their event bases.
+Unsupported events or invalid revision contexts fail rather than falling back to a clean-worktree diff.
 
 The workflow needs no private backbone checkout token, provider API key,
 deployment secret or write permission. GitHub still needs the private source

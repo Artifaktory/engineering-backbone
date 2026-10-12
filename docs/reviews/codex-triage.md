@@ -39,3 +39,28 @@ The original Full review is retained. The next independent review covers these
 finding IDs, the repair diff and directly introduced regressions; it does not
 repeat the entire bootstrap review. Repair completion and actual validation results
 will be recorded separately after execution.
+
+## First Delta round: remaining dispatch bypass
+
+Both independent reviewers inspected local repair commit
+`91cae8957fd84dcaa96e97f6d88303d79caba03e`, tree
+`f2ce5c09a6b5ce6750b87601cc54e91f6fc108d4`, with repair patch SHA256
+`0703de7120c017d522a72927b6efb6d3df0ac1ab8cb362a21331cb789733caff`.
+The correctness reviewer reproduced 66 passing tests and found no confirmed
+regression. The security reviewer reproduced an additional event-specific bypass;
+the first repair snapshot is therefore not accepted as final.
+
+**BB-CX-01-DELTA-01 (P1), confirmed:** consumer manual dispatch selected
+`github.sha` for the trusted checkout. An unapproved selected PR snapshot could
+therefore become both candidate and trusted tooling. The actual workflow shell
+returned 0, executed its no-op validator and printed a forged PASS despite a
+weakened human-merge invariant. Using the real prior reviewed bundle rejected that
+candidate with exit 1 and did not execute its validator. Instructions asking the
+operator to select an approved snapshot do not enforce this boundary.
+
+The scoped follow-up uses the repository's default branch as independently selected
+consumer dispatch tooling, never the dispatched candidate. PR base/push-before
+selection remains unchanged. An absent or incomplete default-branch bundle still
+fails closed. Git fixtures, event documentation and a narrow second Delta review
+must verify this correction and its direct regressions; the existing Full review
+is retained.
