@@ -47,3 +47,17 @@ separately.
 
 This bootstrap uses [its direct plan](../plans/bootstrap.md). Add story/ADR templates
 later when projects demonstrate a shared need; preserve their domain-specific data.
+
+## Imported planning and review discipline
+
+For non-trivial implementation plans, use a separate read-only plan review before
+implementation. Record dependencies, required/optional reviewers, budgets and
+coverage in the plan or companion report. Only the existing schema roles/fields are
+accepted; the source projects' micro/standard/critical packet contracts and their
+program/architecture/issue-projection engines are not installed here.
+
+Review companion reports bind the patch digest and, for Delta, the prior reviewed
+head alongside the existing base/head fields. Additional finding details (category,
+confidence, execution path, acceptance relation and regression check) belong in
+claim/evidence or a companion report. Existing local schemas and authenticated
+review/publish controls remain authoritative. See [the section map](codex-consolidation.md).

@@ -71,6 +71,14 @@ Human review, verified repository protections, live agent discovery and actual C
 evidence are distinct readiness items. This PR remains the place to review the
 bootstrap before any downstream distribution.
 
+## Codex reference consolidation
+
+[The section and adoption map](docs/codex-consolidation.md) records portable
+Codex/Copilot instructions extracted from the two source projects.
+[The complete bounded file inventory](docs/source-inventory/README.md) records
+paths, source commits/blobs, decisions and content-inspection coverage. Specialized
+local runtime controllers and publishing signatures are preserved, not replaced.
+
 ## Further reading
 
 - [Contribution and review process](CONTRIBUTING.md)

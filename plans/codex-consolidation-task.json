@@ -1,0 +1,131 @@
+{
+  "schema_version": "1",
+  "id": "BB-CODEX-CONSOLIDATION-002",
+  "title": "Consolidate shared Codex governance from both reference projects",
+  "objective": "Inventory all Codex-related control-plane files in Tars and Artifaktory, integrate portable governance sections and review guidance into source and generated consumers, and publish one checked and independently reviewed PR.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "1371ec770f0d3fa0eb29e7d347afc7b709ffa3ee",
+    "head_revision": "72d9c9caefdd12805eed10d6984cf8b19dd9b4bc"
+  },
+  "approved_sources": [
+    "Human request 2026-10-12: complete source-file mapping, integrate common Codex sections into engineering-backbone and publish a reviewed PR; no downstream writes or merge",
+    "Artifaktory/Tars feature/frontend and Artifaktory/Artifaktory main/staging: exact source revisions recorded in the inventory"
+  ],
+  "scope": {
+    "include": [
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      "policy/core.md",
+      "docs/**",
+      "plans/codex-consolidation*",
+      "templates/_partials/**",
+      ".codex/agents/**",
+      ".github/agents/**",
+      ".github/copilot-instructions.md",
+      "tests/test_codex_consolidation.py"
+    ],
+    "exclude": [
+      "tests/fixtures/**",
+      "scripts/validate.py",
+      "schemas/**",
+      "requirements*",
+      ".github/workflows/**",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Complete pinned path/blob inventory, with decisions and inspected-content distinction",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-consolidation-result.md",
+        "docs/codex-consolidation.md"
+      ]
+    },
+    {
+      "id": "AC-2",
+      "description": "Common portable instructions integrated consistently into source Codex/Copilot roles and Copier output",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-consolidation-result.md",
+        "docs/codex-consolidation.md"
+      ]
+    },
+    {
+      "id": "AC-3",
+      "description": "Existing native files, stricter local policy, technical profiles and human gates preserved",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-consolidation-result.md",
+        "docs/codex-consolidation.md"
+      ]
+    },
+    {
+      "id": "AC-4",
+      "description": "Source/consumer validation, real generation/upgrade tests and trusted-base checks pass",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-consolidation-result.md",
+        "docs/codex-consolidation.md"
+      ]
+    },
+    {
+      "id": "AC-5",
+      "description": "Independent Full/triage/fix/Delta chain without unresolved confirmed in-scope findings",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-consolidation-result.md",
+        "docs/codex-consolidation.md"
+      ]
+    },
+    {
+      "id": "AC-6",
+      "description": "One published PR with verified GitHub CI and honest provider-review status",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "actionlint",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Pinned source inventory and extraction review",
+      "Two independent frozen-snapshot Full reviews and Delta after confirmed repairs",
+      "GitHub CI and Codex provider review; runtime client smoke not executed"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Unresolved P0/P1 finding",
+    "Failed required check",
+    "Unsafe overwrite of consumer policy",
+    "Scope or authorization conflict"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Downstream repository writes",
+    "Secret commits",
+    "Force push or destructive cleanup"
+  ],
+  "status": "ready_for_review"
+}
