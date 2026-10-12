@@ -1,0 +1,21 @@
+{
+  "schema_version": "1",
+  "purpose": "Documentation catalog; the compiled workflow guard is authoritative",
+  "profiles": {
+    "docs": {"runtime": null, "pr": ["docs"]},
+    "python": {"runtime": "python", "pr": ["build", "lint", "test", "sast"]},
+    "typescript": {"runtime": "node", "pr": ["build", "lint", "test", "sast", "typecheck"]},
+    "go": {"runtime": "go", "pr": ["build", "lint", "test", "sast"]},
+    "dotnet": {"runtime": "dotnet", "pr": ["build", "lint", "test", "sast"]}
+  },
+  "capabilities": {
+    "dependencies": {"pr": ["dependency"], "maintenance": ["dependency"]},
+    "web": {"pr": ["browser"]},
+    "api": {"pr": ["api"]},
+    "database": {"pr": ["migration"]},
+    "container": {"pr": ["container"], "maintenance": ["container"]},
+    "iac": {"pr": ["iac"]},
+    "release": {"release": ["release-integrity", "provenance", "signature"], "conditional_release": {"dependencies_or_container": ["sbom"]}},
+    "deploy": {"deploy": ["deployment-smoke", "rollback", "monitoring"]}
+  }
+}

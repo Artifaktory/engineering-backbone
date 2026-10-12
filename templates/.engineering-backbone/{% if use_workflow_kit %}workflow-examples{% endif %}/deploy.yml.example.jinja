@@ -1,0 +1,61 @@
+{% raw %}
+# Inert reference: this file is outside .github/workflows and ends in .example.
+# Both guards fail until a reviewed project integration supplies the actual
+# protected environment, verified artifact, deployment and recovery procedures.
+name: Backbone deployment integration example
+on:
+  workflow_dispatch:
+    inputs:
+      prerequisite_run_id:
+        description: Successful post-merge Backbone PR checks run for this exact commit
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  prerequisites:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Require reviewed local activation
+        run: |
+          echo 'BLOCKED: complete the reviewed local deployment integration and protected environment before activating this example.'
+          exit 1
+      - name: Verify prerequisite run belongs to this exact approved commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREREQUISITE_RUN_ID: ${{ inputs.prerequisite_run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$PREREQUISITE_RUN_ID" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREREQUISITE_RUN_ID" > "$RUNNER_TEMP/prerequisite-run.json"
+          python -I - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          data = json.loads((Path(os.environ['RUNNER_TEMP']) / 'prerequisite-run.json').read_text())
+          expected = {
+              'head_sha': os.environ['GITHUB_SHA'],
+              'status': 'completed',
+              'conclusion': 'success',
+              'event': 'push',
+              'path': '.github/workflows/backbone-pr-checks.yml',
+          }
+          if any(data.get(key) != value for key, value in expected.items()):
+              raise SystemExit('BLOCKED: prerequisite run does not match the approved commit and workflow')
+          PY
+  deployment:
+    needs: prerequisites
+    runs-on: ubuntu-latest
+    environment: backbone-deployment-review
+    permissions:
+      contents: read
+    steps:
+      - name: Require local deployment and operational verification
+        run: |
+          echo 'BLOCKED: verify the released artifact and implement the local deployment before activating this job.'
+          echo 'Configure real deployment-smoke, rollback and monitoring checks with reviewed recovery behavior.'
+          exit 1
+{% endraw %}

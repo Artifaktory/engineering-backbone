@@ -1,7 +1,9 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
-Task Packet. The active Codex identity-security repair uses
+Task Packet. The active shared workflow delivery uses
+[its Task Packet](plans/workflow-kit-task.json) and [its plan](plans/workflow-kit.md).
+The preceding Codex identity-security repair uses
 [its Task Packet](plans/codex-security-task.json) and [its plan](plans/codex-security.md).
 The preceding Copilot delivery uses [its Task Packet](plans/copilot-development-task.json)
 and [its plan](plans/copilot-development.md). The earlier Codex consolidation is
@@ -20,6 +22,7 @@ python -m venv .venv
 python -m pip install --require-hashes -r requirements.lock
 python scripts/validate.py
 python scripts/compile_toolchain_fingerprint.py --check
+python scripts/compile_workflow_kit.py --check
 python -m unittest discover -s tests -v
 git diff --check
 ```

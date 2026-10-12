@@ -102,6 +102,15 @@ another retained version. A SHA or schema-valid report alone is not human approv
 
 ## Update/release discipline
 
+The [shared workflow kit](workflows/README.md) adds a strict aggregate with fixed
+expected jobs; require its actual published final status only after the reviewed
+complete seed and activation steps. Verify deliberate failure, missing-job and
+green cases against hosting protections before declaring enforcement. Legacy
+governance and kit execution are separate; a generic required check's skipped or
+neutral GitHub conclusion is not proof that every project requirement ran.
+This delivery configures no server-side protection, publishes no Backbone release
+and activates no downstream caller.
+
 Publish reviewed releases with immutable commit references. Consumers obtain
 provider-selected files and their own settings; update through consumer PRs. A
 central fix does not silently alter existing consumers. If a defective release is

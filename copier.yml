@@ -14,7 +14,13 @@ _skip_if_exists:
   - ".github/skills/**"
   - ".github/instructions/**"
   - .github/workflows/engineering-backbone.yml
+  - .github/workflows/backbone-pr-checks.yml
+  - .github/workflows/backbone-maintenance.yml
+  - .github/workflows/backbone-release.yml
+  - .github/workflows/backbone-deploy.yml
   - .engineering-backbone/project.json
+  - .engineering-backbone/workflows.json
+  - ".engineering-backbone/workflow-examples/**"
 
 project_name:
   type: str
@@ -106,11 +112,39 @@ backbone_workflow_ref:
     backbone_workflow_ref is installation-only; change workflow activation or its pin in a separate reviewed migration and reconcile answers.
     {% endif %}
 
+use_workflow_kit:
+  type: bool
+  default: false
+  help: Seed the optional shared workflow kit without application commands; activation needs a separate reviewed configuration PR.
+  validator: >-
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and use_workflow_kit != previous.get('use_workflow_kit', false) %}
+    use_workflow_kit is installation-only; legacy answers mean false. Use a separate reviewed workflow-kit migration.
+    {% endif %}
+
+workflow_kit_ref:
+  type: str
+  default: ""
+  help: Optional reviewed 40-character kit commit SHA; blank omits native callers. A pin alone cannot activate the inactive seed.
+  validator: >-
+    {% if workflow_kit_ref and not (workflow_kit_ref | regex_search('^[0-9a-fA-F]{40}\\Z')) %}
+    Leave blank or provide a reviewed full 40-character Git commit SHA.
+    {% endif %}
+    {% if workflow_kit_ref and not use_workflow_kit %}
+    workflow_kit_ref requires use_workflow_kit; choose the kit explicitly before providing a pin.
+    {% endif %}
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and workflow_kit_ref | lower != previous.get('workflow_kit_ref', '') | lower %}
+    workflow_kit_ref is installation-only; legacy answers mean blank. Change the caller pin in a separate reviewed migration and reconcile answers.
+    {% endif %}
+
 _message_after_copy: >-
   Review .engineering-backbone/project.json and the generated instruction fragments.
   Existing native instructions, profiles, Copilot skills and path rules were preserved. Manually integrate the
   fragments into stronger local governance before claiming adoption.
+  A selected workflow kit is an inactive seed: review its complete project configuration before a separate activation PR.
 _message_after_update: >-
   Review the diff of .engineering-backbone/core.md, core.json and instruction fragments.
   Existing native instructions, profiles, skills, path rules and project facts were preserved;
   refresh them manually in the same reviewed update PR when needed.
+  Existing workflow-kit configuration, callers and delivery examples were preserved.

@@ -1,0 +1,13 @@
+name: Backbone PR checks
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches: [{{ base_branch | tojson }}]
+permissions:
+  contents: read
+jobs:
+  pr-checks:
+    uses: Artifaktory/engineering-backbone/.github/workflows/workflow-kit-pr.yml@{{ workflow_kit_ref | lower }}
+    permissions:
+      contents: read

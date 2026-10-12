@@ -1,0 +1,707 @@
+name: Reusable workflow kit PR checks
+
+on:
+  workflow_call:
+    inputs:
+      source_mode:
+        description: Validate the backbone source rather than a generated consumer
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  configuration:
+    name: Workflow configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      artifact_id: ${{ steps.artifact.outputs.artifact-id }}
+      candidate_sha: ${{ steps.configuration.outputs.candidate_sha }}
+      python: ${{ steps.configuration.outputs.python }}
+      node: ${{ steps.configuration.outputs.node }}
+      go: ${{ steps.configuration.outputs.go }}
+      dotnet: ${{ steps.configuration.outputs.dotnet }}
+    steps:
+      - name: Check workflow event and mode
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          SOURCE_MODE: ${{ inputs.source_mode }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          if [ "$SOURCE_MODE" = 'true' ] && [ "$GITHUB_REPOSITORY" != 'Artifaktory/engineering-backbone' ]; then
+            echo '::error::Source mode is restricted to the backbone source repository.'
+            exit 1
+          fi
+          case "$EVENT_NAME" in
+            pull_request|workflow_dispatch) ;;
+            push)
+              if [ -z "$BEFORE_SHA" ] || [ "$BEFORE_SHA" = '0000000000000000000000000000000000000000' ]; then
+                echo '::error::A push requires an existing trusted snapshot; seed and review the configuration before activation.'
+                exit 1
+              fi ;;
+            *) echo '::error::Unsupported event for PR workflow kit.'; exit 1 ;;
+          esac
+      - name: Checkout candidate snapshot
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Checkout trusted configuration snapshot
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.event.before }}
+          path: trusted-base
+          persist-credentials: false
+      - name: Checkout trusted default branch
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: refs/heads/${{ github.event.repository.default_branch }}
+          path: trusted-base
+          persist-credentials: false
+      - name: Set up trusted Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Prepare trusted workflow runner
+        id: configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/workflow-kit"
+          cat > "$RUNNER_TEMP/workflow-kit/runner.py" <<'WORKFLOW_KIT_PYTHON'
+          # BEGIN COMPILED WORKFLOW KIT GUARD
+          def workflow_kit_main(argv=None):
+              """Validate, prepare approved commands, execute checks, and enforce gates."""
+              import argparse
+              import json
+              import os
+              from pathlib import Path
+              import re
+              import signal
+              import stat
+              import subprocess
+              import tempfile
+
+              config_relative = '.engineering-backbone/workflows.json'
+              profiles = {'docs', 'python', 'typescript', 'go', 'dotnet'}
+              capabilities = {'dependencies', 'web', 'api', 'database', 'container',
+                              'iac', 'release', 'deploy'}
+              runtime_for = {'python': 'python', 'typescript': 'node', 'go': 'go',
+                             'dotnet': 'dotnet'}
+              quality = {'docs', 'build', 'lint', 'test', 'typecheck', 'browser', 'api',
+                         'migration'}
+              security = {'sast', 'dependency', 'container', 'iac'}
+              release = {'release-integrity', 'provenance', 'signature', 'sbom'}
+              deploy = {'deployment-smoke', 'rollback', 'monitoring'}
+              phases = {'pr', 'maintenance', 'release', 'deploy'}
+              kinds = quality | security | release | deploy
+              identifier = re.compile(r'[A-Za-z][A-Za-z0-9_.-]{0,63}\Z')
+              config_limit = 262144
+              missing_config = object()
+
+              def fail(message):
+                  raise ValueError(message)
+
+              def safe_text(value, label, *, nonempty=True, limit=4096):
+                  if (not isinstance(value, str) or len(value) > limit
+                          or (nonempty and not value.strip())
+                          or any(ord(char) < 32 or 127 <= ord(char) <= 159 for char in value)):
+                      fail('Invalid ' + label)
+                  try:
+                      value.encode('utf-8')
+                  except UnicodeError:
+                      fail('Invalid UTF-8 ' + label)
+                  return value
+
+              def safe_path(path, *, directory=False, missing=False):
+                  path = Path(path)
+                  if '..' in path.parts:
+                      fail('Parent traversal in filesystem path')
+                  path = Path(os.path.abspath(path))
+                  current = Path(path.anchor)
+                  for part in path.parts[1:]:
+                      current = current / part
+                      try:
+                          mode = current.lstat().st_mode
+                      except FileNotFoundError:
+                          if missing:
+                              return path
+                          fail('Required filesystem path is absent')
+                      if stat.S_ISLNK(mode):
+                          fail('Symlink in filesystem path')
+                      if current != path and not stat.S_ISDIR(mode):
+                          fail('Non-directory filesystem ancestor')
+                  mode = path.stat().st_mode
+                  if directory and not stat.S_ISDIR(mode):
+                      fail('Working directory is not a directory')
+                  if not directory and not stat.S_ISREG(mode):
+                      fail('Input is not a regular file')
+                  return path
+
+              def pairs(items):
+                  result = {}
+                  for key, value in items:
+                      if key in result:
+                          fail('Duplicate JSON object key')
+                      result[key] = value
+                  return result
+
+              def read_json(path, *, absent=False):
+                  path = safe_path(path, missing=absent)
+                  if absent and not path.exists():
+                      return missing_config
+                  if path.stat().st_size > config_limit:
+                      fail('Configuration exceeds size limit')
+                  with path.open('rb') as handle:
+                      data = handle.read(config_limit + 1)
+                  if len(data) > config_limit:
+                      fail('Configuration exceeds size limit')
+                  try:
+                      return json.loads(data.decode('utf-8'), object_pairs_hook=pairs,
+                                        parse_constant=lambda value: fail('Invalid JSON number'))
+                  except (UnicodeError, json.JSONDecodeError):
+                      fail('Invalid UTF-8 JSON configuration')
+
+              def unique_strings(value, allowed, label, limit=100):
+                  if (not isinstance(value, list) or len(value) > limit
+                          or any(not isinstance(item, str) or item not in allowed for item in value)
+                          or len(value) != len(set(value))):
+                      fail('Invalid or duplicate ' + label)
+                  return set(value)
+
+              def required(config):
+                  needed = set()
+                  for profile in config['profiles']:
+                      if profile == 'docs':
+                          needed.add(('docs', 'pr'))
+                      else:
+                          needed.update((kind, 'pr') for kind in ('build', 'lint', 'test', 'sast'))
+                          if profile == 'typescript':
+                              needed.add(('typecheck', 'pr'))
+                  selected = set(config['capabilities'])
+                  for capability, kind in (('web', 'browser'), ('api', 'api'),
+                                           ('database', 'migration'), ('iac', 'iac')):
+                      if capability in selected:
+                          needed.add((kind, 'pr'))
+                  for capability, kind in (('dependencies', 'dependency'), ('container', 'container')):
+                      if capability in selected:
+                          needed.update((kind, phase) for phase in ('pr', 'maintenance'))
+                  if 'release' in selected:
+                      needed.update((kind, 'release') for kind in ('release-integrity', 'provenance', 'signature'))
+                      if selected & {'dependencies', 'container'}:
+                          needed.add(('sbom', 'release'))
+                  if 'deploy' in selected:
+                      needed.update((kind, 'deploy') for kind in deploy)
+                  return needed
+
+              def validate(config, *, complete=False):
+                  expected = {'schema_version', 'enabled', 'profiles', 'capabilities',
+                              'runtimes', 'checks'}
+                  if not isinstance(config, dict) or set(config) != expected:
+                      fail('Configuration has missing or unknown keys')
+                  if config['schema_version'] != '1' or type(config['enabled']) is not bool:
+                      fail('Invalid configuration version or enabled flag')
+                  selected_profiles = unique_strings(config['profiles'], profiles, 'profiles', 5)
+                  unique_strings(config['capabilities'], capabilities, 'capabilities', 8)
+                  versions = config['runtimes']
+                  if not isinstance(versions, dict) or set(versions) - set(runtime_for.values()):
+                      fail('Invalid runtime mapping')
+                  for name, version in versions.items():
+                      safe_text(version, 'runtime version', limit=32)
+                      pattern = r'[0-9]{1,3}(?:\.[0-9]{1,3}){0,2}'
+                      if name == 'dotnet':
+                          pattern += r'(?:\.x)?'
+                      if re.fullmatch(pattern, version) is None:
+                          fail('Runtime version must be numeric or a terminal .x for dotnet')
+                  checks = config['checks']
+                  if not isinstance(checks, list) or len(checks) > 100:
+                      fail('Invalid checks array')
+                  ids = set()
+                  coverage = set()
+                  for check in checks:
+                      keys = {'id', 'kind', 'argv', 'cwd', 'timeout_seconds', 'phases'}
+                      if not isinstance(check, dict) or set(check) != keys:
+                          fail('Check has missing or unknown keys')
+                      if not isinstance(check['id'], str) or identifier.fullmatch(check['id']) is None:
+                          fail('Invalid check ID')
+                      if check['id'] in ids:
+                          fail('Duplicate check ID')
+                      ids.add(check['id'])
+                      if not isinstance(check['kind'], str) or check['kind'] not in kinds:
+                          fail('Unknown check kind')
+                      arguments = check['argv']
+                      if not isinstance(arguments, list) or not 1 <= len(arguments) <= 64:
+                          fail('Check argv must contain an executable')
+                      for argument in arguments:
+                          safe_text(argument, 'command argument', nonempty=False)
+                      if not arguments[0].strip():
+                          fail('Check argv must contain an executable')
+                      cwd = safe_text(check['cwd'], 'working directory', limit=512)
+                      if (cwd != '.' and (cwd.startswith('/') or '\\' in cwd
+                              or ':' in cwd or any(part in ('', '.', '..') for part in cwd.split('/')))):
+                          fail('Working directory must be a safe relative path')
+                      timeout = check['timeout_seconds']
+                      if type(timeout) is not int or not 1 <= timeout <= 1800:
+                          fail('Timeout must be between 1 and 1800 seconds')
+                      selected_phases = unique_strings(check['phases'], phases, 'check phases', 4)
+                      if not selected_phases:
+                          fail('Check must select a phase')
+                      allowed_phases = ({'release'} if check['kind'] in release else
+                                        {'deploy'} if check['kind'] in deploy else
+                                        {'pr', 'maintenance'} if check['kind'] in {'dependency', 'container'} else {'pr'})
+                      if selected_phases - allowed_phases:
+                          fail('Check kind does not support selected phases')
+                      coverage.update((check['kind'], phase) for phase in selected_phases)
+                  if config['enabled'] or complete:
+                      if not selected_profiles:
+                          fail('Active configuration must select a profile')
+                      if any(runtime_for[profile] not in versions
+                             for profile in selected_profiles if profile in runtime_for):
+                          fail('Required profile runtime is missing')
+                      if required(config) - coverage:
+                          fail('Required profile or capability checks are missing')
+                  return config
+
+              def configuration(root):
+                  root = safe_path(root, directory=True)
+                  value = read_json(root / config_relative, absent=True)
+                  return None if value is missing_config else validate(value)
+
+              def compare(candidate, base):
+                  if base is not None:
+                      if candidate is None:
+                          fail('Existing workflow configuration cannot be removed')
+                      if base['enabled'] and not candidate['enabled']:
+                          fail('Enabled workflow configuration cannot be disabled')
+                      for key in ('profiles', 'capabilities'):
+                          if set(base[key]) - set(candidate[key]):
+                              fail('Approved profiles or capabilities cannot be removed')
+                      base_ids = {check['id'] for check in base['checks']}
+                      if base_ids - {check['id'] for check in candidate['checks']}:
+                          fail('Approved check IDs cannot be removed')
+                  if candidate is not None and candidate['enabled'] and (base is None or not base['enabled']):
+                      if base is None:
+                          fail('Activation requires an already reviewed inactive seed')
+                      validate(base, complete=True)
+                      activated = dict(base, enabled=True)
+                      if candidate != activated:
+                          fail('Activation must match the reviewed seed except enabled')
+
+              def prepared(root, trusted):
+                  candidate, base = configuration(root), configuration(trusted)
+                  compare(candidate, base)
+                  if candidate is None or not candidate['enabled']:
+                      fail('Workflow execution requires an enabled configuration')
+                  result = dict(candidate)
+                  result['runtimes'] = dict(candidate['runtimes'], **base['runtimes'])
+                  approved = {check['id']: check for check in base['checks']}
+                  result['checks'] = [approved.get(check['id'], check) for check in candidate['checks']]
+                  # Candidate phase/kind edits cannot turn the approved command off.
+                  validate(result, complete=True)
+                  return result
+
+              def write_json(path, value):
+                  path = safe_path(path, missing=True)
+                  safe_path(path.parent, directory=True)
+                  temporary = None
+                  try:
+                      with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8',
+                                                       dir=path.parent, delete=False) as handle:
+                          temporary = Path(handle.name)
+                          json.dump(value, handle, indent=2, sort_keys=True)
+                          handle.write('\n')
+                      os.replace(temporary, path)
+                  finally:
+                      if temporary is not None and temporary.exists():
+                          temporary.unlink()
+
+              def run_checks(args):
+                  root = safe_path(args.root, directory=True)
+                  config = validate(read_json(args.config), complete=True)
+                  if not config['enabled']:
+                      fail('Workflow execution requires an enabled configuration')
+                  permitted = {'quality': 'pr', 'security': 'pr', 'maintenance': 'maintenance',
+                               'release': 'release', 'deploy': 'deploy'}
+                  if args.phase != permitted[args.category]:
+                      fail('Category does not support selected phase')
+                  if args.phase in {'release', 'deploy'} and args.phase not in config['capabilities']:
+                      fail('Delivery phase requires its capability')
+                  selected_kinds = {'quality': quality, 'security': security,
+                                    'maintenance': {'dependency', 'container'},
+                                    'release': release, 'deploy': deploy}[args.category]
+                  selected = [check for check in config['checks']
+                              if args.phase in check['phases'] and check['kind'] in selected_kinds]
+                  if not selected:
+                      print('NOT APPLICABLE: no ' + args.category + ' checks required by approved configuration')
+                      return 0
+                  allowed_env = {'PATH', 'HOME', 'LANG', 'LC_ALL', 'TMPDIR', 'TEMP', 'TMP',
+                                 'SystemRoot', 'COMSPEC', 'PATHEXT', 'DOTNET_ROOT',
+                                 'DOTNET_ROOT_X64', 'DOTNET_CLI_TELEMETRY_OPTOUT',
+                                 'DOTNET_NOLOGO', 'PYTHONUTF8', 'PYTHONIOENCODING'}
+                  environment = {key: value for key, value in os.environ.items() if key in allowed_env}
+                  for check in selected:
+                      cwd = safe_path(root / check['cwd'], directory=True)
+                      print('RUN: ' + check['id'], flush=True)
+                      try:
+                          process = subprocess.Popen(check['argv'], cwd=cwd, env=environment,
+                                                     shell=False, stdin=subprocess.DEVNULL,
+                                                     start_new_session=(os.name == 'posix'))
+                          try:
+                              returncode = process.wait(timeout=check['timeout_seconds'])
+                          except subprocess.TimeoutExpired:
+                              if os.name == 'posix':
+                                  os.killpg(process.pid, signal.SIGKILL)
+                              else:
+                                  process.kill()
+                              process.wait()
+                              raise
+                      except subprocess.TimeoutExpired:
+                          fail('Check timed out: ' + check['id'])
+                      except OSError:
+                          fail('Check executable unavailable: ' + check['id'])
+                      if returncode != 0:
+                          fail('Check failed: ' + check['id'] + ' (exit ' + str(returncode) + ')')
+                      print('PASS: ' + check['id'], flush=True)
+                  return 0
+
+              def scan(root):
+                  root = safe_path(root, directory=True)
+                  git_environment = {key: value for key, value in os.environ.items()
+                                     if key in {'PATH', 'HOME', 'SystemRoot', 'TEMP', 'TMP', 'TMPDIR'}}
+                  git_environment.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull)
+                  git_command = ['git', '-c', 'core.fsmonitor=false', '-c', 'submodule.recurse=false',
+                                 '-C', str(root)]
+                  try:
+                      membership = subprocess.run(git_command + ['rev-parse', '--show-toplevel'],
+                                                  stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                                                  stdin=subprocess.DEVNULL, shell=False, timeout=30,
+                                                  env=git_environment, check=False)
+                  except (OSError, subprocess.TimeoutExpired):
+                      fail('Tracked-file discovery failed')
+                  if (membership.returncode != 0 or len(membership.stdout) > 4096
+                          or os.fsdecode(membership.stdout).rstrip('\r\n') != str(root)):
+                      fail('Secret scan requires the repository root')
+                  with tempfile.TemporaryFile() as listing:
+                      try:
+                          result = subprocess.run(git_command + ['ls-files', '-z', '--cached'],
+                                                  stdout=listing, stderr=subprocess.DEVNULL,
+                                                  stdin=subprocess.DEVNULL, shell=False, timeout=30,
+                                                  env=git_environment, check=False)
+                      except (OSError, subprocess.TimeoutExpired):
+                          fail('Tracked-file discovery failed')
+                      if result.returncode != 0:
+                          fail('Tracked-file discovery failed')
+                      if listing.tell() > 8388608:
+                          fail('Tracked-file listing exceeds size limit')
+                      listing.seek(0)
+                      raw = listing.read()
+                  names = raw.split(b'\0')
+                  if names[-1] != b'':
+                      fail('Invalid tracked-file listing')
+                  names = names[:-1]
+                  if len(names) > 20000:
+                      fail('Tracked-file count exceeds limit')
+                  patterns = (
+                      ('private-key', re.compile(rb'-----BEGIN (?:RSA |EC |DSA |OPENSSH |ENCRYPTED )?PRIVATE KEY-----')),
+                      ('github-token', re.compile(rb'\bgh[pousr]_[A-Za-z0-9]{36,255}\b')),
+                      ('github-fine-grained-token', re.compile(rb'\bgithub_pat_[A-Za-z0-9_]{40,255}\b')),
+                      ('aws-access-key', re.compile(rb'\b(?:AKIA|ASIA)[A-Z0-9]{16}\b')),
+                  )
+                  total = 0
+                  findings = []
+                  for raw_name in names:
+                      try:
+                          name = raw_name.decode('utf-8')
+                      except UnicodeError:
+                          fail('Tracked filename is not UTF-8')
+                      safe_text(name, 'tracked filename', limit=4096)
+                      if (name.startswith('/') or '\\' in name
+                              or any(part in ('', '.', '..') for part in name.split('/'))):
+                          fail('Unsafe tracked filename')
+                      path = safe_path(root / name)
+                      if path.stat().st_size > 2097152:
+                          fail('Tracked file exceeds scan size limit: ' + name)
+                      with path.open('rb') as handle:
+                          data = handle.read(2097153)
+                      if len(data) > 2097152:
+                          fail('Tracked file exceeds scan size limit: ' + name)
+                      total += len(data)
+                      if total > 67108864:
+                          fail('Tracked files exceed total scan size limit')
+                      for kind, pattern in patterns:
+                          if pattern.search(data):
+                              findings.append((name, kind))
+                  for name, kind in findings:
+                      print('SECRET FINDING: ' + name + ' (' + kind + ')')
+                  if findings:
+                      fail('Secret scan found ' + str(len(findings)) + ' finding(s)')
+                  print('PASS: bounded tracked-file secret scan (' + str(len(names)) + ' files)')
+                  return 0
+
+              parser = argparse.ArgumentParser(description='Trusted shared workflow kit')
+              commands = parser.add_subparsers(dest='command', required=True)
+              validate_parser = commands.add_parser('validate')
+              validate_parser.add_argument('--root', required=True)
+              validate_parser.add_argument('--trusted-base')
+              prepare_parser = commands.add_parser('prepare')
+              prepare_parser.add_argument('--root', required=True)
+              prepare_parser.add_argument('--trusted-base', required=True)
+              prepare_parser.add_argument('--phase', choices=sorted(phases), required=True)
+              prepare_parser.add_argument('--output', required=True)
+              run_parser = commands.add_parser('run')
+              run_parser.add_argument('--root', required=True)
+              run_parser.add_argument('--config', required=True)
+              run_parser.add_argument('--phase', choices=sorted(phases), required=True)
+              run_parser.add_argument('--category', choices=('quality', 'security', 'maintenance', 'release', 'deploy'), required=True)
+              gate_parser = commands.add_parser('gate')
+              gate_parser.add_argument('--needs-json', required=True)
+              scan_parser = commands.add_parser('secret-scan')
+              scan_parser.add_argument('--root', required=True)
+              args = parser.parse_args(argv)
+              try:
+                  if args.command == 'validate':
+                      candidate = configuration(args.root)
+                      if args.trusted_base is not None:
+                          compare(candidate, configuration(args.trusted_base))
+                      print('PASS: workflow kit configuration' if candidate is not None else
+                            'PASS: legacy consumer has no workflow kit configuration')
+                      return 0
+                  if args.command == 'prepare':
+                      value = prepared(args.root, args.trusted_base)
+                      if args.phase in {'release', 'deploy'} and args.phase not in value['capabilities']:
+                          fail('Delivery phase requires its capability')
+                      write_json(args.output, value)
+                      print('PASS: prepared approved execution configuration')
+                      return 0
+                  if args.command == 'run':
+                      return run_checks(args)
+                  if args.command == 'secret-scan':
+                      return scan(args.root)
+                  try:
+                      needs = json.loads(args.needs_json, object_pairs_hook=pairs,
+                                         parse_constant=lambda value: fail('Invalid JSON number'))
+                  except json.JSONDecodeError:
+                      fail('Invalid needs JSON')
+                  expected_jobs = {'configuration', 'governance', 'quality', 'security', 'secrets'}
+                  if not isinstance(needs, dict) or set(needs) != expected_jobs:
+                      fail('Gate requires the fixed complete job set')
+                  if any(not isinstance(job, dict) or job.get('result') != 'success'
+                         for job in needs.values()):
+                      fail('Every required job must have result success')
+                  print('PASS: all five mandatory jobs succeeded')
+                  return 0
+              except (ValueError, OSError) as error:
+                  # Contract failures never include argument values, command output, or
+                  # secret matches. OSError paths may be uncontrolled, so redact them.
+                  print('FAIL: ' + (str(error) if isinstance(error, ValueError) else
+                                    'Filesystem operation failed'))
+                  return 1
+          # END COMPILED WORKFLOW KIT GUARD
+          if __name__ == '__main__':
+              raise SystemExit(workflow_kit_main())
+          WORKFLOW_KIT_PYTHON
+          python -I "$RUNNER_TEMP/workflow-kit/runner.py" prepare \
+            --root "$GITHUB_WORKSPACE/candidate" \
+            --trusted-base "$GITHUB_WORKSPACE/trusted-base" \
+            --phase pr --output "$RUNNER_TEMP/workflow-kit/execution.json"
+          candidate_sha="$(git -C "$GITHUB_WORKSPACE/candidate" rev-parse HEAD)"
+          echo "candidate_sha=$candidate_sha" >> "$GITHUB_OUTPUT"
+          python -I - <<'WORKFLOW_KIT_OUTPUTS'
+          import json, os, re
+          from pathlib import Path
+          config = json.loads((Path(os.environ['RUNNER_TEMP']) / 'workflow-kit/execution.json').read_text(encoding='utf-8'))
+          runtimes = config['runtimes']
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              for name in ('python', 'node', 'go', 'dotnet'):
+                  value = runtimes.get(name, '')
+                  if not isinstance(value, str) or (value and not re.fullmatch(r'[0-9]+(?:\.[0-9]+){0,2}(?:\.x)?', value)):
+                      raise ValueError('Invalid prepared runtime output: ' + name)
+                  print(name + '=' + value, file=output)
+          WORKFLOW_KIT_OUTPUTS
+      - name: Publish trusted run configuration
+        id: artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: workflow-kit-pr-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/workflow-kit/
+          if-no-files-found: error
+          retention-days: 1
+
+  governance:
+    name: Project governance
+    uses: ./.github/workflows/governance-checks.yml
+    with:
+      source_mode: ${{ inputs.source_mode }}
+
+  quality:
+    name: Project quality
+    needs: configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Download trusted run configuration
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
+        with:
+          artifact-ids: ${{ needs.configuration.outputs.artifact_id }}
+          path: ${{ runner.temp }}/workflow-kit
+          digest-mismatch: error
+      - name: Checkout candidate snapshot
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.configuration.outputs.candidate_sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up trusted Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Set up project Python
+        if: needs.configuration.outputs.python != ''
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ needs.configuration.outputs.python }}
+      - name: Set up project Node
+        if: needs.configuration.outputs.node != ''
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ needs.configuration.outputs.node }}
+          package-manager-cache: false
+      - name: Set up project Go
+        if: needs.configuration.outputs.go != ''
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version: ${{ needs.configuration.outputs.go }}
+          cache: false
+      - name: Set up project .NET
+        if: needs.configuration.outputs.dotnet != ''
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6
+        with:
+          dotnet-version: ${{ needs.configuration.outputs.dotnet }}
+      - name: Run project quality
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -I "$RUNNER_TEMP/workflow-kit/runner.py" run --root "$GITHUB_WORKSPACE/candidate" \
+            --config "$RUNNER_TEMP/workflow-kit/execution.json" --phase pr --category quality
+
+  security:
+    name: Project security
+    needs: configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Download trusted run configuration
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
+        with:
+          artifact-ids: ${{ needs.configuration.outputs.artifact_id }}
+          path: ${{ runner.temp }}/workflow-kit
+          digest-mismatch: error
+      - name: Checkout candidate snapshot
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.configuration.outputs.candidate_sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up trusted Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Set up project Python
+        if: needs.configuration.outputs.python != ''
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ needs.configuration.outputs.python }}
+      - name: Set up project Node
+        if: needs.configuration.outputs.node != ''
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ needs.configuration.outputs.node }}
+          package-manager-cache: false
+      - name: Set up project Go
+        if: needs.configuration.outputs.go != ''
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version: ${{ needs.configuration.outputs.go }}
+          cache: false
+      - name: Set up project .NET
+        if: needs.configuration.outputs.dotnet != ''
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6
+        with:
+          dotnet-version: ${{ needs.configuration.outputs.dotnet }}
+      - name: Run project security
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -I "$RUNNER_TEMP/workflow-kit/runner.py" run --root "$GITHUB_WORKSPACE/candidate" \
+            --config "$RUNNER_TEMP/workflow-kit/execution.json" --phase pr --category security
+
+  secrets:
+    name: Secret prevention
+    needs: configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Download trusted run configuration
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
+        with:
+          artifact-ids: ${{ needs.configuration.outputs.artifact_id }}
+          path: ${{ runner.temp }}/workflow-kit
+          digest-mismatch: error
+      - name: Checkout candidate snapshot
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.configuration.outputs.candidate_sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up trusted Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Run secret prevention
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -I "$RUNNER_TEMP/workflow-kit/runner.py" secret-scan --root "$GITHUB_WORKSPACE/candidate"
+
+  gate:
+    name: Workflow kit gate
+    if: always()
+    needs: [configuration, governance, quality, security, secrets]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Set up trusted Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Require every mandatory job to succeed
+        shell: bash
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        run: |
+          set -euo pipefail
+          python -I - <<'WORKFLOW_KIT_GATE'
+          import json, os, sys
+          expected = ('configuration', 'governance', 'quality', 'security', 'secrets')
+          needs = json.loads(os.environ['NEEDS_JSON'])
+          if not isinstance(needs, dict) or set(needs) != set(expected):
+              print('::error::Missing or unexpected mandatory job results.', file=sys.stderr)
+              sys.exit(1)
+          failures = [name for name in expected
+                      if not isinstance(needs[name], dict) or needs[name].get('result') != 'success']
+          if failures:
+              print('::error::Mandatory jobs did not succeed: ' + ', '.join(failures), file=sys.stderr)
+              sys.exit(1)
+          print('PASS: every mandatory job succeeded')
+          WORKFLOW_KIT_GATE

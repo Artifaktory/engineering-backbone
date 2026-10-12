@@ -68,13 +68,14 @@ jobs:
           python -m pip install --require-hashes -r requirements.lock
           python scripts/validate.py
           python scripts/compile_toolchain_fingerprint.py --check
+          python scripts/compile_workflow_kit.py --check
           python -m unittest discover -s tests -v
       - name: Validate generated consumer with trusted tooling
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: 'ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb'
-          PREVIOUS_TOOLCHAIN_SHA256: '["91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321","5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
+          CURRENT_TOOLCHAIN_SHA256: '7e3d27e21a8db1b1320ded8b8c499dd6033a3f45b0b4b7ff519316612f83ddeb'
+          PREVIOUS_TOOLCHAIN_SHA256: '["ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb","91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321","5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
         run: |
           set -euo pipefail
           trusted_root="$GITHUB_WORKSPACE/trusted-base"

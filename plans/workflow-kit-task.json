@@ -1,0 +1,159 @@
+{
+  "schema_version": "1",
+  "id": "BB-WORKFLOW-KIT-005",
+  "title": "Versioned shared workflow kit",
+  "objective": "Implement common checks, strict gates, applicable language/capability profiles, scheduled maintenance and safe delivery templates with compatible reviewed adoption.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "1ecbb7a572b3679b422105c557cb88a8bff75dac",
+    "head_revision": "1ee3df6df160203bcca7f63d9ff7135b423b9e57"
+  },
+  "approved_sources": [
+    "Human implementation request 2026-10-12",
+    "plans/workflow-kit.md",
+    "AGENTS.md, CONTRIBUTING.md and policy/core.md",
+    "Prior read-only comparison of practical Microsoft, Artifaktory and Tars workflows and primary standards",
+    "Confirmed WK-S-1 triage and independent successful repair Deltas: docs/reviews/workflow-kit-triage.md and result.md"
+  ],
+  "scope": {
+    "include": [
+      "scripts/**",
+      "schemas/**",
+      "templates/**",
+      "copier.yml",
+      ".github/workflows/**",
+      "tests/test_workflow*",
+      "tests/test_copier.py",
+      "tests/test_validation.py",
+      "README.md",
+      "CONTRIBUTING.md",
+      "docs/workflows/**",
+      "docs/adoption.md",
+      "docs/repository-controls.md",
+      "docs/reviews/workflow-kit*",
+      "plans/workflow-kit*"
+    ],
+    "exclude": [
+      "tests/fixtures/historical/**",
+      ".codex/**",
+      ".github/agents/**",
+      ".github/skills/**",
+      "policy/**",
+      "requirements*",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Safe compatible explicit profile and configuration contract",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/workflow-kit-checks.md"
+      ]
+    },
+    {
+      "id": "AC-2",
+      "description": "Real bounded argv runner and negative execution checks",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/workflow-kit-checks.md"
+      ]
+    },
+    {
+      "id": "AC-3",
+      "description": "Compiled trusted workflow and strict aggregate reject bypasses",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/workflow-kit-checks.md"
+      ]
+    },
+    {
+      "id": "AC-4",
+      "description": "Real secret and applicable security/maintenance checks",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/workflow-kit-checks.md"
+      ]
+    },
+    {
+      "id": "AC-5",
+      "description": "Real rendered consumers and preserved local upgrades",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/workflow-kit-checks.md"
+      ]
+    },
+    {
+      "id": "AC-6",
+      "description": "Accurate delivery templates, diagrams and activation contracts",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/workflow-kit-checks.md"
+      ]
+    },
+    {
+      "id": "AC-7",
+      "description": "Required complete local checks pass",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/workflow-kit-checks.md"
+      ]
+    },
+    {
+      "id": "AC-8",
+      "description": "Independent review chain and actual published checks",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": [
+        "docs/reviews/workflow-kit-plan-review.md",
+        "docs/reviews/workflow-kit-result.md",
+        "docs/reviews/workflow-kit-triage.md"
+      ]
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python scripts/compile_workflow_kit.py --check",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "actionlint",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Independent plan review",
+      "Independent behavior/security Full and scoped repair Deltas",
+      "Actual PR checks and advisory provider review",
+      "Operational protections and live downstream activation remain unexecuted"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Failed required check",
+    "Unresolved confirmed finding",
+    "Unexpected overwrite of local policy, config or workflow",
+    "Scope or authorization conflict"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Downstream repository writes",
+    "Repository setting mutations",
+    "Secret commits",
+    "Force push or destructive cleanup"
+  ],
+  "status": "ready_for_review"
+}

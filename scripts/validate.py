@@ -603,6 +603,436 @@ def copilot_errors(root, trusted_base=None, *, source=False):
     return errors
 
 
+# BEGIN COMPILED WORKFLOW KIT GUARD
+def workflow_kit_main(argv=None):
+    """Validate, prepare approved commands, execute checks, and enforce gates."""
+    import argparse
+    import json
+    import os
+    from pathlib import Path
+    import re
+    import signal
+    import stat
+    import subprocess
+    import tempfile
+
+    config_relative = '.engineering-backbone/workflows.json'
+    profiles = {'docs', 'python', 'typescript', 'go', 'dotnet'}
+    capabilities = {'dependencies', 'web', 'api', 'database', 'container',
+                    'iac', 'release', 'deploy'}
+    runtime_for = {'python': 'python', 'typescript': 'node', 'go': 'go',
+                   'dotnet': 'dotnet'}
+    quality = {'docs', 'build', 'lint', 'test', 'typecheck', 'browser', 'api',
+               'migration'}
+    security = {'sast', 'dependency', 'container', 'iac'}
+    release = {'release-integrity', 'provenance', 'signature', 'sbom'}
+    deploy = {'deployment-smoke', 'rollback', 'monitoring'}
+    phases = {'pr', 'maintenance', 'release', 'deploy'}
+    kinds = quality | security | release | deploy
+    identifier = re.compile(r'[A-Za-z][A-Za-z0-9_.-]{0,63}\Z')
+    config_limit = 262144
+    missing_config = object()
+
+    def fail(message):
+        raise ValueError(message)
+
+    def safe_text(value, label, *, nonempty=True, limit=4096):
+        if (not isinstance(value, str) or len(value) > limit
+                or (nonempty and not value.strip())
+                or any(ord(char) < 32 or 127 <= ord(char) <= 159 for char in value)):
+            fail('Invalid ' + label)
+        try:
+            value.encode('utf-8')
+        except UnicodeError:
+            fail('Invalid UTF-8 ' + label)
+        return value
+
+    def safe_path(path, *, directory=False, missing=False):
+        path = Path(path)
+        if '..' in path.parts:
+            fail('Parent traversal in filesystem path')
+        path = Path(os.path.abspath(path))
+        current = Path(path.anchor)
+        for part in path.parts[1:]:
+            current = current / part
+            try:
+                mode = current.lstat().st_mode
+            except FileNotFoundError:
+                if missing:
+                    return path
+                fail('Required filesystem path is absent')
+            if stat.S_ISLNK(mode):
+                fail('Symlink in filesystem path')
+            if current != path and not stat.S_ISDIR(mode):
+                fail('Non-directory filesystem ancestor')
+        mode = path.stat().st_mode
+        if directory and not stat.S_ISDIR(mode):
+            fail('Working directory is not a directory')
+        if not directory and not stat.S_ISREG(mode):
+            fail('Input is not a regular file')
+        return path
+
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                fail('Duplicate JSON object key')
+            result[key] = value
+        return result
+
+    def read_json(path, *, absent=False):
+        path = safe_path(path, missing=absent)
+        if absent and not path.exists():
+            return missing_config
+        if path.stat().st_size > config_limit:
+            fail('Configuration exceeds size limit')
+        with path.open('rb') as handle:
+            data = handle.read(config_limit + 1)
+        if len(data) > config_limit:
+            fail('Configuration exceeds size limit')
+        try:
+            return json.loads(data.decode('utf-8'), object_pairs_hook=pairs,
+                              parse_constant=lambda value: fail('Invalid JSON number'))
+        except (UnicodeError, json.JSONDecodeError):
+            fail('Invalid UTF-8 JSON configuration')
+
+    def unique_strings(value, allowed, label, limit=100):
+        if (not isinstance(value, list) or len(value) > limit
+                or any(not isinstance(item, str) or item not in allowed for item in value)
+                or len(value) != len(set(value))):
+            fail('Invalid or duplicate ' + label)
+        return set(value)
+
+    def required(config):
+        needed = set()
+        for profile in config['profiles']:
+            if profile == 'docs':
+                needed.add(('docs', 'pr'))
+            else:
+                needed.update((kind, 'pr') for kind in ('build', 'lint', 'test', 'sast'))
+                if profile == 'typescript':
+                    needed.add(('typecheck', 'pr'))
+        selected = set(config['capabilities'])
+        for capability, kind in (('web', 'browser'), ('api', 'api'),
+                                 ('database', 'migration'), ('iac', 'iac')):
+            if capability in selected:
+                needed.add((kind, 'pr'))
+        for capability, kind in (('dependencies', 'dependency'), ('container', 'container')):
+            if capability in selected:
+                needed.update((kind, phase) for phase in ('pr', 'maintenance'))
+        if 'release' in selected:
+            needed.update((kind, 'release') for kind in ('release-integrity', 'provenance', 'signature'))
+            if selected & {'dependencies', 'container'}:
+                needed.add(('sbom', 'release'))
+        if 'deploy' in selected:
+            needed.update((kind, 'deploy') for kind in deploy)
+        return needed
+
+    def validate(config, *, complete=False):
+        expected = {'schema_version', 'enabled', 'profiles', 'capabilities',
+                    'runtimes', 'checks'}
+        if not isinstance(config, dict) or set(config) != expected:
+            fail('Configuration has missing or unknown keys')
+        if config['schema_version'] != '1' or type(config['enabled']) is not bool:
+            fail('Invalid configuration version or enabled flag')
+        selected_profiles = unique_strings(config['profiles'], profiles, 'profiles', 5)
+        unique_strings(config['capabilities'], capabilities, 'capabilities', 8)
+        versions = config['runtimes']
+        if not isinstance(versions, dict) or set(versions) - set(runtime_for.values()):
+            fail('Invalid runtime mapping')
+        for name, version in versions.items():
+            safe_text(version, 'runtime version', limit=32)
+            pattern = r'[0-9]{1,3}(?:\.[0-9]{1,3}){0,2}'
+            if name == 'dotnet':
+                pattern += r'(?:\.x)?'
+            if re.fullmatch(pattern, version) is None:
+                fail('Runtime version must be numeric or a terminal .x for dotnet')
+        checks = config['checks']
+        if not isinstance(checks, list) or len(checks) > 100:
+            fail('Invalid checks array')
+        ids = set()
+        coverage = set()
+        for check in checks:
+            keys = {'id', 'kind', 'argv', 'cwd', 'timeout_seconds', 'phases'}
+            if not isinstance(check, dict) or set(check) != keys:
+                fail('Check has missing or unknown keys')
+            if not isinstance(check['id'], str) or identifier.fullmatch(check['id']) is None:
+                fail('Invalid check ID')
+            if check['id'] in ids:
+                fail('Duplicate check ID')
+            ids.add(check['id'])
+            if not isinstance(check['kind'], str) or check['kind'] not in kinds:
+                fail('Unknown check kind')
+            arguments = check['argv']
+            if not isinstance(arguments, list) or not 1 <= len(arguments) <= 64:
+                fail('Check argv must contain an executable')
+            for argument in arguments:
+                safe_text(argument, 'command argument', nonempty=False)
+            if not arguments[0].strip():
+                fail('Check argv must contain an executable')
+            cwd = safe_text(check['cwd'], 'working directory', limit=512)
+            if (cwd != '.' and (cwd.startswith('/') or '\\' in cwd
+                    or ':' in cwd or any(part in ('', '.', '..') for part in cwd.split('/')))):
+                fail('Working directory must be a safe relative path')
+            timeout = check['timeout_seconds']
+            if type(timeout) is not int or not 1 <= timeout <= 1800:
+                fail('Timeout must be between 1 and 1800 seconds')
+            selected_phases = unique_strings(check['phases'], phases, 'check phases', 4)
+            if not selected_phases:
+                fail('Check must select a phase')
+            allowed_phases = ({'release'} if check['kind'] in release else
+                              {'deploy'} if check['kind'] in deploy else
+                              {'pr', 'maintenance'} if check['kind'] in {'dependency', 'container'} else {'pr'})
+            if selected_phases - allowed_phases:
+                fail('Check kind does not support selected phases')
+            coverage.update((check['kind'], phase) for phase in selected_phases)
+        if config['enabled'] or complete:
+            if not selected_profiles:
+                fail('Active configuration must select a profile')
+            if any(runtime_for[profile] not in versions
+                   for profile in selected_profiles if profile in runtime_for):
+                fail('Required profile runtime is missing')
+            if required(config) - coverage:
+                fail('Required profile or capability checks are missing')
+        return config
+
+    def configuration(root):
+        root = safe_path(root, directory=True)
+        value = read_json(root / config_relative, absent=True)
+        return None if value is missing_config else validate(value)
+
+    def compare(candidate, base):
+        if base is not None:
+            if candidate is None:
+                fail('Existing workflow configuration cannot be removed')
+            if base['enabled'] and not candidate['enabled']:
+                fail('Enabled workflow configuration cannot be disabled')
+            for key in ('profiles', 'capabilities'):
+                if set(base[key]) - set(candidate[key]):
+                    fail('Approved profiles or capabilities cannot be removed')
+            base_ids = {check['id'] for check in base['checks']}
+            if base_ids - {check['id'] for check in candidate['checks']}:
+                fail('Approved check IDs cannot be removed')
+        if candidate is not None and candidate['enabled'] and (base is None or not base['enabled']):
+            if base is None:
+                fail('Activation requires an already reviewed inactive seed')
+            validate(base, complete=True)
+            activated = dict(base, enabled=True)
+            if candidate != activated:
+                fail('Activation must match the reviewed seed except enabled')
+
+    def prepared(root, trusted):
+        candidate, base = configuration(root), configuration(trusted)
+        compare(candidate, base)
+        if candidate is None or not candidate['enabled']:
+            fail('Workflow execution requires an enabled configuration')
+        result = dict(candidate)
+        result['runtimes'] = dict(candidate['runtimes'], **base['runtimes'])
+        approved = {check['id']: check for check in base['checks']}
+        result['checks'] = [approved.get(check['id'], check) for check in candidate['checks']]
+        # Candidate phase/kind edits cannot turn the approved command off.
+        validate(result, complete=True)
+        return result
+
+    def write_json(path, value):
+        path = safe_path(path, missing=True)
+        safe_path(path.parent, directory=True)
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8',
+                                             dir=path.parent, delete=False) as handle:
+                temporary = Path(handle.name)
+                json.dump(value, handle, indent=2, sort_keys=True)
+                handle.write('\n')
+            os.replace(temporary, path)
+        finally:
+            if temporary is not None and temporary.exists():
+                temporary.unlink()
+
+    def run_checks(args):
+        root = safe_path(args.root, directory=True)
+        config = validate(read_json(args.config), complete=True)
+        if not config['enabled']:
+            fail('Workflow execution requires an enabled configuration')
+        permitted = {'quality': 'pr', 'security': 'pr', 'maintenance': 'maintenance',
+                     'release': 'release', 'deploy': 'deploy'}
+        if args.phase != permitted[args.category]:
+            fail('Category does not support selected phase')
+        if args.phase in {'release', 'deploy'} and args.phase not in config['capabilities']:
+            fail('Delivery phase requires its capability')
+        selected_kinds = {'quality': quality, 'security': security,
+                          'maintenance': {'dependency', 'container'},
+                          'release': release, 'deploy': deploy}[args.category]
+        selected = [check for check in config['checks']
+                    if args.phase in check['phases'] and check['kind'] in selected_kinds]
+        if not selected:
+            print('NOT APPLICABLE: no ' + args.category + ' checks required by approved configuration')
+            return 0
+        allowed_env = {'PATH', 'HOME', 'LANG', 'LC_ALL', 'TMPDIR', 'TEMP', 'TMP',
+                       'SystemRoot', 'COMSPEC', 'PATHEXT', 'DOTNET_ROOT',
+                       'DOTNET_ROOT_X64', 'DOTNET_CLI_TELEMETRY_OPTOUT',
+                       'DOTNET_NOLOGO', 'PYTHONUTF8', 'PYTHONIOENCODING'}
+        environment = {key: value for key, value in os.environ.items() if key in allowed_env}
+        for check in selected:
+            cwd = safe_path(root / check['cwd'], directory=True)
+            print('RUN: ' + check['id'], flush=True)
+            try:
+                process = subprocess.Popen(check['argv'], cwd=cwd, env=environment,
+                                           shell=False, stdin=subprocess.DEVNULL,
+                                           start_new_session=(os.name == 'posix'))
+                try:
+                    returncode = process.wait(timeout=check['timeout_seconds'])
+                except subprocess.TimeoutExpired:
+                    if os.name == 'posix':
+                        os.killpg(process.pid, signal.SIGKILL)
+                    else:
+                        process.kill()
+                    process.wait()
+                    raise
+            except subprocess.TimeoutExpired:
+                fail('Check timed out: ' + check['id'])
+            except OSError:
+                fail('Check executable unavailable: ' + check['id'])
+            if returncode != 0:
+                fail('Check failed: ' + check['id'] + ' (exit ' + str(returncode) + ')')
+            print('PASS: ' + check['id'], flush=True)
+        return 0
+
+    def scan(root):
+        root = safe_path(root, directory=True)
+        git_environment = {key: value for key, value in os.environ.items()
+                           if key in {'PATH', 'HOME', 'SystemRoot', 'TEMP', 'TMP', 'TMPDIR'}}
+        git_environment.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull)
+        git_command = ['git', '-c', 'core.fsmonitor=false', '-c', 'submodule.recurse=false',
+                       '-C', str(root)]
+        try:
+            membership = subprocess.run(git_command + ['rev-parse', '--show-toplevel'],
+                                        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                                        stdin=subprocess.DEVNULL, shell=False, timeout=30,
+                                        env=git_environment, check=False)
+        except (OSError, subprocess.TimeoutExpired):
+            fail('Tracked-file discovery failed')
+        if (membership.returncode != 0 or len(membership.stdout) > 4096
+                or os.fsdecode(membership.stdout).rstrip('\r\n') != str(root)):
+            fail('Secret scan requires the repository root')
+        with tempfile.TemporaryFile() as listing:
+            try:
+                result = subprocess.run(git_command + ['ls-files', '-z', '--cached'],
+                                        stdout=listing, stderr=subprocess.DEVNULL,
+                                        stdin=subprocess.DEVNULL, shell=False, timeout=30,
+                                        env=git_environment, check=False)
+            except (OSError, subprocess.TimeoutExpired):
+                fail('Tracked-file discovery failed')
+            if result.returncode != 0:
+                fail('Tracked-file discovery failed')
+            if listing.tell() > 8388608:
+                fail('Tracked-file listing exceeds size limit')
+            listing.seek(0)
+            raw = listing.read()
+        names = raw.split(b'\0')
+        if names[-1] != b'':
+            fail('Invalid tracked-file listing')
+        names = names[:-1]
+        if len(names) > 20000:
+            fail('Tracked-file count exceeds limit')
+        patterns = (
+            ('private-key', re.compile(rb'-----BEGIN (?:RSA |EC |DSA |OPENSSH |ENCRYPTED )?PRIVATE KEY-----')),
+            ('github-token', re.compile(rb'\bgh[pousr]_[A-Za-z0-9]{36,255}\b')),
+            ('github-fine-grained-token', re.compile(rb'\bgithub_pat_[A-Za-z0-9_]{40,255}\b')),
+            ('aws-access-key', re.compile(rb'\b(?:AKIA|ASIA)[A-Z0-9]{16}\b')),
+        )
+        total = 0
+        findings = []
+        for raw_name in names:
+            try:
+                name = raw_name.decode('utf-8')
+            except UnicodeError:
+                fail('Tracked filename is not UTF-8')
+            safe_text(name, 'tracked filename', limit=4096)
+            if (name.startswith('/') or '\\' in name
+                    or any(part in ('', '.', '..') for part in name.split('/'))):
+                fail('Unsafe tracked filename')
+            path = safe_path(root / name)
+            if path.stat().st_size > 2097152:
+                fail('Tracked file exceeds scan size limit: ' + name)
+            with path.open('rb') as handle:
+                data = handle.read(2097153)
+            if len(data) > 2097152:
+                fail('Tracked file exceeds scan size limit: ' + name)
+            total += len(data)
+            if total > 67108864:
+                fail('Tracked files exceed total scan size limit')
+            for kind, pattern in patterns:
+                if pattern.search(data):
+                    findings.append((name, kind))
+        for name, kind in findings:
+            print('SECRET FINDING: ' + name + ' (' + kind + ')')
+        if findings:
+            fail('Secret scan found ' + str(len(findings)) + ' finding(s)')
+        print('PASS: bounded tracked-file secret scan (' + str(len(names)) + ' files)')
+        return 0
+
+    parser = argparse.ArgumentParser(description='Trusted shared workflow kit')
+    commands = parser.add_subparsers(dest='command', required=True)
+    validate_parser = commands.add_parser('validate')
+    validate_parser.add_argument('--root', required=True)
+    validate_parser.add_argument('--trusted-base')
+    prepare_parser = commands.add_parser('prepare')
+    prepare_parser.add_argument('--root', required=True)
+    prepare_parser.add_argument('--trusted-base', required=True)
+    prepare_parser.add_argument('--phase', choices=sorted(phases), required=True)
+    prepare_parser.add_argument('--output', required=True)
+    run_parser = commands.add_parser('run')
+    run_parser.add_argument('--root', required=True)
+    run_parser.add_argument('--config', required=True)
+    run_parser.add_argument('--phase', choices=sorted(phases), required=True)
+    run_parser.add_argument('--category', choices=('quality', 'security', 'maintenance', 'release', 'deploy'), required=True)
+    gate_parser = commands.add_parser('gate')
+    gate_parser.add_argument('--needs-json', required=True)
+    scan_parser = commands.add_parser('secret-scan')
+    scan_parser.add_argument('--root', required=True)
+    args = parser.parse_args(argv)
+    try:
+        if args.command == 'validate':
+            candidate = configuration(args.root)
+            if args.trusted_base is not None:
+                compare(candidate, configuration(args.trusted_base))
+            print('PASS: workflow kit configuration' if candidate is not None else
+                  'PASS: legacy consumer has no workflow kit configuration')
+            return 0
+        if args.command == 'prepare':
+            value = prepared(args.root, args.trusted_base)
+            if args.phase in {'release', 'deploy'} and args.phase not in value['capabilities']:
+                fail('Delivery phase requires its capability')
+            write_json(args.output, value)
+            print('PASS: prepared approved execution configuration')
+            return 0
+        if args.command == 'run':
+            return run_checks(args)
+        if args.command == 'secret-scan':
+            return scan(args.root)
+        try:
+            needs = json.loads(args.needs_json, object_pairs_hook=pairs,
+                               parse_constant=lambda value: fail('Invalid JSON number'))
+        except json.JSONDecodeError:
+            fail('Invalid needs JSON')
+        expected_jobs = {'configuration', 'governance', 'quality', 'security', 'secrets'}
+        if not isinstance(needs, dict) or set(needs) != expected_jobs:
+            fail('Gate requires the fixed complete job set')
+        if any(not isinstance(job, dict) or job.get('result') != 'success'
+               for job in needs.values()):
+            fail('Every required job must have result success')
+        print('PASS: all five mandatory jobs succeeded')
+        return 0
+    except (ValueError, OSError) as error:
+        # Contract failures never include argument values, command output, or
+        # secret matches. OSError paths may be uncontrolled, so redact them.
+        print('FAIL: ' + (str(error) if isinstance(error, ValueError) else
+                          'Filesystem operation failed'))
+        return 1
+# END COMPILED WORKFLOW KIT GUARD
+
+
 class RepositoryValidator:
     def __init__(self, root: Path, trusted_base: Path | None = None, *, mode: str | None = None):
         # Default identity belongs to the executing trusted bundle, never a
@@ -770,9 +1200,11 @@ class RepositoryValidator:
                              if (self.root / ".codex/agents" / f"backbone-{role}.toml").is_file())
             # copilot_errors owns its exact native registry, including ancestor
             # safety, conflict and link checks; unrelated .github files stay local.
-            workflow = self.root / ".github/workflows/engineering-backbone.yml"
-            if workflow.is_file():
-                paths.append(workflow)
+            for name in ('engineering-backbone.yml', 'backbone-pr-checks.yml',
+                         'backbone-maintenance.yml'):
+                workflow = self.root / '.github/workflows' / name
+                if workflow.is_file() and not workflow.is_symlink():
+                    paths.append(workflow)
         return paths
 
     def dependencies(self, source):
@@ -829,9 +1261,13 @@ class RepositoryValidator:
         if not directory.is_dir():
             return
         for path in sorted(directory.iterdir()):
-            if path.suffix not in {".yml", ".yaml"} or (not source and path.name != "engineering-backbone.yml"):
+            if path.suffix not in {".yml", ".yaml"} or (not source and path.name not in {
+                    'engineering-backbone.yml', 'backbone-pr-checks.yml', 'backbone-maintenance.yml'}):
                 continue
             relative = self.label(path)
+            if any(component.is_symlink() for component in (directory.parent, directory, path)):
+                self.error(f'{relative}: managed workflow must have no symlink ancestors')
+                continue
             try:
                 data = yaml.safe_load(path.read_text(encoding="utf-8"))
             except (OSError, yaml.YAMLError) as exc:
@@ -938,6 +1374,18 @@ class RepositoryValidator:
         source = self.source
         self.required_file("policy/core.md" if source else ".engineering-backbone/core.md")
         self.workflows(source)
+        # This compiled guard is part of the existing attested validator bytes.
+        # Only its validation mode is used here; no project command executes.
+        import contextlib
+        import io
+        kit_output = io.StringIO()
+        kit_args = ['validate', '--root', str(self.root)]
+        if self.trusted_base is not None:
+            kit_args += ['--trusted-base', str(self.trusted_base)]
+        with contextlib.redirect_stdout(kit_output), contextlib.redirect_stderr(kit_output):
+            kit_status = workflow_kit_main(kit_args)
+        if kit_status != 0:
+            self.error('workflow kit: ' + kit_output.getvalue().strip())
         self.dependencies(source)
         paths = self.walk()
         self.artifacts(paths)

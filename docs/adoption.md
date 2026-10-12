@@ -31,6 +31,13 @@ separate reviewed migration to change provider selection or reconcile local fact
 
 ## Generated ownership
 
+The optional [shared workflow kit](workflows/README.md) uses separate project-owned
+`workflows.json`, `use_workflow_kit` and a reviewed `workflow_kit_ref`. It does not
+change the descriptive `project.json` version 1 contract. Seed complete inactive
+configuration first, then activate pinned callers in a separate reviewed PR.
+Kit configuration, native callers and inert delivery examples are preserved on
+ordinary updates; manually reconcile them in the consumer's reviewed migration.
+
 | Files | Owner and update behavior |
 | --- | --- |
 | `.engineering-backbone/core.md`, `core.json`, validator, schemas, requirements/lock and scoped `.gitattributes` | Backbone-owned, refreshed by Copier |
@@ -40,6 +47,7 @@ separate reviewed migration to change provider selection or reconcile local fact
 | Copilot `.github/skills/**` and `.github/instructions/**` | Selected missing files created; existing native files preserved for reviewed manual refresh |
 | `.engineering-backbone/project.json` | Existing local project facts preserved |
 | `.github/workflows/engineering-backbone.yml` | Optional actual-SHA caller; existing file preserved |
+| `.engineering-backbone/workflows.json`, kit callers and delivery examples | Optional project-owned kit contract; existing files preserved |
 
 On an existing project, review and integrate the fragments into the existing
 entrypoints. Reconcile conflicting instructions by retaining the stricter policy.
