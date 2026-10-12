@@ -7,7 +7,7 @@
   "risk": "high",
   "repository": {
     "base_branch": "main",
-    "base_revision": "dc1459fe44499e2f72b9cedde74884cd5a17eeb9",
+    "base_revision": "aa32b7c3a20856e3c760f82731be536876c83d55",
     "head_revision": null
   },
   "approved_sources": [
@@ -16,7 +16,8 @@
     "Local base d568bf820ab9d49a9bff34edb2cab32755cfca3a has the identical published Git tree da5e4b16db198a583ca252f109d33778de0a3f78",
     "Codex review 5487485660 at published 3a2e3c83954cff3f7402fad7293b58c4524ae21a; local 6542ad3f76ae35fa5475fad998a7aa2967225496 has identical tree d28d6972fa999e785af13b315ce4daf570c73aea",
     "Independent security confirmation of BB-CX-07-DELTA-02 on dc1459/tree2727, identical to published abb280c; actual current and legacy workflow alias promotion both pass before repair",
-    "Codex review 5488022625 at published abb280ca0334264ddf1d8fc6b67ce5b9bfea203e: historical fixtures after squash and inherited Git content filters"
+    "Codex review 5488022625 at published abb280ca0334264ddf1d8fc6b67ce5b9bfea203e: historical fixtures after squash and inherited Git content filters",
+    "Independent confirmed BB-CX-08-DELTA-01 on aa32/treeaf9, identical to published d838c5a: real core.autocrlf=true source checkout transforms fixture bytes and exact original-blob validation fails"
   ],
   "scope": {
     "include": [
@@ -196,6 +197,13 @@
       "id": "AC-FINAL-PR",
       "description": "Publish final reviewed tree on PR 1, verify successful CI and complete final Codex re-review",
       "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "BB-CX-08-DELTA-01",
+      "description": "Historical fixture source bytes remain unchanged in real core.autocrlf=true checkout without disabling original-blob verification",
+      "verification": "automatic",
       "status": "pending",
       "evidence": []
     }

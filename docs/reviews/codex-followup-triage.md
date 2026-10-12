@@ -89,3 +89,21 @@ real Git checkouts with an inherited content filter or UTF-16LE encoding changed
 the managed toolchain digest; application files also received their intended
 transformations. The fixes package unchanged historical source blobs with verified
 provenance and unset only content-transform attributes on attested file paths.
+
+## Direct fixture checkout regression
+
+BB-CX-08-DELTA-01 is a confirmed P2, independently reproduced before repair by
+`codex_delta_correctness` on local `aa32b7c3a20856e3c760f82731be536876c83d55`,
+tree `af9cb6996b6e0eeaec64d6c282b6260f70310c7d`, identical to published `d838c5a`.
+A real `--no-local --no-checkout` source clone with `core.autocrlf=true` transforms
+historical fixtures to CRLF. The actual historical-copy test exits 1 because its
+original-blob comparison reads changed checkout bytes (`requirements.txt`).
+An independently measured `bootstrap/copier.yml` has 95 CRLF sequences and blob
+`3ead00a487e2a6ae4d717e3d71e96b8145095f6a` instead of original
+`0c3488e82dafd159b769cc34410c1c582bfe6038`.
+
+The repair protects only immutable historical fixture bytes with local checkout
+attributes, retaining every original-blob assertion. Repeat actual generation
+and upgrade in a clean one-commit source clone with CRLF conversion enabled;
+independently Delta-review this direct BB-CX-08 correction. Current consumer
+tooling and its fingerprint do not change.

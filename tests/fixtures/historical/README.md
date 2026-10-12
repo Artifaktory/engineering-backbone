@@ -5,6 +5,10 @@ Git trees recorded in `manifest.json`. They support real Copier generation and
 upgrade checks after a squash merge, shallow checkout or new one-commit repository,
 where the original historical Git objects are unavailable.
 
+The local fixture attributes preserve original blob bytes during checkout,
+including with `core.autocrlf=true`, parent filters or parent encodings. This scope
+does not change application attributes or relax any original-blob assertion.
+
 `bootstrap/` supplies the complete baseline inputs. `pre-attestation/` and
 `attested-review/` contain only bytes differing from that baseline; overlay the
 selected version directly onto `bootstrap/`. Every stored file is an unchanged

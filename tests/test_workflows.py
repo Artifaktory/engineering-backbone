@@ -267,6 +267,12 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
 
     def test_historical_compatibility_survives_clean_single_commit_clone(self):
+        self.historical_checkout_checks(autocrlf=False)
+
+    def test_historical_compatibility_survives_autocrlf_source_checkout(self):
+        self.historical_checkout_checks(autocrlf=True)
+
+    def historical_checkout_checks(self, *, autocrlf):
         # Squash merging and new repositories need not contain our original
         # local tree objects. Execute the real copy and upgrade checks there.
         seed = self.workspace / 'single-commit-source'
@@ -274,7 +280,9 @@ class WorkflowTests(unittest.TestCase):
         initialize(seed)
         commit(seed, 'Single squashed source snapshot')
         checkout = self.workspace / 'clean-source-clone'
-        git(self.workspace, 'clone', '--no-local', str(seed), str(checkout))
+        git(self.workspace, 'clone', '--no-local', '--no-checkout', str(seed), str(checkout))
+        git(checkout, 'config', 'core.autocrlf', str(autocrlf).lower())
+        git(checkout, 'checkout', '-f', 'HEAD')
         self.assertEqual(git(checkout, 'rev-list', '--count', 'HEAD'), '1')
         for tree in PREVIOUS_TREES.values():
             probe = subprocess.run(['git', 'cat-file', '-e', tree], cwd=checkout, capture_output=True)
