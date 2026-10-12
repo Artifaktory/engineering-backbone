@@ -74,6 +74,7 @@ bootstrap before any downstream distribution.
 
 - [Contribution and review process](CONTRIBUTING.md)
 - [Source provenance and adaptation](docs/source-provenance.md)
+- [Independent review and validation result](docs/reviews/bootstrap-result.md)
 - [Bootstrap plan](plans/bootstrap.md) and [active Task Packet](plans/bootstrap-task.json)
 - [Security reporting](SECURITY.md)
 
