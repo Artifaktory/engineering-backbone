@@ -41,7 +41,8 @@
       "properties": {
         "base_branch": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "^(?!HEAD$)(?![-/.])(?!.*[/]\\.)(?!.*\\.lock(?:/|$))(?!.*\\.\\.)(?!.*//)(?!.*@\\{)(?!.*[/.]$)[^\\u0000-\\u0020\\u007f~^:?*\\[\\\\]+(?![\\s\\S])"
         },
         "base_revision": {
           "type": [

@@ -21,9 +21,34 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout caller snapshot
+      - name: Check workflow mode and event
+        shell: bash
+        env:
+          SOURCE_MODE: ${{ inputs.source_mode }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          if [ "$SOURCE_MODE" = 'true' ] && [ "$GITHUB_REPOSITORY" != 'Artifaktory/engineering-backbone' ]; then
+            echo '::error::Source mode is restricted to the backbone source repository.'
+            exit 1
+          fi
+          case "$EVENT_NAME" in
+            pull_request|push|workflow_dispatch) ;;
+            *) echo '::error::Unsupported event for governance validation.'; exit 1 ;;
+          esac
+      - name: Checkout candidate snapshot
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Checkout trusted consumer snapshot
+        if: ${{ !inputs.source_mode && (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000')) }}
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.event.before || github.sha }}
+          path: trusted-base
           persist-credentials: false
       - name: Set up Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
@@ -31,14 +56,71 @@ jobs:
           python-version: ${{ inputs.python_version }}
       - name: Validate backbone source
         if: inputs.source_mode
+        working-directory: candidate
         run: |
           python -m pip install --require-hashes -r requirements.lock
           python scripts/validate.py
           python -m unittest discover -s tests -v
-          git diff --check
-      - name: Validate generated consumer bundle
+      - name: Validate generated consumer with trusted tooling
         if: ${{ !inputs.source_mode }}
+        shell: bash
         run: |
-          python -m pip install --require-hashes -r .engineering-backbone/requirements.lock
-          python .engineering-backbone/validate.py --root .
-          git diff --check
+          set -euo pipefail
+          trusted_root="$GITHUB_WORKSPACE/trusted-base"
+          candidate_root="$GITHUB_WORKSPACE/candidate"
+          for required in validate.py requirements.txt requirements.lock core.json core.md \
+            schemas/core-policy.schema.json schemas/project.schema.json \
+            schemas/task-packet.schema.json schemas/review-evidence.schema.json \
+            schemas/requirement.schema.json; do
+            if [ ! -f "$trusted_root/.engineering-backbone/$required" ]; then
+              echo '::error::No complete trusted consumer baseline. First seed a reviewed bundle with the workflow inactive; activate the pinned caller in a separate PR after that baseline is merged.'
+              exit 1
+            fi
+          done
+          # Never import from, install dependencies from, or execute the candidate.
+          cd "$trusted_root"
+          python -I -m pip install --require-hashes -r .engineering-backbone/requirements.lock
+          python -I "$trusted_root/.engineering-backbone/validate.py" \
+            --root "$candidate_root" --trusted-base "$trusted_root"
+      - name: Check committed patch whitespace
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          set -euo pipefail
+          cd "$GITHUB_WORKSPACE/candidate"
+          if [[ ! "$HEAD_SHA" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            echo '::error::A full candidate commit SHA is required.'
+            exit 1
+          fi
+          git cat-file -e "$HEAD_SHA^{commit}"
+          case "$EVENT_NAME" in
+            pull_request)
+              if [[ ! "$BASE_SHA" =~ ^[0-9a-fA-F]{40}$ || "$BASE_SHA" == '0000000000000000000000000000000000000000' ]]; then
+                echo '::error::A full PR base commit SHA is required.'
+                exit 1
+              fi
+              git cat-file -e "$BASE_SHA^{commit}"
+              ;;
+            push)
+              if [[ "$BASE_SHA" == '0000000000000000000000000000000000000000' ]]; then
+                BASE_SHA="$(git hash-object -t tree /dev/null)"
+              elif [[ "$BASE_SHA" =~ ^[0-9a-fA-F]{40}$ ]]; then
+                git cat-file -e "$BASE_SHA^{commit}"
+              else
+                echo '::error::A full prior push commit SHA is required.'
+                exit 1
+              fi
+              ;;
+            workflow_dispatch)
+              # Manual revalidation checks the selected commit's latest patch.
+              BASE_SHA="$(git rev-parse --verify "$HEAD_SHA^" 2>/dev/null || git hash-object -t tree /dev/null)"
+              ;;
+            *)
+              echo '::error::Unsupported event for committed-patch validation.'
+              exit 1
+              ;;
+          esac
+          git diff --check "$BASE_SHA" "$HEAD_SHA"

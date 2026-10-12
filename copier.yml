@@ -27,8 +27,8 @@ base_branch:
   default: main
   help: Target branch for reviewed pull requests.
   validator: >-
-    {% if not (base_branch | regex_search('^[A-Za-z0-9][A-Za-z0-9._/-]{0,119}$')) or '..' in base_branch or '//' in base_branch or base_branch.endswith('/') or base_branch.endswith('.') or base_branch.endswith('.lock') %}
-    Use a valid single-line branch name without parent traversal or empty components.
+    {% if not (base_branch | regex_search('^[A-Za-z0-9][A-Za-z0-9._/-]{0,119}\\Z')) or base_branch == 'HEAD' or '..' in base_branch or '//' in base_branch or '/.' in base_branch or base_branch.endswith('/') or base_branch.endswith('.') or (base_branch | regex_search('\\.lock(?:/|$)')) %}
+    Use a valid single-line Git branch name without dot-prefixed, .lock or empty components.
     {% endif %}
 validation_command:
   type: str

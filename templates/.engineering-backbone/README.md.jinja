@@ -34,7 +34,15 @@ Replace the reference with a reviewed commit; this command prepares a diff for r
 
 The installation choices `use_codex`, `use_copilot`, and `backbone_workflow_ref`
 cannot change during a normal template update. The update rejects such changes
-before consumer rendering. Changing an adapter or activating/removing/repinning a workflow
-requires its own reviewed migration with native files, project facts and saved
-answers reconciled explicitly. Do not edit or remove answers merely to bypass this
-guard. SHA values render in lowercase; existing workflow pins remain protected.
+before consumer rendering. Adapter changes require their own reviewed migration
+of native files, project facts and installation choices. Do not edit or remove
+answers merely to bypass this guard.
+
+For a first adoption, leave the workflow choice empty and merge the reviewed seed
+bundle with the caller inactive. Add the pinned caller from
+[the workflow example](workflow-example.md) in a separate activation PR. A manually
+maintained caller can be activated, removed or repinned through a reviewed workflow
+migration without changing the saved template-generation choice. The shared gate
+executes only the trusted consumer base's validator and dependencies; absent or
+partial baselines fail closed. SHA values render in lowercase and existing caller
+pins remain preserved during ordinary Copier updates.

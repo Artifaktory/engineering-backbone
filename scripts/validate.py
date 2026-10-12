@@ -234,6 +234,11 @@ class RepositoryValidator:
         search_root = self.root if self.source else self.root / ".engineering-backbone"
         for directory, subdirs, filenames in os.walk(search_root, followlinks=False):
             subdirs[:] = [name for name in subdirs if name not in IGNORED]
+            # Root artifacts/ holds ignored run evidence, which may quote
+            # conflict markers and links. Do not exempt identically named
+            # directories inside governed documentation or a consumer bundle.
+            if self.source and Path(directory) == self.root and "artifacts" in subdirs:
+                subdirs.remove("artifacts")
             paths.extend(Path(directory) / name for name in filenames)
         if not self.source:
             # Standing entrypoints are required by adapters(), but their local

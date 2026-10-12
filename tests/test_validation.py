@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -65,6 +66,54 @@ class ValidationTests(unittest.TestCase):
 
     def test_valid_source_and_examples(self):
         self.assertEqual([], validate_root(self.root))
+
+    def test_root_run_artifacts_are_excluded_from_source_validation(self):
+        self.write("artifacts/review-run/output.md", "<<<<<<< captured example\n[Captured link](absent.md)\n")
+        self.write("artifacts/reviews/result.json", {"scope": {"unvalidated": "captured payload"}})
+        self.assertEqual([], validate_root(self.root))
+
+    def test_nested_source_artifacts_remain_governed(self):
+        self.write("docs/reviews/artifacts/control.md", "<<<<<<< candidate\n[Missing guide](absent.md)\n")
+        self.reject("unresolved merge conflict marker")
+        self.reject("broken local Markdown link")
+        self.write("docs/reviews/artifacts/task-packet.json", {"scope": {}})
+        self.reject("task-packet.json: scope:")
+
+    def test_managed_consumer_artifacts_remain_governed(self):
+        self.make_consumer()
+        self.write(".engineering-backbone/artifacts/control.md", "<<<<<<< candidate\n[Missing guide](absent.md)\n")
+        self.reject("unresolved merge conflict marker", mode="consumer")
+        self.reject("broken local Markdown link", mode="consumer")
+        self.write(".engineering-backbone/artifacts/reviews/task-packet.json", {"scope": {}})
+        self.reject("task-packet.json: scope:", mode="consumer")
+
+    def test_project_and_task_branches_follow_git_branch_rules(self):
+        invalid = (
+            "feature/.hidden", "release.lock/next", "x/a.lock.lock/z", "HEAD", "main\n",
+            "/main", "main/", "main.", ".main", "feature//one", "feature/../main", "-main",
+            "bad~name", "bad^name", "bad:name", "bad?name", "bad*name", "bad[name",
+            "bad\\name", "bad@{name", "bad name", "bad\tname", "bad\x7fname",
+        )
+        valid = ("main", "feature/frontend", "release/v1.0", "feature/a./next", "feature/a.lockx/next",
+                 "x/HEAD", "refs/heads/main", "équipe/main", "feature/+foo", "@")
+        for branch in invalid + valid:
+            oracle = subprocess.run(["git", "check-ref-format", "--branch", branch], capture_output=True)
+            self.assertEqual(oracle.returncode == 0, branch in valid, repr(branch))
+        for mode in ("source", "consumer"):
+            if mode == "consumer":
+                self.make_consumer()
+            packet_path = "examples/task-packet.json" if mode == "source" else ".engineering-backbone/examples/task-packet.json"
+            for branch in invalid + ("bad\x00name",) + valid:
+                with self.subTest(mode=mode, branch=repr(branch)):
+                    self.mutate_json(".engineering-backbone/project.json", lambda data: data["project"].update(base_branch=branch))
+                    self.mutate_json(packet_path, lambda data: data["repository"].update(base_branch=branch))
+                    errors = validate_root(self.root, mode=mode)
+                    if branch in valid:
+                        self.assertEqual([], errors)
+                    else:
+                        self.assertTrue(any("project.base_branch" in error for error in errors), errors)
+                        self.assertTrue(any("repository.base_branch" in error for error in errors), errors)
+            self.mutate_json(".engineering-backbone/project.json", lambda data: data["project"].update(base_branch="main"))
 
     def test_weakened_or_removed_policy_is_rejected(self):
         self.mutate_json("policy/core.json", lambda data: data["invariants"].update(human_merge_required=False))

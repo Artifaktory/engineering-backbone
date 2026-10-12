@@ -227,6 +227,37 @@ class CopierTests(unittest.TestCase):
         self.assertNotIn("secrets:", text)
         self.validate(target)
 
+    def test_invalid_git_branches_reject_before_consumer_mutation(self):
+        target = self.workspace / "existing-branch-target"
+        target.mkdir()
+        (target / "AGENTS.md").write_text("Existing stronger policy\n")
+        before = {path.relative_to(target): path.read_bytes() for path in target.rglob("*") if path.is_file()}
+        invalid = (
+            "feature/.hidden", "release.lock/next", "x/a.lock.lock/z", "HEAD", "main\n",
+            "/main", "main/", "main.", ".main", "feature//one", "feature/../main", "-main",
+            "bad~name", "bad^name", "bad:name", "bad?name", "bad*name", "bad[name",
+            "bad\\name", "bad@{name", "bad name", "bad\tname", "bad\x7fname",
+        )
+        for branch in invalid + ("bad\x00name",):
+            with self.subTest(branch=repr(branch)):
+                if "\x00" not in branch:
+                    result = subprocess.run(["git", "check-ref-format", "--branch", branch], capture_output=True)
+                    self.assertNotEqual(result.returncode, 0, repr(branch))
+                with self.assertRaisesRegex(ValueError, "valid single-line Git branch"):
+                    run_copy(str(self.source), target, data={"base_branch": branch}, vcs_ref="v0.1.0",
+                             defaults=True, quiet=True, skip_tasks=True, overwrite=True)
+                after = {path.relative_to(target): path.read_bytes() for path in target.rglob("*") if path.is_file()}
+                self.assertEqual(before, after)
+
+    def test_valid_nested_git_branches_generate_valid_consumers(self):
+        for branch in ("main", "feature/frontend", "release/v1.0", "feature/a./next", "feature/a.lockx/next", "x/HEAD"):
+            with self.subTest(branch=branch):
+                git(self.source, "check-ref-format", "--branch", branch)
+                target = self.copy(base_branch=branch)
+                facts = json.loads((target / ".engineering-backbone/project.json").read_text())
+                self.assertEqual(facts["project"]["base_branch"], branch)
+                self.validate(target)
+
     def test_uppercase_workflow_sha_is_normalized_and_consumer_validates(self):
         ref = "ABCDEF0123456789" * 2 + "ABCDEF01"
         target = self.copy(backbone_workflow_ref=ref)

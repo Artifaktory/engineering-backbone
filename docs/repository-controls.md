@@ -48,14 +48,24 @@ for downstream distribution. CI can still provide evidence for reviewing the PR.
 
 `quality.yml` runs on PRs, main pushes and manual dispatch. It calls the reusable
 workflow to validate source policy/schemas/examples/native adapters/workflows and
-run adversarial plus real consumer-generation/upgrade tests. It uses read-only
-tokens, pinned Actions and no deployment/provider secrets.
+run adversarial plus real consumer-generation/upgrade and actual workflow-payload
+tests. Committed whitespace checks use explicit PR base/head or push before/head
+revisions, not the clean checkout working tree. It uses read-only tokens, pinned
+Actions and no deployment/provider secrets.
 
 The trusted-policy job checks out explicit base/head revisions and executes the
 base-owned validator/dependencies against the candidate. That protects supported
 machine invariants after bootstrap without trusting a newly weakened head validator.
 The README-only initial base has no validator: the job emits an explicit bootstrap
 notice requiring independent human review rather than claiming a pre-existing gate.
+
+The consumer branch of the reusable workflow also executes only the previous
+consumer revision's validator, schemas and dependency lock, with `--trusted-base`.
+It fails before execution if that baseline is incomplete; first adoption needs a
+reviewed seed PR with the caller inactive, followed by a separate activation PR.
+Consumer callers cannot select source mode. Manual dispatch revalidates a selected
+approved snapshot and its latest committed patch; it does not certify an update
+against an earlier trusted revision. See [adoption](adoption.md) for the event matrix.
 
 The workflow itself can be changed in a PR. Protected external approval/check
 settings and independent review are still needed to prevent bypass. Format/evidence

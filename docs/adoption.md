@@ -19,6 +19,8 @@ Normal authenticated Git/Copier access to this private repository is required fo
 the copy/update operation. Never put a token in the URL, answers file or command.
 Questions record project name, base branch, validation command, language and
 frontend/backend metadata, selected providers and optional reviewed workflow SHA.
+For a project with no trusted bundle yet, leave the workflow SHA empty and follow
+the two-stage bootstrap below; an active caller in the first adoption PR fails closed.
 Project metadata does not execute commands or create domain-specific app workflows.
 Provider selection and initial workflow activation are installation-only choices.
 An ordinary update rejects changing them before writing the consumer; use a
@@ -53,17 +55,52 @@ Run the project's own tests separately. For Codex/Copilot, verify the native fil
 are discovered by the actual supported installed client; syntax validation is not
 runtime evidence. See [adapter limits](agent-adapters.md).
 
+## First adoption: establish trust before activating CI
+
+1. Copy from the human-approved immutable backbone commit with
+   `backbone_workflow_ref` empty. Keep the shared workflow inactive. Review the
+   generated bundle, run the local checks above plus the project's tests, and
+   perform independent review. A human decides whether to merge that seed PR.
+2. After the reviewed bundle exists on the project's base branch, add the pinned
+   caller from `.engineering-backbone/workflow-example.md` in a separate PR.
+   The shared gate now uses the already-merged bundle to validate that activation
+   PR. Human review also verifies the exact workflow pin and sharing settings.
+
+Missing or partial trusted bundles fail before any Python/dependency execution.
+There is no first-adoption fallback to the candidate validator, candidate lock or
+an automatically downloaded baseline. Activating a caller during the first copy
+therefore cannot manufacture a trusted baseline. A manual caller migration does
+not require editing Copier's installation-only saved answers.
+
 ## Shared workflow access
 
-Default output is a manual workflow example. Supplying an approved 40-character
-workflow SHA enables the actual caller. The central reusable workflow checks out
-the caller and runs the local generated validation bundle. It needs no private
-backbone checkout token, provider API key, deployment secret or write permission.
+The central reusable workflow checks out explicit candidate and trusted consumer
+revisions. It installs only the trusted bundle's locked dependencies and runs only
+that bundle's validator and schemas, in isolated Python mode, against the candidate
+with `--trusted-base`. Candidate code, dependency locks and project commands are
+not executed by the consumer gate. `source_mode` is restricted to the backbone
+repository, so a consumer cannot use it to bypass this boundary.
 
-GitHub still needs the private source repository's Actions access policy to permit
-the consuming repository and its caller settings to allow the shared workflow.
-Those settings are separately verified by a human operator. Existing project
-application workflows, privileged runners and deployment permissions remain local.
+| Trigger | Trusted consumer tooling | Committed whitespace range |
+| --- | --- | --- |
+| Pull request | PR base SHA | PR base SHA to PR head SHA |
+| Push | Previous push SHA (`before`) | Previous SHA to current SHA |
+| First push with zero `before` | No baseline: consumer gate fails closed | Empty tree to current SHA |
+| Manual dispatch | Operator-selected, already-approved snapshot | Selected commit's parent to selected commit, or empty tree for a root commit |
+
+Dispatch is read-only revalidation of an operator-selected approved snapshot; it
+is not evidence that a policy transition passed the previous revision's guard.
+PR/push checks establish that comparison. Unsupported events or invalid revision
+contexts fail rather than falling back to a clean-worktree diff.
+
+The workflow needs no private backbone checkout token, provider API key,
+deployment secret or write permission. GitHub still needs the private source
+repository's Actions access policy to permit the consuming repository and its
+caller settings to allow the shared workflow. Those settings are separately
+verified by a human operator. Existing application workflows, privileged runners
+and deployment permissions remain local. The caller and workflow pin also need
+protected review: an editable caller can remove a job, which this job cannot
+prevent by itself.
 
 ## Update through a project PR
 

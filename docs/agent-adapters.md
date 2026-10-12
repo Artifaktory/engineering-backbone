@@ -41,19 +41,26 @@ The answers file is intentionally namespaced. From the consumer repository use
 `copier update --answers-file .engineering-backbone/copier-answers.yml --vcs-ref APPROVED_COMMIT`.
 The explicit answers-file option is required for update discovery.
 
-Adapter selection (`use_codex`, `use_copilot`) and workflow activation/pin
-(`backbone_workflow_ref`) are installation-only choices. Copier reads the installed
+Adapter selection (`use_codex`, `use_copilot`) and the template-generated workflow
+choice (`backbone_workflow_ref`) are installation-only choices. Copier reads the installed
 answers with its built-in external-data support and rejects changes to those choices
 before rendering into the consumer. This prevents conditional selection changes
 from deleting native policies despite Copier's skip-if-exists behavior. A fresh copy
 may report the expected missing installed-answers warning.
 
-Changing an adapter or workflow requires a separate reviewed migration: deliberately
-edit native files, reconcile `.engineering-backbone/project.json` and Copier answers,
-and verify the resulting consumer before merge. Do not alter or remove the answers
-file merely to bypass the guard. A baseline update keeps the current installation
-choices. Case-only workflow SHA input is normalized to lowercase in the generated
-caller. The template does not change an existing workflow's reviewed pin automatically.
+Changing an adapter requires a separate reviewed migration of native files and
+project facts, with deliberate handling of the saved installation choices. Do not
+alter or remove the answers file merely to bypass the guard. A baseline update
+keeps the current installation choices.
+
+For initial adoption, leave `backbone_workflow_ref` empty, merge a reviewed seed
+bundle, then manually add the pinned caller in a separate activation PR as described
+in [adoption](adoption.md). The empty saved answer records what Copier generated;
+it does not prohibit a separately maintained caller. Activating, removing or
+repinning that caller is a reviewed manual workflow migration and does not require
+changing the installation-only answer. Existing callers are preserved by Copier.
+Case-only workflow SHA input is normalized to lowercase in generated callers;
+the template never changes an existing workflow's reviewed pin automatically.
 
 The consumer receives the centrally compiled `requirements.lock` with exact direct
 and transitive versions and hashes. In an isolated Python 3.12 environment, install
