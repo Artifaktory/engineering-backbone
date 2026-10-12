@@ -22,7 +22,8 @@ repository is the shared agent/engineering control plane: its changes are HIGH r
 
 Install with `python -m pip install --require-hashes -r requirements.lock` in an
 isolated Python 3.12 environment. Validate with
-`python scripts/validate.py`, `python -m unittest discover -s tests -v`, and
+`python scripts/validate.py`, `python scripts/compile_toolchain_fingerprint.py --check`,
+`python -m unittest discover -s tests -v`, and
 `git diff --check`. Target the configured base branch; preserve real review evidence.
 
 For PR review, prioritize correctness, security, compatibility and downstream

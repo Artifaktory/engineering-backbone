@@ -10,6 +10,7 @@ with the owner first. A valid-looking SHA alone is not proof of approval or acce
 name: Engineering Backbone
 on:
   pull_request:
+  workflow_dispatch:
   push:
     branches: [{{ base_branch | tojson }}]
 permissions:
@@ -27,6 +28,9 @@ Otherwise the first adoption PR fails closed. Existing
 `.github/workflows/engineering-backbone.yml` is preserved. There are no secrets or
 private source checkout tokens: the workflow runs the consumer base's validator,
 schemas and dependency lock against the candidate with `--trusted-base`.
+Before execution, immutable workflow fingerprints attest all eight toolchain files
+in both base and candidate. Candidate tools must remain at the approved base or
+match the new workflow's current tuple; mixed versions or no-op replacements fail.
 It never executes the candidate validator or installs its dependencies.
 Keep language-specific checks in the consuming project's existing CI.
 
@@ -43,3 +47,11 @@ supply its own trusted tooling. Whitespace is checked against the selected
 commit's parent (or the empty tree for a root commit), while policy is compared
 against the default branch. Source mode is reserved for the backbone
 repository. Keep the caller and its immutable pin under protected human review.
+
+If Copier updates the validator, schemas or dependency manifests, update this
+caller to the matching newly reviewed workflow commit in the same PR. That
+workflow must retain the previous base's fingerprint. Do not edit a local hash or
+supply an allowlist: authority is part of the immutable central workflow. Project
+facts and stronger local policy remain separately validated, and base-enabled
+providers cannot be disabled through metadata. Scoped managed Git attributes keep
+the eight tooling files at LF on Windows and Linux.

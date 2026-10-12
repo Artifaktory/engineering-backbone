@@ -224,6 +224,99 @@ class ValidationTests(unittest.TestCase):
         (self.root / "AGENTS.md").unlink()
         self.assertEqual([], validate_root(self.root))
 
+    def test_trusted_base_enabled_adapters_cannot_be_disabled_or_removed(self):
+        for mode in ("source", "consumer"):
+            if mode == "consumer":
+                self.make_consumer()
+            base = Path(self.temp.name) / f"{mode}-trusted-adapters"
+            shutil.copytree(self.root, base)
+            for disabled in (("codex",), ("copilot",), ("codex", "copilot")):
+                with self.subTest(mode=mode, disabled=disabled):
+                    candidate = Path(self.temp.name) / (mode + "-disable-" + "-".join(disabled))
+                    shutil.copytree(base, candidate)
+                    facts_path = candidate / ".engineering-backbone/project.json"
+                    facts = json.loads(facts_path.read_text())
+                    for adapter in disabled:
+                        facts["agents"][adapter] = False
+                    facts_path.write_text(json.dumps(facts))
+                    # Metadata-only opt-outs fail even if all native files remain.
+                    errors = validate_root(candidate, base, mode=mode)
+                    for adapter in disabled:
+                        self.assertTrue(any(f"enabled {adapter} must remain enabled" in error for error in errors), errors)
+                        if adapter == "codex":
+                            (candidate / "AGENTS.md").unlink()
+                            shutil.rmtree(candidate / ".codex")
+                        else:
+                            (candidate / ".github/copilot-instructions.md").unlink()
+                            shutil.rmtree(candidate / ".github/agents")
+                    # The effective union also retains the actual file checks.
+                    errors = validate_root(candidate, base, mode=mode)
+                    for adapter in disabled:
+                        expected = "AGENTS.md" if adapter == "codex" else ".github/copilot-instructions.md"
+                        self.assertTrue(any(f"missing required file: {expected}" in error for error in errors), errors)
+
+    def test_disabled_flags_cannot_hide_installed_adapter_permissions_or_content(self):
+        self.make_consumer()
+        base = Path(self.temp.name) / "trusted-content"
+        shutil.copytree(self.root, base)
+        self.mutate_json(".engineering-backbone/project.json", lambda data: data.update(agents={"codex": False, "copilot": False}))
+        reviewer = self.root / ".github/agents/backbone-reviewer.agent.md"
+        reviewer.write_text(reviewer.read_text().replace("tools: [read, search]", "tools: [execute]") + "\n<<<<<<< candidate\n[Missing guide](missing.md)\n")
+        self.reject("tools must be", base, mode="consumer")
+        self.reject("unresolved merge conflict marker", base, mode="consumer")
+        self.reject("broken local Markdown link", base, mode="consumer")
+
+    def test_trusted_base_project_configuration_must_be_readable_and_valid(self):
+        for mode in ("source", "consumer"):
+            if mode == "consumer":
+                self.make_consumer()
+            base = Path(self.temp.name) / f"{mode}-trusted-facts"
+            shutil.copytree(self.root, base)
+            facts_path = base / ".engineering-backbone/project.json"
+            original = facts_path.read_text()
+            facts_path.unlink()
+            self.reject("trusted-base project configuration is unreadable", base, mode=mode)
+            for invalid in ("{broken", '{"agents":{"codex":true,"codex":false}}'):
+                facts_path.write_text(invalid)
+                self.reject("trusted-base project configuration is unreadable", base, mode=mode)
+            for invalid in ([], {}, {"agents": {"codex": "yes", "copilot": False}}):
+                facts_path.write_text(json.dumps(invalid))
+                self.reject("trusted-base project configuration:", base, mode=mode)
+            facts_path.write_text(original)
+            self.assertEqual([], validate_root(self.root, base, mode=mode))
+
+    def test_initial_disabled_selection_and_later_strengthening_remain_valid(self):
+        for mode in ("source", "consumer"):
+            if mode == "consumer":
+                self.make_consumer()
+            base = Path(self.temp.name) / f"{mode}-initial-disabled"
+            shutil.copytree(self.root, base)
+            facts_path = base / ".engineering-backbone/project.json"
+            facts = json.loads(facts_path.read_text())
+            facts["agents"] = {"codex": False, "copilot": False}
+            facts_path.write_text(json.dumps(facts))
+            for adapter in ("codex", "copilot"):
+                if adapter == "codex":
+                    (base / "AGENTS.md").unlink()
+                    shutil.rmtree(base / ".codex")
+                else:
+                    shutil.rmtree(base / ".github")
+            self.assertEqual([], validate_root(base, mode=mode))
+            self.assertEqual([], validate_root(base, base, mode=mode))
+            # The complete candidate adds both providers against a disabled base.
+            self.assertEqual([], validate_root(self.root, base, mode=mode))
+
+    def test_unrelated_project_facts_remain_editable_against_trusted_base(self):
+        for mode in ("source", "consumer"):
+            if mode == "consumer":
+                self.make_consumer()
+            base = Path(self.temp.name) / f"{mode}-editable-facts"
+            shutil.copytree(self.root, base)
+            self.mutate_json(".engineering-backbone/project.json", lambda data: data["project"].update(
+                name="renamed-project", base_branch="feature/new-base", language="TypeScript", has_frontend=True,
+                validation_command="npm test"))
+            self.assertEqual([], validate_root(self.root, base, mode=mode))
+
     def test_broken_relative_markdown_link_is_rejected(self):
         self.write("README.md", "See [policy](policy/missing.md).\n")
         self.reject("broken local Markdown link")

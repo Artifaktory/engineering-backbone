@@ -1,38 +1,171 @@
 {
   "schema_version": "1",
   "id": "BB-CODEX-REPAIR-001",
-  "title": "Repair confirmed Codex findings on bootstrap PR 1",
-  "objective": "Triage the four findings on published snapshot 6982e4a53185b5fcba48b17db10a59a3eaca83ee, repair confirmed findings, validate and independently Delta-review the repairs and their direct regressions, then update the same PR and request Codex re-review.",
+  "title": "Repair Codex findings and follow-up trust-promotion gaps on PR 1",
+  "objective": "Repair confirmed findings from Codex reviews 5487154028 and 5487485660, including adapter-selection monotonicity, reachable manual consumer checks and attested tooling promotion; independently review changed repairs and direct regressions, then update PR 1 and request re-review without merge or release.",
   "role": "implementer",
   "risk": "high",
   "repository": {
     "base_branch": "main",
-    "base_revision": "d568bf820ab9d49a9bff34edb2cab32755cfca3a",
+    "base_revision": "6542ad3f76ae35fa5475fad998a7aa2967225496",
     "head_revision": null
   },
   "approved_sources": [
     "Human request on 2026-10-12 authorizes scoped fixes, independent Delta review, PR 1 update and Codex re-review; no merge or release",
     "Codex review 5487154028 on Artifaktory/engineering-backbone PR 1 at 6982e4a53185b5fcba48b17db10a59a3eaca83ee",
-    "Local base d568bf820ab9d49a9bff34edb2cab32755cfca3a has the identical published Git tree da5e4b16db198a583ca252f109d33778de0a3f78"
+    "Local base d568bf820ab9d49a9bff34edb2cab32755cfca3a has the identical published Git tree da5e4b16db198a583ca252f109d33778de0a3f78",
+    "Codex review 5487485660 at published 3a2e3c83954cff3f7402fad7293b58c4524ae21a; local 6542ad3f76ae35fa5475fad998a7aa2967225496 has identical tree d28d6972fa999e785af13b315ce4daf570c73aea"
   ],
   "scope": {
-    "include": [".github/workflows/**", "scripts/**", "copier.yml", "schemas/**", "templates/**", "tests/**", "docs/adoption.md", "docs/agent-adapters.md", "docs/repository-controls.md", "docs/reviews/codex-*.md", "plans/codex-findings-task.json"],
-    "exclude": ["artifacts/**", ".venv/**"]
+    "include": [
+      ".github/workflows/**",
+      "scripts/**",
+      "copier.yml",
+      "schemas/**",
+      "templates/**",
+      "tests/**",
+      "docs/adoption.md",
+      "docs/agent-adapters.md",
+      "docs/repository-controls.md",
+      "docs/reviews/codex-*.md",
+      "plans/codex-findings-task.json",
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      ".github/copilot-instructions.md"
+    ],
+    "exclude": [
+      "artifacts/**",
+      ".venv/**"
+    ]
   },
   "acceptance": [
-    {"id": "BB-CX-01", "description": "Confirmed consumer bypass is blocked by executing trusted validator and trusted dependency manifests; absent base requires explicit reviewed bootstrap", "verification": "hybrid", "status": "pending", "evidence": []},
-    {"id": "BB-CX-02", "description": "Committed whitespace defects fail the relevant revision-range check", "verification": "automatic", "status": "pending", "evidence": []},
-    {"id": "BB-CX-03", "description": "Local ignored artifacts do not cause spurious validation failures while managed policy checks remain effective", "verification": "automatic", "status": "pending", "evidence": []},
-    {"id": "BB-CX-04", "description": "Git-invalid branch components are rejected before consumer generation and metadata validation", "verification": "automatic", "status": "pending", "evidence": []},
-    {"id": "AC-DELTA", "description": "Independent frozen Delta review confirms repair coverage and checks direct regressions", "verification": "hybrid", "status": "pending", "evidence": []},
-    {"id": "AC-PR", "description": "Publish reviewed repair tree on the existing PR, inspect CI and request Codex re-review", "verification": "hybrid", "status": "pending", "evidence": []}
+    {
+      "id": "BB-CX-01",
+      "description": "Confirmed consumer bypass is blocked by executing trusted validator and trusted dependency manifests; absent base requires explicit reviewed bootstrap",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-result.md",
+        "PR 1 published head 3a2e3c83954cff3f7402fad7293b58c4524ae21a with successful GitHub CI 38215301338"
+      ]
+    },
+    {
+      "id": "BB-CX-02",
+      "description": "Committed whitespace defects fail the relevant revision-range check",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-result.md",
+        "PR 1 published head 3a2e3c83954cff3f7402fad7293b58c4524ae21a with successful GitHub CI 38215301338"
+      ]
+    },
+    {
+      "id": "BB-CX-03",
+      "description": "Local ignored artifacts do not cause spurious validation failures while managed policy checks remain effective",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-result.md",
+        "PR 1 published head 3a2e3c83954cff3f7402fad7293b58c4524ae21a with successful GitHub CI 38215301338"
+      ]
+    },
+    {
+      "id": "BB-CX-04",
+      "description": "Git-invalid branch components are rejected before consumer generation and metadata validation",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-result.md",
+        "PR 1 published head 3a2e3c83954cff3f7402fad7293b58c4524ae21a with successful GitHub CI 38215301338"
+      ]
+    },
+    {
+      "id": "AC-DELTA",
+      "description": "Independent frozen Delta review confirms repair coverage and checks direct regressions",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-result.md",
+        "PR 1 published head 3a2e3c83954cff3f7402fad7293b58c4524ae21a with successful GitHub CI 38215301338"
+      ]
+    },
+    {
+      "id": "AC-PR",
+      "description": "Publish reviewed repair tree on the existing PR, inspect CI and request Codex re-review",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/codex-result.md",
+        "PR 1 published head 3a2e3c83954cff3f7402fad7293b58c4524ae21a with successful GitHub CI 38215301338"
+      ]
+    },
+    {
+      "id": "BB-CX-05",
+      "description": "Trusted provider selections cannot be silently disabled; initial opt-out and valid strengthening remain supported",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "BB-CX-06",
+      "description": "Both shipped consumer callers expose the documented workflow_dispatch trigger",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "BB-CX-07",
+      "description": "Pinned reusable workflow rejects poisoned base/candidate tooling before execution and supports coherent reviewed updates",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-FOLLOWUP-DELTA",
+      "description": "Independent frozen review verifies the three follow-up fixes and direct regressions",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-FOLLOWUP-PR",
+      "description": "Publish reviewed follow-up on PR 1 and verify CI/provider re-review",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
   ],
   "validation": {
-    "commands": ["python scripts/validate.py", "python -m unittest discover -s tests -v", "actionlint .github/workflows/*.yml", "git diff --check REPAIR_BASE REPAIR_HEAD"],
-    "manual_evidence": ["Four finding reproductions and triage", "Independent Delta review at frozen revisions and patch digest", "Remote tree identity, CI and Codex review readback"]
+    "commands": [
+      "python scripts/validate.py",
+      "python -m unittest discover -s tests -v",
+      "actionlint .github/workflows/*.yml",
+      "git diff --check REPAIR_BASE REPAIR_HEAD",
+      "python scripts/compile_toolchain_fingerprint.py --check"
+    ],
+    "manual_evidence": [
+      "Four finding reproductions and triage",
+      "Independent Delta review at frozen revisions and patch digest",
+      "Remote tree identity, CI and Codex review readback",
+      "Immutable called-workflow tooling identity and coherent consumer update probes"
+    ]
   },
-  "execution_budget": {"max_iterations": 8},
-  "stop_conditions": ["Unresolved P0/P1 finding", "Failed required check", "Scope or trust-boundary expansion beyond confirmed repairs", "Concurrent remote changes"],
-  "forbidden_actions": ["Merge or auto-merge", "Release or deployment", "Downstream writes", "Force push", "Secrets or new privileged tokens"],
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Unresolved P0/P1 finding",
+    "Failed required check",
+    "Scope or trust-boundary expansion beyond confirmed repairs",
+    "Concurrent remote changes"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deployment",
+    "Downstream writes",
+    "Force push",
+    "Secrets or new privileged tokens"
+  ],
   "status": "active"
 }

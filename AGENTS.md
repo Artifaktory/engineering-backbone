@@ -26,6 +26,7 @@ Install `requirements.lock` with `--require-hashes` in an isolated Python 3.12 e
 
 ```sh
 python scripts/validate.py
+python scripts/compile_toolchain_fingerprint.py --check
 python -m unittest discover -s tests -v
 git diff --check
 ```

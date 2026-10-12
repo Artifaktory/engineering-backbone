@@ -61,7 +61,11 @@ notice requiring independent human review rather than claiming a pre-existing ga
 
 The consumer branch of the reusable workflow also executes only the trusted
 consumer revision's validator, schemas and dependency lock, with `--trusted-base`.
-It fails before execution if that baseline is incomplete; first adoption needs a
+Before dependencies or validator execution, the pinned workflow independently
+attests all eight tooling files in both snapshots against its own coherent
+fingerprints and checks monotonic provider selections. Unknown base tooling,
+poisoned candidate tooling, mixed versions and inherited-provider disablement fail
+closed, including when the previous validator predates those checks. First adoption needs a
 reviewed seed PR with the caller inactive, followed by a separate activation PR.
 Consumer callers cannot select source mode. Manual dispatch always uses the
 repository default branch's bundle as trusted tooling, even when the candidate is
@@ -72,6 +76,27 @@ latest patch; the trusted policy comparison uses the default branch. See
 The workflow itself can be changed in a PR. Protected external approval/check
 settings and independent review are still needed to prevent bypass. Format/evidence
 tests cannot replace semantic review, authenticated approvals or runtime discovery.
+
+## Toolchain fingerprint maintenance
+
+`python scripts/compile_toolchain_fingerprint.py --check` must pass in source CI.
+The compiler fingerprints actual Copier-rendered working-tree output rather than
+raw source bytes; it excludes policy/project data, docs and provider metadata.
+A tooling change requires a reviewed `--write` refresh of the workflow current
+literal and the matching consumer workflow pin. Its previous list permits only
+explicit reviewed compatibility snapshots; arbitrary caller hashes are forbidden.
+
+The initial retained entries were calculated from these actual Git trees:
+
+| Source snapshot | Git tree | Rendered tooling SHA256 |
+| --- | --- | --- |
+| Bootstrap review, local `d568bf8` / published `6982e4a` | `da5e4b16db198a583ca252f109d33778de0a3f78` | `444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566` |
+| First repair review, local `6542ad3` / published `3a2e3c8` | `d28d6972fa999e785af13b315ce4daf570c73aea` | `92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa` |
+
+These are reviewed PR snapshots, not declarations that releases or downstream
+adoption are approved. Consumer candidate tooling can stay at its approved base
+or upgrade to the current literal; it cannot mix historical files or downgrade to
+another retained version. A SHA or schema-valid report alone is not human approval.
 
 ## Update/release discipline
 

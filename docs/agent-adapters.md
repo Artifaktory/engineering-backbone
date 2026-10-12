@@ -51,7 +51,10 @@ may report the expected missing installed-answers warning.
 Changing an adapter requires a separate reviewed migration of native files and
 project facts, with deliberate handling of the saved installation choices. Do not
 alter or remove the answers file merely to bypass the guard. A baseline update
-keeps the current installation choices.
+keeps the current installation choices. Consumer CI also prevents a candidate's
+project facts from disabling a provider enabled in the trusted base. Retiring such
+a provider needs a separately approved baseline-policy migration; flipping facts
+cannot hide its inherited instruction or permission checks.
 
 For initial adoption, leave `backbone_workflow_ref` empty, merge a reviewed seed
 bundle, then manually add the pinned caller in a separate activation PR as described
@@ -61,6 +64,10 @@ repinning that caller is a reviewed manual workflow migration and does not requi
 changing the installation-only answer. Existing callers are preserved by Copier.
 Case-only workflow SHA input is normalized to lowercase in generated callers;
 the template never changes an existing workflow's reviewed pin automatically.
+Tooling updates must include the matching reviewed workflow pin: that workflow
+attests the complete validator/schema/dependency tuple before trusting either
+snapshot, while project-specific facts and stronger local rules remain outside the
+fingerprint. See [adoption](adoption.md) for the update procedure.
 
 The consumer receives the centrally compiled `requirements.lock` with exact direct
 and transitive versions and hashes. In an isolated Python 3.12 environment, install

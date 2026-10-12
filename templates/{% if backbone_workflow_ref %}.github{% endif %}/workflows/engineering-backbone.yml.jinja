@@ -1,6 +1,7 @@
 name: Engineering Backbone
 on:
   pull_request:
+  workflow_dispatch:
   push:
     branches: [{{ base_branch | tojson }}]
 permissions:

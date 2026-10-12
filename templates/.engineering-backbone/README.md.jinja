@@ -44,5 +44,11 @@ bundle with the caller inactive. Add the pinned caller from
 maintained caller can be activated, removed or repinned through a reviewed workflow
 migration without changing the saved template-generation choice. The shared gate
 executes only the trusted consumer base's validator and dependencies; absent or
-partial baselines fail closed. SHA values render in lowercase and existing caller
-pins remain preserved during ordinary Copier updates.
+partial baselines fail closed. The pinned workflow also attests both bundles'
+complete validator/schema/dependency tuples against workflow-owned fingerprints.
+When these managed tools change, include the matching new reviewed workflow pin
+and its explicit previous-base compatibility entry in the same upgrade PR.
+Project facts, stricter policy and native instructions are validated separately.
+Scoped `.gitattributes` preserves LF only for the eight attested tooling files.
+SHA values render in lowercase and existing caller pins remain preserved during
+ordinary Copier updates.

@@ -167,7 +167,26 @@ class RepositoryValidator:
     def adapters(self, project):
         if not isinstance(project, dict) or not isinstance(project.get("agents"), dict):
             return
-        agents = project["agents"]
+        agents = dict(project["agents"])
+        if self.trusted_base is not None:
+            base_path = self.trusted_base / ".engineering-backbone" / "project.json"
+            try:
+                if not base_path.resolve().is_relative_to(self.trusted_base):
+                    raise ValueError("file resolves outside the trusted repository")
+                base_project = read_json(base_path)
+            except (OSError, ValueError) as exc:
+                self.error(f"trusted-base project configuration is unreadable; installed adapter selection cannot be established ({exc})")
+            else:
+                self.validate_data("project", base_project, "trusted-base project configuration")
+                previous = base_project.get("agents", {}) if isinstance(base_project, dict) else {}
+                if isinstance(previous, dict):
+                    for adapter in ("codex", "copilot"):
+                        if previous.get(adapter) is True:
+                            if agents.get(adapter) is not True:
+                                self.error(f"adapter regression: trusted-base enabled {adapter} must remain enabled; removal requires a separately reviewed governance migration")
+                            # Candidate flags cannot suppress file, permission
+                            # or managed-content checks for installed providers.
+                            agents[adapter] = True
         self.agents = agents
         if agents.get("codex") is True:
             self.required_file("AGENTS.md")

@@ -15,6 +15,7 @@ python -m venv .venv
 # Activate the environment using your platform's normal command.
 python -m pip install --require-hashes -r requirements.lock
 python scripts/validate.py
+python scripts/compile_toolchain_fingerprint.py --check
 python -m unittest discover -s tests -v
 git diff --check
 ```
@@ -46,6 +47,14 @@ regenerate the locked tooling set with `uv pip compile requirements.txt --genera
 --python-version 3.12 --output-file requirements.lock`, then run all checks and
 compatibility tests. Source and template changes must be reviewed together. Do not manually edit
 Copier's answers file; use Copier's update options. Avoid arbitrary template tasks.
+
+Changes to the copied validator, schemas or dependency manifests also require
+`python scripts/compile_toolchain_fingerprint.py --write`, followed by `--check`.
+Review the resulting workflow-owned current digest and retain only explicitly
+reviewed previous tooling identities needed for consumer compatibility. The check
+fingerprints actual Copier-rendered bytes; it does not attest semantic correctness.
+Consumers update copied tooling and its reviewed workflow pin together. Independent
+source review and human release approval remain mandatory before distribution.
 
 Use [docs/repository-controls.md](docs/repository-controls.md) for required protected
 settings and [docs/adoption.md](docs/adoption.md) for the consumer workflow.

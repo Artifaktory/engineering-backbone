@@ -1,22 +1,30 @@
 """Execute the actual reusable-workflow shell payloads against real Git consumers."""
 from __future__ import annotations
 
+import io
 import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tarfile
 import tempfile
 import unittest
 
-from copier import run_copy
+from copier import run_copy, run_update
 import yaml
+
+from scripts.compile_toolchain_fingerprint import bundle_digest, rendered_digest
 
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = yaml.safe_load((ROOT / '.github/workflows/governance-checks.yml').read_text())
 STEPS = {step['name']: step for step in WORKFLOW['jobs']['validate']['steps']}
+PREVIOUS_TREES = {
+    'bootstrap': 'da5e4b16db198a583ca252f109d33778de0a3f78',
+    'pre-attestation': 'd28d6972fa999e785af13b315ce4daf570c73aea',
+}
 
 
 def git(root, *args):
@@ -63,6 +71,8 @@ class WorkflowTests(unittest.TestCase):
             'SOURCE_MODE': 'false',
             'PATH': str(Path(sys.executable).parent) + os.pathsep + env['PATH'],
         })
+        env.update({key: value for key, value in STEPS[step].get('env', {}).items()
+                    if '${{' not in str(value)})
         env.update(overrides)
         return subprocess.run(['bash', '-c', STEPS[step]['run']], cwd=self.workspace,
                               env=env, capture_output=True, text=True)
@@ -89,8 +99,7 @@ class WorkflowTests(unittest.TestCase):
         self.mutate('.engineering-backbone/core.json', lambda d: d['invariants'].update(human_merge_required=False))
         result = self.validate()
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn('human_merge_required', result.stdout + result.stderr)
-        self.assertIn('dependency manifest is empty', result.stdout + result.stderr)
+        self.assertIn('Candidate toolchain fingerprint', result.stdout + result.stderr)
         self.assertFalse(marker.exists())
         self.assertNotIn('forged PASS', result.stdout)
 
@@ -107,7 +116,7 @@ class WorkflowTests(unittest.TestCase):
         self.mutate('.engineering-backbone/core.json', lambda d: d.update(version='invalid'))
         result = self.validate(PYTHONPATH=str(self.candidate))
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn('version', result.stdout + result.stderr)
+        self.assertIn('Candidate toolchain fingerprint', result.stdout + result.stderr)
         self.assertNotIn('candidate import executed', result.stdout + result.stderr)
 
     def test_absent_or_partial_base_fails_before_python_execution(self):
@@ -195,8 +204,7 @@ class WorkflowTests(unittest.TestCase):
         marker = self.dispatch_snapshots(malicious=True)
         result = self.validate(EVENT_NAME='workflow_dispatch')
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn('human_merge_required', result.stdout + result.stderr)
-        self.assertIn('dependency manifest is empty', result.stdout + result.stderr)
+        self.assertIn('Candidate toolchain fingerprint', result.stdout + result.stderr)
         self.assertFalse(marker.exists())
         self.assertNotIn('forged dispatch PASS', result.stdout)
 
@@ -205,6 +213,215 @@ class WorkflowTests(unittest.TestCase):
         result = self.validate(EVENT_NAME='workflow_dispatch')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertFalse(marker.exists())
+
+    def legacy_source(self, version):
+        source = self.workspace / ('legacy-source-' + version)
+        if not source.exists():
+            source.mkdir()
+            archive = subprocess.run(['git', 'archive', '--format=tar', PREVIOUS_TREES[version]],
+                                     cwd=ROOT, capture_output=True, check=True).stdout
+            with tarfile.open(fileobj=io.BytesIO(archive)) as packed:
+                packed.extractall(source, filter='data')
+        return source
+
+    def use_legacy_base(self, version='pre-attestation', **data):
+        shutil.rmtree(self.trusted)
+        run_copy(str(self.legacy_source(version)), self.trusted, data=data,
+                 defaults=True, quiet=True, skip_tasks=True)
+        shutil.rmtree(self.candidate)
+        shutil.copytree(self.trusted, self.candidate)
+
+    def test_approved_historical_copies_match_authority_and_remain_usable(self):
+        authority = STEPS['Validate generated consumer with trusted tooling']['env']
+        previous = json.loads(authority['PREVIOUS_TOOLCHAIN_SHA256'])
+        observed = []
+        for version in PREVIOUS_TREES:
+            with self.subTest(version=version):
+                self.use_legacy_base(version)
+                observed.append(bundle_digest(self.trusted))
+                result = self.validate()
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(set(previous), set(observed))
+        self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
+
+    def test_legacy_base_cannot_disable_any_previously_enabled_provider(self):
+        for codex, copilot in ((False, True), (True, False), (False, False)):
+            with self.subTest(codex=codex, copilot=copilot):
+                self.use_legacy_base()
+                self.mutate('.engineering-backbone/project.json',
+                            lambda d: d['agents'].update(codex=codex, copilot=copilot))
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('cannot disable trusted-base agent', result.stderr)
+                self.assertNotIn('Requirement already satisfied', result.stdout)
+
+    def test_initially_disabled_legacy_adapters_are_supported(self):
+        self.use_legacy_base(use_codex=False, use_copilot=False)
+        result = self.validate()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_workflow_rejects_invalid_or_duplicate_project_selections(self):
+        original = (self.candidate / '.engineering-backbone/project.json').read_bytes()
+        for value in ('null', '{"agents":{"codex":true,"codex":false,"copilot":true}}',
+                      '{"agents":{"codex":1,"copilot":true}}',
+                      '{"agents":{"codex":true}}'):
+            with self.subTest(value=value):
+                (self.candidate / '.engineering-backbone/project.json').write_text(value)
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertNotIn('Requirement already satisfied', result.stdout)
+        (self.candidate / '.engineering-backbone/project.json').write_bytes(original)
+
+    def test_toolchain_poisoning_is_rejected_before_merge_and_after_simulated_merge(self):
+        for kind in ('validator', 'schema', 'dependency'):
+            with self.subTest(kind=kind):
+                self.use_legacy_base()
+                marker = self.workspace / ('poison-executed-' + kind)
+                if kind == 'validator':
+                    (self.candidate / '.engineering-backbone/validate.py').write_text(
+                        f'from pathlib import Path\nPath({str(marker)!r}).touch()\nprint("poison PASS")\n')
+                elif kind == 'schema':
+                    (self.candidate / '.engineering-backbone/schemas/core-policy.schema.json').write_text('{}\n')
+                else:
+                    with (self.candidate / '.engineering-backbone/requirements.lock').open('a') as lock:
+                        lock.write('# unapproved lock-only change\n')
+                first = self.validate()
+                self.assertNotEqual(first.returncode, 0)
+                self.assertIn('Candidate toolchain fingerprint', first.stderr)
+                self.assertFalse(marker.exists())
+                # Even bypassing the merge process cannot promote unknown bytes.
+                shutil.rmtree(self.trusted)
+                shutil.copytree(self.candidate, self.trusted)
+                self.mutate('.engineering-backbone/core.json',
+                            lambda d: d['invariants'].update(human_merge_required=False))
+                second = self.validate()
+                self.assertNotEqual(second.returncode, 0)
+                self.assertIn('Trusted base toolchain fingerprint', second.stderr)
+                self.assertFalse(marker.exists())
+
+    def test_mixed_approved_versions_and_downgrade_are_rejected(self):
+        self.use_legacy_base('bootstrap')
+        modern = self.workspace / 'modern'
+        run_copy(str(self.source), modern, defaults=True, quiet=True, skip_tasks=True, vcs_ref='HEAD')
+        shutil.copy2(modern / '.engineering-backbone/validate.py', self.candidate / '.engineering-backbone/validate.py')
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Candidate toolchain fingerprint', result.stderr)
+        shutil.rmtree(self.candidate)
+        run_copy(str(self.legacy_source('pre-attestation')), self.candidate,
+                 defaults=True, quiet=True, skip_tasks=True)
+        self.assertNotEqual(self.validate().returncode, 0)
+        # Current tooling may stay current, but not downgrade to historical code.
+        shutil.rmtree(self.trusted)
+        shutil.copytree(modern, self.trusted)
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Candidate toolchain fingerprint', result.stderr)
+
+    def test_leaf_and_in_repository_bundle_or_schema_aliases_are_rejected(self):
+        original = self.workspace / 'original-consumer'
+        shutil.copytree(self.candidate, original)
+        for snapshot in (self.candidate, self.trusted):
+            for alias in ('validate.py', 'schemas', 'bundle'):
+                with self.subTest(snapshot=snapshot.name, alias=alias):
+                    shutil.rmtree(snapshot)
+                    shutil.copytree(original, snapshot)
+                    bundle = snapshot / '.engineering-backbone'
+                    if alias == 'bundle':
+                        target = snapshot / 'approved-alias'
+                        bundle.rename(target)
+                        bundle.symlink_to(target, target_is_directory=True)
+                    else:
+                        source = bundle / alias
+                        target = snapshot / ('alias-' + alias)
+                        source.rename(target)
+                        source.symlink_to(target, target_is_directory=alias == 'schemas')
+                    result = self.validate()
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn('symlinked managed file', result.stderr)
+                    self.assertNotIn('Requirement already satisfied', result.stdout)
+            shutil.rmtree(snapshot)
+            shutil.copytree(original, snapshot)
+
+    def test_real_copier_upgrade_accepts_coherent_tooling_and_preserves_local_facts(self):
+        source = self.legacy_source('pre-attestation')
+        initialize(source)
+        commit(source, 'Historical template')
+        git(source, 'tag', 'v0.1.0')
+        shutil.rmtree(self.candidate)
+        run_copy(str(source), self.candidate, defaults=True, quiet=True, skip_tasks=True, vcs_ref='v0.1.0')
+        facts = self.candidate / '.engineering-backbone/project.json'
+        data = json.loads(facts.read_text())
+        data['project'].update(name='local-stricter-project', language='Go', base_branch='reviewed/base',
+                               validation_command='go test ./...')
+        facts.write_text(json.dumps(data) + '\n')
+        (self.candidate / 'AGENTS.md').write_text('Local stricter instructions remain binding.\n')
+        self.mutate('.engineering-backbone/core.json',
+                    lambda d: d['invariants'].update(security_review_required=True))
+        initialize(self.candidate)
+        commit(self.candidate, 'Trusted local adoption')
+        shutil.rmtree(self.trusted)
+        shutil.copytree(self.candidate, self.trusted)
+        saved_facts = facts.read_bytes()
+        # Replace only the trusted temporary template source, not a real checkout.
+        for item in source.iterdir():
+            if item.name != '.git':
+                shutil.rmtree(item) if item.is_dir() else item.unlink()
+        shutil.copytree(ROOT, source, dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns('.git', '__pycache__', 'artifacts', '.venv'))
+        commit(source, 'Current template')
+        git(source, 'tag', 'v0.2.0')
+        run_update(self.candidate, answers_file='.engineering-backbone/copier-answers.yml',
+                   vcs_ref='v0.2.0', defaults=True, quiet=True, skip_tasks=True, overwrite=True)
+        # Copier-owned policy refresh needs manual integration of stricter rules.
+        self.mutate('.engineering-backbone/core.json',
+                    lambda d: d['invariants'].update(security_review_required=True))
+        self.assertEqual(saved_facts, facts.read_bytes())
+        self.assertEqual('Local stricter instructions remain binding.\n',
+                         (self.candidate / 'AGENTS.md').read_text())
+        expected = STEPS['Validate generated consumer with trusted tooling']['env']['CURRENT_TOOLCHAIN_SHA256']
+        self.assertEqual(expected, bundle_digest(self.candidate))
+        result = self.validate()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_managed_attributes_keep_real_autocrlf_checkout_fingerprint_stable(self):
+        initialize(self.candidate)
+        (self.candidate / 'application.txt').write_text('Application text\n')
+        commit(self.candidate, 'Generated adoption')
+        checkout = self.workspace / 'windows-checkout'
+        subprocess.run(['git', '-c', 'core.autocrlf=true', 'clone', str(self.candidate), str(checkout)],
+                       check=True, capture_output=True)
+        self.assertIn(b'\r\n', (checkout / 'application.txt').read_bytes())
+        self.assertEqual(bundle_digest(self.candidate), bundle_digest(checkout))
+
+    def test_compiler_tracks_uncommitted_tooling_and_ignores_document_metadata(self):
+        source = self.workspace / 'compiler-source'
+        shutil.copytree(self.source, source)
+        baseline = rendered_digest(source)
+        with (source / 'docs/adoption.md').open('a') as docs:
+            docs.write('\nUncommitted documentation metadata.\n')
+        self.assertEqual(baseline, rendered_digest(source))
+        with (source / 'scripts/validate.py').open('a') as validator:
+            validator.write('\n# Uncommitted tooling fixture requires a new pin.\n')
+        self.assertNotEqual(baseline, rendered_digest(source))
+        command = [sys.executable, str(ROOT / 'scripts/compile_toolchain_fingerprint.py'), '--source', str(source)]
+        stale = subprocess.run(command + ['--check'], text=True, capture_output=True)
+        self.assertNotEqual(stale.returncode, 0)
+        self.assertIn('fingerprint is stale', stale.stdout)
+        written = subprocess.run(command + ['--write'], text=True, capture_output=True)
+        self.assertEqual(written.returncode, 0, written.stdout + written.stderr)
+        checked = subprocess.run(command + ['--check'], text=True, capture_output=True)
+        self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
+
+    def test_both_generated_callers_expose_documented_manual_dispatch(self):
+        target = self.workspace / 'active-consumer'
+        run_copy(str(self.source), target, data={'backbone_workflow_ref': 'a' * 40},
+                 defaults=True, quiet=True, skip_tasks=True, vcs_ref='HEAD')
+        actual = yaml.safe_load((target / '.github/workflows/engineering-backbone.yml').read_text())
+        example = (target / '.engineering-backbone/workflow-example.md').read_text().split('```yaml\n', 1)[1].split('```', 1)[0]
+        sample = yaml.safe_load(example)
+        for caller in (actual, sample):
+            self.assertIn('workflow_dispatch', caller.get('on', caller.get(True)))
 
     def whitespace_fixture(self, *, first_commit=False, bad=True):
         shutil.rmtree(self.candidate)

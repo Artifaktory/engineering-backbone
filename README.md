@@ -43,6 +43,7 @@ Use Python 3.12 in an isolated environment:
 ```sh
 python -m pip install --require-hashes -r requirements.lock
 python scripts/validate.py
+python scripts/compile_toolchain_fingerprint.py --check
 python -m unittest discover -s tests -v
 git diff --check
 ```

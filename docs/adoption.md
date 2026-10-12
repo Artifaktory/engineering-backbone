@@ -30,7 +30,7 @@ separate reviewed migration to change provider selection or reconcile local fact
 
 | Files | Owner and update behavior |
 | --- | --- |
-| `.engineering-backbone/core.md`, `core.json`, validator, schemas, requirements/lock | Backbone-owned, refreshed by Copier |
+| `.engineering-backbone/core.md`, `core.json`, validator, schemas, requirements/lock and scoped `.gitattributes` | Backbone-owned, refreshed by Copier |
 | `.engineering-backbone/AGENTS.fragment.md`, `Copilot.fragment.md` | Always-refreshed additions for explicit local integration |
 | Root `AGENTS.md`, Copilot entrypoint and native agent profiles | Created when absent; existing files preserved |
 | `.engineering-backbone/project.json` | Existing local project facts preserved |
@@ -75,11 +75,25 @@ not require editing Copier's installation-only saved answers.
 ## Shared workflow access
 
 The central reusable workflow checks out explicit candidate and trusted consumer
-revisions. It installs only the trusted bundle's locked dependencies and runs only
-that bundle's validator and schemas, in isolated Python mode, against the candidate
-with `--trusted-base`. Candidate code, dependency locks and project commands are
-not executed by the consumer gate. `source_mode` is restricted to the backbone
-repository, so a consumer cannot use it to bypass this boundary.
+revisions. Before installing or running either bundle, immutable workflow literals
+attest the validator, five schemas and both dependency manifests as one coherent
+SHA256 fingerprint. The base must match the current or an explicitly retained
+historical fingerprint. Candidate tooling must equal that base or the workflow's
+current fingerprint; mixed files, unapproved edits and historical downgrades fail.
+The gate installs only the attested base's locked dependencies and runs only its
+validator and schemas, in isolated Python mode, against the candidate with
+`--trusted-base`. Candidate code, dependencies and project commands are never
+executed. This also prevents a no-op candidate validator becoming trusted next PR.
+
+Project facts, core policy and local instructions remain independently validated
+rather than hashed: project variation and stricter local invariants are preserved.
+The workflow separately enforces exact boolean provider facts and prevents
+turning off a provider enabled in the base, including with older approved
+validators. `source_mode` is restricted to the backbone repository. Hashes express
+provenance under the reviewed workflow pin; they do not replace human approval.
+The generated `.engineering-backbone/.gitattributes` keeps only the eight tooling
+files at LF line endings, so Windows checkout conversion does not change their
+attestation. Application files retain their existing Git attributes.
 
 | Trigger | Trusted consumer tooling | Committed whitespace range |
 | --- | --- | --- |
@@ -121,4 +135,17 @@ merge. The old project revision remains effective until the update PR is merged.
 Dependabot can propose shared Workflow/Action reference changes. A reference update
 does not synchronize vendored policy/schema/validator files: include the matching
 Copier update and native-fragment integration in the reviewed delivery when needed.
+When any of the eight tooling files changes, include the newly reviewed immutable
+workflow pin in the same consumer upgrade PR. Its current fingerprint must match
+the actual Copier output, and its retained previous list must contain the existing
+base tooling. An unchanged approved bundle remains supported. Custom edits to
+these managed tools need a centrally reviewed toolchain update; a consumer cannot
+supply its own hash or allowlist. Caller changes remain manual and do not require
+changing installation-only Copier answers.
+
+Source maintainers regenerate the current workflow literal with
+`python scripts/compile_toolchain_fingerprint.py --write`, review that diff and run
+`python scripts/compile_toolchain_fingerprint.py --check`. Source CI verifies the
+literal against actual rendered working-tree output. Previous fingerprints are
+explicitly reviewed compatibility entries, never automatically extended.
 No universal updater bot or automatic downstream application is installed.
