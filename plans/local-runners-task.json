@@ -64,7 +64,7 @@
       "id": "AC-3",
       "description": "Producer/consumer, negative, full suite and trusted checks pass",
       "verification": "hybrid",
-      "status": "pass",
+      "status": "pending",
       "evidence": [
         "docs/reviews/local-runners-codex-checks.md: independent repaired-source full suite 242 tests passed; remote loader failure tracked separately under AC5",
         "docs/reviews/local-runners-checks.md",
@@ -78,6 +78,9 @@
       "verification": "hybrid",
       "status": "pending",
       "evidence": [
+        "docs/reviews/local-runners-plan-codex.md",
+        "docs/reviews/local-runners-codex-delta-runtime.md",
+        "docs/reviews/local-runners-codex-delta-contract.md",
         "docs/reviews/local-runners-plan.md",
         "docs/reviews/local-runners-full-runtime.md",
         "docs/reviews/local-runners-full-contract.md",
