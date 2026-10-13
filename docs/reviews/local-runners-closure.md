@@ -1,10 +1,12 @@
 # Local runner review closure
 
-Metadata follow-up: `LR-BB-CLOSURE-001` is confirmed after final validators rejected
-four raw `.json` companions as unsupported governance artifacts. Its scoped
-storage repair must pass the existing validators and independent Delta before
-publication. The implementation P1 closure below remains limited to its reviewed
-source; it does not waive this required metadata failure.
+Metadata follow-up: `LR-BB-CLOSURE-001` is RESOLVED. Four raw companions retain
+identical bytes as `.json.txt`; the unchanged current and trusted validators both
+pass. Both independent metadata Delta catalogs report NO CONFIRMED IN-SCOPE
+DELTA FINDINGS. See [actual qualification](local-runners-closure-checks.md),
+[runtime metadata Delta](local-runners-closure-delta-runtime.md) and
+[contract metadata Delta](local-runners-closure-delta-contract.md). The failed
+closure check remains recorded; no validator, schema, source or gate was weakened.
 
 Follow-up status: remote Codex identified the confirmed P1 `LR-BB-CODEX-001`
 after the original clean catalogs. The first-step fail-closed repair passed all
@@ -27,6 +29,7 @@ GitHub commit metadata differs from the local review commits; each created GitHu
 | full | `9064f09b9aff88ae8a14e359f3d6ec82457ba582` | [`49b638a303ddf06f0a8a1641317683d7315e862d`](https://github.com/Artifaktory/engineering-backbone/commit/49b638a303ddf06f0a8a1641317683d7315e862d) | `9d2fd1df089cfd46d8ed8dafbd1c4d37be4b1d5e` |
 | delta | `be3f75f2426dc5c0f4382e791be74add16ba7104` | [`bbb25a064f56b093e2901d26264142ea4c550585`](https://github.com/Artifaktory/engineering-backbone/commit/bbb25a064f56b093e2901d26264142ea4c550585) | `1e32e7fa8a3941797f8af91e399eb4096e7fec5e` |
 | Codex-finding Delta | `1d0f055d54b57011d3da200c5e037319c8cca44d` | [`22d0ccf5f3b6b2675d7838908293c6efab9dcc9b`](https://github.com/Artifaktory/engineering-backbone/commit/22d0ccf5f3b6b2675d7838908293c6efab9dcc9b) | `0b432e942d1508f86d0e1bf952f2625f3e83a8d2` |
+| Metadata Delta | `c96fda04822cf32f3b4e1aed6a0cf16d8a7502f2` | [`2cfe1a84774db3eaf49ddc8602cdf2999916145d`](https://github.com/Artifaktory/engineering-backbone/commit/2cfe1a84774db3eaf49ddc8602cdf2999916145d) | `a64620ed1febabfaef2e66d635c922d9bd9156b6` |
 
 The current documentation-only closure adds the completed Codex-finding Delta
 reports, this mapping and AC4 acceptance. Workflow/test/script/template/dependency
@@ -34,6 +37,14 @@ bytes stay at the reviewed `1d0f055d54b57011d3da200c5e037319c8cca44d` repair sna
 Both Delta catalogs bind prior local head `21e633fd98dc86fc0f50d2d6f1c99414fafcb6bb`,
 repair head `1d0f055d54b57011d3da200c5e037319c8cca44d`, and binary-patch SHA256
 `d1a5cc1c162dfe1a72235148ed4a62d67118a6aa330afc9de92b749c034b5a32`.
+The metadata Delta binds prior formally reviewed head `1d0f055d54b57011d3da200c5e037319c8cca44d`,
+repair head `c96fda04822cf32f3b4e1aed6a0cf16d8a7502f2` and patch SHA256
+`a74e40aa01413a8581016363e0ea60541018a75e83b92009ce35a3312c468493`.
+Its focused failed-closure-to-repair range `14b1abc04d8328861c0b0256077a2fbeef1b025a`
+to `c96fda04822cf32f3b4e1aed6a0cf16d8a7502f2` has patch SHA256
+`80f8129a3fd5a7ee2bd7c66a56e566d9be9631fee7675341070d8422a88b4ae2`.
+The final closeout changes only Markdown reports and Task acceptance metadata;
+checked implementation and raw report bytes remain at these reviewed snapshots.
 Remote commit metadata differs; exact tree equality supplies the portable source
 mapping, not a claim that local and GitHub commit IDs are identical.
 

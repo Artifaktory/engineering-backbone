@@ -44,3 +44,10 @@ whitespace/source equality checks. Do not change the validator, schemas, source,
 compiled tooling, assertions or check configuration. Require scoped independent
 Delta closure for this confirmed ID and direct documentary regressions. AC3/4
 return to pending until repaired metadata and review pass; AC5 stays blocked.
+
+Metadata closure: actual current/trusted validators both exited0 at repair head
+`c96fda04822cf32f3b4e1aed6a0cf16d8a7502f2`; committed whitespace and equality of
+implementation/schema/policy files exited0. Both independent metadata Delta
+catalogs close `LR-BB-CLOSURE-001` as RESOLVED with no confirmed regression. All
+four renamed raw records remain byte-identical. AC3/4 return to pass; the real
+remote runtime failure and isolation stop remain blocked under AC5.

@@ -64,8 +64,9 @@
       "id": "AC-3",
       "description": "Producer/consumer, negative, full suite and trusted checks pass",
       "verification": "hybrid",
-      "status": "pending",
+      "status": "pass",
       "evidence": [
+        "docs/reviews/local-runners-closure-checks.md: unchanged current/trusted validators pass after byte-identical raw companion storage repair",
         "docs/reviews/local-runners-codex-checks.md: independent repaired-source full suite 242 tests passed; remote loader failure tracked separately under AC5",
         "docs/reviews/local-runners-checks.md",
         "docs/reviews/local-runners-full-contract.md",
@@ -76,8 +77,10 @@
       "id": "AC-4",
       "description": "Independent plan/Full/triage/required Delta reviews recorded",
       "verification": "hybrid",
-      "status": "pending",
+      "status": "pass",
       "evidence": [
+        "docs/reviews/local-runners-closure-delta-runtime.md",
+        "docs/reviews/local-runners-closure-delta-contract.md",
         "docs/reviews/local-runners-plan-codex.md",
         "docs/reviews/local-runners-codex-delta-runtime.md",
         "docs/reviews/local-runners-codex-delta-contract.md",
