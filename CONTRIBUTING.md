@@ -1,7 +1,9 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
-Task Packet. The active CI clone repair uses
+Task Packet. The active local runner migration uses
+[its Task Packet](plans/local-runners-task.json), [its plan](plans/local-runners.md)
+and [the activation requirements](docs/local-runners.md). The preceding CI clone repair uses
 [its Task Packet](plans/ci-clone-repair-task.json) and [its plan](plans/ci-clone-repair.md).
 The preceding shared workflow delivery uses
 [its Task Packet](plans/workflow-kit-task.json) and [its plan](plans/workflow-kit.md).

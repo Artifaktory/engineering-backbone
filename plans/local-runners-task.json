@@ -1,0 +1,106 @@
+{
+  "schema_version": "1",
+  "id": "BB-LOCAL-RUNNERS-007",
+  "title": "Route source CI to local runners",
+  "objective": "Migrate Backbone source-repository jobs to the existing local build group while preserving consumer defaults and all quality/trust gates.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "2cd4d9bd947fbd1aff25c6bec28e98f3fc1b1c13",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "Human request 2026-10-13",
+    "AGENTS.md, policy/core.md, CONTRIBUTING.md",
+    "plans/local-runners.md",
+    "Artifaktory runner runs 37198308243 and 38379065325"
+  ],
+  "scope": {
+    "include": [
+      ".github/workflows/**",
+      "tests/test_workflow_kit_workflows.py",
+      "tests/test_local_runners.py",
+      "CONTRIBUTING.md",
+      "plans/local-runners*",
+      "docs/reviews/local-runners*",
+      "docs/local-runners.md"
+    ],
+    "exclude": [
+      "policy/**",
+      "schemas/**",
+      "templates/**",
+      "scripts/**",
+      "requirements*",
+      "tests/fixtures/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Source jobs select local build group; external consumer defaults unchanged",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-2",
+      "description": "Permissions, native behavior, checks and aggregate failures preserved",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-3",
+      "description": "Producer/consumer, negative, full suite and trusted checks pass",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-4",
+      "description": "Independent plan/Full/triage/required Delta reviews recorded",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-5",
+      "description": "Remote local-runner execution and required access evidenced before activation",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python scripts/compile_workflow_kit.py --check",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Immutable independent plan/Full/Delta snapshots",
+      "GitHub runner names/groups and advisory Codex review"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 6
+  },
+  "stop_conditions": [
+    "Unresolved confirmed finding",
+    "Scope expansion",
+    "Failed required check",
+    "Missing runner activation evidence"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Runner registration or repository setting writes",
+    "Force push or destructive cleanup",
+    "Silently re-enable hosted source runners or skip required checks"
+  ],
+  "status": "active"
+}

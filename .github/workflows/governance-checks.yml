@@ -18,7 +18,12 @@ permissions:
 jobs:
   validate:
     name: Validate governance and compatibility
-    runs-on: ubuntu-latest
+    if: >-
+      github.repository != 'Artifaktory/engineering-backbone' ||
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: >-
+      ${{ fromJSON(github.repository == 'Artifaktory/engineering-backbone' && '{"group":"af-ci-build-v1","labels":["self-hosted","linux","x64","ci-heavy"]}' || '"ubuntu-latest"') }}
     timeout-minutes: 15
     steps:
       - name: Check workflow mode and event

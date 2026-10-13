@@ -22,8 +22,10 @@ jobs:
 
   trusted-policy:
     name: Trusted base policy
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on:
+      group: af-ci-build-v1
+      labels: [self-hosted, linux, x64, ci-heavy]
     timeout-minutes: 10
     steps:
       - name: Checkout trusted base snapshot

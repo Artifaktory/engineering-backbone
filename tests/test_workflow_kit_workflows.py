@@ -354,7 +354,9 @@ class WorkflowKitPayloadTests(unittest.TestCase):
                     self.assertEqual(job['uses'], './.github/workflows/governance-checks.yml')
                     self.assertNotIn('secrets', job)
                     continue
-                self.assertEqual(job['runs-on'], 'ubuntu-latest')
+                self.assertIn("fromJSON(github.repository == 'Artifaktory/engineering-backbone'", job['runs-on'])
+                self.assertIn('af-ci-build-v1', job['runs-on'])
+                self.assertIn('\"ubuntu-latest\"', job['runs-on'])
                 self.assertNotIn('continue-on-error', job)
                 for step in job['steps']:
                     self.assertNotIn('continue-on-error', step)

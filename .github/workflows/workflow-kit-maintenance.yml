@@ -9,7 +9,12 @@ permissions:
 jobs:
   configuration:
     name: Workflow configuration
-    runs-on: ubuntu-latest
+    if: >-
+      github.repository != 'Artifaktory/engineering-backbone' ||
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: >-
+      ${{ fromJSON(github.repository == 'Artifaktory/engineering-backbone' && '{"group":"af-ci-build-v1","labels":["self-hosted","linux","x64","ci-heavy"]}' || '"ubuntu-latest"') }}
     timeout-minutes: 10
     outputs:
       artifact_id: ${{ steps.artifact.outputs.artifact-id }}
@@ -508,7 +513,12 @@ jobs:
   security:
     name: Project security
     needs: configuration
-    runs-on: ubuntu-latest
+    if: >-
+      github.repository != 'Artifaktory/engineering-backbone' ||
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: >-
+      ${{ fromJSON(github.repository == 'Artifaktory/engineering-backbone' && '{"group":"af-ci-build-v1","labels":["self-hosted","linux","x64","ci-heavy"]}' || '"ubuntu-latest"') }}
     timeout-minutes: 60
     steps:
       - name: Download trusted run configuration
@@ -560,7 +570,12 @@ jobs:
   secrets:
     name: Secret prevention
     needs: configuration
-    runs-on: ubuntu-latest
+    if: >-
+      github.repository != 'Artifaktory/engineering-backbone' ||
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: >-
+      ${{ fromJSON(github.repository == 'Artifaktory/engineering-backbone' && '{"group":"af-ci-build-v1","labels":["self-hosted","linux","x64","ci-heavy"]}' || '"ubuntu-latest"') }}
     timeout-minutes: 60
     steps:
       - name: Download trusted run configuration
@@ -590,7 +605,8 @@ jobs:
     name: Maintenance gate
     if: always()
     needs: [configuration, security, secrets]
-    runs-on: ubuntu-latest
+    runs-on: >-
+      ${{ fromJSON(github.repository == 'Artifaktory/engineering-backbone' && '{"group":"af-ci-build-v1","labels":["self-hosted","linux","x64","ci-heavy"]}' || '"ubuntu-latest"') }}
     timeout-minutes: 5
     steps:
       - name: Set up trusted Python
