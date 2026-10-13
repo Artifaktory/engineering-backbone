@@ -73,8 +73,15 @@
       "id": "AC-4",
       "description": "Independent plan/Full/triage/required Delta reviews recorded",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/local-runners-plan.md",
+        "docs/reviews/local-runners-full-runtime.md",
+        "docs/reviews/local-runners-full-contract.md",
+        "docs/reviews/local-runners-triage.md",
+        "docs/reviews/local-runners-delta-runtime.md",
+        "docs/reviews/local-runners-delta-contract.md"
+      ]
     },
     {
       "id": "AC-5",
