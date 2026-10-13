@@ -1,0 +1,116 @@
+{
+  "schema_version": "1",
+  "id": "BB-CI-CLONE-006",
+  "title": "Repair historical Copier test clone transport",
+  "objective": "Repair the post-merge local Git clone failure in the historical upgrade fixture while preserving full compatibility and security checks.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "465d11c31c82e0beae1ddcd54b8eb325ce94c1f3",
+    "head_revision": "d79f89c06161b870b46193aa4e166553039708ca"
+  },
+  "approved_sources": [
+    "Human repair request 2026-10-13",
+    "AGENTS.md, CONTRIBUTING.md, policy/core.md",
+    "plans/ci-clone-repair.md",
+    "GitHub run 38291266449 job 114951680854"
+  ],
+  "scope": {
+    "include": [
+      "tests/test_workflows.py",
+      "CONTRIBUTING.md",
+      "plans/ci-clone-repair*",
+      "docs/reviews/ci-clone-*"
+    ],
+    "exclude": [
+      ".github/workflows/**",
+      "scripts/**",
+      "schemas/**",
+      "templates/**",
+      "requirements*",
+      "tests/fixtures/**",
+      "policy/**",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Exact failure mechanism evidenced with honest original-run causation limits",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/ci-clone-checks.md"
+      ]
+    },
+    {
+      "id": "AC-2",
+      "description": "Regression fails old raw-path transport and passes repaired real copy/update with all preservation assertions",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/ci-clone-checks.md"
+      ]
+    },
+    {
+      "id": "AC-3",
+      "description": "Both historical checkout modes, full suite, source/trusted validators and compiler checks pass without weaker gates",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/ci-clone-checks.md"
+      ]
+    },
+    {
+      "id": "AC-4",
+      "description": "Independent review, triage and required Delta chain has no unresolved confirmed findings",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/ci-clone-plan-review.md",
+        "docs/reviews/ci-clone-result.md"
+      ]
+    },
+    {
+      "id": "AC-5",
+      "description": "Published tree matches reviewed snapshot; actual PR checks and advisory review completed",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python -m unittest tests.test_workflows -v",
+      "python -m unittest discover -s tests -v",
+      "python scripts/validate.py",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python scripts/compile_workflow_kit.py --check",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Independent plan and Full reviews",
+      "Scoped Delta reviews for confirmed repair findings",
+      "Actual published tree, GitHub check and advisory review evidence"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 6
+  },
+  "stop_conditions": [
+    "Failed required check",
+    "Unresolved confirmed review finding",
+    "Scope expansion or unrelated changes",
+    "Unchanged failure without new evidence"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Downstream writes or repository setting changes",
+    "Force push or destructive cleanup",
+    "Disable checks, add retries or alter global Git maintenance"
+  ],
+  "status": "ready_for_review"
+}

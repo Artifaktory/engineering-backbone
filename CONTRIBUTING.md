@@ -1,7 +1,9 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
-Task Packet. The active shared workflow delivery uses
+Task Packet. The active CI clone repair uses
+[its Task Packet](plans/ci-clone-repair-task.json) and [its plan](plans/ci-clone-repair.md).
+The preceding shared workflow delivery uses
 [its Task Packet](plans/workflow-kit-task.json) and [its plan](plans/workflow-kit.md).
 The preceding Codex identity-security repair uses
 [its Task Packet](plans/codex-security-task.json) and [its plan](plans/codex-security.md).

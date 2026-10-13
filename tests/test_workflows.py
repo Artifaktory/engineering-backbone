@@ -442,12 +442,35 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_real_copier_upgrade_accepts_coherent_tooling_and_preserves_local_facts(self):
+        self.real_copier_upgrade()
+
+    def test_real_copier_upgrade_without_local_object_copy(self):
+        self.real_copier_upgrade(require_transport=True)
+
+    def real_copier_upgrade(self, *, require_transport=False):
         source = self.legacy_source('pre-attestation')
         initialize(source)
         commit(source, 'Historical template')
         git(source, 'tag', 'v0.1.0')
+        if require_transport:
+            # A valid object store that native Git refuses to copy with --local
+            # makes this regression deterministic without recreating race timing.
+            objects = source / '.git/objects'
+            objects.rename(objects.with_name('fixture-objects'))
+            objects.symlink_to('fixture-objects', target_is_directory=True)
+            git(source, 'fsck', '--full')
+            local_clone = subprocess.run(
+                ['git', 'clone', '--no-checkout', str(source),
+                 str(self.workspace / 'local-clone-control')],
+                capture_output=True, text=True,
+            )
+            self.assertNotEqual(local_clone.returncode, 0, local_clone.stdout + local_clone.stderr)
+            self.assertIn('symlink', local_clone.stderr)
         shutil.rmtree(self.candidate)
-        run_copy(str(source), self.candidate, defaults=True, quiet=True, skip_tasks=True, vcs_ref='v0.1.0')
+        # Persist transport access for both adoption and update, avoiding Git's
+        # local loose-object copying when the temporary source changes.
+        run_copy('git+' + source.resolve().as_uri(), self.candidate,
+                 defaults=True, quiet=True, skip_tasks=True, vcs_ref='v0.1.0')
         facts = self.candidate / '.engineering-backbone/project.json'
         data = json.loads(facts.read_text())
         data['project'].update(name='local-stricter-project', language='Go', base_branch='reviewed/base',
