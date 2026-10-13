@@ -40,22 +40,34 @@
       "id": "AC-1",
       "description": "Source jobs select local build group; external consumer defaults unchanged",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/local-runners-checks.md",
+        "docs/reviews/local-runners-full-contract.md",
+        "docs/reviews/local-runners-full-runtime.md"
+      ]
     },
     {
       "id": "AC-2",
       "description": "Permissions, native behavior, checks and aggregate failures preserved",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/local-runners-checks.md",
+        "docs/reviews/local-runners-full-contract.md",
+        "docs/reviews/local-runners-full-runtime.md"
+      ]
     },
     {
       "id": "AC-3",
       "description": "Producer/consumer, negative, full suite and trusted checks pass",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/local-runners-checks.md",
+        "docs/reviews/local-runners-full-contract.md",
+        "docs/reviews/local-runners-full-runtime.md"
+      ]
     },
     {
       "id": "AC-4",
@@ -68,8 +80,10 @@
       "id": "AC-5",
       "description": "Remote local-runner execution and required access evidenced before activation",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "blocked",
+      "evidence": [
+        "docs/local-runners.md: source repository group access/isolation/actual runner execution remain unverified"
+      ]
     }
   ],
   "validation": {
@@ -102,5 +116,5 @@
     "Force push or destructive cleanup",
     "Silently re-enable hosted source runners or skip required checks"
   ],
-  "status": "active"
+  "status": "blocked"
 }

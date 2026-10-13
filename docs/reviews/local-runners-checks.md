@@ -9,5 +9,5 @@ Base: `2cd4d9bd947fbd1aff25c6bec28e98f3fc1b1c13`. Isolated Python3.12.14; the pi
 - Previous trusted-base validator against candidate with `--trusted-base`: PASS.
 - Actionlint1.7.7 with explicit `ci-heavy` labels, shellcheck disabled: PASS. This is not runtime activation proof.
 - `git diff --check`: PASS.
-- Full unittest suite was initiated before Full review; final result will be recorded before PR delivery.
+- `python -m unittest discover -s tests -v`: PASS, all 239 tests, 642.854s. Full suite includes producer/consumer upgrade and negative tests.
 - Group repository access/isolation and actual source-job execution remain unverified. No settings/registration/merge/release/deployment writes are part of this scoped change.
