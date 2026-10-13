@@ -172,7 +172,8 @@ class WorkflowTests(unittest.TestCase):
     def test_source_mode_cannot_bypass_consumer_gate(self):
         step = 'Check workflow mode and event'
         self.assertNotEqual(self.shell(step, SOURCE_MODE='true').returncode, 0)
-        self.assertEqual(self.shell(step, SOURCE_MODE='true', GITHUB_REPOSITORY='Artifaktory/engineering-backbone').returncode, 0)
+        self.assertEqual(self.shell(step, SOURCE_MODE='true', GITHUB_REPOSITORY='Artifaktory/engineering-backbone',
+                                    PR_HEAD_REPO='Artifaktory/engineering-backbone').returncode, 0)
         self.assertEqual(self.shell(step).returncode, 0)
         self.assertNotEqual(self.shell(step, EVENT_NAME='pull_request_target').returncode, 0)
 

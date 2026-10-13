@@ -23,3 +23,11 @@ AF build run 37198308243 jobs 111424627445/111424627576: pc1-build/pc2-build, gr
 ## Recovery
 
 Until merge the default-branch workflows remain unchanged. If activation fails, leave the PR draft and supply missing registration/group-access evidence. A human can revert this scoped workflow change through a separate PR. Do not silently re-enable hosted runners or drop a native check.
+
+## Confirmed remote finding repair: LR-BB-CODEX-001
+
+Codex identified a P1 at published head `19fb75b640a470b459119f1654f5e43d3c1aef2b`: the source-fork conditions skip both existing quality checks, and skipped GitHub checks do not block merging. This is confirmed and must be repaired before review closure.
+
+Restore the original quality check scheduling: remove the reusable governance job-level source-fork skip and retain `pull_request` as the trusted-policy job condition. Both jobs must reject source-repository pull requests with a foreign or absent head repository in their first fixed Bash step, before checkout or setup. Pass the head repository as a quoted environment value rather than interpolate it into shell text. Keep runner identity/group selection, required check names, events, permissions, subsequent commands and external consumer behavior unchanged. The rejection is candidate-editable mitigation; it does not replace repository-wide access/approval controls or runner isolation.
+
+Regression coverage executes both actual early gate scripts for same-source, foreign-source and absent-head requests, plus non-PR source events and external consumer fork requests. Assert that both original check names remain scheduled and that the gates precede all actions. Add `tests/test_workflows.py` to the scoped paths solely to supply a real same-repository head in its existing source-positive fixture. Run the focused tests and required full/consumer/trusted/compiled checks. Freeze the prior published local head `21e633fd98dc86fc0f50d2d6f1c99414fafcb6bb`, repaired head and binary patch digest for two independent scoped Delta catalogs, followed by visible GitHub Codex Delta review. No second Full is needed because this restores the approved gate contract without widening trust boundaries.

@@ -21,6 +21,7 @@
       ".github/workflows/**",
       "tests/test_workflow_kit_workflows.py",
       "tests/test_local_runners.py",
+      "tests/test_workflows.py",
       "CONTRIBUTING.md",
       "plans/local-runners*",
       "docs/reviews/local-runners*",
@@ -53,6 +54,7 @@
       "verification": "hybrid",
       "status": "pass",
       "evidence": [
+        "docs/reviews/local-runners-codex-checks.md: both original check names schedule first fail-closed gates",
         "docs/reviews/local-runners-checks.md",
         "docs/reviews/local-runners-full-contract.md",
         "docs/reviews/local-runners-full-runtime.md"
@@ -64,6 +66,7 @@
       "verification": "hybrid",
       "status": "pass",
       "evidence": [
+        "docs/reviews/local-runners-codex-checks.md: independent repaired-source full suite 242 tests passed; remote loader failure tracked separately under AC5",
         "docs/reviews/local-runners-checks.md",
         "docs/reviews/local-runners-full-contract.md",
         "docs/reviews/local-runners-full-runtime.md"
@@ -73,7 +76,7 @@
       "id": "AC-4",
       "description": "Independent plan/Full/triage/required Delta reviews recorded",
       "verification": "hybrid",
-      "status": "pass",
+      "status": "pending",
       "evidence": [
         "docs/reviews/local-runners-plan.md",
         "docs/reviews/local-runners-full-runtime.md",
@@ -89,7 +92,8 @@
       "verification": "hybrid",
       "status": "blocked",
       "evidence": [
-        "docs/local-runners.md: source repository group access/isolation/actual runner execution remain unverified"
+        "Run 38427484521: both source jobs ran on pc2-build in af-ci-build-v1; trusted policy passed, Foundation failed 19 Python-loader cases",
+        "docs/local-runners.md: selected Python must work without loader injection variables; runtime acceptance and clean isolation remain blocked"
       ]
     }
   ],

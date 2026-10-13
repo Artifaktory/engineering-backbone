@@ -22,12 +22,22 @@ jobs:
 
   trusted-policy:
     name: Trusted base policy
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'pull_request'
     runs-on:
       group: af-ci-build-v1
       labels: [self-hosted, linux, x64, ci-heavy]
     timeout-minutes: 10
     steps:
+      - name: Check source pull request origin
+        shell: bash
+        env:
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          set -euo pipefail
+          if [ "$PR_HEAD_REPO" != "$GITHUB_REPOSITORY" ]; then
+            echo '::error::Source fork pull requests cannot execute on the backbone runners. No candidate code has been checked out.'
+            exit 1
+          fi
       - name: Checkout trusted base snapshot
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:

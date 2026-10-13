@@ -1,6 +1,12 @@
 # Local runner review closure
 
-Two independent Full catalogs and two scoped Delta catalogs are complete. LR-PLAN-001 and LR-AO-RUNTIME-001/002 were confirmed, repaired and independently closed. There are no confirmed unresolved findings in the scoped implementation/repair. Review advice does not grant merge, activation or publication authority beyond the explicitly requested draft PR.
+Follow-up status: remote Codex identified the confirmed P1 `LR-BB-CODEX-001`
+after the original clean catalogs below. Its fail-closed repair is being checked
+and requires independent scoped Delta closure. The earlier conclusions describe
+their frozen snapshots and do not waive this new finding. See
+[triage](local-runners-triage.md) and [reviewed repair plan](local-runners-plan-codex.md).
+
+The original two independent Full catalogs and two scoped Delta catalogs completed. LR-PLAN-001 and LR-AO-RUNTIME-001/002 were confirmed, repaired and independently closed. Those catalogs reported no confirmed unresolved findings in their recorded snapshots; the later Backbone P1 is tracked separately above. Review advice does not grant merge, activation or publication authority beyond the explicitly requested draft PR.
 
 ## Portable snapshot mapping
 

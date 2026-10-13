@@ -1,0 +1,1006 @@
+{
+  "frozen_head": "a2e9f536f589042425ebc3f248dc0bde8215a7de",
+  "frozen_tree": "b002b44cbcb5ebb16728635f7694dd02154fe9a6",
+  "verified_at": "2026-10-13T16:39:12.256553+00:00",
+  "verified_workflow_test_script_template_dependency_files": 166,
+  "content_sha256": "af0d13e9f05576268c3d4055e0f5fb09af231908e9af388bb97a350b3c233cce",
+  "mismatches": [],
+  "entries": [
+    {
+      "path": ".github/workflows/governance-checks.yml",
+      "frozen_git_blob": "5e007473c2dd228304b514cced22145503488109",
+      "actual_git_blob": "5e007473c2dd228304b514cced22145503488109",
+      "sha256": "b80803486f71f1cd71d2ac7f7352d8a3b0d5d7fc9cda6e5a05b0e7edb6e5f665"
+    },
+    {
+      "path": ".github/workflows/quality.yml",
+      "frozen_git_blob": "9ea40bcffcc2330b19e017f048202527609eac6a",
+      "actual_git_blob": "9ea40bcffcc2330b19e017f048202527609eac6a",
+      "sha256": "3e3bad3f706a4b7712b417b1bd96e7569215bbda2a1adfca72f7401e0c96feaa"
+    },
+    {
+      "path": ".github/workflows/workflow-kit-maintenance.yml",
+      "frozen_git_blob": "84432b52f608022af5461573089f51c45e16db4d",
+      "actual_git_blob": "84432b52f608022af5461573089f51c45e16db4d",
+      "sha256": "9b713caeae38cdc121dabf1c8f1c4335a04d0eb91214042c6435223dd8e4b1bc"
+    },
+    {
+      "path": ".github/workflows/workflow-kit-pr.yml",
+      "frozen_git_blob": "4e53600e417923f6951747ae9f32f25d3a2453b8",
+      "actual_git_blob": "4e53600e417923f6951747ae9f32f25d3a2453b8",
+      "sha256": "538beb039b30692be00fd0fb63e6ee2ffe1bf3c31489e8e9b53aec4d6e58f4df"
+    },
+    {
+      "path": "requirements.lock",
+      "frozen_git_blob": "c441a0f722a39792b377c98ec68a63ae075c6d0d",
+      "actual_git_blob": "c441a0f722a39792b377c98ec68a63ae075c6d0d",
+      "sha256": "d39972f4b6699d7a01f05596341ca70d626dfaaa7389470e8fdbe77c1616ff14"
+    },
+    {
+      "path": "requirements.txt",
+      "frozen_git_blob": "bfe2e9fb5646564d4f715a283a2faf83b4823bbb",
+      "actual_git_blob": "bfe2e9fb5646564d4f715a283a2faf83b4823bbb",
+      "sha256": "eb03a584665f946d01691296835c9ffc28104d6ba663166047e925b274582dfa"
+    },
+    {
+      "path": "scripts/compile_toolchain_fingerprint.py",
+      "frozen_git_blob": "ec2daeb30caa487f8de34a19a628d6d975e5d674",
+      "actual_git_blob": "ec2daeb30caa487f8de34a19a628d6d975e5d674",
+      "sha256": "2469e020b3fc214e165c4bca5c8cd7e82590e7e0fd3772c36d49790bfcbe4688"
+    },
+    {
+      "path": "scripts/compile_workflow_kit.py",
+      "frozen_git_blob": "a76b3987cb2e171bf3671b0c2971486bd995b61e",
+      "actual_git_blob": "a76b3987cb2e171bf3671b0c2971486bd995b61e",
+      "sha256": "189c826ed20b3d673ec6333437a4e70e5eaa3145f2a6c1f10d18a1eea00738b5"
+    },
+    {
+      "path": "scripts/validate.py",
+      "frozen_git_blob": "029ee6e9b985aede88f2b316f3665ee10ba65035",
+      "actual_git_blob": "029ee6e9b985aede88f2b316f3665ee10ba65035",
+      "sha256": "a14434b97f0dbb5572dc74687299eb5a9f3302a9f5f01944f29f8c9ead1bf173"
+    },
+    {
+      "path": "scripts/workflow_kit.py",
+      "frozen_git_blob": "3cd21be43c009478349e1679627a038294b81ec1",
+      "actual_git_blob": "3cd21be43c009478349e1679627a038294b81ec1",
+      "sha256": "5737db1f426271722fb9dc60a12daf6e76b1433215dc643bd3b3b6b03185c357"
+    },
+    {
+      "path": "templates/.engineering-backbone/.gitattributes",
+      "frozen_git_blob": "979e88769c15115f1f6569372d4cf557ec9c283e",
+      "actual_git_blob": "979e88769c15115f1f6569372d4cf557ec9c283e",
+      "sha256": "f86455c3325f77a53c7df7f415236021046a610ef02afd9c66ce65a67b187f93"
+    },
+    {
+      "path": "templates/.engineering-backbone/AGENTS.fragment.md.jinja",
+      "frozen_git_blob": "fb84df041543e1cdbd2baea408711a1a2162253e",
+      "actual_git_blob": "fb84df041543e1cdbd2baea408711a1a2162253e",
+      "sha256": "b457390b79625951321177e3e50cdcf4286b6b7f25b33b49131e1566757c113b"
+    },
+    {
+      "path": "templates/.engineering-backbone/Copilot.fragment.md.jinja",
+      "frozen_git_blob": "00c657eca31d651ebd8a1e62c275b9b2852426e8",
+      "actual_git_blob": "00c657eca31d651ebd8a1e62c275b9b2852426e8",
+      "sha256": "6e46bafca18da2f996240fc5321affab76d854a74bc8222a888971572a3544e2"
+    },
+    {
+      "path": "templates/.engineering-backbone/README.md.jinja",
+      "frozen_git_blob": "a5f47c1344f61134eeac9aa297bd859e4dfb0f69",
+      "actual_git_blob": "a5f47c1344f61134eeac9aa297bd859e4dfb0f69",
+      "sha256": "4eb684e1f241cb9864aa7567b9484ff26cf1901fd0212ce2a4813bf3d8783b12"
+    },
+    {
+      "path": "templates/.engineering-backbone/copier-answers.yml.jinja",
+      "frozen_git_blob": "9ffdf61a684de941e623004109aa826e6d7c7587",
+      "actual_git_blob": "9ffdf61a684de941e623004109aa826e6d7c7587",
+      "sha256": "fe6bfbc1ecf844f22ed0ea65a6815530b4e3ccee241a8fd49d905c005ffd3aca"
+    },
+    {
+      "path": "templates/.engineering-backbone/copilot-guide.md.jinja",
+      "frozen_git_blob": "cd1fe2ad7823495cc76073c42dd52f9223073a67",
+      "actual_git_blob": "cd1fe2ad7823495cc76073c42dd52f9223073a67",
+      "sha256": "5711a51c0522d62d4a998d142760062def41eb4bdceea87f56767180911d3b3a"
+    },
+    {
+      "path": "templates/.engineering-backbone/core.json.jinja",
+      "frozen_git_blob": "b95159e5ec987cd6d1821f4efb46ff922fe18e90",
+      "actual_git_blob": "b95159e5ec987cd6d1821f4efb46ff922fe18e90",
+      "sha256": "a0625a6a0e0157fa5f03442c30faf4b2a5a72715c113a7583328385985d19ba8"
+    },
+    {
+      "path": "templates/.engineering-backbone/core.md.jinja",
+      "frozen_git_blob": "49a0d9c3abf923712af3237d03c1336d2eee03f7",
+      "actual_git_blob": "49a0d9c3abf923712af3237d03c1336d2eee03f7",
+      "sha256": "e594616f14e5c6ec9e220a24c2fbd43496f9f96f1e4a94f16c6e661079d3322c"
+    },
+    {
+      "path": "templates/.engineering-backbone/project.json.jinja",
+      "frozen_git_blob": "1988329ff594b290267ef9cfa62166ce0c2c0d59",
+      "actual_git_blob": "1988329ff594b290267ef9cfa62166ce0c2c0d59",
+      "sha256": "95cd72479b7718962c3ece0f755de279839ad539e2af320917b23a4241ec416c"
+    },
+    {
+      "path": "templates/.engineering-backbone/requirements.lock.jinja",
+      "frozen_git_blob": "83262b6d1b2b18b36969e93aa0f6f0ff03972daa",
+      "actual_git_blob": "83262b6d1b2b18b36969e93aa0f6f0ff03972daa",
+      "sha256": "49e1e7675af49404e17faf2b98523ba30918c775abca43ce8f96a7b90ea05f1b"
+    },
+    {
+      "path": "templates/.engineering-backbone/requirements.txt.jinja",
+      "frozen_git_blob": "1854e5b90b77d0ad4787a94514ca016cf66984f1",
+      "actual_git_blob": "1854e5b90b77d0ad4787a94514ca016cf66984f1",
+      "sha256": "f151c59ef988c5d428f1fc6f325088ceff31f0cc87798959e4f2f74d3340b6de"
+    },
+    {
+      "path": "templates/.engineering-backbone/schemas/core-policy.schema.json.jinja",
+      "frozen_git_blob": "b23ae920dc697066443296a859f127d082805654",
+      "actual_git_blob": "b23ae920dc697066443296a859f127d082805654",
+      "sha256": "b738d3e0cd8c12a7deecde9334ccfbe735cf03bb4bb8e315c69579bd1305dbf7"
+    },
+    {
+      "path": "templates/.engineering-backbone/schemas/project.schema.json.jinja",
+      "frozen_git_blob": "0b23daf08b34ad5111bf9d340a22e217f1b24a1c",
+      "actual_git_blob": "0b23daf08b34ad5111bf9d340a22e217f1b24a1c",
+      "sha256": "1223a2b0086c727c08228375d8e14086c8f7ba0b5ee8bcb886b04668b4ed6b54"
+    },
+    {
+      "path": "templates/.engineering-backbone/schemas/requirement.schema.json.jinja",
+      "frozen_git_blob": "e7d77e7aa282d72772235f52bcd41a74aa6b2d9a",
+      "actual_git_blob": "e7d77e7aa282d72772235f52bcd41a74aa6b2d9a",
+      "sha256": "aa7a73799d8f469d7d37329cb5fca0b901a11bd6c18c91b20bd38d73c0290972"
+    },
+    {
+      "path": "templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja",
+      "frozen_git_blob": "02c497edeb5441aea895d79d8511904eefb98c21",
+      "actual_git_blob": "02c497edeb5441aea895d79d8511904eefb98c21",
+      "sha256": "bddbf167f3921911f8a031d0b3ea5b881d037525e7f36e326a6957830d412736"
+    },
+    {
+      "path": "templates/.engineering-backbone/schemas/task-packet.schema.json.jinja",
+      "frozen_git_blob": "df51ff2ae6d0e0b7c659542741e982c57858cf26",
+      "actual_git_blob": "df51ff2ae6d0e0b7c659542741e982c57858cf26",
+      "sha256": "635bbd24db5c4735f388072d3f2fecf97d59002a3f9a2840c9f82f6ee3725cc2"
+    },
+    {
+      "path": "templates/.engineering-backbone/schemas/{% if use_workflow_kit %}workflows.schema.json{% endif %}.jinja",
+      "frozen_git_blob": "4bfe41d1df673707085067d66ebf46f96d7cdc2d",
+      "actual_git_blob": "4bfe41d1df673707085067d66ebf46f96d7cdc2d",
+      "sha256": "9baf59e492383f2a89e122c327b8cc1a3e6d4e954c3a835ef98ea6a3fa4ea004"
+    },
+    {
+      "path": "templates/.engineering-backbone/validate.py.jinja",
+      "frozen_git_blob": "09bb7ea3db39b24534482f8672831b91d3fc8d72",
+      "actual_git_blob": "09bb7ea3db39b24534482f8672831b91d3fc8d72",
+      "sha256": "e29830302fe41e3f301be51c41e598fff1736c69275f483163bd70c4c8db8683"
+    },
+    {
+      "path": "templates/.engineering-backbone/workflow-example.md.jinja",
+      "frozen_git_blob": "f4ec919a10f0c298f2674fbf93704809143bcf93",
+      "actual_git_blob": "f4ec919a10f0c298f2674fbf93704809143bcf93",
+      "sha256": "fc18e4246f88b306d618790e79038aa3b22f8443f150818952810b62e1a3a64e"
+    },
+    {
+      "path": "templates/.engineering-backbone/{% if use_workflow_kit %}profiles.json{% endif %}.jinja",
+      "frozen_git_blob": "5142953dcee0be0594d81cc596cf88aea273aebe",
+      "actual_git_blob": "5142953dcee0be0594d81cc596cf88aea273aebe",
+      "sha256": "25ea918e5be821ab14853c52dab28667f759caa2be7a260ab74c43d04c9142b4"
+    },
+    {
+      "path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflow-examples{% endif %}/deploy.yml.example.jinja",
+      "frozen_git_blob": "730c30c043f215284763c65911a084cf34d7d405",
+      "actual_git_blob": "730c30c043f215284763c65911a084cf34d7d405",
+      "sha256": "1161bbaa4a9ab70c54805a309f6919d7e254e06ef1838096023446044de726e5"
+    },
+    {
+      "path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflow-examples{% endif %}/release.yml.example.jinja",
+      "frozen_git_blob": "5a2f4d69b4a53e29ed42522bcc66358864c61bec",
+      "actual_git_blob": "5a2f4d69b4a53e29ed42522bcc66358864c61bec",
+      "sha256": "f97b708a0a6808f83e5c9444ebc20805b4c8119b0555764f832ea149e8a5739a"
+    },
+    {
+      "path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflow-guide.md{% endif %}.jinja",
+      "frozen_git_blob": "c5d579c6aca2c20fded6a9e7f137a62e84d33316",
+      "actual_git_blob": "c5d579c6aca2c20fded6a9e7f137a62e84d33316",
+      "sha256": "aff313a54d72561299a900a7e8f80b3e756ac461234cfb16563b36e0174ad39e"
+    },
+    {
+      "path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflow-kit.py{% endif %}.jinja",
+      "frozen_git_blob": "49d136822a7b1e7b4fe725d1b328d1670ce5e9ac",
+      "actual_git_blob": "49d136822a7b1e7b4fe725d1b328d1670ce5e9ac",
+      "sha256": "cf6593d5147d2ea4a94cc912ab39d373913bd5e3ec3d09437529ca103f409491"
+    },
+    {
+      "path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflows.json{% endif %}.jinja",
+      "frozen_git_blob": "3eaf99fcd2a08153918f6b67c8ecdfbf3e7ca11f",
+      "actual_git_blob": "3eaf99fcd2a08153918f6b67c8ecdfbf3e7ca11f",
+      "sha256": "66f650afd09b5fdde586163b8c7045aa648c25f766d06770f99284c4e78dec52"
+    },
+    {
+      "path": "templates/_partials/copilot/analyst.md.jinja",
+      "frozen_git_blob": "87faace8bf317bfa0f71b74e18abb92a6ae8bd9d",
+      "actual_git_blob": "87faace8bf317bfa0f71b74e18abb92a6ae8bd9d",
+      "sha256": "cea7c5c5cdf54a18ce4ebf95232d557086264d761ad10dfe066ae2a28bea5813"
+    },
+    {
+      "path": "templates/_partials/copilot/documentation.md.jinja",
+      "frozen_git_blob": "4d6befb58ac1b680e2eb2512553bdd4935076aba",
+      "actual_git_blob": "4d6befb58ac1b680e2eb2512553bdd4935076aba",
+      "sha256": "0eea3c513d63d99a0f2defc829e096775e9ddb944b11e0466c60f64a0ca3d36a"
+    },
+    {
+      "path": "templates/_partials/copilot/entry.md.jinja",
+      "frozen_git_blob": "fb79a5f330997a92b6418e5376f0d6c456b39de1",
+      "actual_git_blob": "fb79a5f330997a92b6418e5376f0d6c456b39de1",
+      "sha256": "dab1901e643e683acd39fccb60011297b7b38cc0ef5801e081187f6f594f3f52"
+    },
+    {
+      "path": "templates/_partials/copilot/finding-triage.md.jinja",
+      "frozen_git_blob": "38fce6ecb83ba7a6d90e7d80d50167a94142559e",
+      "actual_git_blob": "38fce6ecb83ba7a6d90e7d80d50167a94142559e",
+      "sha256": "2e9a7f3cacda7e2c2424a27475fabc89c4af172a4dfb68193d2be3e070b9fa7f"
+    },
+    {
+      "path": "templates/_partials/copilot/implementer.md.jinja",
+      "frozen_git_blob": "9d00cd9e3403055c457dee321869907ff4b42be3",
+      "actual_git_blob": "9d00cd9e3403055c457dee321869907ff4b42be3",
+      "sha256": "f879a01bc1b2a8b3bf33577664b3b9c3f97ac50cd2b6d9f7726fa2bbeb3d849e"
+    },
+    {
+      "path": "templates/_partials/copilot/instruction-docs.md.jinja",
+      "frozen_git_blob": "1cb24e6245d78398902b45b7ecf5d420a8ec2c38",
+      "actual_git_blob": "1cb24e6245d78398902b45b7ecf5d420a8ec2c38",
+      "sha256": "3bb806c4cd5f6ce68663635ff1875e86d151f092a6842db8215a640d7137ac20"
+    },
+    {
+      "path": "templates/_partials/copilot/instruction-frontend.md.jinja",
+      "frozen_git_blob": "dad0aab72eadf9a3c9c3293b947c4025f146c62f",
+      "actual_git_blob": "dad0aab72eadf9a3c9c3293b947c4025f146c62f",
+      "sha256": "cb37fccf01546b16bf924e3df3c1115bdddbeb8cf006c01fe15c732116329161"
+    },
+    {
+      "path": "templates/_partials/copilot/instruction-governance.md.jinja",
+      "frozen_git_blob": "125be2af946886a9752bde11aca4ac641e68189b",
+      "actual_git_blob": "125be2af946886a9752bde11aca4ac641e68189b",
+      "sha256": "e9f71eaa63dcfe53fdf1653f390bc81f2094183d7fcd821049a3d693a5d04852"
+    },
+    {
+      "path": "templates/_partials/copilot/instruction-python.md.jinja",
+      "frozen_git_blob": "fb9a6593d3dd1e5af298e31fda6d172690680a54",
+      "actual_git_blob": "fb9a6593d3dd1e5af298e31fda6d172690680a54",
+      "sha256": "1f4a0b5510c2dee42c9a5b185cf6db4c67c2695258fc2d22428cc3b0418c1444"
+    },
+    {
+      "path": "templates/_partials/copilot/instruction-tests.md.jinja",
+      "frozen_git_blob": "902de3fb7d663e2f7f531e702c14437757132830",
+      "actual_git_blob": "902de3fb7d663e2f7f531e702c14437757132830",
+      "sha256": "53586a18eb8ea6e6398bcbc1c0afb54c773d126e4cb4072fd3f5713bff173460"
+    },
+    {
+      "path": "templates/_partials/copilot/plan-reviewer.md.jinja",
+      "frozen_git_blob": "a8fed86169769bbbd6b2e6b6d2ed7baad6e48597",
+      "actual_git_blob": "a8fed86169769bbbd6b2e6b6d2ed7baad6e48597",
+      "sha256": "7555858acc20638dbba7c14a87143eb4c06f26e90dd86642969526332fac99ac"
+    },
+    {
+      "path": "templates/_partials/copilot/planner.md.jinja",
+      "frozen_git_blob": "2b93273136473c539d70117f1c623efdc1a2b09c",
+      "actual_git_blob": "2b93273136473c539d70117f1c623efdc1a2b09c",
+      "sha256": "bedfcfbb0a68d8d70da138a185ca894ad59b4afb0ee758ef08eed5d58e7d58f0"
+    },
+    {
+      "path": "templates/_partials/copilot/quality-checker.md.jinja",
+      "frozen_git_blob": "837c773778f978e16ab17291f7d094b22e527360",
+      "actual_git_blob": "837c773778f978e16ab17291f7d094b22e527360",
+      "sha256": "4486878d9629c7a83fc2b29cd89e34e556bc85c56dc48de0b90910462c201593"
+    },
+    {
+      "path": "templates/_partials/copilot/reviewer.md.jinja",
+      "frozen_git_blob": "438bc28ba101a9cb779f4470e5c57e1b73300d47",
+      "actual_git_blob": "438bc28ba101a9cb779f4470e5c57e1b73300d47",
+      "sha256": "9ef48b349d3867d3aa0cf96d940560e1810464115aa0df9fecb1ef52d5f03f12"
+    },
+    {
+      "path": "templates/_partials/copilot/security-reviewer.md.jinja",
+      "frozen_git_blob": "960199f045cc02aac0a7e9f1384905a166d03e42",
+      "actual_git_blob": "960199f045cc02aac0a7e9f1384905a166d03e42",
+      "sha256": "13c9d8e48a3453f2d4c581efb8092b1fe858cf44afe2a2a77dd0099bf388e0d3"
+    },
+    {
+      "path": "templates/_partials/copilot/skill-bug-reproduction.md.jinja",
+      "frozen_git_blob": "14f1b1cf6ded8d01d62bbc17935229aaf7b1437c",
+      "actual_git_blob": "14f1b1cf6ded8d01d62bbc17935229aaf7b1437c",
+      "sha256": "b9f149bc170a5612acb299c4cce41936680d0493bdeed8bb218bf65e2e7872f5"
+    },
+    {
+      "path": "templates/_partials/copilot/skill-code-review.md.jinja",
+      "frozen_git_blob": "5f2295c42c0fb8e8cb380fe2f17fbabcd454ec64",
+      "actual_git_blob": "5f2295c42c0fb8e8cb380fe2f17fbabcd454ec64",
+      "sha256": "1d57ce281834e9beaea1b88e89038486d69b8797afdb713bd25ea408f787ef25"
+    },
+    {
+      "path": "templates/_partials/copilot/skill-delta-review.md.jinja",
+      "frozen_git_blob": "653415c8ef3640299802a99b3a266b9639937659",
+      "actual_git_blob": "653415c8ef3640299802a99b3a266b9639937659",
+      "sha256": "70030aacafefe56d7924b35e04ee8f85500488c340a1ac951857cb115c318e97"
+    },
+    {
+      "path": "templates/_partials/copilot/skill-docs-traceability.md.jinja",
+      "frozen_git_blob": "132abbd7081bc949e915752d0d7f232ccaa9f7a0",
+      "actual_git_blob": "132abbd7081bc949e915752d0d7f232ccaa9f7a0",
+      "sha256": "f5c1ea3738390dbfcc5fccb97b585d2c9b2f8c1317630d3330b3e8b835886ab7"
+    },
+    {
+      "path": "templates/_partials/copilot/skill-finding-triage.md.jinja",
+      "frozen_git_blob": "e94e156088a6fb069578e300b6c2415892aba046",
+      "actual_git_blob": "e94e156088a6fb069578e300b6c2415892aba046",
+      "sha256": "ff3a8fa2db6bb6abd41736746e4da8a0d93d27f9684e4914e833632772f11f9a"
+    },
+    {
+      "path": "templates/_partials/copilot/skill-implementation-plan.md.jinja",
+      "frozen_git_blob": "06fbcbab9b454a97ba05226253b95f9966e747d1",
+      "actual_git_blob": "06fbcbab9b454a97ba05226253b95f9966e747d1",
+      "sha256": "d74285bc904ae404a725b5025370b932c550b0159e02cabdb09b315b4415cf40"
+    },
+    {
+      "path": "templates/_partials/copilot/skill-task-intake.md.jinja",
+      "frozen_git_blob": "1a5c2dd470b14cfb708c0a15e1b6a07dc27b00c0",
+      "actual_git_blob": "1a5c2dd470b14cfb708c0a15e1b6a07dc27b00c0",
+      "sha256": "ffdaa61af8af5006e2a28e425dc96d5b96204b58e1becde9456d8b3984c5ab05"
+    },
+    {
+      "path": "templates/_partials/copilot/skill-test-and-quality.md.jinja",
+      "frozen_git_blob": "e07ffab36ac4ca2361726004cd60a876dabcc7cc",
+      "actual_git_blob": "e07ffab36ac4ca2361726004cd60a876dabcc7cc",
+      "sha256": "3318fff2c3b359dcda0c3dab3f9874f3e620d16ab6192eb12a8a9636a411154a"
+    },
+    {
+      "path": "templates/_partials/copilot/test-engineer.md.jinja",
+      "frozen_git_blob": "f0b73e5d3145ca65663e5a8d12e88f415d195b52",
+      "actual_git_blob": "f0b73e5d3145ca65663e5a8d12e88f415d195b52",
+      "sha256": "e1a94f31acae7a25e9c383f1dadeaf58462fdb96c338a58d282effa2fa59fda8"
+    },
+    {
+      "path": "templates/_partials/essential.md.jinja",
+      "frozen_git_blob": "4540b61b402c73bf893c3a2cbeedd324b23a6627",
+      "actual_git_blob": "4540b61b402c73bf893c3a2cbeedd324b23a6627",
+      "sha256": "bf8d497856a1998006e4b3ec7838674fbd5bccd1c6fc30c3bdb7e3144f472b65"
+    },
+    {
+      "path": "templates/_partials/implementer.md.jinja",
+      "frozen_git_blob": "b325e6a9806ff791dceb22a862a829b440ab3e07",
+      "actual_git_blob": "b325e6a9806ff791dceb22a862a829b440ab3e07",
+      "sha256": "2e0f476b8a5265b62baa7e1335cfa98f8e8bfd3eb3b609bf3edba6c6653c41fd"
+    },
+    {
+      "path": "templates/_partials/planner.md.jinja",
+      "frozen_git_blob": "eb85244e716bbb778fda6ca59fbcd6b4684391e7",
+      "actual_git_blob": "eb85244e716bbb778fda6ca59fbcd6b4684391e7",
+      "sha256": "79289b4a1a9109bb0a5552efe812ae73e2c20d6791b8fbc65faa64b10892304c"
+    },
+    {
+      "path": "templates/_partials/reviewer.md.jinja",
+      "frozen_git_blob": "386922e86753045086dac9be14f11475c88446b2",
+      "actual_git_blob": "386922e86753045086dac9be14f11475c88446b2",
+      "sha256": "43dacb8c82724b0c98d62e03b6ecf20217a455ec3b7b0fd9af1ed48c4d7856db"
+    },
+    {
+      "path": "templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "frozen_git_blob": "7d91b55faadcb4bb5332f683ccf1d2f85b77f0d4",
+      "actual_git_blob": "7d91b55faadcb4bb5332f683ccf1d2f85b77f0d4",
+      "sha256": "caacfd0024740a115cc91fff6ca4c97c2b34c654ebe26397dcddd25248a2eb4c"
+    },
+    {
+      "path": "templates/{% if use_codex %}.codex{% endif %}/agents/backbone-implementer.toml.jinja",
+      "frozen_git_blob": "d3d627d7488fac2af2c1ff45d40d110305c71aa1",
+      "actual_git_blob": "d3d627d7488fac2af2c1ff45d40d110305c71aa1",
+      "sha256": "dbb9a7f7fba672431018593f2ea5f0fa90d6da4cfadbdd1cf5e97b412b611099"
+    },
+    {
+      "path": "templates/{% if use_codex %}.codex{% endif %}/agents/backbone-planner.toml.jinja",
+      "frozen_git_blob": "4375556d12a554d98622f6caed4926d2af7a7a92",
+      "actual_git_blob": "4375556d12a554d98622f6caed4926d2af7a7a92",
+      "sha256": "e023a8f988367915d57c065336c7dedf7fca56decbcefecacce8c76a9884c1bb"
+    },
+    {
+      "path": "templates/{% if use_codex %}.codex{% endif %}/agents/backbone-reviewer.toml.jinja",
+      "frozen_git_blob": "c11a6f831a52707c8cf3e44f0a383543a6a57e75",
+      "actual_git_blob": "c11a6f831a52707c8cf3e44f0a383543a6a57e75",
+      "sha256": "995735e683424a4fa60acb0226b057a6cf43f8d7c2dedb97e18fd93ac9ccf6cd"
+    },
+    {
+      "path": "templates/{% if use_codex %}AGENTS.md{% endif %}.jinja",
+      "frozen_git_blob": "2ffb59df675d6a0457008a50911c9d2dfcd16dbf",
+      "actual_git_blob": "2ffb59df675d6a0457008a50911c9d2dfcd16dbf",
+      "sha256": "ca9056d14d45841f89296640d0f296b3c56abfa2c47b58479eddc68cd48856a9"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-analyst.agent.md.jinja",
+      "frozen_git_blob": "c97f04a13eecc308ec67c7be466c8dc58e280887",
+      "actual_git_blob": "c97f04a13eecc308ec67c7be466c8dc58e280887",
+      "sha256": "169814d2fb6e6297427e7a012156f860c77f557ef5cbd08155228b4d3841a450"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-documentation.agent.md.jinja",
+      "frozen_git_blob": "a960f4b76a1fdb557fd6cfed0690af4513bf6e0c",
+      "actual_git_blob": "a960f4b76a1fdb557fd6cfed0690af4513bf6e0c",
+      "sha256": "690e1d57508e89ce0bb2df723c89accd8759ff74d5b57546f46611810acabfd4"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-finding-triage.agent.md.jinja",
+      "frozen_git_blob": "11023516a3bd7083faf8498bfe32be66ebbd0dc6",
+      "actual_git_blob": "11023516a3bd7083faf8498bfe32be66ebbd0dc6",
+      "sha256": "4fffe13266e2d622c4f896a1a4f1950ed089b1185b53374541e51189524b870d"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-implementer.agent.md.jinja",
+      "frozen_git_blob": "56b7b71c2ba6596607f6b6433e3a7aac4c6a4ca9",
+      "actual_git_blob": "56b7b71c2ba6596607f6b6433e3a7aac4c6a4ca9",
+      "sha256": "9d7b4654b8382caf9f791755893b079a1f251e1b75a3225222e97feaf37a692c"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-plan-reviewer.agent.md.jinja",
+      "frozen_git_blob": "00665e11c8ab44f3de0038900f922338f184b702",
+      "actual_git_blob": "00665e11c8ab44f3de0038900f922338f184b702",
+      "sha256": "2ac6f7cfcb7cb917eaa6bde97297aa22b46dffe1fb394035a5b0cc570a77bee8"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-planner.agent.md.jinja",
+      "frozen_git_blob": "b46710a3409ed95bc23663c7346e6e0e8ebf0444",
+      "actual_git_blob": "b46710a3409ed95bc23663c7346e6e0e8ebf0444",
+      "sha256": "2dbd407bf1d9bc3905ebe2c952a590315e3b80dbe52a18c538ceaca02982a452"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-quality-checker.agent.md.jinja",
+      "frozen_git_blob": "b781db5fc60d10e092f38fb6a3d8fb309892d06e",
+      "actual_git_blob": "b781db5fc60d10e092f38fb6a3d8fb309892d06e",
+      "sha256": "af80535205cfb13a787d7d274d19870d9f7dd22c9b84465eb585f7f9507ab371"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-reviewer.agent.md.jinja",
+      "frozen_git_blob": "b9a627a66b1a92754240a38524ac37c67ed0987a",
+      "actual_git_blob": "b9a627a66b1a92754240a38524ac37c67ed0987a",
+      "sha256": "94c9d9ffb07b62d1ad76e212f4af62cfc1dcd84134ee94dd16948e3df5e72390"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-security-reviewer.agent.md.jinja",
+      "frozen_git_blob": "14927cf6fabb5963665335c401b87bd7090fba26",
+      "actual_git_blob": "14927cf6fabb5963665335c401b87bd7090fba26",
+      "sha256": "d4aafbcbf84db6bddddda72cd1c955701098c72bb81d23f9ecc0ea095d288f45"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-test-engineer.agent.md.jinja",
+      "frozen_git_blob": "6ceb4ed64bbe39cfe31842bca9e641357fdbaa1c",
+      "actual_git_blob": "6ceb4ed64bbe39cfe31842bca9e641357fdbaa1c",
+      "sha256": "0abe1199b9bbf76f384d0d65e21263f4a90a9ff2d9d179afcb8dea7c8898277b"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/copilot-instructions.md.jinja",
+      "frozen_git_blob": "2aeea5c9b8ccf55d1ca976bde2f88f67c2b070e7",
+      "actual_git_blob": "2aeea5c9b8ccf55d1ca976bde2f88f67c2b070e7",
+      "sha256": "43f62214eb60f2e5c6d83b5d9216d7e9140a258ce64f2962c9c689b92dca32c2"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-docs.instructions.md.jinja",
+      "frozen_git_blob": "f87859aec0b1d2bca179a2cac2148ca777675b49",
+      "actual_git_blob": "f87859aec0b1d2bca179a2cac2148ca777675b49",
+      "sha256": "37ad9ba474d72dd9118b4eb0c4c65079ef50c01f137afe046717d96b26d66f71"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-governance.instructions.md.jinja",
+      "frozen_git_blob": "7ed88d7cf1da835e440684ab723e6673d23a3422",
+      "actual_git_blob": "7ed88d7cf1da835e440684ab723e6673d23a3422",
+      "sha256": "915cda9f9ff46a6412c0e87655088447108f3c921b4344c1d75766c312b47862"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-tests.instructions.md.jinja",
+      "frozen_git_blob": "a530816dae59fb645127a9e820ebbab51fb5fc11",
+      "actual_git_blob": "a530816dae59fb645127a9e820ebbab51fb5fc11",
+      "sha256": "e2f8979fc65d81056383b7d8a7085b56d360864321c055956328129faa44f795"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/instructions/{% if copilot_frontend_profile %}backbone-frontend.instructions.md{% endif %}.jinja",
+      "frozen_git_blob": "6897fca1fd172f24550f14a451ada2f07dfc43b1",
+      "actual_git_blob": "6897fca1fd172f24550f14a451ada2f07dfc43b1",
+      "sha256": "86d6706b2eda60f0e74557bf8077d6a37754f7c927f3500ec1ea366aac787ad0"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/instructions/{% if copilot_python_profile %}backbone-python.instructions.md{% endif %}.jinja",
+      "frozen_git_blob": "0a8b671682bb9a108d25402b97b1d77323a6ffcd",
+      "actual_git_blob": "0a8b671682bb9a108d25402b97b1d77323a6ffcd",
+      "sha256": "304edc1facb4f701cea82d755058cf7e044ff3d4bd07fbf05b06f150212dfe6f"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/skills/bug-reproduction/SKILL.md.jinja",
+      "frozen_git_blob": "b6994bfc22abfae61c679c2cb569249029961d53",
+      "actual_git_blob": "b6994bfc22abfae61c679c2cb569249029961d53",
+      "sha256": "11fe5dd92242c1c7aee80c976a6af6c946328c9898dde80fe552e3cadb2684a2"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/skills/code-review/SKILL.md.jinja",
+      "frozen_git_blob": "5b2aeb4ced10f601ef9b98d37ed068ee23aefdce",
+      "actual_git_blob": "5b2aeb4ced10f601ef9b98d37ed068ee23aefdce",
+      "sha256": "708a5cc5656df961551c978424191b2b603f78167180613c317ac49930937dca"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/skills/delta-review/SKILL.md.jinja",
+      "frozen_git_blob": "4d5a5fd24aec0ffd9e7989fb14db3697b6cb1d51",
+      "actual_git_blob": "4d5a5fd24aec0ffd9e7989fb14db3697b6cb1d51",
+      "sha256": "11578f6732346fbc244d149ecf98ca2e94c0cc739221a4adb873be0bb3274950"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/skills/docs-traceability/SKILL.md.jinja",
+      "frozen_git_blob": "41d1ac44a2e1e968ef9f5a817678627da0c46e13",
+      "actual_git_blob": "41d1ac44a2e1e968ef9f5a817678627da0c46e13",
+      "sha256": "a3d258cd266ed5644c0d71b40ee39a3521ccc50a0e134b532f76fa2b45344256"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/skills/finding-triage/SKILL.md.jinja",
+      "frozen_git_blob": "20c537a4583a772e1c2aa9d8b9eb4ba52ceea214",
+      "actual_git_blob": "20c537a4583a772e1c2aa9d8b9eb4ba52ceea214",
+      "sha256": "87d8530f540bb5901d0457acfaff53fe24c27aec941fff667a4ec77c075500b3"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/skills/implementation-plan/SKILL.md.jinja",
+      "frozen_git_blob": "5ab67dda5d04c17ee3347a8b0e0935cbdce6abcc",
+      "actual_git_blob": "5ab67dda5d04c17ee3347a8b0e0935cbdce6abcc",
+      "sha256": "6a0b398b72a1192a8b9d9337f2f95f931ec70bb96dec5b927d635d34ecc02174"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/skills/task-intake/SKILL.md.jinja",
+      "frozen_git_blob": "d7f5acda18a0302c2035865d715377bc2a697b46",
+      "actual_git_blob": "d7f5acda18a0302c2035865d715377bc2a697b46",
+      "sha256": "e6e3cf5827155504d670a535175a6be2102804eb343b2e21eccc72cdf8af1ad5"
+    },
+    {
+      "path": "templates/{% if use_copilot %}.github{% endif %}/skills/test-and-quality/SKILL.md.jinja",
+      "frozen_git_blob": "93468ccf3d3f419631bb28e2cfc47dcbbede4ff6",
+      "actual_git_blob": "93468ccf3d3f419631bb28e2cfc47dcbbede4ff6",
+      "sha256": "71d3a273755b8766b181387d92ed5fa4a38ec735d91d1733a74ace1432eb996f"
+    },
+    {
+      "path": "templates/{% if use_workflow_kit and workflow_kit_ref %}.github{% endif %}/workflows/backbone-maintenance.yml.jinja",
+      "frozen_git_blob": "f42decdf36eaed0d7043f1fb5eb61f6ccc83e7d9",
+      "actual_git_blob": "f42decdf36eaed0d7043f1fb5eb61f6ccc83e7d9",
+      "sha256": "011f14986ac65ca439b40998ac087def09b3329afb21a20b0d95decead49d341"
+    },
+    {
+      "path": "templates/{% if use_workflow_kit and workflow_kit_ref %}.github{% endif %}/workflows/backbone-pr-checks.yml.jinja",
+      "frozen_git_blob": "ddaa6e16a96b40fa07502c618f9d2fa4ea816a79",
+      "actual_git_blob": "ddaa6e16a96b40fa07502c618f9d2fa4ea816a79",
+      "sha256": "eb805a63a44c14226b5ee5a84055950cddf643bcf5b631b142197d05cd0d1b92"
+    },
+    {
+      "path": "tests/fixtures/historical/.gitattributes",
+      "frozen_git_blob": "089be9e7bfd51091fcaaa84bb86a69337a206a62",
+      "actual_git_blob": "089be9e7bfd51091fcaaa84bb86a69337a206a62",
+      "sha256": "68fa21112bae067ee3bac5309a07695ce7216a4920ac7447585941219285dda4"
+    },
+    {
+      "path": "tests/fixtures/historical/README.md",
+      "frozen_git_blob": "3e8f5a42a19fbcdef1c042a58b7df77160e92642",
+      "actual_git_blob": "3e8f5a42a19fbcdef1c042a58b7df77160e92642",
+      "sha256": "3246fb951c82e12dad087977a92c48814e76eea93b973b715d12f5de26d56492"
+    },
+    {
+      "path": "tests/fixtures/historical/attested-review/copier.yml",
+      "frozen_git_blob": "a4b1933953b0a3caf8d494f476198e813c1d13ad",
+      "actual_git_blob": "a4b1933953b0a3caf8d494f476198e813c1d13ad",
+      "sha256": "82af386d5f125e51df512f34cabef1ba47dc2751da17e954115bf1e3f3efb03e"
+    },
+    {
+      "path": "tests/fixtures/historical/attested-review/schemas/project.schema.json",
+      "frozen_git_blob": "b908ade823731ab8c7abf09460cb1613d83617e6",
+      "actual_git_blob": "b908ade823731ab8c7abf09460cb1613d83617e6",
+      "sha256": "3edcd6da68004eae2a1265b716c89571e28ba71630871d000bed09a5c91975e5"
+    },
+    {
+      "path": "tests/fixtures/historical/attested-review/schemas/task-packet.schema.json",
+      "frozen_git_blob": "6bb4db02e79513e88cc823aad808347f5f728394",
+      "actual_git_blob": "6bb4db02e79513e88cc823aad808347f5f728394",
+      "sha256": "d793c5c5022d6a216d09683056efc0d6f1a28804a6c582c692b7044dd669c35a"
+    },
+    {
+      "path": "tests/fixtures/historical/attested-review/scripts/validate.py",
+      "frozen_git_blob": "3424110c5c4a198104172c424646185f94e4910b",
+      "actual_git_blob": "3424110c5c4a198104172c424646185f94e4910b",
+      "sha256": "e29d4b317448ed77a76f0f67a10a1e7c0973254c33395f8da41cdd1a7ee814c7"
+    },
+    {
+      "path": "tests/fixtures/historical/attested-review/templates/.engineering-backbone/.gitattributes",
+      "frozen_git_blob": "e89be8c766282f7ceebcac5e105954812f58c1d9",
+      "actual_git_blob": "e89be8c766282f7ceebcac5e105954812f58c1d9",
+      "sha256": "680f43cf67a55ff5046587310dd160a01463bbcd7a9fc5f02e7de22ce0be524e"
+    },
+    {
+      "path": "tests/fixtures/historical/attested-review/templates/.engineering-backbone/README.md.jinja",
+      "frozen_git_blob": "874bf4853f0c051be4fe3354e6192a6098924fe1",
+      "actual_git_blob": "874bf4853f0c051be4fe3354e6192a6098924fe1",
+      "sha256": "cccd0524a7050cba05b7f1979dfbe0eb250733675fb80e032e74b297c8c9fc76"
+    },
+    {
+      "path": "tests/fixtures/historical/attested-review/templates/.engineering-backbone/workflow-example.md.jinja",
+      "frozen_git_blob": "f4ec919a10f0c298f2674fbf93704809143bcf93",
+      "actual_git_blob": "f4ec919a10f0c298f2674fbf93704809143bcf93",
+      "sha256": "fc18e4246f88b306d618790e79038aa3b22f8443f150818952810b62e1a3a64e"
+    },
+    {
+      "path": "tests/fixtures/historical/attested-review/templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "frozen_git_blob": "7d91b55faadcb4bb5332f683ccf1d2f85b77f0d4",
+      "actual_git_blob": "7d91b55faadcb4bb5332f683ccf1d2f85b77f0d4",
+      "sha256": "caacfd0024740a115cc91fff6ca4c97c2b34c654ebe26397dcddd25248a2eb4c"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/copier.yml",
+      "frozen_git_blob": "0c3488e82dafd159b769cc34410c1c582bfe6038",
+      "actual_git_blob": "0c3488e82dafd159b769cc34410c1c582bfe6038",
+      "sha256": "a36a88967bea399feb55ac942eacbabd40992ccf044b597acb1a7e86c6c58fb9"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/policy/core.json",
+      "frozen_git_blob": "70fe8366c79e91a3f8ee248bf1892c3935a4ea87",
+      "actual_git_blob": "70fe8366c79e91a3f8ee248bf1892c3935a4ea87",
+      "sha256": "e37098517f2210a8aca1121b44ca3c5a7b993d8336e927e0312f991f3bf09147"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/policy/core.md",
+      "frozen_git_blob": "5946baec701f903723c96fce18f85c514d3d0f26",
+      "actual_git_blob": "5946baec701f903723c96fce18f85c514d3d0f26",
+      "sha256": "83d03af60d3928baa0b922370e0621ddbba066f7a9a59e75a9716f55da26c1a0"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/requirements.lock",
+      "frozen_git_blob": "c441a0f722a39792b377c98ec68a63ae075c6d0d",
+      "actual_git_blob": "c441a0f722a39792b377c98ec68a63ae075c6d0d",
+      "sha256": "d39972f4b6699d7a01f05596341ca70d626dfaaa7389470e8fdbe77c1616ff14"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/requirements.txt",
+      "frozen_git_blob": "bfe2e9fb5646564d4f715a283a2faf83b4823bbb",
+      "actual_git_blob": "bfe2e9fb5646564d4f715a283a2faf83b4823bbb",
+      "sha256": "eb03a584665f946d01691296835c9ffc28104d6ba663166047e925b274582dfa"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/schemas/core-policy.schema.json",
+      "frozen_git_blob": "efe1f84a1659c79aa89d6c45c347e7ef184e9916",
+      "actual_git_blob": "efe1f84a1659c79aa89d6c45c347e7ef184e9916",
+      "sha256": "d5f869678deb7d181a5610e5d9340b5bae6c82ee0cf676bf70fad2aa917ad42c"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/schemas/project.schema.json",
+      "frozen_git_blob": "c43333cf1a6facaea0bc228154d7746f42291d51",
+      "actual_git_blob": "c43333cf1a6facaea0bc228154d7746f42291d51",
+      "sha256": "8571e40cd46a8a311c674bb23dccc5d745d11838a44ce75957cce5cf3335cc3b"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/schemas/requirement.schema.json",
+      "frozen_git_blob": "7152cd46b5a373d0276b4f3f94909b7610ffa87a",
+      "actual_git_blob": "7152cd46b5a373d0276b4f3f94909b7610ffa87a",
+      "sha256": "10aae0503d0b852284eaeb52609f6d7e457774e3bb910c5f0292cdb0be3d3a94"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/schemas/review-evidence.schema.json",
+      "frozen_git_blob": "7c878d96cc7108763fb6ca88fec580bead097cdb",
+      "actual_git_blob": "7c878d96cc7108763fb6ca88fec580bead097cdb",
+      "sha256": "d46f7467d7d8e13b16cd6de3c88c7e7b927805d394bed898fa90b54d15e524fb"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/schemas/task-packet.schema.json",
+      "frozen_git_blob": "36cbbc5171331c27ef4478c6f7abc86c77493354",
+      "actual_git_blob": "36cbbc5171331c27ef4478c6f7abc86c77493354",
+      "sha256": "de721956f2b4620c4cb1032a6a20b758a033642b612bdffb442e1022f91b9bd0"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/scripts/validate.py",
+      "frozen_git_blob": "d2d788a521f3bed0777eab90787bb5a507074c76",
+      "actual_git_blob": "d2d788a521f3bed0777eab90787bb5a507074c76",
+      "sha256": "fb41565a4cbe55ba7cf4755a726280b8f8bad717086c8535f0807101c51576b6"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/AGENTS.fragment.md.jinja",
+      "frozen_git_blob": "fb84df041543e1cdbd2baea408711a1a2162253e",
+      "actual_git_blob": "fb84df041543e1cdbd2baea408711a1a2162253e",
+      "sha256": "b457390b79625951321177e3e50cdcf4286b6b7f25b33b49131e1566757c113b"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/Copilot.fragment.md.jinja",
+      "frozen_git_blob": "176485931300931ee9edb12156e52aba8f3320fc",
+      "actual_git_blob": "176485931300931ee9edb12156e52aba8f3320fc",
+      "sha256": "958a4b2f0ef78a2c0713a6fe209a5795bed48d793dfbd44bf76e92810b580862"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/README.md.jinja",
+      "frozen_git_blob": "1a8df5a4d67f1ef26856c369039c9a09d9d967e5",
+      "actual_git_blob": "1a8df5a4d67f1ef26856c369039c9a09d9d967e5",
+      "sha256": "3d6eb59c8c389a1a0ecaa341daf07f27bb8ec7a03813174e74d40b1cd1b51b0e"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/copier-answers.yml.jinja",
+      "frozen_git_blob": "9ffdf61a684de941e623004109aa826e6d7c7587",
+      "actual_git_blob": "9ffdf61a684de941e623004109aa826e6d7c7587",
+      "sha256": "fe6bfbc1ecf844f22ed0ea65a6815530b4e3ccee241a8fd49d905c005ffd3aca"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/core.json.jinja",
+      "frozen_git_blob": "b95159e5ec987cd6d1821f4efb46ff922fe18e90",
+      "actual_git_blob": "b95159e5ec987cd6d1821f4efb46ff922fe18e90",
+      "sha256": "a0625a6a0e0157fa5f03442c30faf4b2a5a72715c113a7583328385985d19ba8"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/core.md.jinja",
+      "frozen_git_blob": "49a0d9c3abf923712af3237d03c1336d2eee03f7",
+      "actual_git_blob": "49a0d9c3abf923712af3237d03c1336d2eee03f7",
+      "sha256": "e594616f14e5c6ec9e220a24c2fbd43496f9f96f1e4a94f16c6e661079d3322c"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/project.json.jinja",
+      "frozen_git_blob": "1988329ff594b290267ef9cfa62166ce0c2c0d59",
+      "actual_git_blob": "1988329ff594b290267ef9cfa62166ce0c2c0d59",
+      "sha256": "95cd72479b7718962c3ece0f755de279839ad539e2af320917b23a4241ec416c"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.lock.jinja",
+      "frozen_git_blob": "83262b6d1b2b18b36969e93aa0f6f0ff03972daa",
+      "actual_git_blob": "83262b6d1b2b18b36969e93aa0f6f0ff03972daa",
+      "sha256": "49e1e7675af49404e17faf2b98523ba30918c775abca43ce8f96a7b90ea05f1b"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.txt.jinja",
+      "frozen_git_blob": "1854e5b90b77d0ad4787a94514ca016cf66984f1",
+      "actual_git_blob": "1854e5b90b77d0ad4787a94514ca016cf66984f1",
+      "sha256": "f151c59ef988c5d428f1fc6f325088ceff31f0cc87798959e4f2f74d3340b6de"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/core-policy.schema.json.jinja",
+      "frozen_git_blob": "b23ae920dc697066443296a859f127d082805654",
+      "actual_git_blob": "b23ae920dc697066443296a859f127d082805654",
+      "sha256": "b738d3e0cd8c12a7deecde9334ccfbe735cf03bb4bb8e315c69579bd1305dbf7"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/project.schema.json.jinja",
+      "frozen_git_blob": "0b23daf08b34ad5111bf9d340a22e217f1b24a1c",
+      "actual_git_blob": "0b23daf08b34ad5111bf9d340a22e217f1b24a1c",
+      "sha256": "1223a2b0086c727c08228375d8e14086c8f7ba0b5ee8bcb886b04668b4ed6b54"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/requirement.schema.json.jinja",
+      "frozen_git_blob": "e7d77e7aa282d72772235f52bcd41a74aa6b2d9a",
+      "actual_git_blob": "e7d77e7aa282d72772235f52bcd41a74aa6b2d9a",
+      "sha256": "aa7a73799d8f469d7d37329cb5fca0b901a11bd6c18c91b20bd38d73c0290972"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja",
+      "frozen_git_blob": "02c497edeb5441aea895d79d8511904eefb98c21",
+      "actual_git_blob": "02c497edeb5441aea895d79d8511904eefb98c21",
+      "sha256": "bddbf167f3921911f8a031d0b3ea5b881d037525e7f36e326a6957830d412736"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/task-packet.schema.json.jinja",
+      "frozen_git_blob": "df51ff2ae6d0e0b7c659542741e982c57858cf26",
+      "actual_git_blob": "df51ff2ae6d0e0b7c659542741e982c57858cf26",
+      "sha256": "635bbd24db5c4735f388072d3f2fecf97d59002a3f9a2840c9f82f6ee3725cc2"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/validate.py.jinja",
+      "frozen_git_blob": "09bb7ea3db39b24534482f8672831b91d3fc8d72",
+      "actual_git_blob": "09bb7ea3db39b24534482f8672831b91d3fc8d72",
+      "sha256": "e29830302fe41e3f301be51c41e598fff1736c69275f483163bd70c4c8db8683"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/workflow-example.md.jinja",
+      "frozen_git_blob": "39d780cd0b89abc9900703a9a8f6271bfaaeecb5",
+      "actual_git_blob": "39d780cd0b89abc9900703a9a8f6271bfaaeecb5",
+      "sha256": "4f9a6e7970cfb4d6827748fd2923b6b4c0c191843e205ec4eaa49e9c409ffcbe"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/_partials/essential.md.jinja",
+      "frozen_git_blob": "206d2afd829bcf64d2cf429096ea5dc6821c00aa",
+      "actual_git_blob": "206d2afd829bcf64d2cf429096ea5dc6821c00aa",
+      "sha256": "31d50389f3592b94f54e9ffe2a9aa2781bef9a56c127e37f9fd2abe5618b47f6"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/_partials/implementer.md.jinja",
+      "frozen_git_blob": "9fb9bae601e56f54abad737c74bb443c75eeaa38",
+      "actual_git_blob": "9fb9bae601e56f54abad737c74bb443c75eeaa38",
+      "sha256": "e07cb9cc40e50d0ea432d2190e0398a49fbad0f8cf7539a69dd9ec39103c0fe2"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/_partials/planner.md.jinja",
+      "frozen_git_blob": "419f49924fe5b20a5d91de2e49b14b5c33763b10",
+      "actual_git_blob": "419f49924fe5b20a5d91de2e49b14b5c33763b10",
+      "sha256": "9ded7264c37000d25a28abe2e6f6976ee7f97f3c4d020d684900417a545cc084"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/_partials/reviewer.md.jinja",
+      "frozen_git_blob": "93713a3e8fcca3d73fae68e0c7bbf03769cafd8d",
+      "actual_git_blob": "93713a3e8fcca3d73fae68e0c7bbf03769cafd8d",
+      "sha256": "e53335671f75d2d8f328351f40fe65bbd57eed003cc767a91271cc478dc2999f"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "frozen_git_blob": "068b48606890f2f0190da43eff8ac83e50a114e7",
+      "actual_git_blob": "068b48606890f2f0190da43eff8ac83e50a114e7",
+      "sha256": "0f03129567b95b72c37c136cc9bf3fa407cb33ef0da3bf24c9b0f896fa72db53"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-implementer.toml.jinja",
+      "frozen_git_blob": "d3d627d7488fac2af2c1ff45d40d110305c71aa1",
+      "actual_git_blob": "d3d627d7488fac2af2c1ff45d40d110305c71aa1",
+      "sha256": "dbb9a7f7fba672431018593f2ea5f0fa90d6da4cfadbdd1cf5e97b412b611099"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-planner.toml.jinja",
+      "frozen_git_blob": "4375556d12a554d98622f6caed4926d2af7a7a92",
+      "actual_git_blob": "4375556d12a554d98622f6caed4926d2af7a7a92",
+      "sha256": "e023a8f988367915d57c065336c7dedf7fca56decbcefecacce8c76a9884c1bb"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-reviewer.toml.jinja",
+      "frozen_git_blob": "c11a6f831a52707c8cf3e44f0a383543a6a57e75",
+      "actual_git_blob": "c11a6f831a52707c8cf3e44f0a383543a6a57e75",
+      "sha256": "995735e683424a4fa60acb0226b057a6cf43f8d7c2dedb97e18fd93ac9ccf6cd"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if use_codex %}AGENTS.md{% endif %}.jinja",
+      "frozen_git_blob": "2ffb59df675d6a0457008a50911c9d2dfcd16dbf",
+      "actual_git_blob": "2ffb59df675d6a0457008a50911c9d2dfcd16dbf",
+      "sha256": "ca9056d14d45841f89296640d0f296b3c56abfa2c47b58479eddc68cd48856a9"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-implementer.agent.md.jinja",
+      "frozen_git_blob": "e0e0ceb66fb77b1fbb39799484cf536321c3cf24",
+      "actual_git_blob": "e0e0ceb66fb77b1fbb39799484cf536321c3cf24",
+      "sha256": "094d8ececfd1b482fc59fe25623e840df3e2aaa78e3a6935565aba3700a93e65"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-planner.agent.md.jinja",
+      "frozen_git_blob": "072d68becc3a561e906f5a23b957e628931e091c",
+      "actual_git_blob": "072d68becc3a561e906f5a23b957e628931e091c",
+      "sha256": "05e9999f8871dd082473c8d67f0cc3ce38b76acccb4e20b3ae83352b95d52ae8"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-reviewer.agent.md.jinja",
+      "frozen_git_blob": "70b32c84a7cbe2b1d17012cae59a1f65eeb543b6",
+      "actual_git_blob": "70b32c84a7cbe2b1d17012cae59a1f65eeb543b6",
+      "sha256": "99f8e21e7c626f6f0257c1321b6c38ca7e3054a32326bd2d940a1c4f8e995cd6"
+    },
+    {
+      "path": "tests/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/copilot-instructions.md.jinja",
+      "frozen_git_blob": "73c84e6a2ce20766513fab2821df6aeb8d48eb71",
+      "actual_git_blob": "73c84e6a2ce20766513fab2821df6aeb8d48eb71",
+      "sha256": "69d7f1c2dd895dd4fc941b23bda3b529df9a5742167111dc16b229afb317e7b6"
+    },
+    {
+      "path": "tests/fixtures/historical/manifest.json",
+      "frozen_git_blob": "0d923699dbc776ce2634088a066157b48baacf6b",
+      "actual_git_blob": "0d923699dbc776ce2634088a066157b48baacf6b",
+      "sha256": "c23c7084f6707fb682376a8b2abbe5970c09f87c0c9deaf4ad637d738c2372cc"
+    },
+    {
+      "path": "tests/fixtures/historical/pre-attestation/copier.yml",
+      "frozen_git_blob": "a4b1933953b0a3caf8d494f476198e813c1d13ad",
+      "actual_git_blob": "a4b1933953b0a3caf8d494f476198e813c1d13ad",
+      "sha256": "82af386d5f125e51df512f34cabef1ba47dc2751da17e954115bf1e3f3efb03e"
+    },
+    {
+      "path": "tests/fixtures/historical/pre-attestation/schemas/project.schema.json",
+      "frozen_git_blob": "b908ade823731ab8c7abf09460cb1613d83617e6",
+      "actual_git_blob": "b908ade823731ab8c7abf09460cb1613d83617e6",
+      "sha256": "3edcd6da68004eae2a1265b716c89571e28ba71630871d000bed09a5c91975e5"
+    },
+    {
+      "path": "tests/fixtures/historical/pre-attestation/schemas/task-packet.schema.json",
+      "frozen_git_blob": "6bb4db02e79513e88cc823aad808347f5f728394",
+      "actual_git_blob": "6bb4db02e79513e88cc823aad808347f5f728394",
+      "sha256": "d793c5c5022d6a216d09683056efc0d6f1a28804a6c582c692b7044dd669c35a"
+    },
+    {
+      "path": "tests/fixtures/historical/pre-attestation/scripts/validate.py",
+      "frozen_git_blob": "3e5c77e6cf09fab50c02958bca90c4c0d585c9e8",
+      "actual_git_blob": "3e5c77e6cf09fab50c02958bca90c4c0d585c9e8",
+      "sha256": "b5b52377f4e7149fdb597f2a719bf30d99bb34aad727c41808b8a2f7bec74629"
+    },
+    {
+      "path": "tests/fixtures/historical/pre-attestation/templates/.engineering-backbone/README.md.jinja",
+      "frozen_git_blob": "aade907566004d2166dc9ddb6be6105537120000",
+      "actual_git_blob": "aade907566004d2166dc9ddb6be6105537120000",
+      "sha256": "5e783b9f0122f9c53989ef427b45f5cb6cd4593dfc04350178a80bd4cf576878"
+    },
+    {
+      "path": "tests/fixtures/historical/pre-attestation/templates/.engineering-backbone/workflow-example.md.jinja",
+      "frozen_git_blob": "fc175338fed98c0576550bc0d5b8f9581e21efc2",
+      "actual_git_blob": "fc175338fed98c0576550bc0d5b8f9581e21efc2",
+      "sha256": "391641842323ae42aeee3f6b3bbd29ae21ddff04aba4a76dd46bc2b25acaaf58"
+    },
+    {
+      "path": "tests/test_attributes.py",
+      "frozen_git_blob": "b67e90f8adb02cad78a6e8cba7df24c86e1c53f6",
+      "actual_git_blob": "b67e90f8adb02cad78a6e8cba7df24c86e1c53f6",
+      "sha256": "8ef7b2f03c816dc287d7df05641589ee915686e27514b936cd2cf2889efce1f4"
+    },
+    {
+      "path": "tests/test_codex_consolidation.py",
+      "frozen_git_blob": "8e51f32276d5fc4bed26a2dc09394778929557b3",
+      "actual_git_blob": "8e51f32276d5fc4bed26a2dc09394778929557b3",
+      "sha256": "35731b448bc7df2b424f44dd027b80acab9c7dadb2574c87dcd35ead22769405"
+    },
+    {
+      "path": "tests/test_codex_security.py",
+      "frozen_git_blob": "6dd5503a3b6c29bf1b15b072b62d99a1168448d5",
+      "actual_git_blob": "6dd5503a3b6c29bf1b15b072b62d99a1168448d5",
+      "sha256": "db0a411f4489a7176a389961595aed7fd85bd47b0bdf972e6f05b7aa9f75921b"
+    },
+    {
+      "path": "tests/test_codex_workflow_guard.py",
+      "frozen_git_blob": "fff07963039d8ce09e6824e8ba055a6a62bed5cb",
+      "actual_git_blob": "fff07963039d8ce09e6824e8ba055a6a62bed5cb",
+      "sha256": "6df8a4cd0fa57f9906354c23ff509445e063bc2cea44590315bc604c9e5c24a8"
+    },
+    {
+      "path": "tests/test_copier.py",
+      "frozen_git_blob": "81d28330a18a22b51cad54211707197d06e48286",
+      "actual_git_blob": "81d28330a18a22b51cad54211707197d06e48286",
+      "sha256": "b85278f9870106e344b3c6a2f939c1ccaa9c28d1bd6ea43cd9f61b4d7cb3238c"
+    },
+    {
+      "path": "tests/test_copilot_distribution.py",
+      "frozen_git_blob": "85fcbf245d1d037af0702ec447481708a7081d43",
+      "actual_git_blob": "85fcbf245d1d037af0702ec447481708a7081d43",
+      "sha256": "3db88699d05c1375fd3e2e5198711e1dcbde6968ba6fdb6f62203a85f6eec859"
+    },
+    {
+      "path": "tests/test_copilot_validation.py",
+      "frozen_git_blob": "7952b048e3319d4f0952aa2673d798a06d68beb6",
+      "actual_git_blob": "7952b048e3319d4f0952aa2673d798a06d68beb6",
+      "sha256": "8901156f59accf278a3ef7c7da301102c4cbc5e1efe0b1295fa404167551eb26"
+    },
+    {
+      "path": "tests/test_copilot_workflow_guard.py",
+      "frozen_git_blob": "97d0e35669a26ee3d8e36c077fb60a2a2ccb5b28",
+      "actual_git_blob": "97d0e35669a26ee3d8e36c077fb60a2a2ccb5b28",
+      "sha256": "c74b3787a4c1903d33300c73a1d0fa415878b9890f5f6cbc62cc907d2974e997"
+    },
+    {
+      "path": "tests/test_local_runners.py",
+      "frozen_git_blob": "8c24774071dcff089690e9809d2d8e0ae8c42bb2",
+      "actual_git_blob": "8c24774071dcff089690e9809d2d8e0ae8c42bb2",
+      "sha256": "6cf6978acc11dd1a1b90e586feaceea3665021273ff92fe0baf3ca26aba4cd37"
+    },
+    {
+      "path": "tests/test_validation.py",
+      "frozen_git_blob": "53a3c6a9128f23459885199d2aadedd4044555a3",
+      "actual_git_blob": "53a3c6a9128f23459885199d2aadedd4044555a3",
+      "sha256": "c303e47e39763e094f3ec65b1966abf4b4488750aac28318d9af3106598ffc4a"
+    },
+    {
+      "path": "tests/test_workflow_kit.py",
+      "frozen_git_blob": "53472ca99f64f38144328c7c9488590006966332",
+      "actual_git_blob": "53472ca99f64f38144328c7c9488590006966332",
+      "sha256": "472233836b0775ece5502466d1332e6e58cc0e2a17d8681e67d53f40d862c6c7"
+    },
+    {
+      "path": "tests/test_workflow_kit_copier.py",
+      "frozen_git_blob": "8f9543ac7f11dca7c95e9149eba5b07d95943754",
+      "actual_git_blob": "8f9543ac7f11dca7c95e9149eba5b07d95943754",
+      "sha256": "1250e9d876f975373ed7046a070ebff6901aa9706f2fa928c693f444fdcd4d3f"
+    },
+    {
+      "path": "tests/test_workflow_kit_validation.py",
+      "frozen_git_blob": "694afc138c128877b4a2e64150bff9f340fbefc5",
+      "actual_git_blob": "694afc138c128877b4a2e64150bff9f340fbefc5",
+      "sha256": "e4a57e2655549693cc14534094402ebae5d99b7c05a0a385e9c877880b201cc2"
+    },
+    {
+      "path": "tests/test_workflow_kit_workflows.py",
+      "frozen_git_blob": "5386328af94508bedf87b56cfc6d6477603b142f",
+      "actual_git_blob": "5386328af94508bedf87b56cfc6d6477603b142f",
+      "sha256": "d0dc4ac8ae53e9e2b34eb81aa0c32546e13ae793847eff6cdb5fcaa952ce52ac"
+    },
+    {
+      "path": "tests/test_workflows.py",
+      "frozen_git_blob": "b31644ac5d393ba727aefac8e41c72ca2b397bba",
+      "actual_git_blob": "b31644ac5d393ba727aefac8e41c72ca2b397bba",
+      "sha256": "cec184fc9bed9ef0b5a7ca56f72bee4e3b489a9e44ceb810bd5b65db944e15ba"
+    }
+  ]
+}

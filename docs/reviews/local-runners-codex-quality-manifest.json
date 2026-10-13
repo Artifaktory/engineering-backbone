@@ -1,0 +1,10 @@
+{
+  "finalized_at": "2026-10-13T16:39:12.256553+00:00",
+  "sha256": {
+    "bb-codex-repair-quality.md": "68e1c1139e7490a5789cdae66b70f0a972f1c6ae69d8178b0df43b2cbcc09201",
+    "bb-codex-repair-quality.json": "7a699abb3dd2f5faf39359f1f2e1c09323a3876b7281c622a5748a520bdd3d33",
+    "bb-codex-repair-sourceproof.json": "4bd2843298267969bf01bdef8f11cbe43c4caf65099a539e81bf13e280621566",
+    "bb-remote-runtime-quality.md": "b295085c9a902de5385cd15b0e475fb9824ed8a7977455bd6912eaeb772be1d2",
+    "bb-remote-runtime-quality.json": "f37a2334fe4e8eeebd7cf0c9c4c33dd0bdca63324313de49f16e5b970c0ae6a8"
+  }
+}

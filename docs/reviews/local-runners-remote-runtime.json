@@ -1,0 +1,22 @@
+{
+  "recorded_at": "2026-10-13T16:29:59.073780+00:00",
+  "repository": "Artifaktory/engineering-backbone",
+  "run_id": 38427484521,
+  "job_id": 115400567007,
+  "runner": "pc2-build",
+  "runner_group": "af-ci-build-v1",
+  "remote_checkout_sha": "19fb75b640a470b459119f1654f5e43d3c1aef2b",
+  "python": "CPython3.12.14",
+  "runtime_path": "/home/vboxuser/actions-runner/_work/_tool/Python/3.12.14/x64/bin/python",
+  "full_suite_test_count": 239,
+  "full_suite_seconds": 470.476,
+  "assertion_failure_records": 19,
+  "loader_error_occurrences": 19,
+  "actual_step_exit": 1,
+  "child_exit": 127,
+  "job_conclusion": "failure",
+  "trusted_policy_job_conclusion": "success",
+  "decoded_log": "/workspace/scratch/a674a4925ed7/runner-migration/engineering-backbone/artifacts/local-runners/bb-remote-foundation-38427484521-115400567007.log",
+  "decoded_log_sha256": "474e564d398467f49b9a2af43aa1b30576c479d071639da6ef87815e19a4eed7",
+  "source_workflow_kit_sha256": "5737db1f426271722fb9dc60a12daf6e76b1433215dc643bd3b3b6b03185c357"
+}

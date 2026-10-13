@@ -18,10 +18,6 @@ permissions:
 jobs:
   validate:
     name: Validate governance and compatibility
-    if: >-
-      github.repository != 'Artifaktory/engineering-backbone' ||
-      github.event_name != 'pull_request' ||
-      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: >-
       ${{ fromJSON(github.repository == 'Artifaktory/engineering-backbone' && '{"group":"af-ci-build-v1","labels":["self-hosted","linux","x64","ci-heavy"]}' || '"ubuntu-latest"') }}
     timeout-minutes: 15
@@ -31,8 +27,15 @@ jobs:
         env:
           SOURCE_MODE: ${{ inputs.source_mode }}
           EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
           set -euo pipefail
+          if [ "$GITHUB_REPOSITORY" = 'Artifaktory/engineering-backbone' ] &&
+             [ "$EVENT_NAME" = 'pull_request' ] &&
+             [ "$PR_HEAD_REPO" != "$GITHUB_REPOSITORY" ]; then
+            echo '::error::Source fork pull requests cannot execute on the backbone runners. No candidate code has been checked out.'
+            exit 1
+          fi
           if [ "$SOURCE_MODE" = 'true' ] && [ "$GITHUB_REPOSITORY" != 'Artifaktory/engineering-backbone' ]; then
             echo '::error::Source mode is restricted to the backbone source repository.'
             exit 1
