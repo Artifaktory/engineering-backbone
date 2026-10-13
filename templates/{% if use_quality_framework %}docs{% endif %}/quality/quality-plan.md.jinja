@@ -1,0 +1,34 @@
+# Quality plan for {{ project_name }}
+
+Status: inactive, incomplete installation seed. This document is project-owned
+and preserved by ordinary template updates. It is not reviewed adoption evidence.
+
+## Scope and authority
+
+Complete `.engineering-backbone/quality-profile.json` with the reviewed Backbone
+commit, catalog version, applicable profiles and per-rule check-ID bindings.
+Use the managed `quality-policy.md` and `quality-guide.md` beside that profile.
+Keep stricter project rules and existing requirements/architecture locations.
+Normative clause adoption requires reviewed full-text applicability; a profile
+selection or structural PASS is not conformance, certification or human approval.
+
+## Project decisions to complete
+
+- Identify components, product purpose and affected requirements by their IDs.
+- Assign planning, architecture, implementation, test/documentation, independent
+  review, quality checking, triage and orchestration responsibilities to existing
+  Task Packet roles. Record actual owners and independent review sessions.
+- Select applicable risk and language profiles. Define measurable quality goals,
+  critical risks, required evidence and the actual project check IDs.
+- Map each selected rule to requirements, risks, architecture, tests/checks and
+  evidence in `traceability.csv`; keep missing work pending rather than inventing PASS.
+- Record manual verification, review coverage, release criteria and safe recovery.
+  Capture any permitted, approved, bounded exception in `exceptions.md` and the profile.
+
+## Activation and updates
+
+Review and merge the complete inactive profile, documents and required workflow
+configuration first. A separate activation PR changes only the profile's `enabled`
+flag. Application commands remain in `workflows.json`; this quality framework does
+not execute them. Profile/catalog upgrades require reviewed source and consumer
+changes with a matching immutable governance workflow pin.

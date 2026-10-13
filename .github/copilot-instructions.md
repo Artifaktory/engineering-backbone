@@ -38,6 +38,16 @@ Custom roles do not activate automatic GitHub PR review. Provider advice/automat
 fixes never bypass triage, local review stops or human approval. Verify provider
 settings separately and document unavailable context/runtime checks.
 
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.
+
 ## Repository checks
 
 Use an isolated Python 3.12 environment with hash-locked requirements. Run

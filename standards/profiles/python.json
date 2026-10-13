@@ -1,0 +1,12 @@
+{
+  "id": "python",
+  "version": "1",
+  "description": "Python component checks; select alongside baseline and the applicable software/risk profiles.",
+  "enabled": true,
+  "rules": [
+    "QUAL-PY-001"
+  ],
+  "workflow_profiles": [
+    "python"
+  ]
+}

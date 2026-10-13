@@ -25,3 +25,13 @@ read-only triage session returns text to an authorized owner for persistence.
 Stop for unresolved owner decisions, missing snapshot/evidence or budget exhaustion.
 Do not delete findings, silently mark them resolved, edit code/tests or auto-fix.
 A classification does not prove a repair or grant merge/release approval.
+
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.

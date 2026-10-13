@@ -1,0 +1,12 @@
+{
+  "id": "typescript",
+  "version": "1",
+  "description": "TypeScript component checks; select alongside baseline and the applicable software/risk profiles.",
+  "enabled": true,
+  "rules": [
+    "QUAL-TS-001"
+  ],
+  "workflow_profiles": [
+    "typescript"
+  ]
+}

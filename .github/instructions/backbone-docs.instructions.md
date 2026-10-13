@@ -11,3 +11,8 @@ blocked, failed and unexecuted checks explicitly. Preserve prior review records 
 stricter local policy. Separate setup instructions, runtime observations, provider
 advice and human approvals; document recovery without authorizing deployment.
 Use existing formats and include source revisions when adopting outside patterns.
+
+Read the optional `.engineering-backbone/quality-profile.json` when present and
+apply its exact profile/catalog versions and relevant rule IDs/versions to this path's
+work. Carry required evidence and gaps in the Task Packet/handoffs; retain
+stricter local rules and do not infer adoption, execution or certification.

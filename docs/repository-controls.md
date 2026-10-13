@@ -116,3 +116,20 @@ provider-selected files and their own settings; update through consumer PRs. A
 central fix does not silently alter existing consumers. If a defective release is
 found, stop new adoption, document the affected versions and provide a reviewed fix;
 each consumer decides its rollback/update with its own required checks.
+
+## Quality-profile gate and limits
+
+The [quality framework](quality/README.md) adds source compilation and a
+workflow-owned consumer guard. The current catalog is compiled trusted data;
+consumer/base JSON cannot redefine it. The guard checks safe files, activation
+against a complete reviewed seed, actual workflow check IDs/kinds, monotonic active
+selection, traceability and bounded exceptions. Project commands still execute
+only in the separate workflow kit. The governance guard executes no candidate
+quality code.
+
+Require the observed governance and kit statuses through independently verified
+hosting controls before describing them as merge enforcement. Agent instructions
+and local validation guide behavior but cannot authenticate manual approvals,
+validate the meaning of an evidence file or certify software against a standard.
+Public ISO/IEC abstracts are reference scope only; full normative adoption and any
+certification scheme need a separately approved project contract and evidence.

@@ -6,8 +6,8 @@ add a shared capability only when real projects need it.
 
 **Candidate 0.1.0 — not a published or downstream-approved release.**
 The foundation, Codex/Copilot adapters and native identity repairs are merged.
-The shared workflow kit is an additive delivery. No consumer repository is changed
-by this delivery.
+The shared workflow kit and CI clone repair are merged. The versioned quality
+framework is an additive delivery; adoption remains a separate project PR.
 
 ## Included in the first delivery
 
@@ -21,6 +21,7 @@ by this delivery.
 | [Own validation workflow](.github/workflows/quality.yml) | Schemas, adversarial tests, real consumer upgrades and trusted-base policy checks |
 | [Reusable governance workflow](.github/workflows/governance-checks.yml) | Validate a copied consumer bundle without credentials for the private source repository |
 | [Shared workflow kit](docs/workflows/README.md) | Strict common checks, declared language/capability profiles, scheduled maintenance and inactive release/deployment examples |
+| [Quality framework](docs/quality/README.md) | Versioned sources, rules and project profiles spanning requirements, architecture, implementation, tests, review and operation |
 
 Application language, frontend/backend presence and test commands remain project
 facts. A CLI project receives no invented frontend/backend commands. Existing
@@ -72,6 +73,22 @@ reference material. Native entrypoints, roles, skills and path instructions rema
 protected on update and need explicit local integration. Python/frontend rules are
 optional installation choices; GitHub automatic review is configured separately.
 
+## Quality across the development lifecycle
+
+Use [the quality guide](docs/quality/README.md) to select a versioned project
+profile and map its rules to project documents, actual checks and review evidence.
+The nonwaivable baseline defines responsibilities and handoffs; language and risk
+profiles add requirements when applicable. The diagrams show rule ownership and
+the phase gates. [The testing guide](docs/quality/testing.md) explains risk-based
+coverage, agent-generated test independence and documented gaps.
+
+Copier can seed an optional inactive `.engineering-backbone/quality-profile.json`
+and four project-owned documents. Complete and review that seed before activation
+in a separate PR. CI checks its structure and trusted catalog; semantic review and
+actual project tests establish evidence. Public standard summaries support source
+selection, not a claim of full ISO/IEC compliance or certification. C++17 and IEC
+profiles remain inactive references pending project-specific adoption.
+
 ## Reuse in a project
 
 ```mermaid
@@ -94,6 +111,7 @@ python -m pip install --require-hashes -r requirements.lock
 python scripts/validate.py
 python scripts/compile_toolchain_fingerprint.py --check
 python scripts/compile_workflow_kit.py --check
+python scripts/compile_quality_framework.py --check
 python -m unittest discover -s tests -v
 git diff --check
 ```
@@ -134,7 +152,8 @@ local runtime controllers and publishing signatures are preserved, not replaced.
 - [Contribution and review process](CONTRIBUTING.md)
 - [Source provenance and adaptation](docs/source-provenance.md)
 - [Independent review and validation result](docs/reviews/bootstrap-result.md)
-- [Bootstrap plan](plans/bootstrap.md) and [active Task Packet](plans/bootstrap-task.json)
+- [Quality plan](plans/quality-framework.md) and [active Task Packet](plans/quality-framework-task.json)
+- [Bootstrap plan](plans/bootstrap.md) and [original Task Packet](plans/bootstrap-task.json)
 - [Security reporting](SECURITY.md)
 
 Extend the backbone through small reviewed additions. Project architecture,

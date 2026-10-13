@@ -55,7 +55,7 @@ class ValidationTests(unittest.TestCase):
         self.write("docs/copilot/workflow.md", "# Copilot workflow\nUse independent review and preserve local gates.\n")
         for filename in ("requirements.txt", "requirements.lock"):
             shutil.copy2(BUNDLE / filename, self.root / filename)
-        for directory in ("schemas", "examples"):
+        for directory in ("schemas", "examples", "standards"):
             shutil.copytree(BUNDLE / directory, self.root / directory)
 
     def write(self, path, data):

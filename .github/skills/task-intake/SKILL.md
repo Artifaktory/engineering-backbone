@@ -29,3 +29,13 @@ or planner returns text; an authorized owner persists it.
 Stop for contradictory authority, ambiguous scope or unavailable project facts.
 Do not create product requirements, schema role names or approval from assumptions.
 A packet is proposed scope, not implementation or validation evidence.
+
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.

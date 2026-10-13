@@ -1,7 +1,9 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
-Task Packet. The active CI clone repair uses
+Task Packet. The active quality-framework delivery uses
+[its Task Packet](plans/quality-framework-task.json) and [its plan](plans/quality-framework.md).
+The preceding CI clone repair uses
 [its Task Packet](plans/ci-clone-repair-task.json) and [its plan](plans/ci-clone-repair.md).
 The preceding shared workflow delivery uses
 [its Task Packet](plans/workflow-kit-task.json) and [its plan](plans/workflow-kit.md).
@@ -25,6 +27,7 @@ python -m pip install --require-hashes -r requirements.lock
 python scripts/validate.py
 python scripts/compile_toolchain_fingerprint.py --check
 python scripts/compile_workflow_kit.py --check
+python scripts/compile_quality_framework.py --check
 python -m unittest discover -s tests -v
 git diff --check
 ```

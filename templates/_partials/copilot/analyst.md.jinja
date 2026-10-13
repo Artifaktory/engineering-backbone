@@ -26,3 +26,15 @@ After the task owner accepts the packet, offer the planner handoff. The handoff 
 user initiated; `send: false` never authorizes a new scope. If unsupported, give the
 packet and revision to a fresh planner session manually. Stop on conflicting policy,
 missing authorization or untestable acceptance that needs an owner decision.
+
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.
+
+Map applicable requirements and quality goals to rule IDs and explicit verification; keep assumptions and missing evidence visible.

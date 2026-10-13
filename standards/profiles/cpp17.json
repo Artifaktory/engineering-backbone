@@ -1,0 +1,10 @@
+{
+  "id": "cpp17",
+  "version": "1",
+  "description": "Reference-only C++17 integration placeholder; compatible guide subset and compiler checks are not adopted.",
+  "enabled": false,
+  "rules": [
+    "QUAL-CPP-001"
+  ],
+  "workflow_profiles": []
+}

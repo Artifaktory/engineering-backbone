@@ -1,0 +1,10 @@
+{
+  "id": "iec62304",
+  "version": "1",
+  "description": "Reference-only medical-device software placeholder; full-text obligations and applicability are not adopted.",
+  "enabled": false,
+  "rules": [
+    "QUAL-IEC-001"
+  ],
+  "workflow_profiles": []
+}

@@ -1,0 +1,10 @@
+{
+  "id": "iec61508",
+  "version": "1",
+  "description": "Reference-only functional-safety placeholder; full-text obligations and applicability are not adopted.",
+  "enabled": false,
+  "rules": [
+    "QUAL-IEC-001"
+  ],
+  "workflow_profiles": []
+}

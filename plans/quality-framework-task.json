@@ -1,0 +1,167 @@
+{
+  "schema_version": "1",
+  "id": "BB-QUALITY-007",
+  "title": "Versioned agentic quality framework",
+  "objective": "Deliver shared versioned quality sources/rules/profiles, safe project contracts, agent responsibilities and workflow validation without claiming external certification.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "2cd4d9bd947fbd1aff25c6bec28e98f3fc1b1c13",
+    "head_revision": "6446da63ec222fb0c3d1b09d883437c3f94d2b26"
+  },
+  "approved_sources": [
+    "Human approval 2026-10-13",
+    "plans/quality-framework.md",
+    "AGENTS.md, CONTRIBUTING.md, policy/core.md",
+    "Verified primary ISO/IEEE/IEC scope catalogs, Microsoft SDL, Google and official Codex/Copilot documentation"
+  ],
+  "scope": {
+    "include": [
+      "policy/**",
+      "standards/**",
+      "schemas/quality-profile.schema.json",
+      "scripts/**",
+      "templates/**",
+      "copier.yml",
+      ".github/workflows/**",
+      ".github/agents/**",
+      ".github/skills/**",
+      ".github/instructions/**",
+      ".github/copilot-instructions.md",
+      ".codex/**",
+      "tests/**",
+      "README.md",
+      "CONTRIBUTING.md",
+      "docs/**",
+      "plans/quality-framework*"
+    ],
+    "exclude": [
+      "tests/fixtures/historical/**",
+      "requirements*",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "bounded truthful catalog with role/phase/source applicability and diagrams.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/quality-checks.md",
+        "docs/reviews/quality-full-review.md",
+        "docs/reviews/quality-delta-review.md",
+        "docs/reviews/quality-result.md"
+      ]
+    },
+    {
+      "id": "AC-2",
+      "description": "separate profile contract, safe guard, positive/negative enforcement and legacy absence/inactive seed support; null never means absent.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/quality-checks.md",
+        "docs/reviews/quality-full-review.md",
+        "docs/reviews/quality-delta-review.md",
+        "docs/reviews/quality-result.md"
+      ]
+    },
+    {
+      "id": "AC-3",
+      "description": "real Copier create/update/provider matrix and preserved local rules/docs.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/quality-checks.md",
+        "docs/reviews/quality-full-review.md",
+        "docs/reviews/quality-delta-review.md",
+        "docs/reviews/quality-result.md"
+      ]
+    },
+    {
+      "id": "AC-4",
+      "description": "workflow-owned guard blocks candidate/old-validator bypass; no candidate code executes; approved compatibility tuple and all existing checks preserved.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/quality-checks.md",
+        "docs/reviews/quality-full-review.md",
+        "docs/reviews/quality-delta-review.md",
+        "docs/reviews/quality-result.md"
+      ]
+    },
+    {
+      "id": "AC-5",
+      "description": "role/skill/task handoffs select exact profile/rule version and required evidence.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/quality-checks.md",
+        "docs/reviews/quality-full-review.md",
+        "docs/reviews/quality-delta-review.md",
+        "docs/reviews/quality-result.md"
+      ]
+    },
+    {
+      "id": "AC-6",
+      "description": "source/trusted validator, both existing compilers/new compiler, meaningful targeted then full tests, actionlint and committed diff hygiene pass.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/quality-checks.md",
+        "docs/reviews/quality-full-review.md",
+        "docs/reviews/quality-delta-review.md",
+        "docs/reviews/quality-result.md"
+      ]
+    },
+    {
+      "id": "AC-7",
+      "description": "independent plan and two frozen Full reviews, triage then confirmed fixes and scoped Deltas; actual published tree/CI/provider review evidenced separately.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": [
+        "docs/reviews/quality-plan-review.md",
+        "docs/reviews/quality-full-review.md",
+        "docs/reviews/quality-triage.md",
+        "docs/reviews/quality-delta-review.md",
+        "docs/reviews/quality-result.md"
+      ]
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_quality_framework.py --check",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python scripts/compile_workflow_kit.py --check",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "actionlint",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Independent read-only plan and behavior/security Full reviews",
+      "Scoped repair/evidence Delta reviews",
+      "Actual published identity, GitHub CI and advisory review",
+      "Client loading, full normative clause adoption and downstream activation remain unexecuted"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Failed required check without resolved diagnosis",
+    "Unresolved confirmed review finding",
+    "Scope/authorization conflict",
+    "Unexpected overwrite or weakening of local policy"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Downstream writes or repository setting mutations",
+    "Force push or destructive cleanup",
+    "Unverified ISO/IEC conformance/certification claims"
+  ],
+  "status": "ready_for_review"
+}
