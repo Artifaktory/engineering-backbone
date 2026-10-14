@@ -7,6 +7,7 @@ import io
 import json
 import os
 from pathlib import Path
+import shutil
 import sys
 import tempfile
 import unittest
@@ -178,6 +179,10 @@ class QualityFrameworkTests(unittest.TestCase):
     def test_real_current_source_catalog_is_checked_without_project_profile(self):
         self.assert_ok(ROOT, source=True)
         self.package(self.candidate, central=True)
+        self.assert_rejected('Required document or directory absent: standards/technologies/sources.json',
+                             source=True)
+        shutil.copytree(ROOT / 'standards/technologies',
+                        self.candidate / 'standards/technologies')
         self.assert_ok(source=True)
         path = self.candidate / 'standards/rules.json'
         value = json.loads(path.read_text())
