@@ -278,9 +278,10 @@ class WorkflowTests(unittest.TestCase):
         merged_codex_security = "ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb"
         merged_workflow_kit = "7e3d27e21a8db1b1320ded8b8c499dd6033a3f45b0b4b7ff519316612f83ddeb"
         merged_quality_framework = "88d2d1e89cbff9fd925cac1a235de60867ae90a9ae231cde6cbc0a5eed8ee9b2"
+        merged_technology_navigation = "e4cdae824eb4f1ee9286f8fd8253b510a84ea7729e12fa96c8b5289b38d18450"
         self.assertEqual(set(previous), set(observed) | {
             preceding, merged_copilot, merged_codex_security,
-            merged_workflow_kit, merged_quality_framework,
+            merged_workflow_kit, merged_quality_framework, merged_technology_navigation,
         })
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
 
