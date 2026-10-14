@@ -1,7 +1,9 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
-Task Packet. The active technology/navigation delivery uses
+Task Packet. The active dependency-compatibility delivery uses
+[its Task Packet](plans/dependency-compatibility-task.json) and
+[its plan](plans/dependency-compatibility.md). The preceding technology/navigation delivery uses
 [its Task Packet](plans/technology-navigation-task.json) and
 [its plan](plans/technology-navigation.md). The preceding quality-framework delivery uses
 [its Task Packet](plans/quality-framework-task.json) and [its plan](plans/quality-framework.md).
@@ -31,6 +33,7 @@ python scripts/compile_toolchain_fingerprint.py --check
 python scripts/compile_workflow_kit.py --check
 python scripts/compile_navigation.py --check
 python scripts/compile_quality_framework.py --check
+python scripts/check_source_dependencies.py
 python -m unittest discover -s tests -v
 git diff --check
 ```
@@ -56,6 +59,14 @@ AI/provider review integration and native runtime discovery are separate from
 syntax checks. Keep generated consumer facts and stronger local policy intact.
 
 ## Maintenance
+
+Read [the dependency policy](policy/dependencies.md) and the actual
+[source compatibility contract](docs/dependency-compatibility.md) before changing
+dependencies, runtime or container inputs. The tracked [Dockerfile](Dockerfile)
+builds this repository's Python tooling; follow the contract's build/smoke commands
+and report their actual results. Commit required inputs and documentation together.
+The source dependency check validates tracked files, direct/resolved pins and
+installed requirements; behavior and container checks remain additional evidence.
 
 Dependabot proposes Action/tool dependency updates. Review dependency changes and
 regenerate the locked tooling set with `uv pip compile requirements.txt --generate-hashes

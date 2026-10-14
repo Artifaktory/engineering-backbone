@@ -5,6 +5,8 @@ frontend/backend flags are descriptive metadata; they do not invent application
 commands, workflows or required infrastructure.
 
 - Review [project facts](project.json) and the [canonical policy](core.md).
+- Read [the dependency policy](dependency-policy.md) for dependency, runtime and
+  container changes; actual component versions remain project facts.
 - Integrate [agent guidance](AGENTS.fragment.md) and
   [Copilot guidance](Copilot.fragment.md) into existing stronger instructions.
 - [Copilot operating guide and diagram](copilot-guide.md) record the permanent
@@ -89,4 +91,14 @@ root to check structure only; the pinned governance workflow uses its own review
 of candidate-owned tooling. Updated managed catalog/guidance needs reviewed manual
 integration and a matching immutable workflow pin. Refresh preserved native
 instructions through that reviewed migration where necessary.
+
+Read the [navigation guide](navigation-guide.md) and complete the inactive
+[dependency contract](dependencies.json) against its [schema](dependencies.schema.json)
+and project-owned [compatibility document](../docs/dependency-compatibility.md).
+Its real manifest, resolution/runtime and Dockerfile paths must be covered by the
+matching navigation component. Adopt active quality/workflows/navigation first;
+then review the complete inactive dependency seed before enabled-only activation.
+Copier preserves the project contract/document and existing application Dockerfiles.
+It supplies no inferred package versions or application container. Use matching
+reviewed guard/workflow pins, actual checks and refreshed native instructions.
 {% endif %}

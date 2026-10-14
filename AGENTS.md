@@ -29,6 +29,7 @@ python scripts/validate.py
 python scripts/compile_toolchain_fingerprint.py --check
 python scripts/compile_navigation.py --check
 python scripts/compile_quality_framework.py --check
+python scripts/check_source_dependencies.py
 python -m unittest discover -s tests -v
 git diff --check
 ```
@@ -68,3 +69,14 @@ context and task acceptance/check/stop/return contract at each handoff; resolve 
 new request for a delegated role or narrower scope. Invalid or missing mandatory
 context blocks the affected task. An inactive seed, receipt or agent reply does not
 prove native instruction loading or authorize additional work.
+
+## Dependency and container inputs
+
+For dependency, runtime or container work, read [the shared dependency policy](policy/dependencies.md)
+and [this repository's compatibility contract](docs/dependency-compatibility.md).
+Use the actual tracked [Dockerfile](Dockerfile), [direct manifest](requirements.txt)
+and [reviewed resolution](requirements.lock). Run the declared source checks and
+container build/smoke; record missing execution evidence explicitly. Source CI
+checks these inputs directly because this repository has no active navigation seed.
+The Dockerfile belongs to Backbone tooling and is not a consumer application's
+container definition. Preserve authoritative version files and scoped review.

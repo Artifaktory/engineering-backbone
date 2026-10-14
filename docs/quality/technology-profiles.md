@@ -29,6 +29,16 @@ Framework profiles complement the language profiles; they are not substitutes.
 Language inference from filenames is advisory; the reviewed component inventory
 and affected-path routing must account for all applicable technologies.
 
+Dependency selection follows `policy/dependencies.md` in the source and
+`.engineering-backbone/dependency-policy.md` when installed. The optional active
+`.engineering-backbone/dependencies.json` connects the same components to real
+manifests, resolution/runtime files, Dockerfiles, compatibility documents and
+approved checks. Native files hold authoritative versions; documents explain
+supported combinations and evidence. Keep library support ranges distinct from
+application/tooling resolution. Resolution and security scans do not establish
+behavioral compatibility. The existing catalogs remain unchanged; this shared
+contract adds duties through the existing navigation/quality guard.
+
 Every selected profile's `rules` are mandatory. `quality_profiles` names required
 existing core quality selections; it does not enumerate all applicable project
 quality/risk profiles. For example, the Python and FastAPI extensions require

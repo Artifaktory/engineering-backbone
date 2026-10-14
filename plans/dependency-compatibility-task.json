@@ -1,0 +1,132 @@
+{
+  "schema_version": "1",
+  "id": "BB-DEPENDENCIES-009",
+  "title": "Dependency compatibility and tracked container inputs",
+  "objective": "Enforce reviewed dependency version contracts and reachable tracked inputs through existing agent navigation and checks.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "229ac884c1a2ac70f0fb5c961bd517c9eaf740af",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "User implementation/checks/review/PR/Codex authorization on 2026-10-14",
+    "plans/dependency-compatibility.md",
+    "AGENTS.md, CONTRIBUTING.md, policy/core.md, policy/quality.md",
+    "Primary dependency and Docker documentation recorded in policy/dependencies.md"
+  ],
+  "scope": {
+    "include": [
+      "policy/dependencies.md",
+      "policy/quality.md",
+      "schemas/dependencies.schema.json",
+      "scripts/**",
+      "templates/**",
+      "copier.yml",
+      ".github/**",
+      "tests/**",
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      "Dockerfile",
+      ".dockerignore",
+      "docs/**",
+      "plans/dependency-compatibility*"
+    ],
+    "exclude": [
+      "standards/**",
+      "tests/fixtures/historical/**",
+      "requirements*",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Versioned shared dependency policy with project freedom and declared-versus-behavior compatibility distinctions.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-2",
+      "description": "Active dependency contract enforces real inputs, effective check bindings, complete routed hashed handoffs and failure paths.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-3",
+      "description": "Legacy and real Copier upgrade compatibility preserve catalogs, project files and activation gates.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-4",
+      "description": "Real tracked source Dockerfile and dependency documents are linked, checked and validated by container build/smoke.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-5",
+      "description": "Required deterministic checks and trusted predecessor validation pass.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-6",
+      "description": "Independent plan, two Full reviews, triage and necessary Delta reviews close confirmed findings.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-7",
+      "description": "PR tree verified and visible Codex review requested; CI/results and limitations recorded.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_navigation.py --check",
+      "python scripts/compile_quality_framework.py --check",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python scripts/compile_workflow_kit.py --check",
+      "python scripts/check_source_dependencies.py",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "actionlint",
+      "docker build and tooling smoke",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Independent plan/Full/triage/Delta chain",
+      "Git-tracked required files and remote PR-tree byte identity",
+      "Visible Codex review trigger/results and actual CI status; no native client discovery claim"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Failed required check without resolved diagnosis",
+    "Unresolved confirmed review finding",
+    "Scope/authorization conflict",
+    "Unexpected overwrite or weakening of local policy"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Downstream writes or repository setting mutations",
+    "Force push or destructive cleanup",
+    "Unverified ISO/IEC conformance/certification claims"
+  ],
+  "status": "active"
+}

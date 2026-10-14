@@ -70,6 +70,25 @@ runner requires a separately reviewed project extension. Coverage thresholds,
 performance budgets, database fixtures and domain-specific acceptance stay local.
 The common runner does not invent tests or impose another project's coverage rate.
 
+### Dependency compatibility checks
+
+When the project adopts `.engineering-backbone/dependencies.json`, its component
+bindings add required PR kinds `dependency`, `build` and `test`, plus `container`
+for declared Dockerfiles. Use the existing kinds and check IDs; no second workflow
+runner is introduced. Existing capability obligations, including dependency and
+container maintenance checks when selected, remain binding.
+
+The `dependency` commands must establish clean installation, manifest/resolution
+consistency and declared-requirement compatibility for the actual ecosystem.
+Vulnerability/license scans complement these duties. The build, test and container
+commands establish the recorded behavioral coverage on supported environments;
+a matching kind alone does not. Existing IDs resolve to trusted-base approved
+definitions during PR preparation and navigation, so changing a candidate command
+does not silently replace its approved evidence contract. Review command semantics
+and results, and use matching reviewed guard/workflow pins for adoption. Read
+`policy/dependencies.md` in the source or `.engineering-backbone/dependency-policy.md`
+when installed, and follow the navigation guide for file routing and activation.
+
 ## Trust and execution
 
 The workflow compiles its standard-library guard/runner from reviewed source into
