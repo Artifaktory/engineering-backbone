@@ -1,0 +1,11 @@
+{
+  "id": "software",
+  "version": "1",
+  "description": "Executable software with build, lint, tests, security analysis and threat-informed review.",
+  "enabled": true,
+  "rules": [
+    "QUAL-SW-001",
+    "QUAL-SEC-001"
+  ],
+  "workflow_profiles": []
+}

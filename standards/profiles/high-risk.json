@@ -1,0 +1,10 @@
+{
+  "id": "high-risk",
+  "version": "1",
+  "description": "Additional independent review and negative/compatibility/recovery evidence for high-risk work.",
+  "enabled": true,
+  "rules": [
+    "QUAL-HIGH-001"
+  ],
+  "workflow_profiles": []
+}

@@ -11,3 +11,8 @@ exercise actual generation/upgrade and adversarial failure paths. Keep tool budg
 provider activation and project branch/runner/secret controls distinct. Freeze
 review snapshots and triage before fixes; never self-approve or auto-apply downstream.
 A candidate-controlled validator or instruction is not trusted-base evidence.
+
+Read the optional `.engineering-backbone/quality-profile.json` when present and
+apply its exact profile/catalog versions and relevant rule IDs/versions to this path's
+work. Carry required evidence and gaps in the Task Packet/handoffs; retain
+stricter local rules and do not infer adoption, execution or certification.

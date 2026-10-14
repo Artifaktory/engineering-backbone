@@ -1,0 +1,474 @@
+{
+  "schema_version": "1",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "QUAL-REQ-001",
+      "version": "1",
+      "statement": "Before non-trivial work, record identified requirements, measurable quality goals, material risks and verifiable acceptance criteria. Map each selected quality rule to project requirements or risks and its planned evidence.",
+      "source_ids": [
+        "SRC-ISO-25010",
+        "SRC-ISO-29148"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "planner",
+        "reviewer"
+      ],
+      "phases": [
+        "planning"
+      ],
+      "verification": "manual",
+      "artifacts": [
+        "quality_plan",
+        "traceability"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-DES-001",
+      "version": "1",
+      "statement": "Before a material design or implementation change, document affected interfaces, architectural decisions, quality consequences and security assumptions. Obtain independent plan/design review proportional to risk; preserve existing architecture locations.",
+      "source_ids": [
+        "SRC-ISO-42010",
+        "SRC-MICROSOFT-SDL"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "planner",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "design"
+      ],
+      "verification": "manual",
+      "artifacts": [
+        "quality_plan",
+        "traceability"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-CODE-001",
+      "version": "1",
+      "statement": "Apply the project-selected language, coding and security rules to changed code. Review suitability, correctness and maintainability; run the applicable compiler, lint and analysis checks without weakening inherited controls.",
+      "source_ids": [
+        "SRC-ISO-25010",
+        "SRC-MICROSOFT-SDL"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "implementer",
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "implementation",
+        "verification"
+      ],
+      "verification": "hybrid",
+      "artifacts": [
+        "quality_plan",
+        "traceability"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-TEST-001",
+      "version": "1",
+      "statement": "Define risk-based tests for affected requirements and critical behavior, including relevant success, rejection, boundary and failure cases. Add meaningful regression coverage for reproducible fixes. Record automated and manual coverage and unresolved gaps.",
+      "source_ids": [
+        "SRC-ISO-29119-2",
+        "SRC-ISO-29119-3"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "planner",
+        "implementer",
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "verification"
+      ],
+      "verification": "hybrid",
+      "artifacts": [
+        "test_strategy",
+        "traceability"
+      ],
+      "check_kind_groups": [
+        [
+          "test",
+          "docs"
+        ]
+      ],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-DOC-001",
+      "version": "1",
+      "statement": "Update affected requirement, design, user and operational documentation when behavior, contracts or operation change. Trace the impact or a justified no-impact decision without duplicating established authoritative documents.",
+      "source_ids": [
+        "SRC-ISO-29148",
+        "SRC-ISO-42010"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "implementer",
+        "reviewer"
+      ],
+      "phases": [
+        "implementation",
+        "review"
+      ],
+      "verification": "manual",
+      "artifacts": [
+        "quality_plan",
+        "traceability"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-EVID-001",
+      "version": "1",
+      "statement": "Bind actual check and review results to the inspected revision and record commands, exit codes, acceptance coverage and limitations. Keep unexecuted, failed and blocked evidence visible; declarations, generated reports and structural validation are not runtime proof.",
+      "source_ids": [
+        "SRC-ISO-12207",
+        "SRC-ISO-29119-3"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "verification",
+        "review",
+        "publication"
+      ],
+      "verification": "manual",
+      "artifacts": [
+        "traceability"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-REVIEW-001",
+      "version": "1",
+      "statement": "Obtain independent review of one frozen base/head/patch snapshot after required checks. Triage before repairs; repair confirmed findings and review their Delta and direct regressions. Preserve human approvals, existing gates and stop conditions.",
+      "source_ids": [
+        "SRC-ISO-12207"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "reviewer",
+        "triage",
+        "implementer",
+        "quality_checker"
+      ],
+      "phases": [
+        "review",
+        "publication"
+      ],
+      "verification": "manual",
+      "artifacts": [
+        "quality_plan",
+        "traceability"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-HANDOFF-001",
+      "version": "1",
+      "statement": "Each delegation must include the scoped task, exact project-profile and rule versions, requirement and acceptance IDs, relevant design context, authorized actions, required evidence and return/stop conditions. Verify instruction discovery in the intended client; do not assume delegation propagates context.",
+      "source_ids": [
+        "SRC-CODEX-INSTRUCTIONS",
+        "SRC-COPILOT-INSTRUCTIONS"
+      ],
+      "source_alignment": "Organization-owned handoff contract using public client-discovery guidance; supported instruction formats do not prove runtime loading or compliance.",
+      "responsibilities": [
+        "planner",
+        "implementer",
+        "reviewer",
+        "quality_checker",
+        "triage"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "verification",
+        "review"
+      ],
+      "verification": "manual",
+      "artifacts": [
+        "quality_plan",
+        "traceability"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-SW-001",
+      "version": "1",
+      "statement": "For executable software, bind PR checks for build, lint, tests and static security analysis to the workflow contract. Select concrete project tools and scope; evaluate relevant integration and critical acceptance behavior in the test strategy.",
+      "source_ids": [
+        "SRC-ISO-25010",
+        "SRC-MICROSOFT-SDL"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "planner",
+        "implementer",
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "verification"
+      ],
+      "verification": "hybrid",
+      "artifacts": [
+        "test_strategy",
+        "traceability"
+      ],
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ],
+        [
+          "sast"
+        ]
+      ],
+      "waivable": true
+    },
+    {
+      "id": "QUAL-SEC-001",
+      "version": "1",
+      "statement": "Document material trust boundaries, threats and security assumptions. Verify relevant authorization, input handling, data protection and failure behavior with targeted security tests and analysis, and track unresolved security risk before release.",
+      "source_ids": [
+        "SRC-MICROSOFT-SDL"
+      ],
+      "source_alignment": "Organization-owned selection informed by Microsoft public security practices; adoption does not claim compliance with Microsoft internal SDL requirements.",
+      "responsibilities": [
+        "planner",
+        "implementer",
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "design",
+        "implementation",
+        "verification",
+        "release"
+      ],
+      "verification": "hybrid",
+      "artifacts": [
+        "quality_plan",
+        "traceability"
+      ],
+      "check_kind_groups": [
+        [
+          "sast"
+        ]
+      ],
+      "waivable": true
+    },
+    {
+      "id": "QUAL-PY-001",
+      "version": "1",
+      "statement": "For Python components, select supported runtime/tool versions and project coding rules. Bind PR lint and test commands; assess typing, dependency and packaging checks according to component risk and distribution model.",
+      "source_ids": [
+        "SRC-MICROSOFT-SDL"
+      ],
+      "source_alignment": "Organization-owned Python refinement; specific style, type and packaging tools are selected by the project, not asserted as a normative SDL requirement.",
+      "responsibilities": [
+        "planner",
+        "implementer",
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "verification"
+      ],
+      "verification": "hybrid",
+      "artifacts": [
+        "test_strategy",
+        "traceability"
+      ],
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ],
+      "waivable": true
+    },
+    {
+      "id": "QUAL-TS-001",
+      "version": "1",
+      "statement": "For TypeScript components, select supported runtime/tool versions and project coding rules. Bind PR lint, typecheck and test commands; test runtime boundaries where static types cannot establish external-data validity.",
+      "source_ids": [
+        "SRC-MICROSOFT-SDL"
+      ],
+      "source_alignment": "Organization-owned TypeScript refinement; concrete compiler, style and runtime checks are selected by the project.",
+      "responsibilities": [
+        "planner",
+        "implementer",
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "verification"
+      ],
+      "verification": "hybrid",
+      "artifacts": [
+        "test_strategy",
+        "traceability"
+      ],
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "typecheck"
+        ],
+        [
+          "test"
+        ]
+      ],
+      "waivable": true
+    },
+    {
+      "id": "QUAL-HIGH-001",
+      "version": "1",
+      "statement": "For high-risk changes, obtain independent design and behavior/security review and meaningful negative, compatibility and recovery coverage. Identify missing permissions, environments and manual approvals; unresolved mandatory evidence blocks completion.",
+      "source_ids": [
+        "SRC-MICROSOFT-SDL",
+        "SRC-ISO-12207"
+      ],
+      "source_alignment": "Organization-owned requirement informed by the referenced public scopes; no normative clause conformance claimed.",
+      "responsibilities": [
+        "planner",
+        "implementer",
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "design",
+        "verification",
+        "review"
+      ],
+      "verification": "hybrid",
+      "artifacts": [
+        "quality_plan",
+        "test_strategy",
+        "traceability"
+      ],
+      "check_kind_groups": [
+        [
+          "test"
+        ]
+      ],
+      "waivable": true
+    },
+    {
+      "id": "QUAL-AGENT-001",
+      "version": "1",
+      "statement": "For agentic systems, test the complete task-to-dispatch-to-worker-to-review-to-gate-to-return chain, including scoped context, results, state transitions, rejection, cancellation and pause/resume where supported. Test invalid or missing evidence and authority boundaries; worker-only tests do not establish chain behavior.",
+      "source_ids": [
+        "SRC-CODEX-INSTRUCTIONS",
+        "SRC-COPILOT-INSTRUCTIONS"
+      ],
+      "source_alignment": "Organization-owned agentic-system behavioral test requirement; client documentation informs discovery limits, not a claim that either provider implements this chain.",
+      "responsibilities": [
+        "planner",
+        "implementer",
+        "quality_checker",
+        "reviewer"
+      ],
+      "phases": [
+        "design",
+        "implementation",
+        "verification"
+      ],
+      "verification": "hybrid",
+      "artifacts": [
+        "test_strategy",
+        "traceability"
+      ],
+      "check_kind_groups": [
+        [
+          "test"
+        ]
+      ],
+      "waivable": true
+    },
+    {
+      "id": "QUAL-CPP-001",
+      "version": "1",
+      "statement": "Reference-only: before enabling C++17 quality rules, review the chosen compiler/toolchain and a C++17-compatible subset of the guide, define concrete checks and portability tests, and independently review profile activation.",
+      "source_ids": [
+        "SRC-GOOGLE-CPP"
+      ],
+      "source_alignment": "Reference-only inactive rule. Google guidance currently targets C++20; no Google C++17 rules or compliance are adopted.",
+      "responsibilities": [
+        "planner",
+        "reviewer"
+      ],
+      "phases": [
+        "planning"
+      ],
+      "verification": "manual",
+      "artifacts": [
+        "quality_plan"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    },
+    {
+      "id": "QUAL-IEC-001",
+      "version": "1",
+      "statement": "Reference-only: before adopting a safety or medical software standard, review full authorized text, project applicability, edition-specific obligations, lifecycle evidence and any certification scheme with qualified human ownership through a separate scoped profile integration.",
+      "source_ids": [
+        "SRC-IEC-61508",
+        "SRC-IEC-62304"
+      ],
+      "source_alignment": "Reference-only inactive rule. Public IEC product scope establishes relevance only, not clause adoption, safety integrity, medical compliance or certification.",
+      "responsibilities": [
+        "planner",
+        "reviewer"
+      ],
+      "phases": [
+        "planning"
+      ],
+      "verification": "manual",
+      "artifacts": [
+        "quality_plan"
+      ],
+      "check_kind_groups": [],
+      "waivable": false
+    }
+  ]
+}

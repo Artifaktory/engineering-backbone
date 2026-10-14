@@ -48,6 +48,9 @@ ordinary updates; manually reconcile them in the consumer's reviewed migration.
 | `.engineering-backbone/project.json` | Existing local project facts preserved |
 | `.github/workflows/engineering-backbone.yml` | Optional actual-SHA caller; existing file preserved |
 | `.engineering-backbone/workflows.json`, kit callers and delivery examples | Optional project-owned kit contract; existing files preserved |
+| `.engineering-backbone/quality-policy.md` | Always-refreshed canonical quality-policy extension |
+| Quality guide, guard, schema and `.engineering-backbone/standards/**` | Optional backbone-owned bundle; refreshed together with its reviewed workflow pin |
+| `.engineering-backbone/quality-profile.json` and `docs/quality/{quality-plan.md,test-strategy.md,traceability.csv,exceptions.md}` | Optional project-owned seed and records; existing files preserved |
 
 On an existing project, review and integrate the fragments into the existing
 entrypoints. Reconcile conflicting instructions by retaining the stricter policy.
@@ -209,3 +212,47 @@ Unrelated project-native agents retain their own tools, metadata and body rules;
 the namespace scan checks identity without imposing managed-role tool budgets.
 Client filename fallbacks for an empty header also cannot resolve to a reserved
 managed identity under a noncanonical filename.
+
+## Versioned quality-profile adoption
+
+`use_quality_framework` is an independent installation-only choice, default false.
+Legacy answers with no choice remain unselected on ordinary updates; changing the
+choice requires a reviewed migration. Selecting it creates an incomplete inactive
+seed, never an automatically approved quality plan. The neutral quality policy
+ships even without the optional bundle so the canonical-policy link remains valid.
+
+Follow [the quality guide](quality/README.md) and [testing guide](quality/testing.md):
+
+1. Inventory project risks, selected source editions, stronger local rules and actual
+   workflow checks. Select enabled profiles and their exact versions from the
+   managed catalog. Disabled C++17/IEC references cannot be activated by changing
+   consumer catalog data.
+2. Complete the four project-owned records and the rule/check bindings while
+   `enabled` stays false. Adopt the shared workflow kit with its complete inactive
+   seed and separate activation; an active quality profile needs that active kit.
+   Use a reviewed immutable `backbone_ref`, independently review semantic content
+   and run the copied guard with
+   `python .engineering-backbone/quality-guard.py validate --root .`.
+3. Merge the reviewed complete quality seed first. In a separate PR change only
+   quality-profile `enabled` to true; the workflow compares it with that complete
+   trusted seed. Keep the matching current governance-workflow pin in use.
+4. Later changes preserve selected profiles and installed bindings. Expired
+   exceptions must be removed; new exceptions cannot be introduced after activation.
+   Wider adoption or a policy change requires a reviewed upstream migration, not
+   silent consumer catalog edits.
+
+The current pinned reusable workflow carries a compiled quality guard before
+running the base-owned validator. It protects the new contract even when the base
+validator predates it, without importing the candidate quality script or trusting
+consumer catalog changes. Catalog equality compares parsed data; harmless JSON
+formatting changes do not create a new rule authority. The existing eight-file
+tooling fingerprint format is unchanged. Only explicitly reviewed historical
+tooling identities remain allowed.
+
+Ordinary updates refresh managed files, fragments and the neutral policy but
+preserve project records and native profiles. Manually integrate new quality
+context into protected native roles/skills and verify exact catalog/profile/rule
+versions at each handoff in the intended Codex/Copilot client. A parsed declaration,
+`verified` CSV status or approval metadata is not authenticated semantic evidence.
+No live agent discovery, downstream activation or external certification is
+established by these structural checks.

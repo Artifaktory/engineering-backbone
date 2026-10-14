@@ -20,6 +20,11 @@ _skip_if_exists:
   - .github/workflows/backbone-deploy.yml
   - .engineering-backbone/project.json
   - .engineering-backbone/workflows.json
+  - .engineering-backbone/quality-profile.json
+  - docs/quality/quality-plan.md
+  - docs/quality/test-strategy.md
+  - docs/quality/traceability.csv
+  - docs/quality/exceptions.md
   - ".engineering-backbone/workflow-examples/**"
 
 project_name:
@@ -122,6 +127,16 @@ use_workflow_kit:
     use_workflow_kit is installation-only; legacy answers mean false. Use a separate reviewed workflow-kit migration.
     {% endif %}
 
+use_quality_framework:
+  type: bool
+  default: false
+  help: Seed the optional versioned quality framework and project-owned documents; no rules or application checks are activated automatically.
+  validator: >-
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and use_quality_framework != previous.get('use_quality_framework', false) %}
+    use_quality_framework is installation-only; legacy answers mean false. Use a separate reviewed quality-profile migration.
+    {% endif %}
+
 workflow_kit_ref:
   type: str
   default: ""
@@ -143,8 +158,10 @@ _message_after_copy: >-
   Existing native instructions, profiles, Copilot skills and path rules were preserved. Manually integrate the
   fragments into stronger local governance before claiming adoption.
   A selected workflow kit is an inactive seed: review its complete project configuration before a separate activation PR.
+  A selected quality framework is also an inactive seed; review project rules, documents and check bindings before separate activation.
 _message_after_update: >-
   Review the diff of .engineering-backbone/core.md, core.json and instruction fragments.
   Existing native instructions, profiles, skills, path rules and project facts were preserved;
   refresh them manually in the same reviewed update PR when needed.
   Existing workflow-kit configuration, callers and delivery examples were preserved.
+  Existing quality profiles and project-owned quality documents were preserved. Managed catalog and guidance updates require reviewed integration with the matching workflow pin.

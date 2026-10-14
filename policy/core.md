@@ -5,6 +5,12 @@ commands, deployment permissions and risk controls belong to the consuming proje
 Existing stricter project rules remain binding. A profile or agent adapter may add
 restrictions; it must not weaken this baseline or replace local policy silently.
 
+The [quality policy](quality.md) extends this authority with versioned rule
+selection, responsibilities, evidence and project quality profiles. Apply the
+selected profile when adopted; legacy absence is not a quality-conformance claim.
+Source catalogs and project profiles express different ownership. Keep one
+reviewed rule authority and preserve stronger project requirements.
+
 ## Scope and authorization
 
 Before a non-trivial edit, check the current branch, base revision, clean/dirty

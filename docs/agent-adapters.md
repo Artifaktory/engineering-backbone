@@ -201,3 +201,20 @@ review metadata in existing claim/evidence fields or a companion report.
 Native files remain protected on update. Refreshing `.engineering-backbone/core.md`
 and instruction fragments does not refresh protected native role bodies. Reconcile
 approved common changes manually in the consumer PR, preserving stricter rules.
+
+## Selected quality context
+
+Native roles, skills and path instructions reference the optional
+`.engineering-backbone/quality-profile.json`. When adopted, resolve its
+`catalog_version`, immutable `backbone_ref`, selected profile IDs/versions and
+applicable rule IDs/versions before planning, implementation, checks or review.
+Carry that context with the Task Packet, exact snapshot and actual evidence into
+each handoff. The [quality guide](quality/README.md) maps the existing five schema
+roles to architecture, security, testing and documentation responsibilities.
+
+The quality contract does not expand native tool permissions or role enums.
+Preserved consumer native files need reviewed manual integration of the refreshed
+fragments; copying the catalog alone does not activate those instructions. Check
+actual instruction discovery and custom-subagent inheritance in the selected
+client, including CLI options that disable or opt in to custom instructions.
+Structural CI does not prove the client followed a rule.

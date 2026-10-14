@@ -9,3 +9,15 @@ Before non-trivial implementation, have a separate read-only plan reviewer inspe
 scope, dependencies, risk, acceptance and verification. Record required and optional
 reviewers, execution budget and stop conditions in the plan/companion task evidence.
 Do not claim that plan approval proves implementation or validation.
+
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.
+
+Map requirements, architecture decisions, quality risks and test strategy to applicable rules before implementation; assign existing roles and required independent reviews.

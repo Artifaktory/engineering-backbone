@@ -31,3 +31,13 @@ an authorized worker's evidence rather than expanding their tool budget.
 If the failure is not reproduced, report that result; do not invent a failing run
 or weaken assertions. Stop on missing environment, unsafe input, unrelated defect
 or scope conflict. Repair only findings confirmed by triage.
+
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.

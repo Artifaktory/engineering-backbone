@@ -68,3 +68,25 @@ old base validator alone cannot validate the added profiles, skills and path rul
 Scoped `.gitattributes` preserves LF only for the eight attested tooling files.
 SHA values render in lowercase and existing caller pins remain preserved during
 ordinary Copier updates.
+
+The optional `use_quality_framework` choice is also installation-only; missing
+legacy answers mean false. Adoption changes need a separately reviewed migration,
+without editing answers to bypass that restriction.
+{% if use_quality_framework %}
+
+## Selected quality framework
+
+Read the [quality guide](quality-guide.md), [quality policy](quality-policy.md),
+[project profile](quality-profile.json) and [profile schema](quality-profile.schema.json).
+The copied catalog is managed reference material. The profile and four files in
+`docs/quality/` are project-owned and preserved during ordinary updates.
+
+Complete and independently review the inactive seed before a separate activation
+PR. No application check, coverage threshold, reviewed commit or certification is
+invented by installation. Run
+`python .engineering-backbone/quality-guard.py validate --root .` from the repository
+root to check structure only; the pinned governance workflow uses its own reviewed guard/catalog instead
+of candidate-owned tooling. Updated managed catalog/guidance needs reviewed manual
+integration and a matching immutable workflow pin. Refresh preserved native
+instructions through that reviewed migration where necessary.
+{% endif %}

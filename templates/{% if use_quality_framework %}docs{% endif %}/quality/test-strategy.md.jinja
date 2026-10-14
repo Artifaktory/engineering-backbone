@@ -1,0 +1,37 @@
+# Test strategy for {{ project_name }}
+
+Status: incomplete installation seed. Select tests from the actual architecture,
+requirements and risks before activating the quality profile. Do not substitute
+a coverage percentage or a test name for behavioral evidence.
+
+## Required project decisions
+
+- Map acceptance criteria and critical risks to automated, manual or hybrid tests.
+- Select unit/component tests for local logic and integration/contract tests for
+  relevant module, database and external-service boundaries.
+- Identify critical user/business flows needing end-to-end or acceptance tests.
+- Include relevant success, rejection, boundary, permission, timeout and recovery
+  scenarios. Bug repairs need an observed failing regression and repaired result.
+- Select security, load, migration, restore and platform-matrix tests where their
+  risks apply. Set justified measurable goals and document remaining coverage gaps.
+- Record environments, isolated/redacted test data, prerequisites, test owners,
+  actual workflow check IDs and reproducible evidence locations.
+- Assign fast required PR checks, post-merge checks, scheduled larger suites and
+  release/deployment checks according to the project's delivery contract.
+
+## Agentic development
+
+When the `agentic` profile applies, cover the real handoff chain: instruction and
+profile context, dispatch, bounded worker execution, independent review, triage,
+confirmed repair, Delta review, gate results and owner/orchestrator feedback.
+Cover interruption, missing context/evidence, unauthorized actions and resume
+behavior. State which paths use fixtures and which actually ran on the intended
+host/provider; model output and mocked success are not runtime proof.
+
+## Evidence and maintenance
+
+Keep requirement/risk/rule-to-test links in `traceability.csv`. Commands and their
+bounds remain in `.engineering-backbone/workflows.json`; reference their check IDs
+here without maintaining a second command contract. Record actual revisions,
+commands, exit codes, coverage and failures in approved CI/review artifacts.
+An independent reviewer checks adequacy; a human decides the required acceptance.

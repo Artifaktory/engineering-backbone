@@ -1,0 +1,17 @@
+{
+  "id": "baseline",
+  "version": "1",
+  "description": "Shared requirements, design, implementation, testing, documentation, evidence, review and handoff duties.",
+  "enabled": true,
+  "rules": [
+    "QUAL-REQ-001",
+    "QUAL-DES-001",
+    "QUAL-CODE-001",
+    "QUAL-TEST-001",
+    "QUAL-DOC-001",
+    "QUAL-EVID-001",
+    "QUAL-REVIEW-001",
+    "QUAL-HANDOFF-001"
+  ],
+  "workflow_profiles": []
+}

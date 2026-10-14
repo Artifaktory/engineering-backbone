@@ -1,0 +1,150 @@
+{
+  "schema_version": "1",
+  "version": "1.0.0",
+  "sources": [
+    {
+      "id": "SRC-ISO-25010",
+      "title": "ISO/IEC 25010 product quality model",
+      "edition": "2023, edition 2",
+      "url": "https://www.iso.org/standard/78176.html",
+      "status": "published",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official edition and public description of product quality evaluation; no full normative clauses reviewed."
+      ]
+    },
+    {
+      "id": "SRC-ISO-12207",
+      "title": "ISO/IEC/IEEE 12207 software life cycle processes",
+      "edition": "2026, edition 2",
+      "url": "https://www.iso.org/standard/90219.html",
+      "status": "published",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official edition and public lifecycle scope; no full normative clauses reviewed."
+      ]
+    },
+    {
+      "id": "SRC-ISO-29148",
+      "title": "ISO/IEC/IEEE 29148 requirements engineering",
+      "edition": "2018, edition 2",
+      "url": "https://www.iso.org/standard/72089.html",
+      "status": "published",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official published edition and public requirements scope; a revision draft is separate; no full normative clauses reviewed."
+      ]
+    },
+    {
+      "id": "SRC-ISO-42010",
+      "title": "ISO/IEC/IEEE 42010 architecture description",
+      "edition": "2022, edition 2",
+      "url": "https://www.iso.org/standard/74393.html",
+      "status": "published",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official edition and public architecture-description scope; no full normative clauses reviewed."
+      ]
+    },
+    {
+      "id": "SRC-ISO-29119-2",
+      "title": "ISO/IEC/IEEE 29119-2 test processes",
+      "edition": "2021, edition 2",
+      "url": "https://www.iso.org/standard/79428.html",
+      "status": "published",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official edition and public test-process scope; no full normative clauses reviewed."
+      ]
+    },
+    {
+      "id": "SRC-ISO-29119-3",
+      "title": "ISO/IEC/IEEE 29119-3 test documentation",
+      "edition": "2021, edition 2",
+      "url": "https://www.iso.org/standard/79429.html",
+      "status": "published",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official edition and public test-documentation scope; no normative templates or full clauses adopted."
+      ]
+    },
+    {
+      "id": "SRC-MICROSOFT-SDL",
+      "title": "Microsoft SDL public practices",
+      "edition": "Living guidance observed 2026-10-13",
+      "url": "https://www.microsoft.com/en-us/securityengineering/sdl/practices",
+      "status": "living-guidance",
+      "access": "public-guidance",
+      "adoption": "public-guidance",
+      "verified_sections": [
+        "Public descriptions of security governance, threat analysis and security verification activities."
+      ]
+    },
+    {
+      "id": "SRC-GOOGLE-CPP",
+      "title": "Google C++ Style Guide",
+      "edition": "Living guidance observed 2026-10-13; targets C++20",
+      "url": "https://google.github.io/styleguide/cppguide.html",
+      "status": "living-guidance",
+      "access": "public-guidance",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Public language-target description and readability/consistency guidance; C++17 compatibility subset not adopted."
+      ]
+    },
+    {
+      "id": "SRC-CODEX-INSTRUCTIONS",
+      "title": "Codex project instruction discovery",
+      "edition": "Living guidance observed 2026-10-13",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "status": "living-guidance",
+      "access": "public-guidance",
+      "adoption": "public-guidance",
+      "verified_sections": [
+        "Public discovery and override behavior; intended-client loading still requires project verification."
+      ]
+    },
+    {
+      "id": "SRC-COPILOT-INSTRUCTIONS",
+      "title": "GitHub Copilot instruction support",
+      "edition": "Living guidance observed 2026-10-13",
+      "url": "https://docs.github.com/en/copilot/reference/custom-instructions-support",
+      "status": "living-guidance",
+      "access": "public-guidance",
+      "adoption": "public-guidance",
+      "verified_sections": [
+        "Public support matrix for instruction types and clients; intended-client loading still requires project verification."
+      ]
+    },
+    {
+      "id": "SRC-IEC-61508",
+      "title": "IEC 61508-3 safety-related software",
+      "edition": "2010, edition 2",
+      "url": "https://webstore.iec.ch/en/publication/5517",
+      "status": "published",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official edition and public safety-related software scope; full text, applicability and certification scheme unreviewed."
+      ]
+    },
+    {
+      "id": "SRC-IEC-62304",
+      "title": "IEC 62304 medical device software lifecycle",
+      "edition": "2006 plus amendment 1:2015, consolidated edition 1.1",
+      "url": "https://webstore.iec.ch/en/publication/22794",
+      "status": "published",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official consolidated edition and public medical-device software scope; full text, applicability and certification scheme unreviewed."
+      ]
+    }
+  ]
+}

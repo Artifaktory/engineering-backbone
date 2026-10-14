@@ -110,7 +110,8 @@ class CopierTests(unittest.TestCase):
                     self.assertEqual(header["tools"], expected_tools)
                 self.assertEqual(
                     (target / ".engineering-backbone/core.md").read_text().strip(),
-                    (self.source / "policy/core.md").read_text().strip(),
+                    (self.source / "policy/core.md").read_text().replace(
+                        '(quality.md)', '(quality-policy.md)').strip(),
                 )
                 self.assertEqual(
                     (target / ".engineering-backbone/requirements.lock").read_bytes(),

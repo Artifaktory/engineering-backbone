@@ -1,0 +1,10 @@
+{
+  "id": "agentic",
+  "version": "1",
+  "description": "Behavioral verification of supported agent delegation, review, gate, return and recovery chains.",
+  "enabled": true,
+  "rules": [
+    "QUAL-AGENT-001"
+  ],
+  "workflow_profiles": []
+}
