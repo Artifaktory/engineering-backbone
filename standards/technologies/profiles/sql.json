@@ -1,0 +1,17 @@
+{
+  "id": "sql",
+  "version": "1",
+  "category": "language",
+  "description": "SQL component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-SQL-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer constraints for database invariants and readable explicit queries.",
+    "Use PostgreSQL rules as an additional profile when PostgreSQL is the selected dialect."
+  ],
+  "free_choices": [
+    "Equivalent query structure and indexing proposals supported by measured plans and correctness tests."
+  ]
+}

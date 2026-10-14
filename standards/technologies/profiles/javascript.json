@@ -1,0 +1,17 @@
+{
+  "id": "javascript",
+  "version": "1",
+  "category": "language",
+  "description": "JavaScript component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-JAVASCRIPT-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer TypeScript for new application modules when the approved project architecture supports it; JavaScript remains supported.",
+    "Prefer established module and asynchronous patterns in the project."
+  ],
+  "free_choices": [
+    "Internal helpers and algorithms, including async/await versus equivalent correctly handled promises."
+  ]
+}

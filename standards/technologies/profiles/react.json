@@ -1,0 +1,17 @@
+{
+  "id": "react",
+  "version": "1",
+  "category": "framework",
+  "description": "React component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-REACT-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer existing component and state-management patterns.",
+    "Use effects for external synchronization rather than avoidable derived state."
+  ],
+  "free_choices": [
+    "Component decomposition and local state choices consistent with the architectural boundaries."
+  ]
+}

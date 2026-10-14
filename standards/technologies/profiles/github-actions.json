@@ -1,0 +1,17 @@
+{
+  "id": "github-actions",
+  "version": "1",
+  "category": "automation",
+  "description": "GitHub Actions component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-GITHUB-ACTIONS-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Reuse the approved Backbone workflow contract and keep executable logic in reviewed scripts.",
+    "Prefer minimal job permissions and explicit shell selection."
+  ],
+  "free_choices": [
+    "Job decomposition and safe parallelism within the existing runner and gate contracts."
+  ]
+}

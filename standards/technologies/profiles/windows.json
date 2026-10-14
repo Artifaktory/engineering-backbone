@@ -1,0 +1,17 @@
+{
+  "id": "windows",
+  "version": "1",
+  "category": "platform",
+  "description": "Windows component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-WINDOWS-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer portable path/process APIs and explicit text encodings.",
+    "Keep operating-system-specific handling isolated."
+  ],
+  "free_choices": [
+    "Internal adapters compatible with the documented Windows support contract."
+  ]
+}

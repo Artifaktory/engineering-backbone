@@ -27,6 +27,8 @@ Install `requirements.lock` with `--require-hashes` in an isolated Python 3.12 e
 ```sh
 python scripts/validate.py
 python scripts/compile_toolchain_fingerprint.py --check
+python scripts/compile_navigation.py --check
+python scripts/compile_quality_framework.py --check
 python -m unittest discover -s tests -v
 git diff --check
 ```
@@ -54,3 +56,15 @@ or fixes never bypass local stops and triage.
 Closeout maps acceptance to actual evidence or pending/blocked/failed states.
 Preserve installed local Publish-Go, signatures and history gates; the backbone
 does not implement or authenticate them. Structural PASS is not semantic review.
+
+## Active document navigation
+
+When `.engineering-backbone/navigation.json` is enabled, follow the navigation
+guide (`docs/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+when installed). After a Task Packet exists, resolve its scoped request with the
+approved guard, verify received context against the current snapshot, then actually
+read every resolved document before scoped work. Transfer the request, complete
+context and task acceptance/check/stop/return contract at each handoff; resolve a
+new request for a delegated role or narrower scope. Invalid or missing mandatory
+context blocks the affected task. An inactive seed, receipt or agent reply does not
+prove native instruction loading or authorize additional work.

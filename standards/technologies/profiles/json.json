@@ -1,0 +1,17 @@
+{
+  "id": "json",
+  "version": "1",
+  "category": "format",
+  "description": "JSON component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-JSON-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Use UTF-8 and a single consistent formatter.",
+    "Prefer explicit schemas for shared contracts."
+  ],
+  "free_choices": [
+    "Object organization allowed by the authoritative schema."
+  ]
+}

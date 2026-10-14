@@ -1,0 +1,19 @@
+{
+  "id": "fastapi",
+  "version": "1",
+  "category": "framework",
+  "description": "FastAPI component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-FASTAPI-001"
+  ],
+  "quality_profiles": [
+    "python"
+  ],
+  "recommendations": [
+    "Prefer dependency overrides for bounded unit/API tests and real infrastructure for critical integration contracts.",
+    "Keep schemas and documented API behavior synchronized."
+  ],
+  "free_choices": [
+    "Internal dependency and service organization within the agreed API and lifecycle contracts."
+  ]
+}

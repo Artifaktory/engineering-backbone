@@ -1,0 +1,17 @@
+{
+  "id": "nextjs",
+  "version": "1",
+  "category": "framework",
+  "description": "Next.js component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-NEXTJS-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer the existing router and deployment model; migrations require explicit planning.",
+    "Minimize client boundaries when behavior permits."
+  ],
+  "free_choices": [
+    "Internal components and route implementation within the approved rendering and data contracts."
+  ]
+}

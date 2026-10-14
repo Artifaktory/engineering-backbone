@@ -1,7 +1,9 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
-Task Packet. The active quality-framework delivery uses
+Task Packet. The active technology/navigation delivery uses
+[its Task Packet](plans/technology-navigation-task.json) and
+[its plan](plans/technology-navigation.md). The preceding quality-framework delivery uses
 [its Task Packet](plans/quality-framework-task.json) and [its plan](plans/quality-framework.md).
 The preceding CI clone repair uses
 [its Task Packet](plans/ci-clone-repair-task.json) and [its plan](plans/ci-clone-repair.md).
@@ -27,6 +29,7 @@ python -m pip install --require-hashes -r requirements.lock
 python scripts/validate.py
 python scripts/compile_toolchain_fingerprint.py --check
 python scripts/compile_workflow_kit.py --check
+python scripts/compile_navigation.py --check
 python scripts/compile_quality_framework.py --check
 python -m unittest discover -s tests -v
 git diff --check
@@ -59,6 +62,15 @@ regenerate the locked tooling set with `uv pip compile requirements.txt --genera
 --python-version 3.12 --output-file requirements.lock`, then run all checks and
 compatibility tests. Source and template changes must be reviewed together. Do not manually edit
 Copier's answers file; use Copier's update options. Avoid arbitrary template tasks.
+
+Technology catalog or resolver changes require `python scripts/compile_navigation.py
+--write`, then `python scripts/compile_quality_framework.py --write`, followed by
+their `--check` commands. These compile reviewed literals into the self-contained
+trusted guards. Keep the original quality catalog authority unchanged unless a
+separately reviewed migration authorizes it. Run routing/receipt failure cases,
+real Copier consumer updates and previous-validator checks. Use
+[the navigation guide](docs/agent-navigation.md) to distinguish static, explicit
+agent-context and actual native-client evidence.
 
 Changes to the copied validator, schemas or dependency manifests also require
 `python scripts/compile_toolchain_fingerprint.py --write`, followed by `--check`.

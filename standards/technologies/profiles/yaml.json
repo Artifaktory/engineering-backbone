@@ -1,0 +1,17 @@
+{
+  "id": "yaml",
+  "version": "1",
+  "category": "format",
+  "description": "YAML component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-YAML-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Quote scalar values whose interpretation varies across approved consumers.",
+    "Prefer straightforward mappings over complex aliases when readability improves."
+  ],
+  "free_choices": [
+    "Mapping layout allowed by the consumer contract."
+  ]
+}

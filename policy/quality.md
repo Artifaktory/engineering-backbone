@@ -33,6 +33,35 @@ Retaining additional historical catalogs requires a separately reviewed trusted
 source allowlist. Changes are adopted through reviewed project PRs; do not update
 rules or downstream projects automatically.
 
+## Technology selection and document routes
+
+The versioned technology extension at `standards/technologies/` in the source, or
+`.engineering-backbone/standards/technologies/` when installed, adds bounded
+language, platform, runtime and framework obligations under this same authority.
+It preserves the original quality catalog; it is not an alternative baseline.
+Select only applicable components through `.engineering-backbone/navigation.json`.
+Selected `TECH-*` rules are mandatory and bind actual PR check IDs; required quality
+profiles remain additive. Recommendations are defaults with documented technical
+reasons for deviation. Free choices remain within the agent's authorized scope,
+without a new approval requirement solely for a routine implementation decision.
+The general `cpp` technology profile does not activate the older disabled `cpp17`
+or IEC reference profiles, or imply complete adoption of an external style guide.
+
+Active navigation requires active quality and workflow contracts and a reviewed,
+complete inactive routing seed followed by an enabled-only activation PR. Resolve
+its scoped request with the approved guard and actually read the resulting policy,
+project, role/task and component documents before scoped work. Verify the complete
+context again at handoff; resolve a new request for changed role, scope or snapshot.
+Missing or invalid mandatory context blocks the affected task. Retain stricter
+project instructions and investigate unexpected overrides before proceeding.
+
+Routing and hashes establish structural context integrity for declared inputs.
+They do not prove native instruction loading, semantic compliance, authenticated
+revisions or execution. Verify those with actual client observations, project tests
+and independent review. Source guidance is `docs/agent-navigation.md`; installed
+guidance is `.engineering-backbone/navigation-guide.md`. Preserved native files
+need reviewed manual integration of changed routing instructions during adoption.
+
 ## Role and phase contract
 
 Use the existing Task Packet roles. Architecture, security, testing, documentation

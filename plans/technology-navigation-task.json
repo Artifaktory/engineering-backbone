@@ -1,0 +1,131 @@
+{
+  "schema_version": "1",
+  "id": "BB-TECH-NAV-008",
+  "title": "Technology profiles and deterministic agent document navigation",
+  "objective": "Extend the existing quality authority with broad technology rules and a safe, versioned document routing and handoff contract, preserving prior catalog identity and consumer gates.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "edde45d7ce79f6c2c3d70bd0b8ece0a8d9eecb12",
+    "head_revision": "edde45d7ce79f6c2c3d70bd0b8ece0a8d9eecb12"
+  },
+  "approved_sources": [
+    "Human implementation, checks, independent reviews, PR and Codex review authorization on 2026-10-14",
+    "plans/technology-navigation.md",
+    "AGENTS.md, CONTRIBUTING.md, policy/core.md, policy/quality.md",
+    "Official source references recorded in the versioned technology extension"
+  ],
+  "scope": {
+    "include": [
+      "standards/technologies/**",
+      "schemas/navigation*.json",
+      "scripts/**",
+      "templates/**",
+      "copier.yml",
+      ".github/**",
+      ".codex/**",
+      "tests/**",
+      "AGENTS.md",
+      "README.md",
+      "CONTRIBUTING.md",
+      "policy/quality.md",
+      "docs/**",
+      "plans/technology-navigation*"
+    ],
+    "exclude": [
+      "standards/sources.json",
+      "standards/rules.json",
+      "standards/profiles/**",
+      "tests/fixtures/historical/**",
+      "requirements*",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Broad technology extension includes PowerShell, Bash and PostgreSQL with primary-source provenance and explicit mandatory/default/free decision levels.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-2",
+      "description": "Deterministic navigation resolves role/task/component paths to the complete required context with safe paths and no execution of candidate commands.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-3",
+      "description": "Frozen handoff verification rejects stale/tampered/incomplete context, unknown scope, broken references and weakening of active inherited navigation.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-4",
+      "description": "Generated consumers, all supported provider combinations and updates preserve existing authority, protected local files, legacy absence and inactive seed behavior.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-5",
+      "description": "Current and predecessor validation, compilers, scenario/negative tests, full tests and workflow syntax checks pass.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-6",
+      "description": "Independent plan review, two frozen Full reviews, finding triage and any required Delta reviews complete with actual scoped evidence.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-7",
+      "description": "PR published at verified identity, required CI status inspected and requested Codex review trigger/result visible on PR; runtime limitations explicitly recorded.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_quality_framework.py --check",
+      "python scripts/compile_navigation.py --check",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python scripts/compile_workflow_kit.py --check",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "actionlint",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Two independent frozen-snapshot behavior/security reviews",
+      "Actual delegation/read-context smoke where available, separately scoped from native provider discovery",
+      "PR identity, CI and visible Codex review; unavailable clients are explicitly unexecuted"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Failed required check without resolved diagnosis",
+    "Unresolved confirmed review finding",
+    "Scope/authorization conflict",
+    "Unexpected overwrite or weakening of local policy"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deploy",
+    "Downstream writes or repository setting mutations",
+    "Force push or destructive cleanup",
+    "Unverified ISO/IEC conformance/certification claims"
+  ],
+  "status": "planned"
+}

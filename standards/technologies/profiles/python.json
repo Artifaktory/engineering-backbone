@@ -1,0 +1,19 @@
+{
+  "id": "python",
+  "version": "1",
+  "category": "language",
+  "description": "Python component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-PYTHON-001"
+  ],
+  "quality_profiles": [
+    "python"
+  ],
+  "recommendations": [
+    "Prefer standard-library facilities and existing project conventions; document deviations through normal review.",
+    "Ruff, mypy and pytest are examples; use approved project equivalents when they establish the same obligations."
+  ],
+  "free_choices": [
+    "Internal function decomposition and suitable algorithms within the accepted contracts."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "typescript",
+  "version": "1",
+  "category": "language",
+  "description": "TypeScript component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-TYPESCRIPT-001"
+  ],
+  "quality_profiles": [
+    "typescript"
+  ],
+  "recommendations": [
+    "Prefer explicit boundary types and narrowing over unchecked assertions.",
+    "Select one formatter and a compatible typed lint configuration."
+  ],
+  "free_choices": [
+    "Internal inferred types, helper layout and algorithms consistent with the public contract."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "postgresql",
+  "version": "1",
+  "category": "database",
+  "description": "PostgreSQL component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-POSTGRESQL-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Test migrations from representative prior schema/data as well as fresh installation.",
+    "Prefer reversible changes when safe; use reviewed forward recovery when reversing would lose data."
+  ],
+  "free_choices": [
+    "Schema normalization and index designs within approved data contracts and measured performance requirements."
+  ]
+}

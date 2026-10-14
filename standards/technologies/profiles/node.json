@@ -1,0 +1,17 @@
+{
+  "id": "node",
+  "version": "1",
+  "category": "runtime",
+  "description": "Node.js component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-NODE-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer maintained runtime lines selected through reviewed updates.",
+    "Use existing project scripts for equivalent local and CI checks."
+  ],
+  "free_choices": [
+    "Package internal organization and approved asynchronous patterns."
+  ]
+}
