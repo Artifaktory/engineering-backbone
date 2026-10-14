@@ -35,6 +35,10 @@ type refer to those IDs. Components declare `id`, `paths`, technology `profiles`
 actual PR workflow `check_ids`; every required any-of check-kind group must be
 covered. Independent review must assess the commands and coverage behind those
 IDs. The resolver does not run them or infer missing languages from file suffixes.
+With an enabled trusted workflow base, existing check IDs use that base's complete
+approved definitions for coverage and receipt output, matching workflow preparation.
+Genuinely new IDs retain their candidate definitions. The full candidate workflow
+file is still hashed, so its changes invalidate an older receipt.
 
 All declared document references are checked, including routes not selected by the
 current request. Use exact case, nonempty regular files and repository-local paths;
@@ -101,6 +105,10 @@ The receipt records exact document byte hashes, request and manifest digests,
 Task Packet document hash, selected catalog/profile/rule identities and concrete
 check definitions. `verify` recomputes the complete receipt; missing, altered or
 stale fields fail. A file edit invalidates its hash even if its path stays the same.
+Consumer receipts automatically include `.engineering-backbone/project.json` and
+`.engineering-backbone/core.json`; source receipts include `policy/core.json`.
+Source task facts continue to come from the Task Packet and applicable contribution
+instructions; source mode does not invent a consumer project-facts file.
 The declared revision is checked against a non-null packet head; review requires a
 frozen packet head. Neither value is authenticated against Git or a provider by
 this guard. Bind actual base/head/patch evidence separately for formal review.

@@ -6,7 +6,9 @@ They do not claim native provider discovery or execution of technology toolchain
 from __future__ import annotations
 
 import ast
+import copy
 import csv
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -236,8 +238,9 @@ class NavigationCopierIntegrationTests(unittest.TestCase):
                       (target / '.engineering-backbone/navigation-guide.md').read_text())
         self.assertFalse(json.loads((target / NAVIGATION).read_text())['enabled'])
 
-    def test_installed_cli_resolves_and_verifies_without_executing_checks(self):
-        target = self.copy(use_quality_framework=True, use_codex=False, use_copilot=False)
+    def active_cli_fixture(self):
+        target = self.copy(use_quality_framework=True, use_workflow_kit=True,
+                           use_codex=False, use_copilot=False)
         marker = self.workspace / 'declared-check-executed'
 
         def write(relative, content):
@@ -276,7 +279,7 @@ class NavigationCopierIntegrationTests(unittest.TestCase):
                                   'rule_id': 'TECH-JSON-001', 'check_ids': ['lint']}],
                           }])
         write_json(NAVIGATION, navigation)
-        design = write('docs/design.md', '# Design\n## Contract\nRetain the parser schema.\n')
+        write('docs/design.md', '# Design\n## Contract\nRetain the parser schema.\n')
         write('config/settings.json', '{"value": 1}\n')
         packet = json.loads((self.source / 'plans/technology-navigation-task.json').read_text())
         packet.update(id='CLI-1', role='implementer', status='active')
@@ -289,17 +292,23 @@ class NavigationCopierIntegrationTests(unittest.TestCase):
         })
         receipt = self.workspace / 'context.json'
 
-        def command(action, request_path=request, expected=None, output=None):
+        def command(action, request_path=request, expected=None, output=None, trusted_base=None):
             argv = [sys.executable, '-I', str(target / '.engineering-backbone/quality-guard.py'),
                     action, '--root', str(target), '--request', str(request_path)]
             if expected is not None:
                 argv.extend(['--expected', str(expected)])
             if output is not None:
                 argv.extend(['--output', str(output)])
+            if trusted_base is not None:
+                argv.extend(['--trusted-base', str(trusted_base)])
             result = subprocess.run(argv, cwd=target, capture_output=True, text=True)
             self.assertFalse(marker.exists(), 'Context routing executed a declared project check')
             return result
 
+        return target, command, receipt, write_json
+
+    def test_installed_cli_resolves_and_verifies_without_executing_checks(self):
+        target, command, receipt, write_json = self.active_cli_fixture()
         resolved = command('resolve', output=receipt)
         self.assertEqual(resolved.returncode, 0, resolved.stdout + resolved.stderr)
         context = json.loads(receipt.read_text())
@@ -309,7 +318,7 @@ class NavigationCopierIntegrationTests(unittest.TestCase):
         verified = command('verify', expected=receipt)
         self.assertEqual(verified.returncode, 0, verified.stdout + verified.stderr)
         self.assertEqual(json.loads(verified.stdout), context)
-        null = write('plans/null.json', 'null\n')
+        null = write_json('plans/null.json', None)
         invalid_inputs = (
             ('resolve', {'request_path': null}, 'Navigation request must be an object'),
             ('verify', {'expected': null}, 'Expected handoff context must be an object'),
@@ -324,10 +333,119 @@ class NavigationCopierIntegrationTests(unittest.TestCase):
         rejected = command('resolve', request_path=alias / 'request.json')
         self.assertNotEqual(rejected.returncode, 0)
         self.assertIn('linked', rejected.stdout)
+        design = target / 'docs/design.md'
         design.write_text(design.read_text() + 'A reviewed design change requires a new handoff.\n')
         stale = command('verify', expected=receipt)
         self.assertNotEqual(stale.returncode, 0)
         self.assertIn('Handoff context differs from recomputed snapshot', stale.stdout)
+
+    def test_installed_cli_binds_mandatory_project_and_core_facts(self):
+        target, command, receipt, write_json = self.active_cli_fixture()
+        resolved = command('resolve', output=receipt)
+        self.assertEqual(resolved.returncode, 0, resolved.stdout + resolved.stderr)
+        context = json.loads(receipt.read_text())
+        documents = {item['path']: item['sha256'] for item in context['documents']}
+        declared = json.loads((target / NAVIGATION).read_text())['documents'].values()
+        for filename, schema_name in (('project.json', 'project.schema.json'),
+                                      ('core.json', 'core-policy.schema.json')):
+            relative = '.engineering-backbone/' + filename
+            path = target / relative
+            original = path.read_bytes()
+            with self.subTest(document=relative, state='mandatory bytes'):
+                self.assertNotIn(relative, declared)
+                self.assertIn(relative, documents)
+                self.assertEqual(documents[relative], hashlib.sha256(original).hexdigest())
+            try:
+                changed = json.loads(original)
+                if filename == 'project.json':
+                    changed['project'].update(base_branch='release',
+                                              validation_command='python tools/new_validation.py')
+                else:
+                    changed['invariants']['security_review_required'] = True
+                schema = json.loads((target / '.engineering-backbone/schemas' / schema_name).read_text())
+                Draft202012Validator(schema).validate(changed)
+                write_json(relative, changed)
+                with self.subTest(document=relative, state='valid facts changed'):
+                    stale = command('verify', expected=receipt)
+                    self.assertNotEqual(stale.returncode, 0, stale.stdout + stale.stderr)
+                    self.assertIn('Handoff context differs from recomputed snapshot', stale.stdout)
+                path.unlink()
+                for action in ('resolve', 'verify'):
+                    with self.subTest(document=relative, state='removed', action=action):
+                        rejected = command(action, expected=receipt if action == 'verify' else None)
+                        self.assertNotEqual(rejected.returncode, 0, rejected.stdout + rejected.stderr)
+                        self.assertIn('Required document or directory absent: ' + relative, rejected.stdout)
+            finally:
+                path.write_bytes(original)
+        unchanged = command('verify', expected=receipt)
+        self.assertEqual(unchanged.returncode, 0, unchanged.stdout + unchanged.stderr)
+
+    def test_installed_cli_uses_the_same_effective_checks_as_trusted_preparation(self):
+        target, command, receipt, write_json = self.active_cli_fixture()
+        workflow_path = '.engineering-backbone/workflows.json'
+        initial_flow = json.loads((target / workflow_path).read_text())
+        reserved = check('docs', check_id='reserved')
+        reserved.update(argv=[sys.executable, '-c', 'raise SystemExit(97)'], timeout_seconds=17)
+        initial_flow['checks'].extend([check('test'), reserved])
+        write_json(workflow_path, initial_flow)
+        base = self.workspace / 'approved-base'
+        shutil.copytree(target, base)
+        unchanged = command('resolve', trusted_base=base)
+        self.assertEqual(unchanged.returncode, 0, unchanged.stdout + unchanged.stderr)
+        navigation = json.loads((target / NAVIGATION).read_text())
+        component = navigation['components'][0]
+        component['profiles'].append('postgresql')
+        component['checks'].append({'rule_id': 'TECH-POSTGRESQL-001', 'check_ids': ['test', 'reserved']})
+        for base_kind, candidate_kind, binding, accepted in (
+            ('docs', 'migration', 'reserved', False),
+            ('migration', 'docs', 'reserved', True),
+            ('docs', 'docs', 'new-migration', True),
+        ):
+            with self.subTest(approved=base_kind, candidate=candidate_kind, binding=binding):
+                approved = copy.deepcopy(initial_flow)
+                approved['checks'][-1]['kind'] = base_kind
+                (base / workflow_path).write_text(json.dumps(approved) + '\n')
+                candidate = copy.deepcopy(approved)
+                candidate['checks'][-1].update(
+                    kind=candidate_kind, argv=[sys.executable, '-c', 'raise SystemExit(98)'],
+                    cwd='config', timeout_seconds=27)
+                if binding == 'new-migration':
+                    candidate['checks'].append(check('migration', check_id=binding))
+                write_json(workflow_path, candidate)
+                component['checks'][-1]['check_ids'] = ['test', binding]
+                write_json(NAVIGATION, navigation)
+                prepared_path = self.workspace / 'prepared-workflow.json'
+                prepared = subprocess.run([
+                    sys.executable, '-I', str(target / '.engineering-backbone/workflow-kit.py'),
+                    'prepare', '--root', str(target), '--trusted-base', str(base),
+                    '--phase', 'pr', '--output', str(prepared_path),
+                ], cwd=target, capture_output=True, text=True)
+                self.assertEqual(prepared.returncode, 0, prepared.stdout + prepared.stderr)
+                actual = {item['id']: item for item in json.loads(prepared_path.read_text())['checks']}
+                self.assertEqual(actual['reserved'], approved['checks'][-1])
+                resolved = command('resolve', trusted_base=base, output=receipt)
+                if not accepted:
+                    self.assertFalse(any(item['kind'] == 'migration' for item in actual.values()))
+                    self.assertNotEqual(resolved.returncode, 0, resolved.stdout + resolved.stderr)
+                    self.assertIn('Required technology check-kind coverage missing', resolved.stdout)
+                    continue
+                self.assertEqual(resolved.returncode, 0, resolved.stdout + resolved.stderr)
+                context = json.loads(receipt.read_text())
+                self.assertEqual({item['id'] for item in context['checks']}, {'docs', 'lint', 'test', binding})
+                for item in context['checks']:
+                    self.assertEqual(item, actual[item['id']])
+                if binding == 'new-migration':
+                    self.assertEqual(actual[binding], candidate['checks'][-1])
+                verified = command('verify', trusted_base=base, expected=receipt)
+                self.assertEqual(verified.returncode, 0, verified.stdout + verified.stderr)
+                if binding == 'reserved':
+                    # The approved execution stays fixed, but a changed candidate
+                    # declaration still invalidates the complete handoff snapshot.
+                    candidate['checks'][-1]['timeout_seconds'] += 1
+                    write_json(workflow_path, candidate)
+                    stale = command('verify', trusted_base=base, expected=receipt)
+                    self.assertNotEqual(stale.returncode, 0, stale.stdout + stale.stderr)
+                    self.assertIn('Handoff context differs from recomputed snapshot', stale.stdout)
 
 
 if __name__ == '__main__':

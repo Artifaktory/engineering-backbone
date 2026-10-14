@@ -76,7 +76,7 @@ jobs:
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: 'f2779766e59c95a83f3ab6871f2435336cd02316ab646145cb591000e357ab06'
+          CURRENT_TOOLCHAIN_SHA256: 'a64a6c70e9ac9949322ca46a67401d45b9a1486c8f056b80447de5f277e4c9d1'
           PREVIOUS_TOOLCHAIN_SHA256: '["88d2d1e89cbff9fd925cac1a235de60867ae90a9ae231cde6cbc0a5eed8ee9b2","7e3d27e21a8db1b1320ded8b8c499dd6033a3f45b0b4b7ff519316612f83ddeb","ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb","91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321","5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9"]'
         run: |
           set -euo pipefail
@@ -928,7 +928,32 @@ jobs:
                               fail('Managed technology profile differs from trusted authority')
                       return prefix
 
-                  def manifest(folder, catalog, *, complete=False):
+                  def effective_workflow(folder, approved_root=None):
+                      value = json_file(folder, workflows_path, optional=True)
+                      if not isinstance(value, dict):
+                          return value
+
+                      def check_map(workflow):
+                          result = {}
+                          for check in workflow.get('checks', []):
+                              if not isinstance(check, dict) or check.get('id') in result:
+                                  fail('Malformed or duplicate workflow check')
+                              result[check.get('id')] = check
+                          return result
+
+                      current = check_map(value)
+                      if approved_root is None:
+                          return value
+                      approved = json_file(approved_root, workflows_path, optional=True)
+                      if not isinstance(approved, dict) or approved.get('enabled') is not True:
+                          return value
+                      approved_checks = check_map(approved)
+                      # Match workflow preparation: an existing ID executes the full approved
+                      # definition. Only genuinely new IDs retain candidate definitions.
+                      return dict(value, checks=[approved_checks.get(key, check)
+                                                 for key, check in current.items()])
+
+                  def manifest(folder, catalog, *, complete=False, approved_root=None):
                       value = json_file(folder, manifest_path, optional=True)
                       if value is missing:
                           return None
@@ -961,7 +986,7 @@ jobs:
                       rules = {item['id']: item for item in catalog['rules']}
                       found = set()
                       quality = json_file(folder, profile_path, optional=True)
-                      workflow = json_file(folder, workflows_path, optional=True)
+                      workflow = effective_workflow(folder, approved_root)
                       active = complete or value['enabled']
                       if active and (not isinstance(quality, dict) or quality.get('enabled') is not True
                                      or not isinstance(workflow, dict) or workflow.get('enabled') is not True):
@@ -1055,9 +1080,10 @@ jobs:
                               fail('Duplicate trusted technology identity')
                       if source:
                           package(root, catalog)
-                      candidate = manifest(root, catalog)
                       if trusted_base is not None:
                           trusted_base = folder_path(trusted_base)
+                      candidate = manifest(root, catalog, approved_root=trusted_base)
+                      if trusted_base is not None:
                           # A legacy approved base without navigation has no extension package.
                           base = manifest(trusted_base, catalog)
                           inherited(candidate, base)
@@ -1182,7 +1208,7 @@ jobs:
                                      for prefix in mapped[key]['paths']):
                               fail('Named component is outside Task Packet scope')
                       quality = json_file(root, profile_path)
-                      workflow = json_file(root, workflows_path)
+                      workflow = effective_workflow(root, trusted_base)
                       references = set(candidate['always']) | set(candidate['roles'][packet['role']]) | set(candidate['tasks'][request['task_type']])
                       selected_profiles, technology_bindings = set(), {}
                       for key in sorted(selected):
@@ -1198,9 +1224,10 @@ jobs:
                       paths.update(prefix + '/profiles/' + key + '.json' for key in quality['profiles'])
                       paths.update(prefix + '/technologies/profiles/' + key + '.json' for key in selected_profiles)
                       paths.update(path for path in quality['documents'].values() if path)
-                      paths.update({'policy/core.md', 'policy/quality.md', 'docs/quality/README.md',
+                      paths.update({'policy/core.md', 'policy/core.json', 'policy/quality.md', 'docs/quality/README.md',
                                     'docs/quality/technology-profiles.md', 'docs/agent-navigation.md'} if source else
-                                   {'.engineering-backbone/core.md', '.engineering-backbone/quality-policy.md',
+                                   {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
+                                    '.engineering-backbone/project.json', '.engineering-backbone/quality-policy.md',
                                     '.engineering-backbone/quality-guide.md', '.engineering-backbone/technology-guide.md',
                                     '.engineering-backbone/navigation-guide.md'})
                       for name in ('AGENTS.md', 'CONTRIBUTING.md', '.github/copilot-instructions.md'):

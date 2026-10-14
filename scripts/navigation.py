@@ -195,7 +195,32 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
                 fail('Managed technology profile differs from trusted authority')
         return prefix
 
-    def manifest(folder, catalog, *, complete=False):
+    def effective_workflow(folder, approved_root=None):
+        value = json_file(folder, workflows_path, optional=True)
+        if not isinstance(value, dict):
+            return value
+
+        def check_map(workflow):
+            result = {}
+            for check in workflow.get('checks', []):
+                if not isinstance(check, dict) or check.get('id') in result:
+                    fail('Malformed or duplicate workflow check')
+                result[check.get('id')] = check
+            return result
+
+        current = check_map(value)
+        if approved_root is None:
+            return value
+        approved = json_file(approved_root, workflows_path, optional=True)
+        if not isinstance(approved, dict) or approved.get('enabled') is not True:
+            return value
+        approved_checks = check_map(approved)
+        # Match workflow preparation: an existing ID executes the full approved
+        # definition. Only genuinely new IDs retain candidate definitions.
+        return dict(value, checks=[approved_checks.get(key, check)
+                                   for key, check in current.items()])
+
+    def manifest(folder, catalog, *, complete=False, approved_root=None):
         value = json_file(folder, manifest_path, optional=True)
         if value is missing:
             return None
@@ -228,7 +253,7 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
         rules = {item['id']: item for item in catalog['rules']}
         found = set()
         quality = json_file(folder, profile_path, optional=True)
-        workflow = json_file(folder, workflows_path, optional=True)
+        workflow = effective_workflow(folder, approved_root)
         active = complete or value['enabled']
         if active and (not isinstance(quality, dict) or quality.get('enabled') is not True
                        or not isinstance(workflow, dict) or workflow.get('enabled') is not True):
@@ -322,9 +347,10 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
                 fail('Duplicate trusted technology identity')
         if source:
             package(root, catalog)
-        candidate = manifest(root, catalog)
         if trusted_base is not None:
             trusted_base = folder_path(trusted_base)
+        candidate = manifest(root, catalog, approved_root=trusted_base)
+        if trusted_base is not None:
             # A legacy approved base without navigation has no extension package.
             base = manifest(trusted_base, catalog)
             inherited(candidate, base)
@@ -449,7 +475,7 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
                        for prefix in mapped[key]['paths']):
                 fail('Named component is outside Task Packet scope')
         quality = json_file(root, profile_path)
-        workflow = json_file(root, workflows_path)
+        workflow = effective_workflow(root, trusted_base)
         references = set(candidate['always']) | set(candidate['roles'][packet['role']]) | set(candidate['tasks'][request['task_type']])
         selected_profiles, technology_bindings = set(), {}
         for key in sorted(selected):
@@ -465,9 +491,10 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
         paths.update(prefix + '/profiles/' + key + '.json' for key in quality['profiles'])
         paths.update(prefix + '/technologies/profiles/' + key + '.json' for key in selected_profiles)
         paths.update(path for path in quality['documents'].values() if path)
-        paths.update({'policy/core.md', 'policy/quality.md', 'docs/quality/README.md',
+        paths.update({'policy/core.md', 'policy/core.json', 'policy/quality.md', 'docs/quality/README.md',
                       'docs/quality/technology-profiles.md', 'docs/agent-navigation.md'} if source else
-                     {'.engineering-backbone/core.md', '.engineering-backbone/quality-policy.md',
+                     {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
+                      '.engineering-backbone/project.json', '.engineering-backbone/quality-policy.md',
                       '.engineering-backbone/quality-guide.md', '.engineering-backbone/technology-guide.md',
                       '.engineering-backbone/navigation-guide.md'})
         for name in ('AGENTS.md', 'CONTRIBUTING.md', '.github/copilot-instructions.md'):

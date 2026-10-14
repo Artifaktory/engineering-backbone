@@ -1,6 +1,7 @@
 """Deterministic route and handoff contract tests; no native client loading claim."""
 import ast
 import copy
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -93,6 +94,9 @@ class NavigationTests(unittest.TestCase):
         return self.write(name, json.dumps(value, indent=2) + '\n', root)
 
     def install(self, root):
+        self.write('.engineering-backbone/core.json', (ROOT / 'policy/core.json').read_text(), root)
+        self.write('.engineering-backbone/project.json',
+                   (ROOT / '.engineering-backbone/project.json').read_text(), root)
         for section in ('sources', 'rules'):
             self.write_json('.engineering-backbone/standards/technologies/' + section + '.json',
                             {'schema_version': '1', 'version': CATALOG['version'], section: CATALOG[section]}, root)
@@ -291,6 +295,132 @@ class NavigationTests(unittest.TestCase):
         self.reject('missing or unknown keys', dict(self.request(), role='reviewer'))
         self.write('src/backend/AGENTS.override.md', '# Unexpected override\n')
         self.reject('Unresolved instruction override', self.request())
+
+    def test_required_consumer_core_and_project_facts_bind_exact_bytes(self):
+        context = self.resolve_ok()
+        documents = {item['path']: item['sha256'] for item in context['documents']}
+        for name in ('.engineering-backbone/project.json', '.engineering-backbone/core.json'):
+            with self.subTest(path=name):
+                path = self.root / name
+                original = path.read_bytes()
+                self.assertEqual(documents.get(name), hashlib.sha256(original).hexdigest())
+                value = json.loads(original)
+                if name.endswith('/project.json'):
+                    value['project']['base_branch'] = 'release'
+                else:
+                    value['version'] = '0.1.1'
+                self.write_json(name, value)
+                self.reject('differs from recomputed', self.request(), expected=context)
+                path.unlink()
+                self.reject('absent', self.request())
+                path.write_bytes(original)
+        self.resolve_ok(expected=context)
+
+    def test_source_core_facts_are_required_without_inventing_consumer_facts(self):
+        shutil.copytree(self.root / '.engineering-backbone/standards', self.root / 'standards')
+        for name, installed in (
+            ('policy/core.md', '.engineering-backbone/core.md'),
+            ('policy/quality.md', '.engineering-backbone/quality-policy.md'),
+            ('policy/core.json', '.engineering-backbone/core.json'),
+            ('docs/quality/README.md', '.engineering-backbone/quality-guide.md'),
+            ('docs/quality/technology-profiles.md', '.engineering-backbone/technology-guide.md'),
+            ('docs/agent-navigation.md', '.engineering-backbone/navigation-guide.md')):
+            self.write(name, (self.root / installed).read_text())
+        for name in ('.engineering-backbone/project.json', '.engineering-backbone/core.json'):
+            (self.root / name).unlink()
+        context = self.resolve_ok(source=True)
+        documents = {item['path']: item['sha256'] for item in context['documents']}
+        self.assertNotIn('.engineering-backbone/project.json', documents)
+        self.assertNotIn('.engineering-backbone/core.json', documents)
+        path = self.root / 'policy/core.json'
+        original = path.read_bytes()
+        self.assertEqual(documents.get('policy/core.json'), hashlib.sha256(original).hexdigest())
+        self.resolve_ok(source=True, expected=context)
+        self.write_json('policy/core.json', dict(json.loads(original), version='0.1.1'))
+        self.reject('differs from recomputed', self.request(), source=True, expected=context)
+        path.unlink()
+        self.reject('absent', self.request(), source=True)
+        path.write_bytes(original)
+        self.resolve_ok(source=True, expected=context)
+
+    def postgres_base(self, *, reserved=None):
+        """Approved Python base before adding the PostgreSQL technology profile."""
+        original = copy.deepcopy(self.nav)
+        self.nav['components'][0]['profiles'].remove('postgresql')
+        self.nav['components'][0]['checks'] = [item for item in self.nav['components'][0]['checks']
+                                                if item['rule_id'] != 'TECH-POSTGRESQL-001']
+        self.save_nav()
+        flow = json.loads((self.root / '.engineering-backbone/workflows.json').read_text())
+        flow['capabilities'] = []
+        flow['checks'] = [check for check in flow['checks'] if check['id'] != 'migration']
+        if reserved is not None:
+            flow['checks'].append(reserved)
+        self.write_json('.engineering-backbone/workflows.json', flow)
+        base = self.workspace / 'base'
+        shutil.copytree(self.root, base)
+        self.nav = original
+        self.save_nav()
+        return base, flow
+
+    def test_candidate_relabel_cannot_supply_missing_approved_migration_or_pr_phase(self):
+        for approved_kind, approved_phases, phrase in (
+            ('docs', ['pr'], 'check-kind coverage'),
+            ('dependency', ['maintenance'], 'PR workflow check')):
+            with self.subTest(approved_kind=approved_kind):
+                self.nav = manifest()
+                self.install(self.root)
+                if (self.workspace / 'base').exists():
+                    shutil.rmtree(self.workspace / 'base')
+                reserved = {'id': 'reserved', 'kind': approved_kind,
+                            'argv': ['python', '-c', 'print("approved")'],
+                            'cwd': '.', 'timeout_seconds': 13, 'phases': approved_phases}
+                base, flow = self.postgres_base(reserved=reserved)
+                candidate_check = next(check for check in flow['checks'] if check['id'] == 'reserved')
+                candidate_check.update(kind='migration', phases=['pr'],
+                                       argv=['python', '-c', 'print("candidate")'])
+                self.write_json('.engineering-backbone/workflows.json', flow)
+                self.nav['components'][0]['checks'][1]['check_ids'] = ['test', 'reserved']
+                self.save_nav()
+                self.reject(phrase, self.request(), trusted_base=base)
+                shutil.rmtree(base)
+                self.nav = manifest()
+                self.install(self.root)
+
+    def test_approved_full_definitions_survive_candidate_edits_active_and_activation(self):
+        for activate in (False, True):
+            with self.subTest(activation=activate):
+                base = self.workspace / 'base'
+                if base.exists():
+                    shutil.rmtree(base)
+                self.install(self.root)
+                shutil.copytree(self.root, base)
+                if activate:
+                    self.write_json('.engineering-backbone/navigation.json', dict(self.nav, enabled=False), base)
+                before = self.resolve_ok(trusted_base=base)
+                flow = json.loads((self.root / '.engineering-backbone/workflows.json').read_text())
+                approved = copy.deepcopy(next(check for check in flow['checks'] if check['id'] == 'migration'))
+                check = next(check for check in flow['checks'] if check['id'] == 'migration')
+                check.update(kind='dependency', phases=['maintenance'], cwd='src/backend',
+                             argv=['never-execute-this-command'], timeout_seconds=1)
+                self.write_json('.engineering-backbone/workflows.json', flow)
+                context = self.resolve_ok(trusted_base=base)
+                self.assertEqual(next(check for check in context['checks'] if check['id'] == 'migration'), approved)
+                self.resolve_ok(trusted_base=base, expected=context)
+                self.reject('differs from recomputed', self.request(), trusted_base=base, expected=before)
+                shutil.rmtree(base)
+                self.install(self.root)
+
+    def test_genuinely_new_check_id_keeps_candidate_definition(self):
+        base, flow = self.postgres_base()
+        new_check = {'id': 'new-migration', 'kind': 'migration', 'argv': ['never-execute-new-check'],
+                     'cwd': 'src/backend', 'timeout_seconds': 37, 'phases': ['pr']}
+        flow['checks'].append(new_check)
+        self.write_json('.engineering-backbone/workflows.json', flow)
+        self.nav['components'][0]['checks'][1]['check_ids'] = ['test', 'new-migration']
+        self.save_nav()
+        context = self.resolve_ok(trusted_base=base)
+        self.assertEqual(next(check for check in context['checks'] if check['id'] == 'new-migration'), new_check)
+        self.resolve_ok(trusted_base=base, expected=context)
 
     def test_required_guides_are_resolved_and_missing_or_changed_guides_reject(self):
         context = self.resolve_ok()
