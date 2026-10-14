@@ -8,6 +8,14 @@ The optional quality package adds these obligations when a project adopts its
 active profile. Legacy absence and an inactive installation seed do not activate
 quality checks; all existing core and stricter project duties remain binding.
 
+The dependency compatibility policy is `policy/dependencies.md` in the source and
+`.engineering-backbone/dependency-policy.md` when installed. It defines reviewed
+resolution, supported combinations, update freedom and actual compatibility
+evidence. Its optional project-owned `dependencies.json` adopts structural duties
+per component through the existing navigation and workflow contracts; an inactive
+seed does not activate them. Native manifests and resolution files remain version
+authority. Shared Backbone tooling versions are not application-version mandates.
+
 ## Selection and authority
 
 An adopting project selects a reviewed Backbone commit and catalog version in

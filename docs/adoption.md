@@ -256,3 +256,35 @@ versions at each handoff in the intended Codex/Copilot client. A parsed declarat
 `verified` CSV status or approval metadata is not authenticated semantic evidence.
 No live agent discovery, downstream activation or external certification is
 established by these structural checks.
+
+## Dependency compatibility adoption
+
+The dependency policy ships with the neutral quality policy for every installation;
+the optional quality package adds managed `dependencies.schema.json`, an inactive
+project-owned `.engineering-backbone/dependencies.json`, and project-owned
+`docs/dependency-compatibility.md`. Existing files are preserved during updates.
+Copier does not copy this source repository's tooling Dockerfile into applications.
+
+1. Read [the dependency policy](../policy/dependencies.md) and the
+   [navigation contract](agent-navigation.md). Adopt active quality, workflows and
+   navigation first. Choose matching reviewed guard/workflow pins; older guards
+   cannot attest the newly added duties.
+2. Inventory actual components and their authoritative manifest, resolution,
+   runtime and Dockerfile inputs. Complete the compatibility document with supported
+   combinations, reproducible test environments, actual check IDs and coverage
+   limits. Ensure all declared files exist, are tracked, and are covered by their
+   navigation component's literal paths. Native files remain version authority.
+3. Complete and independently review the inactive dependency seed. Validate using
+   the approved quality guard; execute the component's dependency/build/test and
+   applicable container checks. Review Windows/Linux and real PostgreSQL evidence
+   where promised. Commit the complete seed before activation.
+4. In a separate PR, change only dependency `enabled` to true and validate against
+   the reviewed base. Manually integrate the new dependency instructions into
+   preserved native entrypoints/roles. Exercise failure cases and stale handoffs.
+5. Update within the approved project constraints using the existing PR review
+   chain. Active components, kinds, document/artifact references and check IDs may
+   not silently disappear or weaken. Wider migrations require separate reviewed
+   transition work. No automatic merge, release or downstream application.
+
+Absent contracts and inactive seeds remain compatible with legacy installations;
+they do not claim dependency-policy adoption or executed compatibility evidence.

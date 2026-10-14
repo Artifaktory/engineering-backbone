@@ -15,6 +15,7 @@ manifest; it does not grant permissions or replace the Task Packet.
 | Named `components` | Supports design-level work within Task Packet scope; does not authorize an entire subtree |
 | Matching components | Adds their technology profiles, documents and actual workflow check bindings |
 | Core and selected quality profile | Adds inherited policy, selected catalog files and required quality documents |
+| Active dependency contract | Adds dependency policy/configuration and selected components' actual compatibility, manifest, resolution, runtime and Dockerfile inputs |
 | Native instructions | Adds root/ancestor `AGENTS.md`; directory/component requests include descendant instruction scopes |
 
 Paths are relative to the repository root, use `/`, and match by complete path
@@ -142,6 +143,55 @@ migration preserving the current controls. Managed extension bytes come
 from the reviewed Backbone version; candidates cannot supply a replacement catalog.
 A broader authority or migration change needs its own reviewed contract.
 
+### Dependency input routing
+
+The optional `.engineering-backbone/dependencies.json` extends the same resolver;
+it does not introduce a second navigation graph or catalog. Read
+`policy/dependencies.md` in the source or `.engineering-backbone/dependency-policy.md`
+when installed. Its version 1 wrapper has `schema_version`, `enabled` and
+`components`. Each component records:
+
+| Field | Contract |
+|---|---|
+| `id` | Existing navigation component ID |
+| `kind` | `application`, `library` or `tooling` |
+| `compatibility_document` | Exact nonempty project document explaining supported combinations, test environment and evidence |
+| `manifests` | Nonempty list of authoritative package manifests |
+| `resolution_files` | Concrete reviewed resolution; nonempty for applications/tooling, optional for libraries with a documented reproducible test environment |
+| `runtime_files` | Relevant interpreter, package-manager or toolchain configuration paths |
+| `dockerfiles` | Actual component Dockerfile paths, empty only when none apply |
+| `check_ids` | Actual PR checks covering `dependency`, `build`, `test` and additionally `container` when Dockerfiles are declared |
+
+Every declared path must identify a safe nonempty regular repository-local file.
+For active contracts, the compatibility document and all artifact paths must be
+covered by that same navigation component's literal `paths` prefixes, so changes
+to a lockfile, runtime file or Dockerfile actually select the component. Add a
+specific document/file prefix where needed; do not broaden edit authorization.
+Commit those files with the contract. Listed files are checked even in an inactive
+seed; a placeholder reference to a nonexistent file is invalid.
+
+An active dependency contract requires active navigation, quality and workflows.
+Complete and independently review the inactive seed and its real files first;
+activate in a separate PR changing only `enabled`, against that reviewed base.
+Copier preserves `dependencies.json` and `docs/dependency-compatibility.md`. Missing
+contracts remain legacy-compatible. An inherited active contract cannot be
+removed, disabled or weakened by dropping/remapping component kinds, compatibility
+documents, required artifacts or check IDs. Intentional restructuring needs a
+separately reviewed migration preserving the controls.
+
+All active dependency contexts include the policy and complete contract. Selected
+components additionally contribute every referenced file and effective approved
+check definition, for every task type and role. Existing check IDs use trusted-base
+definitions as described above. Input edits invalidate old hashed handoffs even
+when filenames are unchanged. Hashes and check kinds establish neither semantic
+compatibility nor that the command ran. Use actual clean installs, builds and
+component tests, and preserve unavailable target evidence explicitly.
+
+Install matching reviewed guard/workflow pins with this extension. A workflow
+pinned before this contract existed cannot attest its new duties. Source mode
+does not invent active navigation: this repository's actual dependency inputs and
+Dockerfile are linked from its root instructions and exercised by source CI.
+
 Technology obligations use the same policy authority. `TECH-*` rules are mandatory
 when selected. Recommendations are defaults with a recorded technical rationale
 for deviation; `free_choices` leave routine implementation decisions to the agent
@@ -166,3 +216,6 @@ Include missing/renamed/empty documents, missing anchors, case mistakes, symlink
 unknown profiles, unmatched/excluded paths and stale/tampered handoffs. Record
 unavailable native checks as pending or blocked; an agent claiming it read the
 right files is not a substitute for observed client loading and scoped behavior.
+Dependency cases also cover missing/empty/unsafe inputs, incomplete check kinds,
+candidate commands that differ from approved definitions, inactive-seed activation,
+inherited weakening and stale manifest/lockfile/runtime/Dockerfile receipts.

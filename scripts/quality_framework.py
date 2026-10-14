@@ -39,6 +39,9 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
         manifest_path = '.engineering-backbone/navigation.json'
         profile_path = '.engineering-backbone/quality-profile.json'
         workflows_path = '.engineering-backbone/workflows.json'
+        dependencies_path = '.engineering-backbone/dependencies.json'
+        dependency_policy_path = ('policy/dependencies.md' if source else
+                                  '.engineering-backbone/dependency-policy.md')
         missing = object()
 
         def fail(message):
@@ -348,6 +351,98 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                     if set(binding['check_ids']) - bindings.get(binding['rule_id'], set()):
                         fail('Inherited technology check bindings cannot be removed')
 
+        dependency_file_fields = ('manifests', 'resolution_files', 'runtime_files', 'dockerfiles')
+
+        def dependency_artifact(folder, name):
+            # Native manifests and resolutions can be large or non-Markdown. Hash
+            # their actual bytes without interpreting or executing package tooling.
+            relative(name)
+            data = read(folder, name, limit=16777216)
+            if not data.strip():
+                fail('Empty dependency artifact: ' + name)
+            return {'path': name, 'sha256': hashlib.sha256(data).hexdigest()}
+
+        def dependency_paths(component):
+            return {component['compatibility_document']} | {
+                path for field in dependency_file_fields for path in component[field]}
+
+        def dependencies(folder, navigation, *, complete=False, approved_root=None):
+            value = json_file(folder, dependencies_path, optional=True)
+            if value is missing:
+                return None
+            keys(value, {'schema_version', 'enabled', 'components'}, 'Dependency contract')
+            if value['schema_version'] != '1' or type(value['enabled']) is not bool:
+                fail('Invalid dependency schema or activation flag')
+            components = value['components']
+            if not isinstance(components, list) or len(components) > 256:
+                fail('Invalid dependency components')
+            active = complete or value['enabled']
+            workflow = effective_workflow(folder, approved_root)
+            quality = json_file(folder, profile_path, optional=True)
+            if active:
+                if (navigation is None or navigation['enabled'] is not True
+                        or not isinstance(quality, dict) or quality.get('enabled') is not True
+                        or not isinstance(workflow, dict) or workflow.get('enabled') is not True):
+                    fail('Active dependencies require active navigation, quality and workflow profiles')
+                if not components:
+                    fail('Active dependencies require mapped components')
+                document(folder, dependency_policy_path)
+            mapped = {} if navigation is None else {item['id']: item for item in navigation['components']}
+            checks = {} if not isinstance(workflow, dict) else {item['id']: item for item in workflow.get('checks', [])}
+            found = set()
+            for component in components:
+                keys(component, {'id', 'kind', 'compatibility_document', 'check_ids',
+                                 *dependency_file_fields}, 'Dependency component')
+                key = identifier(component['id'])
+                if key in found:
+                    fail('Duplicate dependency component ID')
+                found.add(key)
+                if component['kind'] not in {'application', 'library', 'tooling'}:
+                    fail('Invalid dependency component kind')
+                relative(component['compatibility_document'])
+                document(folder, component['compatibility_document'])
+                for field in dependency_file_fields:
+                    sequence(component[field], 'dependency ' + field,
+                             nonempty=field == 'manifests' or
+                             field == 'resolution_files' and component['kind'] != 'library')
+                    for path in component[field]:
+                        dependency_artifact(folder, path)
+                sequence(component['check_ids'], 'dependency check IDs', maximum=100)
+                for check in component['check_ids']:
+                    identifier(check)
+                if not active:
+                    continue
+                if key not in mapped:
+                    fail('Unknown dependency navigation component: ' + key)
+                for path in dependency_paths(component):
+                    if not any(path == prefix or path.startswith(prefix + '/') for prefix in mapped[key]['paths']):
+                        fail('Dependency file is outside its component navigation paths: ' + path)
+                for check in component['check_ids']:
+                    if check not in checks or 'pr' not in checks[check].get('phases', []):
+                        fail('Dependency check binding must reference a PR workflow check')
+                required = {'dependency', 'build', 'test'}
+                if component['dockerfiles']:
+                    required.add('container')
+                if required - {checks[key].get('kind') for key in component['check_ids']}:
+                    fail('Required dependency check-kind coverage missing: ' + component['id'])
+            return value
+
+        def inherited_dependencies(candidate, base):
+            if base is None or not base['enabled']:
+                return
+            if candidate is None or not candidate['enabled']:
+                fail('Active dependencies cannot be removed or disabled')
+            current = {item['id']: item for item in candidate['components']}
+            for previous in base['components']:
+                now = current.get(previous['id'])
+                if now is None:
+                    fail('Inherited dependency component cannot be removed')
+                if any(now[field] != previous[field] for field in ('kind', 'compatibility_document')):
+                    fail('Inherited dependency kind or compatibility document cannot be changed')
+                for field in (*dependency_file_fields, 'check_ids'):
+                    if set(previous[field]) - set(now[field]):
+                        fail('Inherited dependency artifacts or check bindings cannot be removed')
+
         try:
             root = folder_path(root)
             catalog = decode(technology_catalog_json.encode('utf-8'))
@@ -365,6 +460,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             if trusted_base is not None:
                 trusted_base = folder_path(trusted_base)
             candidate = manifest(root, catalog, approved_root=trusted_base)
+            dependency_candidate = dependencies(root, candidate, approved_root=trusted_base)
             if trusted_base is not None:
                 # A legacy approved base without navigation has no extension package.
                 base = manifest(trusted_base, catalog)
@@ -375,6 +471,15 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                     manifest(trusted_base, catalog, complete=True)
                     if candidate != dict(base, enabled=True):
                         fail('Navigation activation must match the reviewed seed except enabled')
+                dependency_base = dependencies(trusted_base, base)
+                inherited_dependencies(dependency_candidate, dependency_base)
+                if (dependency_candidate is not None and dependency_candidate['enabled']
+                        and (dependency_base is None or not dependency_base['enabled'])):
+                    if dependency_base is None:
+                        fail('Dependency activation requires an already reviewed inactive seed')
+                    dependencies(trusted_base, base, complete=True)
+                    if dependency_candidate != dict(dependency_base, enabled=True):
+                        fail('Dependency activation must match the reviewed seed except enabled')
             if request is None:
                 if expected is not None:
                     fail('Handoff verification requires a request')
@@ -554,6 +659,16 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             selected_check_ids = {check for bindings in technology_bindings.values()
                                   for binding in bindings for check in binding['check_ids']}
             selected_check_ids.update(check for binding in quality['checks'] for check in binding['check_ids'])
+            dependency_artifacts = set()
+            if dependency_candidate is not None and dependency_candidate['enabled']:
+                paths.update({dependencies_path, dependency_policy_path})
+                for component in dependency_candidate['components']:
+                    if component['id'] in selected:
+                        paths.add(component['compatibility_document'])
+                        dependency_artifacts.update(path for field in dependency_file_fields
+                                                    for path in component[field])
+                        selected_check_ids.update(component['check_ids'])
+                paths.update(dependency_artifacts)
             if not isinstance(authority, dict):
                 fail('Context resolution requires compiler-owned core authority')
             core_rules, core_profiles = authority['rules'], authority['profiles']
@@ -575,7 +690,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                 'quality_rules': [{'id': key, 'version': core_rule_map[key]['version']} for key in sorted(selected_core_rules)],
                 'quality_check_bindings': quality['checks'],
                 'checks': sorted((item for item in workflow['checks'] if item['id'] in selected_check_ids), key=lambda item: item['id']),
-                'documents': [document(root, reference) for reference in sorted(paths)],
+                'documents': [(dependency_artifact(root, reference) if reference in dependency_artifacts else
+                               document(root, reference)) for reference in sorted(paths)],
                 'runtime_loading': 'unverified',
             }
             context['context_sha256'] = digest(context)

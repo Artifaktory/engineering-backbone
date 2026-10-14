@@ -22,6 +22,8 @@ _skip_if_exists:
   - .engineering-backbone/workflows.json
   - .engineering-backbone/quality-profile.json
   - .engineering-backbone/navigation.json
+  - .engineering-backbone/dependencies.json
+  - docs/dependency-compatibility.md
   - docs/quality/quality-plan.md
   - docs/quality/test-strategy.md
   - docs/quality/traceability.csv
@@ -159,10 +161,10 @@ _message_after_copy: >-
   Existing native instructions, profiles, Copilot skills and path rules were preserved. Manually integrate the
   fragments into stronger local governance before claiming adoption.
   A selected workflow kit is an inactive seed: review its complete project configuration before a separate activation PR.
-  A selected quality framework is also an inactive seed; review project rules, documents and check bindings before separate activation.
+  A selected quality framework also seeds inactive quality, navigation and dependency contracts; review project rules, real inputs, documents and check bindings before separate activation.
 _message_after_update: >-
   Review the diff of .engineering-backbone/core.md, core.json and instruction fragments.
   Existing native instructions, profiles, skills, path rules and project facts were preserved;
   refresh them manually in the same reviewed update PR when needed.
   Existing workflow-kit configuration, callers and delivery examples were preserved.
-  Existing quality profiles and project-owned quality documents were preserved. Managed catalog and guidance updates require reviewed integration with the matching workflow pin.
+  Existing quality/navigation/dependency contracts and project-owned compatibility/quality documents were preserved. Managed policy, catalog and guidance updates require reviewed integration with the matching workflow pin.

@@ -1,0 +1,27 @@
+# Project dependency compatibility
+
+Status: incomplete inactive seed. Complete and independently review this
+project-owned document and `.engineering-backbone/dependencies.json` before
+activation. Existing local requirements remain binding. Copier preserves this
+file during updates; it does not infer a stack or install a Dockerfile.
+
+Read [the shared dependency policy](../.engineering-backbone/dependency-policy.md)
+and [navigation guide](../.engineering-backbone/navigation-guide.md).
+
+For each actual component, record:
+
+- Component ID and kind (`application`, `library` or `tooling`), matching its
+  navigation/dependency configuration.
+- Authoritative manifest, resolution, runtime and Dockerfile paths. These must be
+  real tracked files; reference their versions rather than copying package lists.
+- Supported runtime, package manager, toolchain, platforms and coupled versions.
+  Libraries also explain supported ranges and their reproducible test environment.
+- Clean installation and manifest/resolution/declared-requirement checks; actual
+  PR `dependency`, `build`, `test` and, for Dockerfiles, `container` check IDs.
+- Behavioral compatibility matrix, meaningful integration coverage, native target
+  and PostgreSQL evidence where applicable; record unexecuted or unsupported cases.
+- Update ownership, review/migration scope, evidence location and recovery approach.
+
+Ensure this document and all declared inputs are covered by the corresponding
+navigation component's literal paths. Complete the inactive contract first, then
+activate it in a separate enabled-only PR with the matching reviewed workflow pin.

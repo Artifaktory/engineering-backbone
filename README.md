@@ -25,6 +25,8 @@ adoption remains a separate project PR.
 | [Quality framework](docs/quality/README.md) | Versioned sources, rules and project profiles spanning requirements, architecture, implementation, tests, review and operation |
 | [Technology profiles](docs/quality/technology-profiles.md) | Common languages, shells, PostgreSQL, platforms and runtimes with mandatory rules, defaults and free choices |
 | [Agent document navigation](docs/agent-navigation.md) | Explicit task/component routes and verified document context for each agent handoff |
+| [Dependency compatibility policy](policy/dependencies.md) | Reviewed resolutions, supported combinations and actual compatibility evidence using the same component routes |
+| [Source dependency contract](docs/dependency-compatibility.md) and [Dockerfile](Dockerfile) | Real tracked tooling inputs, dependency checks and container build/smoke |
 
 Application language, frontend/backend presence and test commands remain project
 facts. A CLI project receives no invented frontend/backend commands. Existing
@@ -109,6 +111,15 @@ and hash checks, explicit-context agent tests and native client discovery provid
 different evidence. A source register or valid receipt does not prove every listed
 language/runtime was tested.
 
+The dependency extension adds an optional inactive project contract with references
+to native manifests, resolutions, runtime configuration and actual Dockerfiles.
+Agents receive those files and compatibility documents in the existing verified
+handoff path after reviewed activation. Applications/tooling use concrete reviewed
+resolutions; libraries retain justified supported ranges and reproducible test
+environments. Existing project constraints leave routine package/version decisions
+to the agent within scope. Copier preserves project-owned facts and documents and
+does not install this repository's tooling Dockerfile into consumer applications.
+
 ## Reuse in a project
 
 ```mermaid
@@ -133,6 +144,7 @@ python scripts/compile_toolchain_fingerprint.py --check
 python scripts/compile_workflow_kit.py --check
 python scripts/compile_navigation.py --check
 python scripts/compile_quality_framework.py --check
+python scripts/check_source_dependencies.py
 python -m unittest discover -s tests -v
 git diff --check
 ```
