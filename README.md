@@ -7,7 +7,8 @@ add a shared capability only when real projects need it.
 **Candidate 0.1.0 — not a published or downstream-approved release.**
 The foundation, Codex/Copilot adapters and native identity repairs are merged.
 The shared workflow kit and CI clone repair are merged. The versioned quality
-framework is an additive delivery; adoption remains a separate project PR.
+framework is merged. The technology/navigation extension is an additive delivery;
+adoption remains a separate project PR.
 
 ## Included in the first delivery
 
@@ -22,6 +23,8 @@ framework is an additive delivery; adoption remains a separate project PR.
 | [Reusable governance workflow](.github/workflows/governance-checks.yml) | Validate a copied consumer bundle without credentials for the private source repository |
 | [Shared workflow kit](docs/workflows/README.md) | Strict common checks, declared language/capability profiles, scheduled maintenance and inactive release/deployment examples |
 | [Quality framework](docs/quality/README.md) | Versioned sources, rules and project profiles spanning requirements, architecture, implementation, tests, review and operation |
+| [Technology profiles](docs/quality/technology-profiles.md) | Common languages, shells, PostgreSQL, platforms and runtimes with mandatory rules, defaults and free choices |
+| [Agent document navigation](docs/agent-navigation.md) | Explicit task/component routes and verified document context for each agent handoff |
 
 Application language, frontend/backend presence and test commands remain project
 facts. A CLI project receives no invented frontend/backend commands. Existing
@@ -89,6 +92,23 @@ actual project tests establish evidence. Public standard summaries support sourc
 selection, not a claim of full ISO/IEC compliance or certification. C++17 and IEC
 profiles remain inactive references pending project-specific adoption.
 
+Technology profiles add scoped rules for actual project components, including
+PowerShell, Bash and PostgreSQL. The project-owned navigation manifest connects
+Task Packet role, task type and affected paths to required documents, versions and
+real check IDs. Agents resolve and verify the complete context, then read and apply
+the documents. Overlapping routes combine; exclusions and stronger policy remain
+binding. Mandatory rules, justified defaults and free implementation choices are
+explicitly separated. See [technology guidance](docs/quality/technology-profiles.md)
+and [document navigation](docs/agent-navigation.md).
+
+Navigation is installed inactive with the optional quality package. Review a
+complete routing seed, then activate it in a separate enabled-only PR after quality
+and workflows are active. Copier preserves native instructions and project routing;
+update those native instructions through reviewed manual integration. Static path
+and hash checks, explicit-context agent tests and native client discovery provide
+different evidence. A source register or valid receipt does not prove every listed
+language/runtime was tested.
+
 ## Reuse in a project
 
 ```mermaid
@@ -111,6 +131,7 @@ python -m pip install --require-hashes -r requirements.lock
 python scripts/validate.py
 python scripts/compile_toolchain_fingerprint.py --check
 python scripts/compile_workflow_kit.py --check
+python scripts/compile_navigation.py --check
 python scripts/compile_quality_framework.py --check
 python -m unittest discover -s tests -v
 git diff --check
@@ -152,7 +173,8 @@ local runtime controllers and publishing signatures are preserved, not replaced.
 - [Contribution and review process](CONTRIBUTING.md)
 - [Source provenance and adaptation](docs/source-provenance.md)
 - [Independent review and validation result](docs/reviews/bootstrap-result.md)
-- [Quality plan](plans/quality-framework.md) and [active Task Packet](plans/quality-framework-task.json)
+- [Technology/navigation plan](plans/technology-navigation.md) and [active Task Packet](plans/technology-navigation-task.json)
+- [Quality plan](plans/quality-framework.md) and [quality Task Packet](plans/quality-framework-task.json)
 - [Bootstrap plan](plans/bootstrap.md) and [original Task Packet](plans/bootstrap-task.json)
 - [Security reporting](SECURITY.md)
 

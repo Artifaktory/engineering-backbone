@@ -1,0 +1,17 @@
+{
+  "id": "csharp",
+  "version": "1",
+  "category": "language",
+  "description": "C# component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-CSHARP-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer established Microsoft naming conventions and project-approved nullable analysis settings.",
+    "Propagate cancellation through operations that support cancellation."
+  ],
+  "free_choices": [
+    "Internal types, records and decomposition when they preserve compatibility."
+  ]
+}

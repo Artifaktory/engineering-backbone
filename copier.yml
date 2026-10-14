@@ -21,6 +21,7 @@ _skip_if_exists:
   - .engineering-backbone/project.json
   - .engineering-backbone/workflows.json
   - .engineering-backbone/quality-profile.json
+  - .engineering-backbone/navigation.json
   - docs/quality/quality-plan.md
   - docs/quality/test-strategy.md
   - docs/quality/traceability.csv

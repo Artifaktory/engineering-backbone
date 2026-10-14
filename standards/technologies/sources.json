@@ -1,0 +1,462 @@
+{
+  "schema_version": "1",
+  "version": "1.0.0",
+  "sources": [
+    {
+      "id": "TECH-SRC-PYTHON",
+      "title": "Python PEP 8",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://peps.python.org/pep-0008/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Project consistency and compatibility; imports, public interfaces and documentation guidance."
+      ]
+    },
+    {
+      "id": "TECH-SRC-DOCSTRINGS",
+      "title": "Python PEP 257",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://peps.python.org/pep-0257/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Public docstring conventions; selected guidance, not a prescribed test or typing framework."
+      ]
+    },
+    {
+      "id": "TECH-SRC-ECMASCRIPT",
+      "title": "TC39 ECMAScript control abstraction objects",
+      "edition": "Living draft titled ECMAScript 2027, observed 2026-10-14",
+      "url": "https://tc39.es/ecma262/multipage/control-abstraction-objects.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Promise fulfilled, rejected and pending states; the living draft is not a project language-version selection."
+      ]
+    },
+    {
+      "id": "TECH-SRC-TYPESCRIPT",
+      "title": "TypeScript strict compiler option",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://www.typescriptlang.org/tsconfig/strict.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Strict option enables a family of type checks; future compiler versions can add checks."
+      ]
+    },
+    {
+      "id": "TECH-SRC-JAVA",
+      "title": "Google Java Style Guide",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://google.github.io/styleguide/javaguide.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Formatting, naming and programming-practice guide scope; project selects compatible conventions."
+      ]
+    },
+    {
+      "id": "TECH-SRC-CSHARP",
+      "title": "Microsoft C# coding conventions",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Coding conventions and consistency guidance; compiler and language versions remain project decisions."
+      ]
+    },
+    {
+      "id": "TECH-SRC-GO",
+      "title": "Effective Go",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://go.dev/doc/effective_go",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Formatting, names, errors and concurrency guidance; the page warns it is not a comprehensive modern Go guide."
+      ]
+    },
+    {
+      "id": "TECH-SRC-C",
+      "title": "SEI CERT C Coding Standard publisher description",
+      "edition": "2016 edition; publisher scope observed 2026-10-14",
+      "url": "https://www.sei.cmu.edu/library/sei-cert-c-coding-standard-rules-for-developing-safe-reliable-and-secure-systems-2016-edition/",
+      "status": "observed",
+      "access": "public-scope-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Publisher confirms secure C coding scope and the 2016 edition. Full rule text was not retrieved; its download redirected to a registration form."
+      ]
+    },
+    {
+      "id": "TECH-SRC-CPP",
+      "title": "C++ Core Guidelines",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Resource, ownership and interface guidance scope; selected project obligations do not adopt the entire guide."
+      ]
+    },
+    {
+      "id": "TECH-SRC-GOOGLE-CPP",
+      "title": "Google C++ Style Guide",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://google.github.io/styleguide/cppguide.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "C++ version section targets C++20; self-contained headers and direct includes; no universal exception policy is imported."
+      ]
+    },
+    {
+      "id": "TECH-SRC-GOOGLETEST",
+      "title": "GoogleTest Primer",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://google.github.io/googletest/primer.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "tool-example-only",
+      "verified_sections": [
+        "Assertions, tests and fixtures as an optional test-framework example."
+      ]
+    },
+    {
+      "id": "TECH-SRC-PHP",
+      "title": "PHP-FIG PER Coding Style",
+      "edition": "PER Coding Style 3.1, observed 2026-10-14",
+      "url": "https://www.php-fig.org/per/coding-style/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "PER Coding Style 3.1 page and formatting guidance; selected PHP compatibility must be checked before adoption."
+      ]
+    },
+    {
+      "id": "TECH-SRC-HTML",
+      "title": "WHATWG HTML semantics and structure",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://html.spec.whatwg.org/multipage/dom.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Element semantics, content models and accessibility-related definitions."
+      ]
+    },
+    {
+      "id": "TECH-SRC-WCAG",
+      "title": "W3C Web Content Accessibility Guidelines 2.2",
+      "edition": "WCAG 2.2, observed 2026-10-14",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Accessibility success criteria and conformance structure; automated tests alone do not establish conformance."
+      ]
+    },
+    {
+      "id": "TECH-SRC-CSS",
+      "title": "W3C CSS Snapshot 2026",
+      "edition": "W3C Group Note, 2026-06-22",
+      "url": "https://www.w3.org/TR/2026/NOTE-css-2026-20260622/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Specification-module snapshot; explicitly not a browser-adoption compatibility profile."
+      ]
+    },
+    {
+      "id": "TECH-SRC-SQL",
+      "title": "PostgreSQL SQL syntax",
+      "edition": "PostgreSQL 18 documentation",
+      "url": "https://www.postgresql.org/docs/18/sql-syntax.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "SQL language syntax overview for PostgreSQL; not a portable SQL dialect promise."
+      ]
+    },
+    {
+      "id": "TECH-SRC-PG-CONSTRAINTS",
+      "title": "PostgreSQL constraints",
+      "edition": "PostgreSQL 18 documentation",
+      "url": "https://www.postgresql.org/docs/18/ddl-constraints.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Constraint behavior including check, not-null, unique, primary-key and foreign-key constraints."
+      ]
+    },
+    {
+      "id": "TECH-SRC-PG-QUERIES",
+      "title": "PostgreSQL command execution functions",
+      "edition": "PostgreSQL 18 documentation",
+      "url": "https://www.postgresql.org/docs/18/libpq-exec.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Parameterized command execution through libpq; each application driver needs its own reviewed equivalent."
+      ]
+    },
+    {
+      "id": "TECH-SRC-PG-TRANSACTIONS",
+      "title": "PostgreSQL transaction isolation",
+      "edition": "PostgreSQL 18 documentation",
+      "url": "https://www.postgresql.org/docs/18/transaction-iso.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Transaction isolation and concurrency behavior; no blanket retry or locking policy is prescribed."
+      ]
+    },
+    {
+      "id": "TECH-SRC-PG-RESTORE",
+      "title": "PostgreSQL backup and restore",
+      "edition": "PostgreSQL 18 documentation",
+      "url": "https://www.postgresql.org/docs/18/backup.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Backup methods and restore guidance overview; project recovery goals and rehearsals are organization requirements."
+      ]
+    },
+    {
+      "id": "TECH-SRC-POWERSHELL",
+      "title": "PowerShell try, catch and finally",
+      "edition": "PowerShell 7.5 documentation",
+      "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_try_catch_finally?view=powershell-7.5",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Terminating error handling and resource cleanup; native process errors require separate treatment."
+      ]
+    },
+    {
+      "id": "TECH-SRC-PSSCRIPTANALYZER",
+      "title": "PSScriptAnalyzer overview",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/overview?view=ps-modules",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "tool-example-only",
+      "verified_sections": [
+        "Static script quality checks and configurable rules."
+      ]
+    },
+    {
+      "id": "TECH-SRC-PESTER",
+      "title": "Pester quick start",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://pester.dev/docs/quick-start",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "tool-example-only",
+      "verified_sections": [
+        "Executable behavior tests and assertions as a PowerShell testing option."
+      ]
+    },
+    {
+      "id": "TECH-SRC-SHELLCHECK",
+      "title": "ShellCheck SC2086",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://www.shellcheck.net/wiki/SC2086",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Quoting to control word splitting and glob expansion; intentional splitting needs an explicit reviewed design."
+      ]
+    },
+    {
+      "id": "TECH-SRC-BASH",
+      "title": "GNU Bash Reference Manual",
+      "edition": "Indexed official manual observed 2026-10-14",
+      "url": "https://www.gnu.org/software/bash/manual/bash.html",
+      "status": "retrieval-limited",
+      "access": "indexed-summary-only",
+      "adoption": "reference-only",
+      "verified_sections": [
+        "Official indexed summary identifies quoting and exit status; direct page retrieval timed out, so no section-level adoption is claimed."
+      ]
+    },
+    {
+      "id": "TECH-SRC-JSON",
+      "title": "RFC 8259 JSON",
+      "edition": "RFC 8259, December 2017",
+      "url": "https://www.rfc-editor.org/rfc/rfc8259",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "JSON syntax, duplicate member interoperability concerns and encoding."
+      ]
+    },
+    {
+      "id": "TECH-SRC-YAML",
+      "title": "YAML specification 1.2.2",
+      "edition": "YAML 1.2.2",
+      "url": "https://yaml.org/spec/1.2.2/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Mapping key uniqueness, representation model and schema-dependent scalar resolution."
+      ]
+    },
+    {
+      "id": "TECH-SRC-ACTIONS",
+      "title": "GitHub Actions workflow syntax",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Workflow events, permissions, job conditions and shell execution syntax."
+      ]
+    },
+    {
+      "id": "TECH-SRC-DOCKER",
+      "title": "Docker build best practices",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://docs.docker.com/build/building/best-practices/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Base image selection, digest pinning and limiting unnecessary image content."
+      ]
+    },
+    {
+      "id": "TECH-SRC-DOCKER-SECRETS",
+      "title": "Docker build secrets",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://docs.docker.com/build/building/secrets/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Build secret mounts and the risks of persisting secrets through build arguments or environment variables."
+      ]
+    },
+    {
+      "id": "TECH-SRC-WINDOWS",
+      "title": "Microsoft Windows file and path naming",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Reserved device names, path separators, case behavior and relative path interpretation."
+      ]
+    },
+    {
+      "id": "TECH-SRC-LINUX",
+      "title": "Linux kernel user-space API guide",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://docs.kernel.org/userspace-api/index.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "User-space API documentation scope; distro, shell and native-test support remain project obligations."
+      ]
+    },
+    {
+      "id": "TECH-SRC-NODE",
+      "title": "Node.js errors",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://nodejs.org/api/errors.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Error propagation and errors from asynchronous APIs; displayed runtime version is not adopted for consumers."
+      ]
+    },
+    {
+      "id": "TECH-SRC-DOTNET",
+      "title": "Microsoft testing in .NET",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/testing/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Testing framework and test runner overview; target frameworks and runtime support are project choices."
+      ]
+    },
+    {
+      "id": "TECH-SRC-JVM",
+      "title": "Java Virtual Machine Specification",
+      "edition": "Java SE 21 edition",
+      "url": "https://docs.oracle.com/javase/specs/jvms/se21/html/index.html",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Class-file format, loading, linking and execution model contents; selected JDK/runtime compatibility requires executable tests."
+      ]
+    },
+    {
+      "id": "TECH-SRC-REACT",
+      "title": "Rules of React",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://react.dev/reference/rules",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Component and Hook purity, call order and use through React."
+      ]
+    },
+    {
+      "id": "TECH-SRC-NEXTJS",
+      "title": "Next.js server and client components",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "Server/client boundaries, serializable props and avoiding environment poisoning."
+      ]
+    },
+    {
+      "id": "TECH-SRC-FASTAPI",
+      "title": "FastAPI testing tutorial",
+      "edition": "Living documentation observed 2026-10-14",
+      "url": "https://fastapi.tiangolo.com/tutorial/testing/",
+      "status": "observed",
+      "access": "public-selected-sections",
+      "adoption": "organization-owned-selection",
+      "verified_sections": [
+        "TestClient-based requests and assertions; authorization, persistence and lifecycle coverage are project risk-based additions."
+      ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@ from copier import run_copy
 import yaml
 
 from scripts.compile_toolchain_fingerprint import FILES, replace_codex_guard
-from tests.test_workflows import historical_source
+from tests.test_workflows import historical_source, run_shell_payload
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,8 +52,7 @@ class CodexWorkflowGuardTests(unittest.TestCase):
         env.update(self.step['env'])
         env.update({'GITHUB_WORKSPACE': str(self.workspace),
                     'PATH': str(Path(sys.executable).parent) + os.pathsep + env['PATH']})
-        return subprocess.run(['bash', '-c', self.step['run']], cwd=self.workspace,
-                              env=env, text=True, capture_output=True)
+        return run_shell_payload(self.workspace, self.step['run'], env=env)
 
     def run_old_validator(self):
         return subprocess.run([sys.executable, '-I',

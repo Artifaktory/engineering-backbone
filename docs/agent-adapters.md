@@ -178,6 +178,29 @@ calls in the intended client. Capture actual versions and observations. GitHub
 automatic PR review is tested separately in an authorized PR. CI parsing and
 instruction simulations do not establish runtime loading or review quality.
 
+## Document routing and delegated context
+
+Follow [agent document navigation](agent-navigation.md) when the optional routing
+manifest is active. Root entrypoints, native roles and procedural skills all direct
+the agent to the same guide and authority. An existing Task Packet supplies role
+and scope; task type and affected component paths select additional documents,
+technology obligations and checks. The receiver verifies the complete receipt with
+the approved guard and then reads the resolved documents. Re-resolve for a changed
+role, narrowed delegation or new snapshot; a handoff button does not transfer or
+authenticate this context automatically.
+
+The resolver includes root/ancestor `AGENTS.md` for file paths and descendant
+instruction scopes for directory/component requests. Map relevant provider role,
+skill and path-instruction files into
+the project manifest. Native `applyTo`, custom-subagent inheritance, discovery and
+permission behavior still require the intended client. Preserve the distinction
+between static path/hash checks, an explicit-context agent smoke and actual native
+provider discovery. Record unavailable tests honestly instead of inferring loading.
+
+Copier preserves native files and project-owned routing. Integrate refreshed shared
+fragments manually in a reviewed consumer PR, keeping stronger local policy.
+Neither the catalog nor an inactive manifest activates a provider or a PR review bot.
+
 ## Official references
 
 Verified on 2026-10-12; formats may evolve:

@@ -1,0 +1,17 @@
+{
+  "id": "java",
+  "version": "1",
+  "category": "language",
+  "description": "Java component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-JAVA-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer the standard resource-management constructs and existing project patterns.",
+    "Google Java conventions are a candidate subset; do not import an incompatible language feature."
+  ],
+  "free_choices": [
+    "Class decomposition and algorithms; interfaces are needed only when justified by the design."
+  ]
+}

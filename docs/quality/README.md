@@ -3,7 +3,9 @@
 The quality framework makes project quality obligations explicit across planning,
 architecture, code, tests, documentation and review. It extends the existing core
 policy, Task Packets and workflow kit. Catalog version `1.0.0` contains 16
-organization-owned rules; each rule is version `1`.
+organization-owned rules; each rule is version `1`. The additive technology
+extension supplies bounded language, platform, runtime and framework profiles under
+the same policy authority; its version is tracked separately.
 
 ## Documents and ownership
 
@@ -13,6 +15,8 @@ organization-owned rules; each rule is version `1`.
 | `standards/sources.json` | Official source editions, URLs, access and adoption limits | Source maintainers review provenance before catalog updates |
 | `standards/rules.json` | Stable rule IDs, responsibilities, phases, evidence and check groups | Planner selects; implementer applies; reviewer checks |
 | `standards/profiles/*.json` | Baseline and bounded refinements | Project owner selects during adoption; reviewer evaluates suitability |
+| `standards/technologies/` | Versioned technology sources, mandatory rules, defaults and free choices | Source maintainers review; components select only applicable profiles |
+| `.engineering-backbone/navigation.json` | Project document routes, component technology selections and additional check bindings | Project owner reviews; agents resolve and verify scoped context |
 | `.engineering-backbone/quality-profile.json` | Project-owned reviewed commit, selection, document paths and bindings | Project owner maintains through reviewed PRs |
 | `docs/quality/quality-plan.md` | Project goals, risks, responsibilities and release criteria | Planner establishes before work; reviewers assess changes |
 | `docs/quality/test-strategy.md` | Test selection, coverage, data, environments and limitations | Planner and test implementer maintain; quality checker records execution |
@@ -68,6 +72,33 @@ candidates do not redefine authority.
 Version 1 supports the compiler-owned current catalog only, rather than accepting
 an arbitrary coherent base catalog. A future historical catalog allowlist requires
 explicit trusted-source review.
+
+## Technology profiles and navigation
+
+Use `docs/quality/technology-profiles.md` and `docs/agent-navigation.md` in the source,
+or `.engineering-backbone/technology-guide.md` and
+`.engineering-backbone/navigation-guide.md` when installed. Navigation selects
+technology profiles by explicit component paths. All matching components combine;
+Task Packet exclusions still win. It adds required documents, exact profile/rule
+identities and check bindings to the inherited quality context.
+
+The extension covers common languages, PowerShell, Bash, PostgreSQL, data/config
+formats, Windows/Linux, containers, runtimes and selected frontend/backend
+frameworks. Presence in the catalog does not activate a profile or execute a tool.
+Keep C and C++ separate, Node as a runtime and language/framework profiles distinct.
+Select required base quality profiles as declared by each technology profile.
+The general `cpp` extension does not enable the disabled `cpp17` reference above.
+
+Mandatory `TECH-*` rules add obligations. Profile recommendations permit a recorded
+technical rationale; `free_choices` leave ordinary implementation choices within
+scope. The approved guard checks selected check-kind bindings, while project tests
+and independent review assess actual behavior. A resolved receipt carries exact
+document hashes and versions; its receiver verifies the complete context and reads
+the documents. This proves neither native client discovery nor semantic compliance.
+
+Navigation has its own reviewed inactive-seed and separate enabled-only activation
+sequence, after quality and workflows are active. Existing native instructions and
+project routing remain protected on update and require reviewed manual integration.
 
 ## Role obligations and phases
 

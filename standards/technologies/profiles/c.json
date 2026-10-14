@@ -1,0 +1,17 @@
+{
+  "id": "c",
+  "version": "1",
+  "category": "language",
+  "description": "C component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-C-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer bounded interfaces and one explicit resource-ownership convention.",
+    "Review full authorized CERT clauses before claiming clause conformance; only its publisher scope is recorded here."
+  ],
+  "free_choices": [
+    "Data layout and algorithms within memory, ABI and platform constraints."
+  ]
+}

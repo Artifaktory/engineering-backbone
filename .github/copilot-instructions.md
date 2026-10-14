@@ -53,5 +53,19 @@ structural validation is not semantic review, certification or human acceptance.
 Use an isolated Python 3.12 environment with hash-locked requirements. Run
 `python scripts/validate.py`,
 `python scripts/compile_toolchain_fingerprint.py --check`,
+`python scripts/compile_navigation.py --check`,
+`python scripts/compile_quality_framework.py --check`,
 `python -m unittest discover -s tests -v` and `git diff --check`.
 Read [CONTRIBUTING.md](../CONTRIBUTING.md) and the active Task Packet first.
+
+## Active document navigation
+
+When `.engineering-backbone/navigation.json` is enabled, follow the navigation
+guide (`docs/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+when installed). After a Task Packet exists, resolve its scoped request with the
+approved guard, verify received context against the current snapshot, then actually
+read every resolved document before scoped work. Transfer the request, complete
+context and task acceptance/check/stop/return contract at each handoff; resolve a
+new request for a delegated role or narrower scope. Invalid or missing mandatory
+context blocks the affected task. An inactive seed, receipt or agent reply does not
+prove native instruction loading or authorize additional work.

@@ -1,0 +1,17 @@
+{
+  "id": "linux",
+  "version": "1",
+  "category": "platform",
+  "description": "Linux component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-LINUX-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer portable APIs and least-privilege execution.",
+    "Keep distro-specific assumptions documented."
+  ],
+  "free_choices": [
+    "Internal adapters satisfying the actual distribution and kernel boundary."
+  ]
+}

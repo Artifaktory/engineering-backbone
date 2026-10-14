@@ -11,7 +11,7 @@ from copier import run_copy
 import yaml
 
 from scripts.compile_toolchain_fingerprint import FILES, replace_copilot_guard
-from tests.test_workflows import historical_source
+from tests.test_workflows import historical_source, run_shell_payload
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,8 +66,7 @@ class CopilotWorkflowGuardTests(unittest.TestCase):
         env.update(self.step['env'])
         env.update({'GITHUB_WORKSPACE': str(self.workspace),
                     'PATH': str(Path(sys.executable).parent) + os.pathsep + env['PATH']})
-        return subprocess.run(['bash', '-c', self.step['run']], cwd=self.workspace,
-                              env=env, text=True, capture_output=True)
+        return run_shell_payload(self.workspace, self.step['run'], env=env)
 
     def test_legacy_no_extended_assets_stays_compatible(self):
         result = self.run_guard()

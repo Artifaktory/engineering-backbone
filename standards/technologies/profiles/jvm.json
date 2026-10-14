@@ -1,0 +1,17 @@
+{
+  "id": "jvm",
+  "version": "1",
+  "category": "runtime",
+  "description": "JVM component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-JVM-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Keep compiler target and deployment runtime compatibility explicit.",
+    "Prefer the existing approved build tool."
+  ],
+  "free_choices": [
+    "Module and package internals within the runtime and binary contract."
+  ]
+}

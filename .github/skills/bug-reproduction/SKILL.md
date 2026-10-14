@@ -41,3 +41,15 @@ Use the managed quality guide when installed; retain stricter project rules. Car
 that exact context, required evidence and pending gaps in the Task Packet and every
 handoff without adding unsupported packet fields. An inactive seed is not adopted;
 structural validation is not semantic review, certification or human acceptance.
+
+## Active document navigation
+
+When `.engineering-backbone/navigation.json` is enabled, follow the navigation
+guide (`docs/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+when installed). After a Task Packet exists, resolve its scoped request with the
+approved guard, verify received context against the current snapshot, then actually
+read every resolved document before scoped work. Transfer the request, complete
+context and task acceptance/check/stop/return contract at each handoff; resolve a
+new request for a delegated role or narrower scope. Invalid or missing mandatory
+context blocks the affected task. An inactive seed, receipt or agent reply does not
+prove native instruction loading or authorize additional work.

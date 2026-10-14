@@ -1,0 +1,17 @@
+{
+  "id": "css",
+  "version": "1",
+  "category": "language",
+  "description": "CSS component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-CSS-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer established design tokens and component styles.",
+    "Treat the CSS snapshot as a standards inventory, not proof of browser support."
+  ],
+  "free_choices": [
+    "Layout techniques, selectors and local styling choices that meet the contract."
+  ]
+}

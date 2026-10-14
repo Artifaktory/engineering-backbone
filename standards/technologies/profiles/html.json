@@ -1,0 +1,17 @@
+{
+  "id": "html",
+  "version": "1",
+  "category": "language",
+  "description": "HTML component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-HTML-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Use WCAG 2.2 AA as the default project accessibility target unless a reviewed project obligation requires another target.",
+    "Prefer native controls before custom interactive elements."
+  ],
+  "free_choices": [
+    "Document composition and visual structure within semantics and accessibility constraints."
+  ]
+}

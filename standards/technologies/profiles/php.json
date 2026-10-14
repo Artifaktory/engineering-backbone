@@ -1,0 +1,17 @@
+{
+  "id": "php",
+  "version": "1",
+  "category": "language",
+  "description": "PHP component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-PHP-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer current project conventions and typed public boundaries where supported.",
+    "Use a reviewed subset of PER Coding Style compatible with the selected PHP version."
+  ],
+  "free_choices": [
+    "Internal class/function organization and approved framework patterns."
+  ]
+}

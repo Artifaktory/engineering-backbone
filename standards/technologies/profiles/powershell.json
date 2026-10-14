@@ -1,0 +1,17 @@
+{
+  "id": "powershell",
+  "version": "1",
+  "category": "shell",
+  "description": "PowerShell component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-POWERSHELL-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer PSScriptAnalyzer and Pester or reviewed equivalent checks.",
+    "Keep platform adapters small and use Python for shared cross-platform automation logic when practical."
+  ],
+  "free_choices": [
+    "Functions and parameter structure within the approved command and platform contract."
+  ]
+}

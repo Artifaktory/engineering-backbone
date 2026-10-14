@@ -1,0 +1,17 @@
+{
+  "id": "go",
+  "version": "1",
+  "category": "language",
+  "description": "Go component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-GO-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer idiomatic small interfaces and explicit context propagation where cancellation is part of the contract.",
+    "Use go vet and race testing where supported; Effective Go alone is not the complete modern language specification."
+  ],
+  "free_choices": [
+    "Package internals and concurrency mechanisms that satisfy the lifetime and correctness requirements."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "dotnet",
+  "version": "1",
+  "category": "runtime",
+  "description": ".NET component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-DOTNET-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Use existing test-runner conventions and centrally reviewed dependency management where available."
+  ],
+  "free_choices": [
+    "Internal assembly organization and test framework within the approved runtime contract."
+  ]
+}

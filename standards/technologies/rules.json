@@ -1,0 +1,522 @@
+{
+  "schema_version": "1",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "TECH-PYTHON-001",
+      "version": "1",
+      "statement": "MUST: Record supported Python versions and one compatible style/type configuration. Keep changed public interfaces documented; type-check new application boundaries, validate external input and preserve useful exception context. Bind lint, typecheck and behavior tests, including relevant failure paths. Document generated/vendor exclusions and legacy typing debt without silently widening them.",
+      "source_ids": [
+        "TECH-SRC-PYTHON",
+        "TECH-SRC-DOCSTRINGS"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "typecheck"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-JAVASCRIPT-001",
+      "version": "1",
+      "statement": "MUST: Record the ECMAScript target, supported hosts and module system. Validate external values, handle asynchronous rejection and avoid runtime code evaluation of untrusted input. Bind a consistent lint configuration and tests for observable success and failure behavior on the supported hosts.",
+      "source_ids": [
+        "TECH-SRC-ECMASCRIPT"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-TYPESCRIPT-001",
+      "version": "1",
+      "statement": "MUST: Record compiler, runtime and ECMAScript targets. Enable strict type checking for new components; inventory inherited exceptions and justify any new suppression or unsafe any at a boundary. Validate external data at runtime and handle asynchronous failures. Bind lint, typecheck and tests without disabling checks to pass.",
+      "source_ids": [
+        "TECH-SRC-TYPESCRIPT",
+        "TECH-SRC-ECMASCRIPT"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "typecheck"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-JAVA-001",
+      "version": "1",
+      "statement": "MUST: Record the supported JDK/language target and selected compatible style subset. Use a consistent formatter, preserve public contracts, close owned resources and handle exceptions without losing their cause. Bind compilation, lint/static analysis and tests on the promised runtime versions.",
+      "source_ids": [
+        "TECH-SRC-JAVA"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-CSHARP-001",
+      "version": "1",
+      "statement": "MUST: Record C# language and target-framework versions. Configure consistent formatting and analyzers; make null handling, disposable-resource ownership and asynchronous cancellation explicit at affected boundaries. Bind compilation, lint/analyzer and behavior tests; justify suppressions in review.",
+      "source_ids": [
+        "TECH-SRC-CSHARP"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-GO-001",
+      "version": "1",
+      "statement": "MUST: Record supported Go versions. Apply gofmt, handle returned errors and bound the lifetime of started goroutines and owned resources. Bind build, lint/static analysis and tests; assess race testing for changed shared-state code and record its result or concrete unsupported-platform limit.",
+      "source_ids": [
+        "TECH-SRC-GO"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-C-001",
+      "version": "1",
+      "statement": "MUST: Record the C language edition, compiler targets and selected warning/analyzer configuration. Review buffer bounds, integer conversions, resource ownership and error returns in changed code. Bind build, lint/static analysis and boundary/failure tests; document sanitizer applicability and results for memory-risk changes.",
+      "source_ids": [
+        "TECH-SRC-C"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-CPP-001",
+      "version": "1",
+      "statement": "MUST: Record the C++ edition, compiler targets and a compatible chosen guide subset. Make ownership explicit, use automatic resource lifetime management, keep public headers self-contained and adopt one reviewed exception/error policy. Resolve Google/Core Guidelines conflicts before work. Bind build, lint/static analysis and behavior tests, with appropriate lifetime and boundary checks.",
+      "source_ids": [
+        "TECH-SRC-CPP",
+        "TECH-SRC-GOOGLE-CPP",
+        "TECH-SRC-GOOGLETEST"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-PHP-001",
+      "version": "1",
+      "statement": "MUST: Record supported PHP versions and a compatible PER/PSR style selection. Validate request and persistence boundaries, handle errors explicitly and document public interfaces. Bind syntax/style/static analysis and tests; preserve framework conventions where reviewed and compatible.",
+      "source_ids": [
+        "TECH-SRC-PHP"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-HTML-001",
+      "version": "1",
+      "statement": "MUST: Record supported browsers and the accessibility target. Use appropriate semantic elements, accessible names, labels and keyboard-operable controls. Bind markup lint/validation and rendered behavior tests; manually verify relevant accessibility criteria that automation cannot establish.",
+      "source_ids": [
+        "TECH-SRC-HTML",
+        "TECH-SRC-WCAG"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "browser",
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-CSS-001",
+      "version": "1",
+      "statement": "MUST: Record supported browsers and responsive/accessibility requirements. Select compatible CSS features and a consistent lint configuration. Preserve focus visibility and content usability under required resizing/zoom. Bind lint and rendered layout/interaction tests for affected critical views.",
+      "source_ids": [
+        "TECH-SRC-CSS",
+        "TECH-SRC-WCAG"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "browser",
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-SQL-001",
+      "version": "1",
+      "statement": "MUST: Record the database dialect and server/driver versions. Parameterize values; validate or safely select dynamic identifiers through the driver contract. State transaction boundaries and handle null semantics explicitly. Bind dialect-aware lint/validation and query behavior tests against the actual database dialect; a substitute dialect does not prove compatibility.",
+      "source_ids": [
+        "TECH-SRC-SQL",
+        "TECH-SRC-PG-QUERIES"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-POSTGRESQL-001",
+      "version": "1",
+      "statement": "MUST: Record supported PostgreSQL versions, extensions and driver settings. Use parameterized queries, appropriate constraints and least-privilege roles. Specify transaction/isolation and retry behavior. Bind real PostgreSQL integration tests and migration checks that preserve existing data; review lock/concurrency failure paths and rehearse restore or forward recovery according to the documented data-risk plan.",
+      "source_ids": [
+        "TECH-SRC-PG-CONSTRAINTS",
+        "TECH-SRC-PG-QUERIES",
+        "TECH-SRC-PG-TRANSACTIONS",
+        "TECH-SRC-PG-RESTORE"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "test"
+        ],
+        [
+          "migration"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-POWERSHELL-001",
+      "version": "1",
+      "statement": "MUST: Record PowerShell edition/version and supported operating systems. Validate parameters, use literal-safe paths where appropriate, distinguish terminating/nonterminating errors from native process exit codes and clean up owned resources. Bind script analysis and behavior tests with failed commands, missing files and paths containing spaces; never log secrets.",
+      "source_ids": [
+        "TECH-SRC-POWERSHELL",
+        "TECH-SRC-PSSCRIPTANALYZER",
+        "TECH-SRC-PESTER"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-BASH-001",
+      "version": "1",
+      "statement": "MUST: Record the Bash interpreter version and target platforms; do not label Bash-specific code as portable sh. Quote expansions according to intended splitting/globbing, use argument arrays where appropriate, check command/pipeline failures and clean up temporary resources. Bind shell analysis and real script tests for whitespace paths, failed subprocesses and cleanup. Do not treat set -e alone as error-handling proof.",
+      "source_ids": [
+        "TECH-SRC-SHELLCHECK",
+        "TECH-SRC-BASH"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-JSON-001",
+      "version": "1",
+      "statement": "MUST: Record the consuming schema/parser contract. Validate syntax and required fields; reject duplicate keys in policy or security-sensitive inputs and avoid nonportable numeric assumptions. Bind schema/parser validation under a lint check; test changed loader behavior when executable parsing logic changes.",
+      "source_ids": [
+        "TECH-SRC-JSON"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-YAML-001",
+      "version": "1",
+      "statement": "MUST: Record parser/version and the consuming schema, including scalar-resolution behavior. Reject duplicate mapping keys, avoid executable object construction from untrusted input and validate required fields. Bind parser/schema lint and test changed loaders with ambiguous scalars or tags when relevant.",
+      "source_ids": [
+        "TECH-SRC-YAML"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-DOCKERFILE-001",
+      "version": "1",
+      "statement": "MUST: Record builder, target platform and trusted base-image digests with a reviewed update process. Keep build secrets out of arguments, layers and final images; minimize final contents and select least-privilege runtime users. Bind Dockerfile lint and checks that build and inspect the intended image; document justified runtime privilege requirements.",
+      "source_ids": [
+        "TECH-SRC-DOCKER",
+        "TECH-SRC-DOCKER-SECRETS"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "container"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-GITHUB-ACTIONS-001",
+      "version": "1",
+      "statement": "MUST: Record workflow triggers, approved runners and explicit token permissions. Pin external actions to reviewed immutable identities, keep untrusted event data out of shell interpolation and prevent privileged execution of untrusted changes. Bind workflow lint and negative tests for required-check/gate behavior; cancelled, missing or unjustifiably skipped required checks must not become success.",
+      "source_ids": [
+        "TECH-SRC-ACTIONS"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-WINDOWS-001",
+      "version": "1",
+      "statement": "MUST: Record supported Windows versions and architectures. Respect reserved names, case behavior, path/encoding and native process semantics. Bind tests on the promised native Windows environment covering affected path and failure behavior. A Linux container or WSL run alone is not native Windows acceptance evidence.",
+      "source_ids": [
+        "TECH-SRC-WINDOWS"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-LINUX-001",
+      "version": "1",
+      "statement": "MUST: Record supported Linux distributions or base images, architectures and required user-space dependencies. Handle case-sensitive paths, permissions, signals and process cleanup. Bind tests on the promised Linux environment; distinguish container user-space checks from host/kernel behavior requiring native validation.",
+      "source_ids": [
+        "TECH-SRC-LINUX"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-NODE-001",
+      "version": "1",
+      "statement": "MUST: Record Node.js, package-manager and module-system versions. Use reproducible dependency installation from the reviewed lockfile, handle asynchronous errors and validate process shutdown behavior. Bind runtime tests and dependency checks; test native addons on supported platform/runtime combinations when present.",
+      "source_ids": [
+        "TECH-SRC-NODE",
+        "TECH-SRC-ECMASCRIPT"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "test"
+        ],
+        [
+          "dependency"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-DOTNET-001",
+      "version": "1",
+      "statement": "MUST: Record SDK and target-framework/runtime versions and supported operating systems. Restore reviewed dependency versions and preserve target-framework compatibility. Bind build, tests and dependency checks for the claimed targets; test platform-specific or native interop behavior on the affected targets.",
+      "source_ids": [
+        "TECH-SRC-DOTNET",
+        "TECH-SRC-CSHARP"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "test"
+        ],
+        [
+          "dependency"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-JVM-001",
+      "version": "1",
+      "statement": "MUST: Record JDK/compiler and deployment JVM versions plus bytecode target. Use reviewed reproducible dependency resolution, preserve class-loading and public binary compatibility where promised and handle shutdown/resources. Bind build, tests and dependency checks on supported runtimes, including changed native interop.",
+      "source_ids": [
+        "TECH-SRC-JVM",
+        "TECH-SRC-JAVA"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "test"
+        ],
+        [
+          "dependency"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-DOCKER-001",
+      "version": "1",
+      "statement": "MUST: Record container engine/target-platform and host assumptions. Run the built image with declared least privileges, external secret delivery and explicit persistent-data ownership. Bind image/container checks and start, readiness, shutdown and failure tests on the actual artifact; document host-dependent and recovery evidence separately.",
+      "source_ids": [
+        "TECH-SRC-DOCKER",
+        "TECH-SRC-DOCKER-SECRETS"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "container"
+        ],
+        [
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-REACT-001",
+      "version": "1",
+      "statement": "MUST: Record React and rendering-environment versions. Preserve component/Hook purity and Hook call rules; clean up effects and asynchronous work. Bind framework-aware lint and user-visible behavior tests covering affected loading, error and interaction states; preserve accessible semantics.",
+      "source_ids": [
+        "TECH-SRC-REACT",
+        "TECH-SRC-HTML"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "lint"
+        ],
+        [
+          "browser",
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-NEXTJS-001",
+      "version": "1",
+      "statement": "MUST: Record Next.js version and selected router/runtime. Keep server-only secrets and dependencies across the correct server/client boundary, validate serialized boundary data and specify caching/authentication behavior. Bind a production build and route/interaction tests covering affected server, client and authorization cases.",
+      "source_ids": [
+        "TECH-SRC-NEXTJS",
+        "TECH-SRC-REACT"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "build"
+        ],
+        [
+          "browser",
+          "test"
+        ]
+      ]
+    },
+    {
+      "id": "TECH-FASTAPI-001",
+      "version": "1",
+      "statement": "MUST: Record FastAPI, Pydantic and ASGI/runtime versions. Validate request/response contracts, enforce authorization, handle dependency/lifespan cleanup and avoid blocking asynchronous handlers with unbounded synchronous work. Bind API and behavior tests for success, rejection and relevant persistence/lifespan failures using realistic dependencies where integration matters.",
+      "source_ids": [
+        "TECH-SRC-FASTAPI",
+        "TECH-SRC-PYTHON"
+      ],
+      "source_alignment": "Organization-owned minimum informed by the recorded source scope. Source language versions, examples and optional tools are not automatically adopted; no blanket guide, ISO/IEC or certification conformance is claimed.",
+      "check_kind_groups": [
+        [
+          "api"
+        ],
+        [
+          "test"
+        ]
+      ]
+    }
+  ]
+}

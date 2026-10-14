@@ -1,0 +1,17 @@
+{
+  "id": "docker",
+  "version": "1",
+  "category": "container",
+  "description": "Docker runtime component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-DOCKER-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer read-only filesystems and constrained resources when compatible with application needs.",
+    "Keep health/readiness checks aligned with actual service readiness."
+  ],
+  "free_choices": [
+    "Image/runtime composition within the approved security, data and operating contract."
+  ]
+}

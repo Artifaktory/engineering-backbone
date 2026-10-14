@@ -1,0 +1,17 @@
+{
+  "id": "bash",
+  "version": "1",
+  "category": "shell",
+  "description": "Bash component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-BASH-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer ShellCheck with the declared shell dialect.",
+    "Keep shell adapters small; use Python for substantial shared cross-platform logic when practical."
+  ],
+  "free_choices": [
+    "Control flow and helpers that preserve exit-status and argument semantics."
+  ]
+}

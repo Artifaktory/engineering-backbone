@@ -67,6 +67,14 @@ def commit(root, message):
     return git(root, 'rev-parse', 'HEAD')
 
 
+def run_shell_payload(workspace, content, *, env):
+    """Match Actions' script-file execution without OS command-argument limits."""
+    script = workspace / 'workflow-step.sh'
+    script.write_bytes(content.encode('utf-8'))
+    return subprocess.run(['bash', str(script)], cwd=workspace,
+                          env=env, capture_output=True, text=True)
+
+
 class WorkflowTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -98,8 +106,7 @@ class WorkflowTests(unittest.TestCase):
         env.update({key: value for key, value in STEPS[step].get('env', {}).items()
                     if '${{' not in str(value)})
         env.update(overrides)
-        return subprocess.run(['bash', '-c', STEPS[step]['run']], cwd=self.workspace,
-                              env=env, capture_output=True, text=True)
+        return run_shell_payload(self.workspace, STEPS[step]['run'], env=env)
 
     def validate(self, **env):
         return self.shell('Validate generated consumer with trusted tooling', **env)
@@ -264,13 +271,17 @@ class WorkflowTests(unittest.TestCase):
                 result = self.validate()
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         # The three original fixture identities remain exact; the reviewed
-        # preceding Codex and merged Copilot validators remain usable during
-        # the security upgrade. Keep the authority set explicit.
+        # preceding reviewed validators remain usable during the technology
+        # and navigation upgrade. Keep the authority set explicit.
         preceding = "5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a"
         merged_copilot = "91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321"
         merged_codex_security = "ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb"
         merged_workflow_kit = "7e3d27e21a8db1b1320ded8b8c499dd6033a3f45b0b4b7ff519316612f83ddeb"
-        self.assertEqual(set(previous), set(observed) | {preceding, merged_copilot, merged_codex_security, merged_workflow_kit})
+        merged_quality_framework = "88d2d1e89cbff9fd925cac1a235de60867ae90a9ae231cde6cbc0a5eed8ee9b2"
+        self.assertEqual(set(previous), set(observed) | {
+            preceding, merged_copilot, merged_codex_security,
+            merged_workflow_kit, merged_quality_framework,
+        })
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
 
     def test_historical_compatibility_survives_clean_single_commit_clone(self):

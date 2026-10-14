@@ -21,7 +21,7 @@ from copier import run_copy
 import yaml
 
 from scripts.compile_toolchain_fingerprint import FILES, bundle_digest
-from tests.test_workflows import commit, historical_source, initialize
+from tests.test_workflows import commit, historical_source, initialize, run_shell_payload
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -104,8 +104,7 @@ class QualityWorkflowTests(unittest.TestCase):
         })
         env.update({key: value for key, value in self.step.get('env', {}).items()
                     if '${{' not in str(value)})
-        return subprocess.run(['bash', '-c', self.step['run']], cwd=self.workspace,
-                              env=env, capture_output=True, text=True)
+        return run_shell_payload(self.workspace, self.step['run'], env=env)
 
     def old_validator(self):
         return subprocess.run([

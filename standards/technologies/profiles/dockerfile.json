@@ -1,0 +1,17 @@
+{
+  "id": "dockerfile",
+  "version": "1",
+  "category": "container",
+  "description": "Dockerfile component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-DOCKERFILE-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer multistage builds and a maintained minimal base appropriate to the application.",
+    "Use build-secret mounts where supported."
+  ],
+  "free_choices": [
+    "Build-stage structure and caching strategy preserving reproducibility and secret boundaries."
+  ]
+}

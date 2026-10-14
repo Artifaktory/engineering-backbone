@@ -1,0 +1,17 @@
+{
+  "id": "cpp",
+  "version": "1",
+  "category": "language",
+  "description": "C++ component obligations; the project records supported versions and the selected tool configuration.",
+  "rules": [
+    "TECH-CPP-001"
+  ],
+  "quality_profiles": [],
+  "recommendations": [
+    "Prefer standard ownership types and project-approved clang-format/clang-tidy settings.",
+    "GoogleTest is an optional framework; a C++17 project must select compatible guide rules and tool releases rather than adopting a living C++20 guide wholesale."
+  ],
+  "free_choices": [
+    "Internal templates, algorithms and abstractions supported by the chosen compiler and error policy."
+  ]
+}

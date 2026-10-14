@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "$id": "urn:engineering-backbone:navigation-request",
+  "title": "Scoped task document resolution request",
+  "description": "Role and scope are inherited from the referenced existing Task Packet. Revision is a declaration checked against that packet, not a Git/provider attestation.",
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "task_packet": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(?!/)(?!.*[\\\\:<>\"|?*])(?!.*(?:^|/)(?:\\.|\\.\\.)(?:/|$))(?!.*//)(?!.*[\\u0000-\\u001f\\u007f-\\u009f])[^/]+(?:/[^/]+)*$"
+    },
+    "task_type": {
+      "enum": [
+        "bugfix",
+        "implementation",
+        "architecture",
+        "review",
+        "documentation"
+      ]
+    },
+    "paths": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 512,
+        "pattern": "^(?!/)(?!.*[\\\\:<>\"|?*])(?!.*(?:^|/)(?:\\.|\\.\\.)(?:/|$))(?!.*//)(?!.*[\\u0000-\\u001f\\u007f-\\u009f])[^/]+(?:/[^/]+)*$"
+      }
+    },
+    "components": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,63}$"
+      }
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "task_packet",
+    "task_type",
+    "paths",
+    "components",
+    "revision"
+  ],
+  "anyOf": [
+    {
+      "properties": {
+        "paths": {
+          "minItems": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "components": {
+          "minItems": 1
+        }
+      }
+    }
+  ]
+}
