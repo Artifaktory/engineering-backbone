@@ -1,5 +1,8 @@
 # Dependency compatibility delivery evidence
 
+Final remote outcomes are recorded in the [publication report](dependency-compatibility-publication.md).
+The pending states below describe the earlier publication checkpoint.
+
 Task: BB-DEPENDENCIES-009. This records scoped implementation and review evidence;
 it is not human merge/release approval or universal platform compatibility.
 
