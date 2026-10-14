@@ -8,13 +8,14 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "edde45d7ce79f6c2c3d70bd0b8ece0a8d9eecb12",
-    "head_revision": "edde45d7ce79f6c2c3d70bd0b8ece0a8d9eecb12"
+    "head_revision": "64133a73668a60cd113e7088925542176d6f6a13"
   },
   "approved_sources": [
     "Human implementation, checks, independent reviews, PR and Codex review authorization on 2026-10-14",
     "plans/technology-navigation.md",
     "AGENTS.md, CONTRIBUTING.md, policy/core.md, policy/quality.md",
-    "Official source references recorded in the versioned technology extension"
+    "Official source references recorded in the versioned technology extension",
+    "Independent Full and repair Delta closure records; functional reviewed head 64133a73668a60cd113e7088925542176d6f6a13. Final evidence-only commit/publication identities are recorded separately."
   ],
   "scope": {
     "include": [
@@ -47,50 +48,80 @@
       "id": "AC-1",
       "description": "Broad technology extension includes PowerShell, Bash and PostgreSQL with primary-source provenance and explicit mandatory/default/free decision levels.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/quality/technology-profiles.md",
+        "docs/quality/technology-source-provenance.md",
+        "docs/reviews/technology-navigation-full-review.md"
+      ]
     },
     {
       "id": "AC-2",
       "description": "Deterministic navigation resolves role/task/component paths to the complete required context with safe paths and no execution of candidate commands.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/agent-navigation.md",
+        "docs/reviews/technology-navigation-final-checks.md",
+        "docs/reviews/technology-navigation-delta-review.md"
+      ]
     },
     {
       "id": "AC-3",
       "description": "Frozen handoff verification rejects stale/tampered/incomplete context, unknown scope, broken references and weakening of active inherited navigation.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/technology-navigation-final-checks.md",
+        "docs/reviews/technology-navigation-smoke.md",
+        "docs/reviews/technology-navigation-smoke-followup.md",
+        "docs/reviews/technology-navigation-delta-review.md"
+      ]
     },
     {
       "id": "AC-4",
       "description": "Generated consumers, all supported provider combinations and updates preserve existing authority, protected local files, legacy absence and inactive seed behavior.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/technology-navigation-checks.md",
+        "docs/reviews/technology-navigation-repair-checks.md",
+        "docs/reviews/technology-navigation-final-checks.md"
+      ]
     },
     {
       "id": "AC-5",
       "description": "Current and predecessor validation, compilers, scenario/negative tests, full tests and workflow syntax checks pass.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/technology-navigation-checks.md",
+        "docs/reviews/technology-navigation-repair-checks.md",
+        "docs/reviews/technology-navigation-final-checks.md"
+      ]
     },
     {
       "id": "AC-6",
       "description": "Independent plan review, two frozen Full reviews, finding triage and any required Delta reviews complete with actual scoped evidence.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/technology-navigation-plan-review.md",
+        "docs/reviews/technology-navigation-full-review.md",
+        "docs/reviews/technology-navigation-triage.md",
+        "docs/reviews/technology-navigation-delta-round1.md",
+        "docs/reviews/technology-navigation-delta-triage.md",
+        "docs/reviews/technology-navigation-delta-review.md"
+      ]
     },
     {
       "id": "AC-7",
       "description": "PR published at verified identity, required CI status inspected and requested Codex review trigger/result visible on PR; runtime limitations explicitly recorded.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reviews/technology-navigation-result.md"
+      ]
     }
   ],
   "validation": {
@@ -127,5 +158,5 @@
     "Force push or destructive cleanup",
     "Unverified ISO/IEC conformance/certification claims"
   ],
-  "status": "planned"
+  "status": "ready_for_review"
 }
