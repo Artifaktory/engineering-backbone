@@ -105,10 +105,10 @@ The receipt records exact document byte hashes, request and manifest digests,
 Task Packet document hash, selected catalog/profile/rule identities and concrete
 check definitions. `verify` recomputes the complete receipt; missing, altered or
 stale fields fail. A file edit invalidates its hash even if its path stays the same.
-Consumer receipts automatically include `.engineering-backbone/project.json` and
-`.engineering-backbone/core.json`; source receipts include `policy/core.json`.
-Source task facts continue to come from the Task Packet and applicable contribution
-instructions; source mode does not invent a consumer project-facts file.
+Both layouts automatically include the existing `.engineering-backbone/project.json`.
+Consumer receipts also include `.engineering-backbone/core.json`; source receipts
+include `policy/core.json`. The Task Packet and applicable contribution instructions
+remain additional sources of scoped task facts.
 The declared revision is checked against a non-null packet head; review requires a
 frozen packet head. Neither value is authenticated against Git or a provider by
 this guard. Bind actual base/head/patch evidence separately for formal review.

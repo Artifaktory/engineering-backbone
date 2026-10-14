@@ -499,7 +499,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                 selected_profiles.update(item['profiles'])
                 technology_bindings[key] = item['checks']
             paths = {candidate['documents'][key] for key in references}
-            paths.update({manifest_path, profile_path, workflows_path, request['task_packet']})
+            paths.update({manifest_path, profile_path, workflows_path, request['task_packet'],
+                          '.engineering-backbone/project.json'})
             prefix = 'standards' if source else '.engineering-backbone/standards'
             paths.update({prefix + '/sources.json', prefix + '/rules.json',
                           prefix + '/technologies/sources.json', prefix + '/technologies/rules.json'})
@@ -509,7 +510,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             paths.update({'policy/core.md', 'policy/core.json', 'policy/quality.md', 'docs/quality/README.md',
                           'docs/quality/technology-profiles.md', 'docs/agent-navigation.md'} if source else
                          {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
-                          '.engineering-backbone/project.json', '.engineering-backbone/quality-policy.md',
+                          '.engineering-backbone/quality-policy.md',
                           '.engineering-backbone/quality-guide.md', '.engineering-backbone/technology-guide.md',
                           '.engineering-backbone/navigation-guide.md'})
             for name in ('AGENTS.md', 'CONTRIBUTING.md', '.github/copilot-instructions.md'):

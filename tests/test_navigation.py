@@ -316,7 +316,7 @@ class NavigationTests(unittest.TestCase):
                 path.write_bytes(original)
         self.resolve_ok(expected=context)
 
-    def test_source_core_facts_are_required_without_inventing_consumer_facts(self):
+    def test_source_core_and_existing_project_facts_are_required(self):
         shutil.copytree(self.root / '.engineering-backbone/standards', self.root / 'standards')
         for name, installed in (
             ('policy/core.md', '.engineering-backbone/core.md'),
@@ -326,21 +326,28 @@ class NavigationTests(unittest.TestCase):
             ('docs/quality/technology-profiles.md', '.engineering-backbone/technology-guide.md'),
             ('docs/agent-navigation.md', '.engineering-backbone/navigation-guide.md')):
             self.write(name, (self.root / installed).read_text())
-        for name in ('.engineering-backbone/project.json', '.engineering-backbone/core.json'):
-            (self.root / name).unlink()
+        (self.root / '.engineering-backbone/core.json').unlink()
         context = self.resolve_ok(source=True)
         documents = {item['path']: item['sha256'] for item in context['documents']}
-        self.assertNotIn('.engineering-backbone/project.json', documents)
         self.assertNotIn('.engineering-backbone/core.json', documents)
-        path = self.root / 'policy/core.json'
-        original = path.read_bytes()
-        self.assertEqual(documents.get('policy/core.json'), hashlib.sha256(original).hexdigest())
         self.resolve_ok(source=True, expected=context)
-        self.write_json('policy/core.json', dict(json.loads(original), version='0.1.1'))
-        self.reject('differs from recomputed', self.request(), source=True, expected=context)
-        path.unlink()
-        self.reject('absent', self.request(), source=True)
-        path.write_bytes(original)
+        for name in ('policy/core.json', '.engineering-backbone/project.json'):
+            with self.subTest(path=name):
+                path = self.root / name
+                original = path.read_bytes()
+                self.assertEqual(documents.get(name), hashlib.sha256(original).hexdigest())
+                value = json.loads(original)
+                if name.endswith('/project.json'):
+                    value['project'].update(base_branch='release',
+                                            validation_command='python tools/new_validation.py')
+                else:
+                    value['version'] = '0.1.1'
+                self.write_json(name, value)
+                self.reject('differs from recomputed', self.request(), source=True, expected=context)
+                path.unlink()
+                self.reject('absent', self.request(), source=True)
+                self.reject('absent', self.request(), source=True, expected=context)
+                path.write_bytes(original)
         self.resolve_ok(source=True, expected=context)
 
     def postgres_base(self, *, reserved=None):

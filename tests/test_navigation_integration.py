@@ -447,6 +447,69 @@ class NavigationCopierIntegrationTests(unittest.TestCase):
                     self.assertNotEqual(stale.returncode, 0, stale.stdout + stale.stderr)
                     self.assertIn('Handoff context differs from recomputed snapshot', stale.stdout)
 
+    def test_source_cli_binds_existing_project_facts(self):
+        target, _, receipt, write_json = self.active_cli_fixture()
+        shutil.copytree(target / '.engineering-backbone/standards', target / 'standards')
+        for relative, installed in (
+            ('policy/core.md', '.engineering-backbone/core.md'),
+            ('policy/core.json', '.engineering-backbone/core.json'),
+            ('policy/quality.md', '.engineering-backbone/quality-policy.md'),
+            ('docs/quality/README.md', '.engineering-backbone/quality-guide.md'),
+            ('docs/quality/technology-profiles.md', '.engineering-backbone/technology-guide.md'),
+            ('docs/agent-navigation.md', '.engineering-backbone/navigation-guide.md'),
+        ):
+            path = target / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(target / installed, path)
+        relative = '.engineering-backbone/project.json'
+        project = target / relative
+        original = (ROOT / relative).read_bytes()
+        project.write_bytes(original)
+
+        def command(action, *, save=False):
+            argv = [sys.executable, '-I', str(ROOT / 'scripts/quality_framework.py'),
+                    action, '--root', str(target), '--source',
+                    '--request', str(target / 'plans/request.json')]
+            if action == 'verify':
+                argv.extend(['--expected', str(receipt)])
+            elif save:
+                argv.extend(['--output', str(receipt)])
+            return subprocess.run(argv, cwd=target, capture_output=True, text=True)
+
+        resolved = command('resolve', save=True)
+        self.assertEqual(resolved.returncode, 0, resolved.stdout + resolved.stderr)
+        context = json.loads(receipt.read_text())
+        documents = {item['path']: item['sha256'] for item in context['documents']}
+        self.assertIn('policy/core.json', documents)
+        self.assertNotIn('.engineering-backbone/core.json', documents)
+        with self.subTest(state='mandatory source project bytes'):
+            self.assertNotIn(relative, json.loads((target / NAVIGATION).read_text())['documents'].values())
+            self.assertIn(relative, documents)
+            self.assertEqual(documents[relative], hashlib.sha256(original).hexdigest())
+        unchanged = command('verify')
+        self.assertEqual(unchanged.returncode, 0, unchanged.stdout + unchanged.stderr)
+        try:
+            changed = json.loads(original)
+            changed['project'].update(base_branch='release',
+                                      validation_command='python tools/other_validation.py')
+            schema = json.loads((ROOT / 'schemas/project.schema.json').read_text())
+            Draft202012Validator(schema).validate(changed)
+            write_json(relative, changed)
+            with self.subTest(state='valid source facts changed'):
+                stale = command('verify')
+                self.assertNotEqual(stale.returncode, 0, stale.stdout + stale.stderr)
+                self.assertIn('Handoff context differs from recomputed snapshot', stale.stdout)
+            project.unlink()
+            for action in ('resolve', 'verify'):
+                with self.subTest(state='source project removed', action=action):
+                    rejected = command(action)
+                    self.assertNotEqual(rejected.returncode, 0, rejected.stdout + rejected.stderr)
+                    self.assertIn('Required document or directory absent: ' + relative, rejected.stdout)
+        finally:
+            project.write_bytes(original)
+        restored = command('verify')
+        self.assertEqual(restored.returncode, 0, restored.stdout + restored.stderr)
+
 
 if __name__ == '__main__':
     unittest.main()
