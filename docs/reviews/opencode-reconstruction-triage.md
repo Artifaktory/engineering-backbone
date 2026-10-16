@@ -175,3 +175,85 @@ this bounded repair to a separate implementer, then obtain actual required check
 and independent Delta before PR publication. Only this report was written by the
 triage session; no implementation, tests, immutable snapshot or remote state was
 changed.
+
+## Closure addendum — 2026-10-16
+
+**REC-BB-SEC-001 and its duplicate REC-BB-FUNC-001 are closed as repaired and
+verified on the frozen repair snapshot below. The Backbone local publication
+gate is satisfied.** This dated addendum supersedes the earlier open-finding
+publication block; the original finding, severity, repair scope and evidence
+above remain preserved. It does not change the separate AO or remote/platform
+acceptance states and does not provide human merge/release approval.
+
+### Closure binding and evidence
+
+- Prior Full head: `d6a4af73ed39273383457669d498d9e2d4c3f22a`.
+- Quality-tested repair head: `0778d728a273bc6af845b18d33f96e5731df9bc9`.
+- Delta-reviewed repair head: `c2c31eed661714c0d8bc2245ff8505ac01a60c9a`.
+- Delta-reviewed tree: `15bf96a0d003cc6b9d20dc1482d250b35dbbb44b`.
+- Prior-Full-to-repair binary patch SHA-256:
+  `574e5505fb0765a0bae674a3eb1d51419c64218a1b8f37a0233fb55db04d7279`.
+- Base-to-repair binary patch SHA-256:
+  `d34ceb2a0aee308a460f43e0da0ad4efea9cf3955f56cc27651f1f31a071cb92`.
+- Independent quality record: `opencode-reconstruction-repair-checks.md`, SHA-256
+  `4dfe1e02cbbd47e8eb8fba042c434bab6e98794abe661547bd87fd010a6e49c7`.
+- Completed independent Delta: `opencode-reconstruction-delta-security.md`,
+  SHA-256 `77f79038348b2e8cc52815d132d7e36d0f90e5db47be984fc918a4fbfa12c6f2`.
+
+Read both completed records and independently confirmed the Delta snapshot's
+head, tree, patch hashes and clean worktree. The quality-tested and Delta-reviewed
+heads differ only by the added quality record; there is no intervening product or
+test change. The repair consists of the approved workflow authority addition,
+test changes and two separate predecessor-fixture files. Existing historical
+fixtures and production guard payloads remain unchanged. Other additions since
+Full are the review, triage and quality evidence records.
+
+Triage verified all ten raw command-log hashes against the repair manifest, whose
+SHA-256 is `031e64636fa4bb0f119adccdf943cf21d091524eb524cab13840dc85c00d7eb4`.
+The actual full-suite log ends with **414 tests in 355.728 seconds, OK**; its
+SHA-256 is `d568708d1a0409c7878438a60143f382c6f22239008f4fcc3d6dd7934438938f`.
+The complete suite and all nine deterministic gates recorded exit 0. These are
+the independent quality session's executions, not reruns claimed by triage.
+
+The independent Delta reviewer confirmed that the authority list adds exactly
+the approved predecessor digest and that the executable workflow payload is
+byte-identical. The reviewer freshly rendered the exact trusted base, checked all
+eight source-tooling blobs, and established that all 45 fixture files match that
+rendering byte for byte; only documented installation-path answers metadata is
+omitted. The ZIP and complete rendered-tooling digests match the recorded values.
+This establishes provenance independently of the fixture's own manifest claims.
+
+The Delta reviewer also executed five focused regression tests: unchanged
+predecessor tooling and coherent current-tooling adoption pass; unknown baseline,
+unknown candidate and mixed tooling remain rejected; exact historical authority
+and clean single-commit/autocrlf behavior remain intact. All five passed in
+31.497 seconds, exit 0. The review reports no confirmed repair defect or direct
+regression. This closes the original workflow-envelope failure without weakening
+membership, coherence or predecessor execution checks.
+
+### Final classifications and next step
+
+| ID or gate | Final triage disposition |
+| --- | --- |
+| REC-BB-SEC-001, original triaged P1 | Closed: the exact approved predecessor is retained and its original rejection path is repaired and independently verified. |
+| REC-BB-FUNC-001 | Closed by the same verified repair; duplicate alias remains preserved. |
+| New repair findings or human-decision items | None submitted by the completed Delta; no additional repair is authorized. |
+| Local Backbone check/review chain | Complete: two Full reviews, separate triage, one bounded repair, fresh complete quality checks and independent Delta. No further Full or repeat testing is required for unchanged implementation. |
+| AC-4 immediate-predecessor regression | Closed by actual positive/negative workflow execution and independently verified fixture provenance. |
+| Native Windows and Docker build/smoke | Still pending actual PR CI execution. Local Linux smoke evidence remains limited to its unchanged recorded inputs and canned-provider observations. |
+| AO implementation and full gates / paired delivery | Separate and pending; this Backbone closure does not certify AO or complete the paired delivery. |
+| Remote identity, visible Codex request and actual CI/review outcomes / AC-8 | Pending publication-phase work. Record observed results and triage any remote findings before repairs. |
+
+The root may now finish the explicit acceptance mapping, persist the final review
+and closure records, and publish the already authorized Backbone PR. Verify the
+actual remote tree against the intended local tree, provide the frozen review
+bindings with a visible Codex request, and inspect actual CI/review outcomes.
+State the pending Windows/container and separate AO gates in the PR; publication
+does not turn those states into PASS. Evidence-only closeout records do not
+reopen the unchanged implementation review.
+
+No qualified runtime/model default, OS confinement, native compaction/resume/
+delegation qualification, activation, merge, release, deployment, settings change
+or automatic downstream adoption is authorized by this closure. This session
+appended only this addendum to its existing triage record; it made no product,
+test, immutable-snapshot or remote changes.

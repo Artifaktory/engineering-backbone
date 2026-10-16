@@ -46,57 +46,98 @@
       "id": "AC-1",
       "description": "Opt-in native configuration, five roles and shared procedures preserve legacy adapters and authority.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
+      ]
     },
     {
       "id": "AC-2",
       "description": "Trusted data-only guards reject unsafe/inherited weakened native contracts, nested skill identities and legacy mode aliases.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
+      ]
     },
     {
       "id": "AC-3",
       "description": "Scoped navigation binds selected role and required procedures including independent plan review; changed context fails.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
+      ]
     },
     {
       "id": "AC-4",
       "description": "Real Copier initial/update and legacy tests preserve local files and installation choices.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-reconstruction-delta-security.md"
+      ]
     },
     {
       "id": "AC-5",
       "description": "AO contract covers supported fresh ACP/chat launch, resume and queued/delegated admission; TUI and unsupported isolation remain denied.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md"
+      ]
     },
     {
       "id": "AC-6",
       "description": "Native Windows/Linux and real-model qualification have separate honest observed states; unsupported activation remains blocked.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md"
+      ]
     },
     {
       "id": "AC-7",
       "description": "Fresh full checks, predecessor compatibility, two independent Full reviews and triage/Delta close confirmed findings.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-reconstruction-delta-security.md"
+      ]
     },
     {
       "id": "AC-8",
       "description": "Published PR remote tree verified with visible Codex request and actual CI/review outcomes.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md"
+      ]
     }
   ],
   "validation": {
