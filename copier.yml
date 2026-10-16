@@ -8,6 +8,10 @@ _exclude:
 _skip_if_exists:
   - AGENTS.md
   - "**/AGENTS.md"
+  - opencode.json
+  - opencode.jsonc
+  - ".opencode/**"
+  - .engineering-backbone/opencode.json
   - .github/copilot-instructions.md
   - ".codex/agents/**"
   - ".github/agents/**"
@@ -88,6 +92,15 @@ use_copilot:
     {% if previous and ('use_copilot' not in previous or use_copilot != previous.use_copilot) %}
     use_copilot is installation-only; use a separate reviewed adapter migration and reconcile project facts and answers.
     {% endif %}
+use_opencode:
+  type: bool
+  default: false
+  help: Add optional OpenCode primary roles and shared procedures when absent; activation and native qualification are separate reviewed steps.
+  validator: >-
+    {% set previous = _external_data.installed_answers %}
+    {% if previous and use_opencode != previous.get('use_opencode', false) %}
+    use_opencode is installation-only; legacy answers mean false. Use a separate reviewed adapter migration.
+    {% endif %}
 copilot_python_profile:
   type: bool
   default: false
@@ -158,7 +171,7 @@ workflow_kit_ref:
 
 _message_after_copy: >-
   Review .engineering-backbone/project.json and the generated instruction fragments.
-  Existing native instructions, profiles, Copilot skills and path rules were preserved. Manually integrate the
+  Existing native instructions, profiles, OpenCode configuration, Copilot skills and path rules were preserved. Manually integrate the
   fragments into stronger local governance before claiming adoption.
   A selected workflow kit is an inactive seed: review its complete project configuration before a separate activation PR.
   A selected quality framework also seeds inactive quality, navigation and dependency contracts; review project rules, real inputs, documents and check bindings before separate activation.

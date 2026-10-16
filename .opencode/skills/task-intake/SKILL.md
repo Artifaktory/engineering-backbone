@@ -1,0 +1,53 @@
+---
+name: task-intake
+description: Use when a new request needs bounded requirements, acceptance evidence and an authorized Task Packet.
+---
+
+Read the [canonical policy](../../../policy/core.md) and
+[OpenCode workflow](../../../docs/opencode/workflow.md). This skill supplies a procedure, not additional
+permissions, authority or independent approval. Preserve stricter project rules.
+
+## Inputs and output
+
+Inputs: user request, project facts, current branch/base revision, root/path
+instructions and existing requirements. Output: proposed Task Packet content,
+acceptance-to-verification map, assumptions and blocking owner decisions. Analyst
+or planner returns text; an authorized owner persists it.
+
+## Procedure
+
+1. Inspect the repository context and applicable policy; preserve unrelated work.
+2. Separate requested outcomes from assumptions. Record objective, included/excluded
+   paths, authorized actions, existing Task Packet role, risk, budget and stops.
+3. Give each acceptance criterion observable automated/manual/hybrid evidence;
+   classify control-plane edits as HIGH and include downstream effects.
+4. List missing prerequisites and decisions. Give the packet/revision to the owner
+   before handing a bounded accepted request to planning.
+
+## Stops and negative cases
+
+Stop for contradictory authority, ambiguous scope or unavailable project facts.
+Do not create product requirements, schema role names or approval from assumptions.
+A packet is proposed scope, not implementation or validation evidence.
+
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.
+
+## Active document navigation
+
+When `.engineering-backbone/navigation.json` is enabled, follow the navigation
+guide (`docs/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+when installed). After a Task Packet exists, resolve its scoped request with the
+approved guard, verify received context against the current snapshot, then actually
+read every resolved document before scoped work. Transfer the request, complete
+context and task acceptance/check/stop/return contract at each handoff; resolve a
+new request for a delegated role or narrower scope. Invalid or missing mandatory
+context blocks the affected task. An inactive seed, receipt or agent reply does not
+prove native instruction loading or authorize additional work.

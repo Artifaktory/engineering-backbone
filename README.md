@@ -17,6 +17,7 @@ adoption remains a separate project PR.
 | [Shared policy](policy/core.md) | Scope, roles, checks, Full/Triage/Fix/Delta, truthful evidence and human gates |
 | [Codex and Copilot adapters](docs/agent-adapters.md) | Three Codex profiles and ten specialized Copilot profiles with explicit tool budgets |
 | [Copilot operating guide](docs/copilot/workflow.md) | Eight procedural skills, permanent delivery loop, handoffs and local project integration |
+| [Optional OpenCode adapter](docs/opencode/workflow.md) | Five primary roles, eight shared procedures, scoped receipts and a separate controlled-runner qualification contract |
 | [Planning and evidence formats](docs/planning.md) | Task Packet, requirement status and review evidence schemas/examples |
 | [Copier adoption](docs/adoption.md) | Optional providers, local project facts, preserved instructions and reviewed updates |
 | [Own validation workflow](.github/workflows/quality.yml) | Schemas, adversarial tests, real consumer upgrades and trusted-base policy checks |
@@ -192,3 +193,14 @@ local runtime controllers and publishing signatures are preserved, not replaced.
 
 Extend the backbone through small reviewed additions. Project architecture,
 deployment, secrets, branch strategies and domain-specific controls stay local.
+
+## Optional OpenCode adapter
+
+Select `use_opencode=true` only during reviewed installation. Legacy absence means
+false. The separate companion starts inactive; native files can still be discovered
+directly. Follow the [operating guide](docs/opencode/workflow.md),
+[runner contract](docs/opencode/opencode-runner-contract.md) and
+[native evidence](docs/opencode/smoke-tests.md). Version 1.19.0 defaults deny
+unlisted tools and require approval for implementer edits/shell, without claiming
+OS isolation. Actual controlled AO admission additionally requires verified context
+and explicit operator qualification; initial support is fresh ACP/chat implementer.

@@ -102,3 +102,14 @@ Copier preserves the project contract/document and existing application Dockerfi
 It supplies no inferred package versions or application container. Use matching
 reviewed guard/workflow pins, actual checks and refreshed native instructions.
 {% endif %}
+
+{% if use_opencode %}
+## Selected OpenCode adapter
+
+Read [the OpenCode guide](opencode-guide.md), [runner contract](opencode-runner-contract.md)
+and [companion](opencode.json). `use_opencode` is installation-only, legacy false.
+Native config, roles, skills and companion are preserved. Integrate the refreshed
+[config fragment](opencode.fragment.json) through review; JSONC conflicts fail closed.
+The inactive companion does not stop direct native discovery. Qualify actual native
+loading/permissions separately; initial governed AO support is fresh ACP/chat implementer.
+{% endif %}

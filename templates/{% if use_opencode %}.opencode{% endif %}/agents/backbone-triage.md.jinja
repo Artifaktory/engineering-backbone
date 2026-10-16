@@ -1,0 +1,17 @@
+---
+description: Classify review findings with evidence without implementation or test
+  edits.
+mode: primary
+permission:
+  '*': deny
+  read: allow
+  glob: allow
+  grep: allow
+  skill: allow
+---
+
+{% set core_link = '../../.engineering-backbone/core.md' %}
+{% set guide_link = '../../.engineering-backbone/opencode-guide.md' %}
+{% set workflow_label = 'OpenCode workflow' %}
+{% set plan_review = true %}
+{% include 'templates/_partials/copilot/finding-triage.md.jinja' %}

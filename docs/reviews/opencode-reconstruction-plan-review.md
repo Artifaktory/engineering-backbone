@@ -17,7 +17,7 @@ Full implementation review, publication approval or human approval is claimed.
 
 The two input hashes were checked again after review and remained unchanged. They
 identify this plan review; no implementation patch digest or reviewed implementation
-head exists yet. This review record is the only file written by this session.
+head exists yet. This session writes review records only, not implementation files.
 
 ## Conclusion
 

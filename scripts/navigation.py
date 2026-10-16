@@ -412,6 +412,59 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
                 fail('Required dependency check-kind coverage missing: ' + component['id'])
         return value
 
+    opencode_path = '.engineering-backbone/opencode.json'
+    opencode_procedures = {
+        'planner': ('implementation-plan',),
+        'implementer': ('bug-reproduction', 'test-and-quality', 'docs-traceability'),
+        'reviewer': ('implementation-plan', 'code-review', 'delta-review'),
+        'quality_checker': ('test-and-quality',),
+        'triage': ('finding-triage',),
+    }
+
+    def opencode(folder, navigation, *, complete=False):
+        value = json_file(folder, opencode_path, optional=True)
+        if value is missing:
+            return None
+        keys(value, {'schema_version', 'adapter_version', 'enabled',
+                     'opencode_version', 'native_config'}, 'OpenCode companion')
+        if (value['schema_version'] != '1' or value['adapter_version'] != '1.0.0'
+                or type(value['enabled']) is not bool or value['opencode_version'] != '1.19.0'
+                or value['native_config'] != 'opencode.json'):
+            fail('Invalid OpenCode companion contract')
+        native = json_file(folder, 'opencode.json')
+        keys(native, {'$schema', 'instructions', 'permission'}, 'OpenCode native config')
+        if native['$schema'] != 'https://opencode.ai/config.json' or not isinstance(native['permission'], dict):
+            fail('Invalid OpenCode native config contract')
+        instructions = sequence(native['instructions'], 'OpenCode instructions', nonempty=True, maximum=64)
+        required = {'AGENTS.md', '.engineering-backbone/project.json'}
+        required.update({'policy/core.md', 'policy/core.json', 'policy/quality.md',
+                         'policy/dependencies.md', 'docs/opencode/workflow.md', 'CONTRIBUTING.md'} if source else
+                        {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
+                         '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
+                         '.engineering-backbone/opencode-guide.md'})
+        if not required <= set(instructions):
+            fail('OpenCode config omits mandatory instructions')
+        for name in instructions:
+            relative(name)
+            document(folder, name)
+        if complete or value['enabled']:
+            if navigation is None or navigation['enabled'] is not True:
+                fail('Active OpenCode requires active navigation')
+            for role in roles:
+                for name in opencode_paths(role, native):
+                    document(folder, name)
+        return value
+
+    def opencode_paths(role, native):
+        name = role.replace('_', '-')
+        paths = {opencode_path, 'opencode.json', '.opencode/agents/backbone-' + name + '.md'}
+        paths.update(native['instructions'])
+        paths.update({'docs/opencode/workflow.md', 'docs/opencode/opencode-runner-contract.md'} if source else
+                     {'.engineering-backbone/opencode-guide.md', '.engineering-backbone/opencode-runner-contract.md'})
+        paths.update('.opencode/skills/' + skill + '/SKILL.md'
+                     for skill in ('task-intake', *opencode_procedures[role]))
+        return paths
+
     def inherited_dependencies(candidate, base):
         if base is None or not base['enabled']:
             return
@@ -446,6 +499,7 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
             trusted_base = folder_path(trusted_base)
         candidate = manifest(root, catalog, approved_root=trusted_base)
         dependency_candidate = dependencies(root, candidate, approved_root=trusted_base)
+        opencode_candidate = opencode(root, candidate)
         if trusted_base is not None:
             # A legacy approved base without navigation has no extension package.
             base = manifest(trusted_base, catalog)
@@ -456,6 +510,18 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
                 manifest(trusted_base, catalog, complete=True)
                 if candidate != dict(base, enabled=True):
                     fail('Navigation activation must match the reviewed seed except enabled')
+            opencode_base = opencode(trusted_base, base)
+            if opencode_base is not None and opencode_candidate is None:
+                fail('installed OpenCode package cannot disappear')
+            if opencode_base is not None and opencode_base['enabled'] and not opencode_candidate['enabled']:
+                fail('Active OpenCode cannot be disabled')
+            if (opencode_candidate is not None and opencode_candidate['enabled']
+                    and (opencode_base is None or not opencode_base['enabled'])):
+                if opencode_base is None:
+                    fail('OpenCode activation requires an already reviewed inactive seed')
+                opencode(trusted_base, base, complete=True)
+                if opencode_candidate != dict(opencode_base, enabled=True):
+                    fail('OpenCode activation must match the reviewed seed except enabled')
             dependency_base = dependencies(trusted_base, base)
             inherited_dependencies(dependency_candidate, dependency_base)
             if (dependency_candidate is not None and dependency_candidate['enabled']
@@ -591,6 +657,8 @@ def navigation_context(root, trusted_base=None, *, source=False, request=None,
         paths = {candidate['documents'][key] for key in references}
         paths.update({manifest_path, profile_path, workflows_path, request['task_packet'],
                       '.engineering-backbone/project.json'})
+        if opencode_candidate is not None and opencode_candidate['enabled']:
+            paths.update(opencode_paths(packet['role'], json_file(root, 'opencode.json')))
         prefix = 'standards' if source else '.engineering-backbone/standards'
         paths.update({prefix + '/sources.json', prefix + '/rules.json',
                       prefix + '/technologies/sources.json', prefix + '/technologies/rules.json'})

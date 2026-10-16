@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-backbone:opencode",
+  "title": "Project-owned OpenCode adapter activation",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "adapter_version": {
+      "const": "1.0.0"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "opencode_version": {
+      "const": "1.19.0"
+    },
+    "native_config": {
+      "const": "opencode.json"
+    }
+  },
+  "required": [
+    "schema_version",
+    "adapter_version",
+    "enabled",
+    "opencode_version",
+    "native_config"
+  ]
+}

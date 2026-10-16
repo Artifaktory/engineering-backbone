@@ -76,7 +76,7 @@ jobs:
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: 'dddb8af676cd793653263cd126d9b2b5e88a053b6525e50d8424876133f1e615'
+          CURRENT_TOOLCHAIN_SHA256: 'a3cde1a611e3408d2f3801da7d6c0e723a998a98ac3a551b7485413f4d9ef896'
           PREVIOUS_TOOLCHAIN_SHA256: '["88d2d1e89cbff9fd925cac1a235de60867ae90a9ae231cde6cbc0a5eed8ee9b2","7e3d27e21a8db1b1320ded8b8c499dd6033a3f45b0b4b7ff519316612f83ddeb","ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb","91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321","5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9","e4cdae824eb4f1ee9286f8fd8253b510a84ea7729e12fa96c8b5289b38d18450"]'
         run: |
           set -euo pipefail
@@ -720,6 +720,364 @@ jobs:
           if errors:
               sys.exit(1)
           COPILOT_PYTHON
+          python -I - <<'OPENCODE_PYTHON'
+          import os, sys
+          from pathlib import Path
+          # BEGIN COMPILED OPENCODE GUARD
+          def opencode_errors(root, trusted_base=None, *, source=False):
+              """Check the opt-in native package using candidate data, never candidate code.
+
+              This whole function is compiled into the trusted workflow so predecessor
+              validators enforce the same contract. Native defaults are not OS isolation;
+              enabled controls Backbone routing, not OpenCode's own file discovery.
+              """
+              import json
+              import os
+              from pathlib import Path
+              import re
+              import stat
+              import unicodedata
+              from urllib.parse import unquote, urlsplit
+              import yaml
+
+              root = Path(root).absolute()
+              base = Path(trusted_base).absolute() if trusted_base is not None else None
+              companion = '.engineering-backbone/opencode.json'
+              roles = ('planner', 'implementer', 'reviewer', 'quality-checker', 'triage')
+              skills = ('task-intake', 'implementation-plan', 'bug-reproduction',
+                        'test-and-quality', 'code-review', 'finding-triage',
+                        'delta-review', 'docs-traceability')
+              role_paths = {role: f'.opencode/agents/backbone-{role}.md' for role in roles}
+              skill_paths = {skill: f'.opencode/skills/{skill}/SKILL.md' for skill in skills}
+              root_permissions = {'*': 'deny', 'read': 'allow', 'glob': 'allow', 'grep': 'allow', 'skill': 'allow'}
+              budgets = {role: dict(root_permissions) for role in roles}
+              budgets['implementer'].update(edit='ask', bash='ask')
+              budgets['quality-checker']['bash'] = 'ask'
+              rank = {'deny': 0, 'ask': 1, 'allow': 2}
+              source_instructions = ('AGENTS.md', 'policy/core.md', 'policy/core.json', 'policy/quality.md',
+                                     'policy/dependencies.md', '.engineering-backbone/project.json',
+                                     'docs/opencode/workflow.md', 'CONTRIBUTING.md')
+              installed_instructions = ('AGENTS.md', '.engineering-backbone/core.md', '.engineering-backbone/core.json',
+                                        '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
+                                        '.engineering-backbone/project.json', '.engineering-backbone/opencode-guide.md')
+              installed_assets = ('.engineering-backbone/opencode.fragment.json',
+                                  '.engineering-backbone/opencode-guide.md',
+                                  '.engineering-backbone/opencode-runner-contract.md',
+                                  '.engineering-backbone/opencode.schema.json')
+              errors = []
+              limit = 131072
+
+              def exists(path):
+                  return path.exists() or path.is_symlink()
+
+              def present(owner):
+                  return owner is not None and any(exists(owner / name) for name in
+                                                  (companion,) + tuple(role_paths.values()) + tuple(skill_paths.values()) + installed_assets)
+
+              before = present(base)
+              if not source and not present(root) and not before:
+                  return errors  # Legacy absence makes no claim about unmanaged native files.
+              if before and not exists(root / companion):
+                  errors.append('installed OpenCode package cannot disappear: ' + companion)
+
+              def portable(relative):
+                  if not isinstance(relative, str) or not relative or len(relative) > 1024:
+                      return False
+                  if relative != unicodedata.normalize('NFC', relative) or any(ord(char) < 32 for char in relative):
+                      return False
+                  if any(char in relative for char in '\\:*?[]{}<>|#%'):
+                      return False
+                  for part in relative.split('/'):
+                      if not part or part in {'.', '..'} or part.endswith((' ', '.')):
+                          return False
+                      if part.split('.')[0].casefold() in {'con', 'prn', 'aux', 'nul'} | {f'{kind}{i}' for kind in ('com', 'lpt') for i in range(1, 10)}:
+                          return False
+                  return True
+
+              def safe(owner, relative, *, directory=False):
+                  if not portable(relative):
+                      errors.append(f'{relative}: OpenCode path must be a portable repository-relative path')
+                      return None
+                  path = owner / relative
+                  try:
+                      if owner.is_symlink():
+                          raise ValueError('snapshot must not be a symlink')
+                      current = owner
+                      for part in relative.split('/'):
+                          matches = [entry.name for entry in current.iterdir() if entry.name.casefold() == part.casefold()]
+                          if matches != [part]:
+                              raise ValueError('missing or case-ambiguous OpenCode path component: ' + part)
+                          current = current / part
+                          if current.is_symlink():
+                              raise ValueError('OpenCode path must have no symlink ancestors')
+                      mode = path.stat().st_mode
+                      if not (stat.S_ISDIR(mode) if directory else stat.S_ISREG(mode)):
+                          raise ValueError('OpenCode path must be a regular ' + ('directory' if directory else 'file'))
+                      if not path.resolve().is_relative_to(owner.resolve()):
+                          raise ValueError('OpenCode path resolves outside its snapshot')
+                      return path
+                  except (OSError, ValueError, RuntimeError) as exc:
+                      errors.append(f'{relative}: {exc}')
+                      return None
+
+              def text(owner, relative, *, prose=False):
+                  path = safe(owner, relative)
+                  if path is None:
+                      return None
+                  try:
+                      with path.open('rb') as stream:
+                          raw = stream.read(limit + 1)
+                      if len(raw) > limit:
+                          raise ValueError('OpenCode content exceeds 128 KiB')
+                      value = raw.decode('utf-8')
+                      if '\x00' in value:
+                          raise ValueError('OpenCode text contains NUL')
+                      if prose:
+                          if re.search(r'^(?:<<<<<<<(?: |$)|>>>>>>>(?: |$)|\|\|\|\|\|\|\|(?: |$))', value, re.M):
+                              errors.append(f'{relative}: unresolved merge conflict marker')
+                          body = re.sub(r'```.*?```|~~~.*?~~~', '', value, flags=re.S)
+                          links = re.findall(r'!?\[[^\]\n]*\]\(\s*(<[^>]+>|[^\s)]+)', body)
+                          links += re.findall(r'^\s{0,3}\[[^\]\n]+\]:\s*(<[^>]+>|[^\s]+)', body, re.M)
+                          for target in links:
+                              parsed = urlsplit(target.strip('<>'))
+                              if parsed.scheme or parsed.netloc or not parsed.path:
+                                  continue
+                              linked = path.parent / unquote(parsed.path)
+                              if parsed.path.startswith('/') or not linked.resolve().is_relative_to(owner.resolve()) or not linked.exists():
+                                  errors.append(f'{relative}: broken local Markdown link {target}')
+                      return value
+                  except (OSError, UnicodeError, ValueError, RuntimeError) as exc:
+                      errors.append(f'{relative}: {exc}')
+                      return None
+
+              def unique(pairs):
+                  result = {}
+                  for key, value in pairs:
+                      if key in result:
+                          raise ValueError('duplicate JSON key: ' + key)
+                      result[key] = value
+                  return result
+
+              def data(owner, relative):
+                  value = text(owner, relative)
+                  if value is None:
+                      return None
+                  try:
+                      return json.loads(value, object_pairs_hook=unique,
+                                        parse_constant=lambda value: (_ for _ in ()).throw(ValueError('invalid JSON constant: ' + value)))
+                  except (ValueError, RecursionError) as exc:
+                      errors.append(f'{relative}: invalid OpenCode JSON: {exc}')
+                      return None
+
+              class UniqueLoader(yaml.SafeLoader):
+                  pass
+
+              def mapping(loader, node, deep=False):
+                  result = {}
+                  for key_node, value_node in node.value:
+                      key = loader.construct_object(key_node, deep=deep)
+                      if not isinstance(key, str):
+                          raise ValueError('frontmatter keys must be strings')
+                      if key in result:
+                          raise ValueError('duplicate YAML key: ' + key)
+                      result[key] = loader.construct_object(value_node, deep=deep)
+                  return result
+              UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
+
+              def frontmatter(owner, relative, *, managed=True):
+                  value = text(owner, relative, prose=managed)
+                  if value is None:
+                      return None, ''
+                  try:
+                      match = re.match(r'\A\ufeff?[ \t]*---[ \t]*\r?\n(.*?)\r?\n[ \t]*---[ \t]*(?:\r?\n|\Z)', value, re.S)
+                      if not match:
+                          if not managed and not value.lstrip('\ufeff \t').startswith('---'):
+                              return {}, ''
+                          raise ValueError('missing or unterminated YAML frontmatter')
+                      header = match.group(1)
+                      if any(isinstance(token, (yaml.tokens.AliasToken, yaml.tokens.AnchorToken)) for token in yaml.scan(header)):
+                          raise ValueError('YAML aliases and anchors are not part of the native contract')
+                      parsed = yaml.load(header, Loader=UniqueLoader)
+                      if not isinstance(parsed, dict):
+                          raise ValueError('frontmatter must be a mapping')
+                      body = value[match.end():].strip()
+                      if managed and len(body) < 60:
+                          raise ValueError('meaningful native instructions require at least 60 characters')
+                      return parsed, body
+                  except (ValueError, TypeError, RecursionError, yaml.YAMLError) as exc:
+                      errors.append(f'{relative}: invalid OpenCode frontmatter: {exc}')
+                      return None, ''
+
+              def permissions(value, ceiling, relative, exact=False):
+                  if not isinstance(value, dict) or not value or next(iter(value)) != '*' or value.get('*') != 'deny':
+                      errors.append(f'{relative}: permission must begin with the wildcard deny rule')
+                      return None
+                  if set(value) - set(ceiling) or (exact and set(value) != set(ceiling)):
+                      errors.append(f'{relative}: permission keys exceed the approved native role contract')
+                      return None
+                  for key, action in value.items():
+                      if not isinstance(action, str) or action not in rank or rank[action] > rank[ceiling[key]] or (exact and action != ceiling[key]):
+                          errors.append(f'{relative}: permission {key} must not exceed {ceiling[key]}' + (' and source defaults must match exactly' if exact else ''))
+                          return None
+                  return value
+
+              def inspect(owner, is_source, exact):
+                  seed = data(owner, companion)
+                  expected = {'schema_version': '1', 'adapter_version': '1.0.0', 'opencode_version': '1.19.0', 'native_config': 'opencode.json'}
+                  if not isinstance(seed, dict) or set(seed) != set(expected) | {'enabled'} or any(seed.get(key) != value for key, value in expected.items()) or type(seed.get('enabled')) is not bool:
+                      errors.append(f'{companion}: OpenCode companion requires exact supported versions, keys and boolean enabled')
+                  elif seed['enabled']:
+                      navigation = data(owner, '.engineering-backbone/navigation.json')
+                      if not isinstance(navigation, dict) or navigation.get('enabled') is not True:
+                          errors.append(f'{companion}: enabled OpenCode requires active navigation')
+                  config = data(owner, 'opencode.json')
+                  permission = None
+                  instructions = []
+                  if not isinstance(config, dict) or set(config) != {'$schema', 'instructions', 'permission'} or config.get('$schema') != 'https://opencode.ai/config.json':
+                      errors.append('opencode.json: native config requires only the fixed $schema, instructions and permission')
+                  else:
+                      permission = permissions(config['permission'], root_permissions, 'opencode.json', exact)
+                      value = config['instructions']
+                      if not isinstance(value, list) or not 1 <= len(value) <= 64 or any(not isinstance(item, str) for item in value):
+                          errors.append('opencode.json: instructions must be a bounded list of explicit local file paths')
+                      else:
+                          instructions = value
+                          if len(set(value)) != len(value):
+                              errors.append('opencode.json: duplicate instruction paths')
+                          required = source_instructions if is_source else installed_instructions
+                          if not set(required).issubset(value):
+                              errors.append('opencode.json: missing mandatory shared instructions')
+                          for relative in value:
+                              text(owner, relative)
+                  profile_permissions = {}
+                  for role, relative in role_paths.items():
+                      header, body = frontmatter(owner, relative)
+                      if header is None:
+                          continue
+                      if set(header) != {'description', 'mode', 'permission'} or header.get('mode') != 'primary':
+                          errors.append(f'{relative}: agent requires only description, mode primary and permission')
+                      description = header.get('description')
+                      if not isinstance(description, str) or not description.strip() or len(description) > 1024:
+                          errors.append(f'{relative}: description must be a nonempty string of at most 1024 characters')
+                      profile_permissions[role] = permissions(header.get('permission'), budgets[role], relative, exact)
+                  for skill, relative in skill_paths.items():
+                      header, body = frontmatter(owner, relative)
+                      if header is None:
+                          continue
+                      if set(header) != {'name', 'description'} or header.get('name') != skill:
+                          errors.append(f'{relative}: skill requires exact name matching its folder and description')
+                      description = header.get('description')
+                      if not isinstance(description, str) or not description.strip() or len(description) > 1024:
+                          errors.append(f'{relative}: description must be a nonempty string of at most 1024 characters')
+                      if len(body) < 100 or not re.search(r'^#{1,6} ', body, re.M):
+                          errors.append(f'{relative}: meaningful skill body requires headings and at least 100 characters')
+                  if not is_source:
+                      for relative in installed_assets:
+                          text(owner, relative)
+                  return seed, instructions, permission, profile_permissions
+
+              seed, instructions, permission, profile_permissions = inspect(root, source, source)
+
+              def traversal_error(exc):
+                  errors.append('cannot inspect OpenCode native namespace: ' + str(exc))
+
+              # Native config/agent/skill discovery is recursive and can use legacy aliases.
+              # Reject every extra native layer; keep ordinary non-native skill resources.
+              canonical_skills = set(skill_paths.values())
+              canonical_roles = set(role_paths.values())
+              forbidden = {'agent', 'skill', 'plugin', 'plugins', 'tool', 'tools', 'command', 'commands', 'mode', 'modes'}
+              external = []
+              for directory, subdirs, files in os.walk(root, followlinks=False, onerror=traversal_error):
+                  current = Path(directory)
+                  subdirs[:] = [name for name in subdirs if name != '.git']
+                  if source and current == root:
+                      subdirs[:] = [name for name in subdirs if name not in {'artifacts', '.venv', 'venv', 'node_modules'}]
+                  for name in subdirs + files:
+                      path = current / name
+                      relative = path.relative_to(root).as_posix()
+                      folded = name.casefold()
+                      if folded == '.opencode':
+                          if relative != '.opencode':
+                              errors.append(f'{relative}: extra or case-variant OpenCode native configuration layer')
+                          safe(root, relative, directory=True)
+                      if folded in {'opencode.json', 'opencode.jsonc'} and relative not in {'opencode.json', companion}:
+                          errors.append(f'{relative}: extra or case-variant OpenCode native configuration layer')
+                      if folded in {'.agents', '.claude'}:
+                          if name != folded:
+                              errors.append(f'{relative}: case-variant alternate skill namespace')
+                          if safe(root, relative, directory=True):
+                              external.append(path)
+                  if current == root / '.opencode':
+                      for name in subdirs + files:
+                          if name.casefold() in forbidden or (name.casefold() in {'agents', 'skills'} and name not in {'agents', 'skills'}):
+                              errors.append(f'.opencode/{name}: unsupported native alias or executable namespace')
+                  if current == root / '.opencode' or (root / '.opencode') in current.parents:
+                      for name in subdirs:
+                          safe(root, (current / name).relative_to(root).as_posix(), directory=True)
+                      for name in files:
+                          relative = (current / name).relative_to(root).as_posix()
+                          safe(root, relative)
+                          if name.casefold() == 'skill.md' and relative not in canonical_skills:
+                              errors.append(f'{relative}: native SKILL.md must use one of the eight exact canonical paths')
+                          if (root / '.opencode/agents') in (current, *current.parents) and relative not in canonical_roles:
+                              errors.append(f'{relative}: native agent must use one of the five exact canonical paths')
+              for folder in external:
+                  try:
+                      for entry in folder.iterdir():
+                          if entry.name.casefold() == 'skills' and entry.name != 'skills':
+                              errors.append(f'{entry.relative_to(root)}: case-variant alternate skill namespace')
+                  except OSError as exc:
+                      traversal_error(exc)
+                  skills_dir = folder / 'skills'
+                  if not exists(skills_dir):
+                      continue
+                  if safe(root, skills_dir.relative_to(root).as_posix(), directory=True) is None:
+                      continue
+                  for directory, subdirs, files in os.walk(skills_dir, followlinks=False, onerror=traversal_error):
+                      current = Path(directory)
+                      subdirs[:] = [name for name in subdirs if safe(root, (current / name).relative_to(root).as_posix(), directory=True)]
+                      for name in files:
+                          if name.casefold() != 'skill.md':
+                              continue
+                          relative = (current / name).relative_to(root).as_posix()
+                          header, _ = frontmatter(root, relative, managed=False)
+                          if header is None:
+                              continue
+                          native_name = header.get('name')
+                          if native_name is not None and not isinstance(native_name, str):
+                              errors.append(f'{relative}: alternate skill name must be a string')
+                          elif isinstance(native_name, str) and native_name.strip().casefold() in skills:
+                              errors.append(f'{relative}: reserved managed OpenCode skill name')
+              if before:
+                  old_seed, old_instructions, old_permission, old_profiles = inspect(base, source, False)
+                  if isinstance(old_seed, dict) and old_seed.get('enabled') is True and (not isinstance(seed, dict) or seed.get('enabled') is not True):
+                      errors.append('adapter regression: trusted-base enabled OpenCode must remain enabled')
+                  if not set(old_instructions).issubset(instructions):
+                      errors.append('adapter regression: inherited OpenCode instructions cannot disappear')
+                  for label, old, new in [('opencode.json', old_permission, permission)] + [
+                          (role_paths[role], old_profiles.get(role), profile_permissions.get(role)) for role in roles]:
+                      if old is not None and new is not None:
+                          for key in set(old) | set(new):
+                              if rank[new.get(key, 'deny')] > rank[old.get(key, 'deny')]:
+                                  errors.append(f'{label}: inherited OpenCode permission {key} cannot weaken')
+                  inherited = [companion, 'opencode.json'] + ([] if source else list(installed_assets))
+                  native = base / '.opencode'
+                  if native.is_dir() and not native.is_symlink():
+                      for directory, subdirs, files in os.walk(native, followlinks=False, onerror=traversal_error):
+                          for name in files:
+                              inherited.append((Path(directory) / name).relative_to(base).as_posix())
+                  for relative in inherited:
+                      if exists(base / relative) and not exists(root / relative):
+                          errors.append('installed OpenCode package cannot disappear: ' + relative)
+              return errors
+          # END COMPILED OPENCODE GUARD
+          workspace = Path(os.environ['GITHUB_WORKSPACE'])
+          errors = opencode_errors(workspace / 'candidate', workspace / 'trusted-base')
+          for error in errors:
+              print('::error::' + error, file=sys.stderr)
+          if errors:
+              sys.exit(1)
+          OPENCODE_PYTHON
           python -I - <<'QUALITY_PYTHON'
           import os
           import sys
@@ -1145,6 +1503,59 @@ jobs:
                               fail('Required dependency check-kind coverage missing: ' + component['id'])
                       return value
 
+                  opencode_path = '.engineering-backbone/opencode.json'
+                  opencode_procedures = {
+                      'planner': ('implementation-plan',),
+                      'implementer': ('bug-reproduction', 'test-and-quality', 'docs-traceability'),
+                      'reviewer': ('implementation-plan', 'code-review', 'delta-review'),
+                      'quality_checker': ('test-and-quality',),
+                      'triage': ('finding-triage',),
+                  }
+
+                  def opencode(folder, navigation, *, complete=False):
+                      value = json_file(folder, opencode_path, optional=True)
+                      if value is missing:
+                          return None
+                      keys(value, {'schema_version', 'adapter_version', 'enabled',
+                                   'opencode_version', 'native_config'}, 'OpenCode companion')
+                      if (value['schema_version'] != '1' or value['adapter_version'] != '1.0.0'
+                              or type(value['enabled']) is not bool or value['opencode_version'] != '1.19.0'
+                              or value['native_config'] != 'opencode.json'):
+                          fail('Invalid OpenCode companion contract')
+                      native = json_file(folder, 'opencode.json')
+                      keys(native, {'$schema', 'instructions', 'permission'}, 'OpenCode native config')
+                      if native['$schema'] != 'https://opencode.ai/config.json' or not isinstance(native['permission'], dict):
+                          fail('Invalid OpenCode native config contract')
+                      instructions = sequence(native['instructions'], 'OpenCode instructions', nonempty=True, maximum=64)
+                      required = {'AGENTS.md', '.engineering-backbone/project.json'}
+                      required.update({'policy/core.md', 'policy/core.json', 'policy/quality.md',
+                                       'policy/dependencies.md', 'docs/opencode/workflow.md', 'CONTRIBUTING.md'} if source else
+                                      {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
+                                       '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
+                                       '.engineering-backbone/opencode-guide.md'})
+                      if not required <= set(instructions):
+                          fail('OpenCode config omits mandatory instructions')
+                      for name in instructions:
+                          relative(name)
+                          document(folder, name)
+                      if complete or value['enabled']:
+                          if navigation is None or navigation['enabled'] is not True:
+                              fail('Active OpenCode requires active navigation')
+                          for role in roles:
+                              for name in opencode_paths(role, native):
+                                  document(folder, name)
+                      return value
+
+                  def opencode_paths(role, native):
+                      name = role.replace('_', '-')
+                      paths = {opencode_path, 'opencode.json', '.opencode/agents/backbone-' + name + '.md'}
+                      paths.update(native['instructions'])
+                      paths.update({'docs/opencode/workflow.md', 'docs/opencode/opencode-runner-contract.md'} if source else
+                                   {'.engineering-backbone/opencode-guide.md', '.engineering-backbone/opencode-runner-contract.md'})
+                      paths.update('.opencode/skills/' + skill + '/SKILL.md'
+                                   for skill in ('task-intake', *opencode_procedures[role]))
+                      return paths
+
                   def inherited_dependencies(candidate, base):
                       if base is None or not base['enabled']:
                           return
@@ -1179,6 +1590,7 @@ jobs:
                           trusted_base = folder_path(trusted_base)
                       candidate = manifest(root, catalog, approved_root=trusted_base)
                       dependency_candidate = dependencies(root, candidate, approved_root=trusted_base)
+                      opencode_candidate = opencode(root, candidate)
                       if trusted_base is not None:
                           # A legacy approved base without navigation has no extension package.
                           base = manifest(trusted_base, catalog)
@@ -1189,6 +1601,18 @@ jobs:
                               manifest(trusted_base, catalog, complete=True)
                               if candidate != dict(base, enabled=True):
                                   fail('Navigation activation must match the reviewed seed except enabled')
+                          opencode_base = opencode(trusted_base, base)
+                          if opencode_base is not None and opencode_candidate is None:
+                              fail('installed OpenCode package cannot disappear')
+                          if opencode_base is not None and opencode_base['enabled'] and not opencode_candidate['enabled']:
+                              fail('Active OpenCode cannot be disabled')
+                          if (opencode_candidate is not None and opencode_candidate['enabled']
+                                  and (opencode_base is None or not opencode_base['enabled'])):
+                              if opencode_base is None:
+                                  fail('OpenCode activation requires an already reviewed inactive seed')
+                              opencode(trusted_base, base, complete=True)
+                              if opencode_candidate != dict(opencode_base, enabled=True):
+                                  fail('OpenCode activation must match the reviewed seed except enabled')
                           dependency_base = dependencies(trusted_base, base)
                           inherited_dependencies(dependency_candidate, dependency_base)
                           if (dependency_candidate is not None and dependency_candidate['enabled']
@@ -1324,6 +1748,8 @@ jobs:
                       paths = {candidate['documents'][key] for key in references}
                       paths.update({manifest_path, profile_path, workflows_path, request['task_packet'],
                                     '.engineering-backbone/project.json'})
+                      if opencode_candidate is not None and opencode_candidate['enabled']:
+                          paths.update(opencode_paths(packet['role'], json_file(root, 'opencode.json')))
                       prefix = 'standards' if source else '.engineering-backbone/standards'
                       paths.update({prefix + '/sources.json', prefix + '/rules.json',
                                     prefix + '/technologies/sources.json', prefix + '/technologies/rules.json'})

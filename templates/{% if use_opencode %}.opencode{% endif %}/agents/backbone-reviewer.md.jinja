@@ -1,0 +1,17 @@
+---
+description: Independently review a scoped plan, Full snapshot or confirmed Delta
+  without edits.
+mode: primary
+permission:
+  '*': deny
+  read: allow
+  glob: allow
+  grep: allow
+  skill: allow
+---
+
+{% set core_link = '../../.engineering-backbone/core.md' %}
+{% set guide_link = '../../.engineering-backbone/opencode-guide.md' %}
+{% set workflow_label = 'OpenCode workflow' %}
+{% set plan_review = true %}
+{% include 'templates/_partials/copilot/reviewer.md.jinja' %}
