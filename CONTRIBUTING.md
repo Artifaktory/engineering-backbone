@@ -1,7 +1,9 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
-Task Packet. The active dependency-compatibility delivery uses
+Task Packet. The active OpenCode delivery uses
+[its Task Packet](plans/opencode-governance-task.json) and
+[its plan](plans/opencode-governance.md). The preceding dependency-compatibility delivery uses
 [its Task Packet](plans/dependency-compatibility-task.json) and
 [its plan](plans/dependency-compatibility.md). The preceding technology/navigation delivery uses
 [its Task Packet](plans/technology-navigation-task.json) and

@@ -219,3 +219,15 @@ right files is not a substitute for observed client loading and scoped behavior.
 Dependency cases also cover missing/empty/unsafe inputs, incomplete check kinds,
 candidate commands that differ from approved definitions, inactive-seed activation,
 inherited weakening and stale manifest/lockfile/runtime/Dockerfile receipts.
+
+## OpenCode routing
+
+An enabled `.engineering-backbone/opencode.json` requires active navigation and a
+previously reviewed complete inactive seed. An enabled-only activation must retain
+its fixed adapter/runtime contract. The receipt adds the companion, native config,
+every explicit local instruction, OpenCode guide, runner contract, selected native
+primary and applicable procedures. Every role receives task-intake; reviewers also
+receive implementation-plan for independent planning review. Other role prompts are
+not injected. Whole-file hashes detect changed or missing procedures at handoff.
+The installed package cannot disappear and active routing cannot be disabled by an
+ordinary update. Inactive routing makes no claim about direct native discovery.

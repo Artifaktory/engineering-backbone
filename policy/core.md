@@ -77,7 +77,7 @@ Instructions and schema checks do not enforce those controls by themselves.
 
 ## Adapter boundaries
 
-Codex and Copilot profiles express the same roles and baseline. Read-only profiles
+Codex, Copilot and OpenCode profiles express the same roles and baseline. Read-only profiles
 are restrictive defaults, not protection against elevated runtime overrides.
 Native role files do not install or activate GitHub review bots. CI verifies formats
 and generated artifacts; product-specific runtime discovery must be checked
@@ -88,7 +88,7 @@ separately. Preserve stricter local instructions during installation and upgrade
 Read the root instructions and the instructions applicable to each changed path.
 More specific project rules may add restrictions, never remove the inherited
 safety, quality, Git or evidence requirements. Canonical project governance is the
-source of authority; Codex/Copilot adapters, skills and prompts must not create a
+source of authority; Codex/Copilot/OpenCode adapters, skills and prompts must not create a
 contradictory second policy. An unexpected repository override is a finding to
 resolve before acting; personal host settings do not prove project compliance.
 Client-specific discovery and precedence must be verified in the intended client.

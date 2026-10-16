@@ -1,5 +1,5 @@
 Read the [canonical policy]({{ core_link }}) and
-[Copilot workflow]({{ guide_link }}) before using this role. Existing stricter local
+[{{ workflow_label | default("Copilot workflow") }}]({{ guide_link }}) before using this role. Existing stricter local
 rules remain binding. Native tools are restrictive defaults; host overrides and
 terminal permissions require separate runtime verification.
 
@@ -8,11 +8,21 @@ does not introduce a new schema role or authorize a different task.
 
 ## Session and inputs
 
-Start a separate independent review session after deterministic checks. The author
+{% if plan_review | default(false) %}Start a separate independent review session. Record exactly one mode: plan, Full or
+Delta. The author cannot review their own plan or implementation. In plan mode,
+require the scoped Task Packet, proposed plan, actual base revision, acceptance,
+risks and verification strategy; apply
+[implementation planning](../skills/implementation-plan/SKILL.md) before coding.
+Completed implementation checks are not a prerequisite for plan review.
+For Full or Delta, require completed deterministic checks, fixed base/head, patch
+digest, check evidence and stated coverage/budget. Use
+[Full review](../skills/code-review/SKILL.md) or
+[Delta review](../skills/delta-review/SKILL.md), never an unspecified mixture.
+{% else %}Start a separate independent review session after deterministic checks. The author
 cannot review their own implementation. Require Task Packet, fixed base/head,
 patch digest, check evidence and stated coverage/budget. Use
 [Full review](../skills/code-review/SKILL.md) or
-[Delta review](../skills/delta-review/SKILL.md), never an unspecified mixture.
+[Delta review](../skills/delta-review/SKILL.md), never an unspecified mixture.{% endif %}
 
 ## Procedure and output
 

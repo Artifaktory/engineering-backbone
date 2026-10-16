@@ -53,6 +53,42 @@ class ValidationTests(unittest.TestCase):
             self.write(f".github/instructions/backbone-{rule}.instructions.md",
                        f'---\ndescription: Scoped {rule} guidance.\napplyTo: "{pattern}"\n---\nRead the applicable scoped policy and preserve inherited permissions and honest evidence for this task.\n')
         self.write("docs/copilot/workflow.md", "# Copilot workflow\nUse independent review and preserve local gates.\n")
+        # Source completeness includes the optional adapter's canonical source
+        # package even though consumer selection remains independent. Keep these
+        # minimal valid data fixtures so each existing mutation tests its own rule.
+        permissions = {"*": "deny", "read": "allow", "glob": "allow",
+                       "grep": "allow", "skill": "allow"}
+        self.write(".engineering-backbone/opencode.json", {
+            "schema_version": "1", "adapter_version": "1.0.0", "enabled": False,
+            "opencode_version": "1.19.0", "native_config": "opencode.json",
+        })
+        self.write("opencode.json", {
+            "$schema": "https://opencode.ai/config.json",
+            "instructions": ["AGENTS.md", "policy/core.md", "policy/core.json",
+                             "policy/quality.md", "policy/dependencies.md",
+                             ".engineering-backbone/project.json",
+                             "docs/opencode/workflow.md", "CONTRIBUTING.md"],
+            "permission": permissions,
+        })
+        for path in ("policy/quality.md", "policy/dependencies.md", "CONTRIBUTING.md",
+                     "docs/opencode/workflow.md", "docs/opencode/opencode-runner-contract.md"):
+            self.write(path, "# Required shared instructions\nPreserve scoped authority and actual evidence.\n")
+        for role in ("planner", "implementer", "reviewer", "quality-checker", "triage"):
+            budget = dict(permissions)
+            if role == "implementer":
+                budget.update(edit="ask", bash="ask")
+            elif role == "quality-checker":
+                budget.update(bash="ask")
+            header = {"description": "Scoped " + role, "mode": "primary", "permission": budget}
+            self.write(f".opencode/agents/backbone-{role}.md",
+                       "---\n" + json.dumps(header) + "\n---\nRead the scoped Task Packet and shared policy; "
+                       "report actual evidence without expanding permissions or authorization.\n")
+        for skill in ("task-intake", "implementation-plan", "bug-reproduction", "test-and-quality",
+                      "code-review", "finding-triage", "delta-review", "docs-traceability"):
+            self.write(f".opencode/skills/{skill}/SKILL.md",
+                       f"---\nname: {skill}\ndescription: Execute {skill} for a scoped task.\n---\n# Task\n"
+                       "Read the Task Packet, scope and accepted inputs. Report actual evidence, "
+                       "execution status and coverage gaps; stop on missing authorization or context.\n")
         for filename in ("requirements.txt", "requirements.lock"):
             shutil.copy2(BUNDLE / filename, self.root / filename)
         for directory in ("schemas", "examples", "standards"):
@@ -69,6 +105,11 @@ class ValidationTests(unittest.TestCase):
         self.write(relative, data)
 
     def make_consumer(self):
+        # Existing consumer tests exercise legacy Codex/Copilot installations.
+        # Source-only OpenCode completeness must not opt those consumers in.
+        shutil.rmtree(self.root / ".opencode")
+        (self.root / "opencode.json").unlink()
+        (self.root / ".engineering-backbone/opencode.json").unlink()
         managed = self.root / ".engineering-backbone"
         for filename in ("core.json", "core.md"):
             shutil.move(self.root / "policy" / filename, managed / filename)
@@ -295,11 +336,19 @@ class ValidationTests(unittest.TestCase):
             path.write_text(original)
 
     def test_disabled_adapter_does_not_require_entrypoints(self):
+        self.make_consumer()
         self.mutate_json(".engineering-backbone/project.json", lambda data: data.update(agents={"codex": False, "copilot": False}))
         shutil.rmtree(self.root / ".codex")
         shutil.rmtree(self.root / ".github")
         (self.root / "AGENTS.md").unlink()
-        self.assertEqual([], validate_root(self.root))
+        self.assertEqual([], validate_root(self.root, mode="consumer"))
+
+    def test_source_opencode_still_requires_agents_when_legacy_adapters_are_disabled(self):
+        self.mutate_json(".engineering-backbone/project.json", lambda data: data.update(agents={"codex": False, "copilot": False}))
+        shutil.rmtree(self.root / ".codex")
+        shutil.rmtree(self.root / ".github")
+        (self.root / "AGENTS.md").unlink()
+        self.reject("OpenCode path component: AGENTS.md")
 
     def test_trusted_base_enabled_adapters_cannot_be_disabled_or_removed(self):
         for mode in ("source", "consumer"):
@@ -377,7 +426,10 @@ class ValidationTests(unittest.TestCase):
             facts_path.write_text(json.dumps(facts))
             for adapter in ("codex", "copilot"):
                 if adapter == "codex":
-                    (base / "AGENTS.md").unlink()
+                    # Source OpenCode still needs the shared entrypoint; legacy
+                    # consumers with no OpenCode package may omit it entirely.
+                    if mode == "consumer":
+                        (base / "AGENTS.md").unlink()
                     shutil.rmtree(base / ".codex")
                 else:
                     shutil.rmtree(base / ".github")
