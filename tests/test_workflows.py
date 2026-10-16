@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import zipfile
 
 from copier import run_copy, run_update
 import yaml
@@ -26,6 +27,45 @@ PREVIOUS_TREES = {
     'attested-review': '2727bd2a2c0f7a10bca749165f29a9a50021343b',
 }
 HISTORICAL_FIXTURES = ROOT / 'tests/fixtures/historical'
+PREDECESSOR_COMMIT = 'bf8e901ecd066e8e6d1b05f0c56a66081a473c0a'
+PREDECESSOR_TREE = '7e4bc46ec7d4ca4805bcd9f03d49c05d662ebd31'
+PREDECESSOR_DIGEST = 'dddb8af676cd793653263cd126d9b2b5e88a053b6525e50d8424876133f1e615'
+PREDECESSOR_FIXTURE = ROOT / 'tests/fixtures/opencode-predecessor'
+
+
+def predecessor_consumer(destination):
+    """Restore verified rendered data without history, network or source execution."""
+    manifest = json.loads((PREDECESSOR_FIXTURE / 'manifest.json').read_text())
+    if (manifest['format'] != 'engineering-backbone-rendered-predecessor-v1'
+            or manifest['source_commit'] != PREDECESSOR_COMMIT
+            or manifest['source_tree'] != PREDECESSOR_TREE
+            or manifest['rendered_toolchain_sha256'] != PREDECESSOR_DIGEST):
+        raise ValueError('Immediate predecessor fixture provenance mismatch')
+    archive = PREDECESSOR_FIXTURE / 'consumer.zip'
+    if hashlib.sha256(archive.read_bytes()).hexdigest() != manifest['archive_sha256']:
+        raise ValueError('Immediate predecessor archive differs from reviewed bytes')
+    with zipfile.ZipFile(archive) as bundle:
+        entries = bundle.infolist()
+        names = [item.filename for item in entries]
+        if (len(names) != len(set(names)) or set(names) != set(manifest['files'])
+                or len(names) > 64 or sum(item.file_size for item in entries) > 1048576):
+            raise ValueError('Immediate predecessor fixture has unexpected input paths or size')
+        for item in entries:
+            name = item.filename
+            if (name.startswith('/') or '\\' in name or ':' in name
+                    or any(part in ('', '.', '..') for part in name.split('/'))
+                    or item.external_attr >> 16 & 0o170000 != 0o100000
+                    or item.file_size > 524288):
+                raise ValueError('Immediate predecessor fixture contains a nonregular path')
+            content = bundle.read(item)
+            if hashlib.sha256(content).hexdigest() != manifest['files'][name]:
+                raise ValueError('Immediate predecessor rendered file differs: ' + name)
+            path = destination / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+    if bundle_digest(destination) != PREDECESSOR_DIGEST:
+        raise ValueError('Immediate predecessor fixture does not reproduce the exact toolchain')
+
 
 
 def historical_source(destination, version):
@@ -258,6 +298,58 @@ class WorkflowTests(unittest.TestCase):
         shutil.rmtree(self.candidate)
         shutil.copytree(self.trusted, self.candidate)
 
+    def use_immediate_predecessor(self):
+        shutil.rmtree(self.trusted)
+        predecessor_consumer(self.trusted)
+        shutil.rmtree(self.candidate)
+        shutil.copytree(self.trusted, self.candidate)
+
+    def test_immediate_predecessor_unchanged_and_coherent_current_tooling_pass(self):
+        modern = self.workspace / 'current-consumer'
+        shutil.copytree(self.candidate, modern)  # Actual current Copier rendering.
+        self.use_immediate_predecessor()
+        self.assertEqual(bundle_digest(self.trusted), PREDECESSOR_DIGEST)
+        self.assertEqual(bundle_digest(self.candidate), PREDECESSOR_DIGEST)
+        unchanged = self.validate()
+        self.assertEqual(unchanged.returncode, 0, unchanged.stdout + unchanged.stderr)
+        shutil.rmtree(self.candidate)
+        shutil.copytree(modern, self.candidate)
+        current = STEPS['Validate generated consumer with trusted tooling']['env']['CURRENT_TOOLCHAIN_SHA256']
+        self.assertEqual(bundle_digest(self.candidate), current)
+        upgraded = self.validate()
+        self.assertEqual(upgraded.returncode, 0, upgraded.stdout + upgraded.stderr)
+
+    def test_immediate_predecessor_unknown_and_mixed_tooling_stay_rejected(self):
+        self.use_immediate_predecessor()
+        marker = self.workspace / 'unapproved-predecessor-validator-executed'
+        validator = self.candidate / '.engineering-backbone/validate.py'
+        original = validator.read_bytes()
+        validator.write_text(f'from pathlib import Path\nPath({str(marker)!r}).touch()\n')
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('Candidate toolchain fingerprint', result.stderr)
+        self.assertFalse(marker.exists())
+        shutil.copy2(validator, self.trusted / '.engineering-backbone/validate.py')
+        validator.write_bytes(original)
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('Trusted base toolchain fingerprint', result.stderr)
+        self.assertFalse(marker.exists())
+        (self.trusted / '.engineering-backbone/validate.py').write_bytes(original)
+        historical = self.workspace / 'bootstrap-consumer'
+        run_copy(str(self.legacy_source('bootstrap')), historical,
+                 defaults=True, quiet=True, skip_tasks=True)
+        # Both complete versions are approved; their mixed tuple is not. The
+        # immediate predecessor/current tuples differ only in validate.py, so use
+        # an actually different approved historical schema for this negative case.
+        shutil.copy2(historical / '.engineering-backbone/schemas/project.schema.json',
+                     self.candidate / '.engineering-backbone/schemas/project.schema.json')
+        self.assertNotEqual(bundle_digest(self.candidate), PREDECESSOR_DIGEST)
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn('Candidate toolchain fingerprint', result.stderr)
+        self.assertFalse(marker.exists())
+
     def test_approved_historical_copies_match_authority_and_remain_usable(self):
         authority = STEPS['Validate generated consumer with trusted tooling']['env']
         previous = json.loads(authority['PREVIOUS_TOOLCHAIN_SHA256'])
@@ -270,9 +362,9 @@ class WorkflowTests(unittest.TestCase):
                 self.assertEqual(observed[-1], manifest['versions'][version]['rendered_toolchain_sha256'])
                 result = self.validate()
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        # The three original fixture identities remain exact; the reviewed
-        # preceding reviewed validators remain usable during the technology
-        # and navigation upgrade. Keep the authority set explicit.
+        # Preserve the original identities and each explicitly reviewed merged
+        # predecessor, including the dependency/navigation tooling immediately
+        # before OpenCode. Never infer authority from candidate-provided hashes.
         preceding = "5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a"
         merged_copilot = "91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321"
         merged_codex_security = "ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb"
@@ -282,6 +374,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(set(previous), set(observed) | {
             preceding, merged_copilot, merged_codex_security,
             merged_workflow_kit, merged_quality_framework, merged_technology_navigation,
+            PREDECESSOR_DIGEST,
         })
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
 
@@ -303,13 +396,15 @@ class WorkflowTests(unittest.TestCase):
         git(checkout, 'config', 'core.autocrlf', str(autocrlf).lower())
         git(checkout, 'checkout', '-f', 'HEAD')
         self.assertEqual(git(checkout, 'rev-list', '--count', 'HEAD'), '1')
-        for tree in PREVIOUS_TREES.values():
+        for tree in (*PREVIOUS_TREES.values(), PREDECESSOR_TREE, PREDECESSOR_COMMIT):
             probe = subprocess.run(['git', 'cat-file', '-e', tree], cwd=checkout, capture_output=True)
             self.assertNotEqual(probe.returncode, 0, tree)
         result = subprocess.run([
             sys.executable, '-m', 'unittest',
             'tests.test_workflows.WorkflowTests.test_approved_historical_copies_match_authority_and_remain_usable',
             'tests.test_workflows.WorkflowTests.test_real_copier_upgrade_accepts_coherent_tooling_and_preserves_local_facts',
+            'tests.test_workflows.WorkflowTests.test_immediate_predecessor_unchanged_and_coherent_current_tooling_pass',
+            'tests.test_workflows.WorkflowTests.test_immediate_predecessor_unknown_and_mixed_tooling_stay_rejected',
             '-v',
         ], cwd=checkout, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
