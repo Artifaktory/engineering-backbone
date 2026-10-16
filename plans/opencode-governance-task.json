@@ -52,7 +52,10 @@
         "docs/reviews/opencode-reconstruction-repair-checks.md",
         "docs/reviews/opencode-reconstruction-full-behavior.md",
         "docs/reviews/opencode-reconstruction-full-security.md",
-        "docs/reviews/opencode-reconstruction-triage.md"
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
       ]
     },
     {
@@ -65,7 +68,10 @@
         "docs/reviews/opencode-reconstruction-repair-checks.md",
         "docs/reviews/opencode-reconstruction-full-behavior.md",
         "docs/reviews/opencode-reconstruction-full-security.md",
-        "docs/reviews/opencode-reconstruction-triage.md"
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
       ]
     },
     {
@@ -78,7 +84,10 @@
         "docs/reviews/opencode-reconstruction-repair-checks.md",
         "docs/reviews/opencode-reconstruction-full-behavior.md",
         "docs/reviews/opencode-reconstruction-full-security.md",
-        "docs/reviews/opencode-reconstruction-triage.md"
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
       ]
     },
     {
@@ -92,7 +101,10 @@
         "docs/reviews/opencode-reconstruction-full-behavior.md",
         "docs/reviews/opencode-reconstruction-full-security.md",
         "docs/reviews/opencode-reconstruction-triage.md",
-        "docs/reviews/opencode-reconstruction-delta-security.md"
+        "docs/reviews/opencode-reconstruction-delta-security.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
       ]
     },
     {
@@ -102,17 +114,25 @@
       "status": "pending",
       "evidence": [
         "docs/reviews/opencode-publication-state.md",
-        "docs/reviews/opencode-reconstruction-repair-checks.md"
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
       ]
     },
     {
       "id": "AC-6",
       "description": "Native Windows/Linux and real-model qualification have separate honest observed states; unsupported activation remains blocked.",
       "verification": "hybrid",
-      "status": "pending",
+      "status": "pass",
       "evidence": [
         "docs/reviews/opencode-publication-state.md",
-        "docs/reviews/opencode-reconstruction-repair-checks.md"
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
       ]
     },
     {
@@ -126,7 +146,10 @@
         "docs/reviews/opencode-reconstruction-full-behavior.md",
         "docs/reviews/opencode-reconstruction-full-security.md",
         "docs/reviews/opencode-reconstruction-triage.md",
-        "docs/reviews/opencode-reconstruction-delta-security.md"
+        "docs/reviews/opencode-reconstruction-delta-security.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
       ]
     },
     {
@@ -136,7 +159,11 @@
       "status": "pending",
       "evidence": [
         "docs/reviews/opencode-publication-state.md",
-        "docs/reviews/opencode-reconstruction-repair-checks.md"
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
       ]
     }
   ],

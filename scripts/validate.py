@@ -1912,6 +1912,19 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                     opencode(trusted_base, base, complete=True)
                     if opencode_candidate != dict(opencode_base, enabled=True):
                         fail('OpenCode activation must match the reviewed seed except enabled')
+                    # Activation admits the complete reviewed package, not just the
+                    # current task's selected role or newly hashed candidate bytes.
+                    seed_native = json_file(trusted_base, 'opencode.json')
+                    candidate_native = json_file(root, 'opencode.json')
+                    seed_paths = set().union(*(opencode_paths(role, seed_native) for role in roles))
+                    candidate_paths = set().union(*(opencode_paths(role, candidate_native) for role in roles))
+                    if candidate_paths != seed_paths:
+                        fail('OpenCode activation must match the reviewed seed input paths')
+                    # The exact companion comparison above permits only enabled to
+                    # change; every other input retains its reviewed raw bytes.
+                    for name in sorted(seed_paths - {opencode_path}):
+                        if read(root, name) != read(trusted_base, name):
+                            fail('OpenCode activation must match the reviewed seed input: ' + name)
                 dependency_base = dependencies(trusted_base, base)
                 inherited_dependencies(dependency_candidate, dependency_base)
                 if (dependency_candidate is not None and dependency_candidate['enabled']

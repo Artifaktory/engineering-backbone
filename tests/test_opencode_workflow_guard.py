@@ -1,7 +1,9 @@
 """Trusted compiled OpenCode checks precede an approved predecessor validator."""
 from pathlib import Path
+import json
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -10,6 +12,7 @@ from copier import run_copy
 import yaml
 
 from scripts.compile_toolchain_fingerprint import FILES, guard_function, replace_opencode_guard
+from tests import test_navigation_integration as navigation_tests
 from tests.test_opencode_validation import opencode_fixture
 from tests.test_workflows import historical_source, run_shell_payload
 
@@ -138,6 +141,65 @@ class OpenCodeWorkflowGuardTests(unittest.TestCase):
         path.write_text(original.replace('"bash": "ask"', '"bash": "deny"'))
         (self.candidate / '.engineering-backbone/opencode.json').unlink()
         self.reject('installed OpenCode package cannot disappear')
+
+
+class OpenCodeActivationWorkflowTests(unittest.TestCase):
+    # Reuse real Copier output and a complete active navigation/quality fixture,
+    # without inheriting or rerunning the other integration test methods.
+    setUp = navigation_tests.NavigationCopierIntegrationTests.setUp
+    copy = navigation_tests.NavigationCopierIntegrationTests.copy
+    active_cli_fixture = navigation_tests.NavigationCopierIntegrationTests.active_cli_fixture
+    run_guard = OpenCodeWorkflowGuardTests.run_guard
+
+    def test_compiled_workflow_binds_activation_before_approved_old_validator(self):
+        target, _, _, _ = self.active_cli_fixture()
+        self.candidate = self.workspace / 'candidate'
+        target.rename(self.candidate)
+        previous = {path.relative_to(self.candidate): path.read_bytes()
+                    for path in self.candidate.rglob('*') if path.is_file()}
+        opencode_fixture(self.candidate)
+        for relative, content in previous.items():
+            (self.candidate / relative).write_bytes(content)
+
+        old_source = self.workspace / 'old-source'
+        historical_source(old_source, 'attested-review')
+        old_consumer = self.workspace / 'old-consumer'
+        run_copy(str(old_source), old_consumer, defaults=True, quiet=True, skip_tasks=True)
+        for relative in FILES:
+            shutil.copyfile(old_consumer / '.engineering-backbone' / relative,
+                            self.candidate / '.engineering-backbone' / relative)
+        self.base = self.workspace / 'trusted-base'
+        shutil.copytree(self.candidate, self.base)
+        companion = self.candidate / '.engineering-backbone/opencode.json'
+        value = json.loads(companion.read_text())
+        value['enabled'] = True
+        companion.write_text(json.dumps(value) + '\n')
+        workflow = yaml.safe_load((ROOT / '.github/workflows/governance-checks.yml').read_text())
+        self.step = next(step for step in workflow['jobs']['validate']['steps']
+                         if step.get('name') == 'Validate generated consumer with trusted tooling')
+        unchanged = self.run_guard()
+        self.assertEqual(unchanged.returncode, 0, unchanged.stdout + unchanged.stderr)
+        self.assertIn('PASS: structural contracts validated', unchanged.stdout)
+
+        for name in ('.opencode/agents/backbone-implementer.md',
+                     '.opencode/skills/finding-triage/SKILL.md'):
+            with self.subTest(changed_input=name):
+                path = self.candidate / name
+                original = path.read_bytes()
+                try:
+                    path.write_bytes(original + b'\nHarmless changed instruction.\n')
+                    old = subprocess.run([
+                        sys.executable, '-I', str(self.base / '.engineering-backbone/validate.py'),
+                        '--root', str(self.candidate), '--trusted-base', str(self.base),
+                    ], cwd=self.workspace, capture_output=True, text=True)
+                    self.assertEqual(old.returncode, 0, old.stdout + old.stderr)
+                    rejected = self.run_guard()
+                    self.assertNotEqual(rejected.returncode, 0, rejected.stdout + rejected.stderr)
+                    self.assertIn('OpenCode activation must match the reviewed seed input: ' + name,
+                                  rejected.stderr)
+                    self.assertNotIn('PASS: structural contracts validated', rejected.stdout)
+                finally:
+                    path.write_bytes(original)
 
 
 if __name__ == '__main__':

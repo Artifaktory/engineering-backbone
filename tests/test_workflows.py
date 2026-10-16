@@ -362,19 +362,21 @@ class WorkflowTests(unittest.TestCase):
                 self.assertEqual(observed[-1], manifest['versions'][version]['rendered_toolchain_sha256'])
                 result = self.validate()
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        # Preserve the original identities and each explicitly reviewed merged
-        # predecessor, including the dependency/navigation tooling immediately
-        # before OpenCode. Never infer authority from candidate-provided hashes.
+        # Preserve original and explicitly reviewed predecessor identities,
+        # including merged dependency/navigation tooling and the reviewed
+        # OpenCode PR snapshot before its activation repair. Never infer
+        # authority from candidate-provided hashes.
         preceding = "5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a"
         merged_copilot = "91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321"
         merged_codex_security = "ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb"
         merged_workflow_kit = "7e3d27e21a8db1b1320ded8b8c499dd6033a3f45b0b4b7ff519316612f83ddeb"
         merged_quality_framework = "88d2d1e89cbff9fd925cac1a235de60867ae90a9ae231cde6cbc0a5eed8ee9b2"
         merged_technology_navigation = "e4cdae824eb4f1ee9286f8fd8253b510a84ea7729e12fa96c8b5289b38d18450"
+        reviewed_opencode_seed = "a3cde1a611e3408d2f3801da7d6c0e723a998a98ac3a551b7485413f4d9ef896"
         self.assertEqual(set(previous), set(observed) | {
             preceding, merged_copilot, merged_codex_security,
             merged_workflow_kit, merged_quality_framework, merged_technology_navigation,
-            PREDECESSOR_DIGEST,
+            PREDECESSOR_DIGEST, reviewed_opencode_seed,
         })
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
 

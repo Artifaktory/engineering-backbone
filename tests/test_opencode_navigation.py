@@ -107,6 +107,73 @@ class OpenCodeNavigationTests(navigation_fixture.NavigationTests):
         (self.root / '.engineering-backbone/opencode.json').unlink()
         self.reject('installed OpenCode package cannot disappear', trusted_base=base)
 
+    def test_opencode_activation_binds_every_reviewed_package_input(self):
+        # The task selects implementer; other roles and their procedures must
+        # still belong to the same reviewed seed when the package is activated.
+        config = json.loads((self.root / 'opencode.json').read_text())
+        config['instructions'].append('docs/native-local.md')
+        self.write('docs/native-local.md', '# Reviewed local instructions\n')
+        self.write_json('opencode.json', config)
+        base = self.workspace / 'inactive-seed'
+        shutil.copytree(self.root, base)
+        self.write_json('.engineering-backbone/opencode.json', dict(self.companion, enabled=False), base)
+        self.resolve_ok(trusted_base=base)
+        names = [
+            'opencode.json', *config['instructions'],
+            '.engineering-backbone/opencode-runner-contract.md',
+            *('.opencode/agents/backbone-' + role.replace('_', '-') + '.md' for role in ROLES),
+            *('.opencode/skills/' + skill + '/SKILL.md' for skill in (
+                'task-intake', 'implementation-plan', 'bug-reproduction', 'test-and-quality',
+                'code-review', 'finding-triage', 'delta-review', 'docs-traceability')),
+        ]
+        for name in names:
+            with self.subTest(changed_input=name):
+                path = self.root / name
+                original = path.read_bytes()
+                try:
+                    # Even a parse-equivalent JSON change must not be admitted
+                    # as flag-only activation of the reviewed input bytes.
+                    path.write_bytes(original + b'\n')
+                    self.reject('OpenCode activation must match the reviewed seed input: ' + name,
+                                self.request(), trusted_base=base)
+                finally:
+                    path.write_bytes(original)
+        self.resolve_ok(trusted_base=base)
+
+    def test_opencode_activation_rejects_added_or_removed_instruction_paths(self):
+        config = json.loads((self.root / 'opencode.json').read_text())
+        config['instructions'].append('docs/native-local.md')
+        self.write('docs/native-local.md', '# Reviewed local instructions\n')
+        self.write('docs/another-local.md', '# Other local instructions\n')
+        self.write_json('opencode.json', config)
+        base = self.workspace / 'inactive-seed'
+        shutil.copytree(self.root, base)
+        self.write_json('.engineering-backbone/opencode.json', dict(self.companion, enabled=False), base)
+        for instructions in (config['instructions'][:-1],
+                             [*config['instructions'], 'docs/another-local.md']):
+            with self.subTest(instructions=instructions):
+                self.write_json('opencode.json', dict(config, instructions=instructions))
+                self.reject('OpenCode activation must match the reviewed seed input paths',
+                            self.request(), trusted_base=base)
+
+    def test_opencode_seed_preparation_active_updates_and_unrelated_activation_edits_remain_valid(self):
+        base = self.workspace / 'reviewed-package'
+        shutil.copytree(self.root, base)
+        name = '.opencode/agents/backbone-triage.md'
+        self.write(name, '# Reviewed replacement triage instructions\n')
+        # Already-active updates retain the existing contract; they are not a
+        # second inactive-to-active transition.
+        self.resolve_ok(trusted_base=base)
+        inactive = dict(self.companion, enabled=False)
+        self.write_json('.engineering-backbone/opencode.json', inactive, base)
+        self.write_json('.engineering-backbone/opencode.json', inactive)
+        self.resolve_ok(trusted_base=base)
+        # Finish reviewing the inactive seed before the separate flag change.
+        shutil.copyfile(self.root / name, base / name)
+        self.write_json('.engineering-backbone/opencode.json', self.companion)
+        self.write('src/backend/main.py', 'Unrelated application change.\n')
+        self.resolve_ok(trusted_base=base)
+
     def test_opencode_explicit_local_instructions_are_bound_and_unsafe_inputs_reject(self):
         config = json.loads((self.root / 'opencode.json').read_text())
         self.write('docs/native-local.md', '# Extra local rules\nDo these as well.\n')

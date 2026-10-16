@@ -257,3 +257,225 @@ delegation qualification, activation, merge, release, deployment, settings chang
 or automatic downstream adoption is authorized by this closure. This session
 appended only this addendum to its existing triage record; it made no product,
 test, immutable-snapshot or remote changes.
+
+## Remote finding triage — 2026-10-16
+
+**REC-BB-REMOTE-001 is confirmed, P1. The published PR has an open repair
+obligation; it must not be reported as clean or complete until the bounded repair,
+verification and independent Delta are finished.** This new evidence does not
+reopen REC-BB-SEC-001 / REC-BB-FUNC-001, whose predecessor repair remains closed.
+The earlier reports and closure above are preserved unchanged.
+
+### Remote input and inspected snapshot
+
+- PR: [Artifaktory/engineering-backbone#16](https://github.com/Artifaktory/engineering-backbone/pull/16).
+- Codex advisory review: `5546404425`; inline comment `4293569208`,
+  [full-seed activation finding](https://github.com/Artifaktory/engineering-backbone/pull/16#discussion_r4293569208).
+- Remote reviewed head: `f22ef07ef018f41f487450465b757b658da6b396`.
+- Equivalent inspected local head: `a821da64c3468ebafe0e8586fc669b062b408907`.
+- Identical tree: `ee1db8863633bc54765b32aa15e0a03a0452f57b`.
+- Base: `bf8e901ecd066e8e6d1b05f0c56a66081a473c0a`.
+- Binary base-to-head patch SHA-256:
+  `86fc9df30fde86df576fc8aa0e68724b2f224464b4c4f048545b31e6d5104366`.
+- Supplied remote artifact: `artifacts/bb-remote-review.json` in the orchestration
+  workspace; SHA-256
+  `0b657fe36e5367a18b4d2dcc6254bf8201170cc1d27c7fe6ece0af4569917e78`.
+
+Verified the local head/tree, clean worktree and patch hash, and read the remote
+comment from the supplied artifact. The remote result is advisory; the following
+classification rests on independent inspection and a bounded data-only
+reproduction. No native OpenCode or malicious dynamic configuration was executed.
+
+### REC-BB-REMOTE-001 — incomplete reviewed-seed binding at activation
+
+- Classification: **confirmed**. Priority: **P1**. Confidence: high.
+- Category: reviewed-seed integrity / activation admission.
+- Location: `scripts/navigation.py:517-524`, especially the companion-only
+  comparison at lines 523-524, and the generated copies of that resolver in
+  `scripts/quality_framework.py`, `scripts/validate.py` and the trusted workflow.
+- Trigger: a trusted consumer has a complete inactive OpenCode seed and active
+  navigation. A candidate enables OpenCode while modifying native configuration,
+  role instructions or skill content in the same transition.
+- Execution path: `opencode(trusted_base, base, complete=True)` establishes that
+  the seed is structurally complete. The subsequent equality check compares only
+  companion dictionaries, with `enabled=True` substituted. It never compares
+  the referenced package inputs against their reviewed seed bytes. Candidate
+  resolution then hashes and returns the changed candidate inputs.
+- Impact: the activation gate accepts instructions that were not part of the
+  reviewed inactive seed, despite the flag-only activation contract. New receipt
+  hashes record the substitution but do not establish seed equality. This is a
+  structural admission defect; it does not prove automatic AO activation, model
+  execution, OS confinement bypass or defeat of AO's separate pinned binding.
+- Contract relation: the approved plan requires a reviewed activation seed;
+  `docs/opencode/workflow.md:38-43` explicitly requires completing/reviewing that
+  seed, activating navigation first, then changing only the companion's enabled
+  flag in a separate activation. AC-2's inherited guard and AC-3's context
+  admission guarantees are affected.
+- Diff causation: this PR introduces the OpenCode activation branch and package
+  routing. The missing comparison is part of that new branch, not an unrelated
+  pre-existing navigation or dependency activation requirement.
+
+Triage executed a read-only Python harness using the existing realistic navigation
+fixture and valid OpenCode metadata fixture. It preserved the fixture's existing
+navigation/project facts, copied a complete inactive base, enabled only the
+candidate companion, then separately applied harmless input mutations. Each
+scenario called both `opencode_errors(candidate, base)` and the existing resolver
+with `trusted_base=base` and the same task request. The command used
+`PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B` and exited 0.
+
+| Scenario | Static OpenCode errors | Resolver errors | Changed input in returned receipt |
+| --- | --- | --- | --- |
+| Only companion enabled flag changed | None | None | Not applicable; positive control |
+| Benign prose appended to implementer role | None | None | Candidate hash accepted |
+| Benign prose appended to task-intake skill | None | None | Candidate hash accepted |
+| Additional local instruction added to native config | None | None | New instruction hash accepted |
+
+All fixture mutations occurred in temporary directories and were removed by the
+fixture cleanup. There were no repository implementation/test edits or native
+runtime invocations. This establishes the reported failure without an adversarial
+native reproduction. No submitted finding is rejected or requires a human choice.
+
+### Bounded repair, checks and Delta
+
+The separate implementer may enforce the existing flag-only activation contract:
+
+1. At the inactive-to-active OpenCode transition, compare the complete union of
+   package inputs across **all five roles**, using the existing `opencode_paths`
+   definition for both base and candidate. Compare path membership and raw bytes,
+   with existing bounded safe reads/path validation. This includes all native
+   roles/procedures, root configuration, explicit instructions and runner/guide
+   inputs. Do not limit the comparison to the current task's selected role.
+2. Handle the companion separately with its existing exact parsed equality except
+   `enabled`; its intentional flag change must not fail raw-byte equality. Every
+   other package input must match the reviewed inactive seed. A changed native
+   instruction list or added/removed referenced input must fail. Preserve
+   structural, permission and inherited restrictions.
+3. Restrict the new equality gate to activation. Preserve existing inactive seed
+   preparation, normal already-active updates, legacy absence and unrelated
+   repository changes. Do not introduce a new approval mechanism, runtime
+   qualification, candidate execution or a wider navigation/dependency policy.
+4. Add meaningful positive/negative trusted-base tests: unchanged seed plus flag
+   succeeds; role and skill content changes fail, including a role/procedure not
+   selected by the current task; native config/explicit instruction and guide or
+   runner changes fail; legitimate non-activation cases retain their documented
+   behavior. Verify candidate changes cannot produce a successful activation
+   receipt merely by recomputing its hashes. Exercise the compiled trusted
+   workflow path as well as the resolver so an approved older validator cannot
+   bypass the new check.
+5. Regenerate navigation, quality and toolchain outputs in the documented order;
+   keep generated code derived from the source. Preserve exact approved merged
+   predecessor identities and negative fingerprint admission tests. Run focused
+   activation/workflow cases, then the complete unittest suite, current and exact
+   predecessor validators, four compiler checks, dependency check, Actionlint
+   and whitespace check. Record actual exits and frozen repaired-source identity.
+
+Independent Delta must bind `REC-BB-REMOTE-001`, the remote reviewed head above
+(or its explicitly tree-equivalent local head), the new frozen repair head/tree
+and exact delta digest. Review complete input/path equality, the companion flag
+exception, unselected-role coverage, generated guard parity, both admission paths
+and direct regressions in inactive, already-active and legacy behavior. This
+restores the already approved activation contract; no new Full is needed for
+this bounded scope. A broader contract/trust change would require rescoping.
+The prior predecessor-fingerprint finding stays closed unless the repair causes
+a concrete new regression in that path.
+
+### Gate handling
+
+The root reports that all five actual remote CI jobs on `f22ef07...` passed.
+Those executions remain successful evidence on that head; they do not close this
+newly reproduced defect. After the repair/check/Delta chain, the root may update
+the authorized PR, verify remote tree identity and inspect actual CI and remote
+review outcomes on the new head. Update acceptance and review records to preserve
+the interim open finding. The already published PR need not be deleted or closed.
+
+This is a second bounded repair obligation in the reconstruction chain, within
+the recorded eight-iteration budget. AO's independent implementation/full gates
+remain separate. No merge, release, settings change, real-model qualification,
+governed activation or automatic downstream adoption is authorized. This triage
+session appended only this remote section and made no commit or remote write.
+
+## Remote repair closure — 2026-10-16
+
+**REC-BB-REMOTE-001 is closed as repaired and independently verified on the
+snapshot below. The existing authorized PR may now be updated.** This closure
+supersedes the open repair obligation in the preceding section while preserving
+all earlier reports, findings and decisions. `REC-BB-SEC-001` and its duplicate
+`REC-BB-FUNC-001` remain closed. Refreshed remote CI/review and the paired AO gates
+are not completed by this local closure.
+
+### Bound final evidence
+
+- Prior local head: `a821da64c3468ebafe0e8586fc669b062b408907`, equivalent to
+  remote `f22ef07ef018f41f487450465b757b658da6b396`; both use tree
+  `ee1db8863633bc54765b32aa15e0a03a0452f57b`.
+- Independently quality-tested repair:
+  `4a0a4310dc54aba062654ab889ac16f8ac42558c`, tree
+  `4f573d91ff80039f789866f776d6d4f44bbec1e6`.
+- Independent Delta head: `4e4c1f6456bbd349818e5faf8969b938e617ed50`, tree
+  `dad7809e8ad92d808d1541144406db8ed9d95014`.
+- Prior-local-to-Delta binary patch SHA-256:
+  `3be75432158141d2d3384db2b1096c858ab32d7a41ce747946fecb79b9ed175f`.
+- Base-to-Delta binary patch SHA-256:
+  `d3a3ff4fce3ca105e0a86ab2ddb89b0fe6d0246ce1cf0b239af2a3b8fb6fb47f`.
+- Independent quality report: `opencode-remote-repair-checks.md`, SHA-256
+  `6442dff53e9f680875467e05e1f8b58dd1982399cbae06a3c6a86ce25445f20f`.
+- Completed independent Delta: `opencode-remote-delta-security.md`, SHA-256
+  `704dbcf8b21fc3e065e4efd349ee2b69c91841f4ffcf4076f69b63eb616774b9`.
+
+Triage read both final reports, verified their hashes, and independently checked
+the detached Delta snapshot's head/tree, both patch hashes and clean state. Only
+the author and independent quality records differ between the quality-tested
+source and Delta-reviewed head; no product/test change intervened. The completed
+Delta reports the confirmed finding repaired and no direct repair regression.
+
+The fix applies complete seed/candidate path-set and raw-byte equality across all
+five native roles and eight procedures, root native configuration, explicit
+instructions, guide and runner contract. The companion retains its exact parsed
+flag-only exception. The check runs at inactive-to-active admission; inactive
+preparation, already-active updates, legacy absence and unrelated edits retain
+their documented behavior. The reviewed compiled workflow also rejects changed
+activation inputs with an approved older validator, before that validator can
+accept them. This addresses the actual trigger without a new authority or runtime
+qualification mechanism.
+
+The Delta reviewer independently passed **21 focused tests in 21.697 seconds**
+and three compiler/fingerprint parity checks, all exit 0. Its coverage includes
+23 package-input mutations, unselected roles/procedures, changed instruction
+references, positive lifecycle controls and compiled old-validator enforcement.
+Fresh old/new Copier rendering verified both tooling identities. Previous
+authority entries remain intact, including the merged predecessor; only the
+verified former current identity is added as the current generated tooling moves
+to the repaired digest. Unknown/mixed-tooling negatives remain enforced.
+
+Triage independently matched all ten actual quality logs and zero exits to the
+manifest SHA-256
+`62ec19574a1f4b720b71cad2588d1beb6a5a7a400efe904ecf2d33e2cf95334b`.
+The complete log SHA-256
+`2af14ce059ae3ee2f1d792e85abfcc263488594762650156188ec4a24f3e5d17`
+ends with **418 tests in 364.422 seconds, OK**. All nine additional required
+gates passed. These are the independent quality session's executions; triage did
+not rerun or relabel the earlier suites. The original failure, actual repair
+coverage, semantic Delta and complete required checks support closing this ID.
+
+### Final gate disposition
+
+| Item | Disposition |
+| --- | --- |
+| REC-BB-REMOTE-001, triaged P1 | Closed: full reviewed-seed activation equality repaired and independently verified. |
+| REC-BB-SEC-001 / REC-BB-FUNC-001 | Remain closed; relevant predecessor authority and rejection regressions still pass. |
+| New confirmed repair findings or human decisions | None. No further repair or Full review is required for this unchanged bounded implementation. |
+| Local repair/check/Delta/triage chain | Complete. Existing PR update is authorized by the user's original instruction. |
+| Initial five remote jobs, including Windows/native and container evidence | Successful evidence on the original remote head only. Native input-continuity checks preserve their stated observations, not an unexecuted new-head CI result. |
+| Updated remote tree, refreshed CI and remote-review outcomes | Pending. Verify the actual published tree, request the scoped review with exact repair bindings and inspect real outcomes before claiming completion. |
+| Paired AO implementation and gates | Separate and still outside this Backbone closure. |
+
+The root may persist the Delta/closure records, reconcile acceptance evidence and
+update PR #16 with the repaired tree. Keep the interim finding and its closure
+visible; triage any further concrete remote finding before repair. No additional
+native/adversarial execution is required merely by this local closure.
+
+This decision supplies no human merge/release approval and authorizes no new
+activation, deployment, settings change, downstream adoption, real-model
+qualification or OS-confinement claim. Triage appended only this closure to its
+own existing report, preserving the prior history exactly; no implementation,
+tests, commit or remote state was changed by this session.

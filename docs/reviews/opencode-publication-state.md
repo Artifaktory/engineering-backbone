@@ -53,3 +53,42 @@ Records: [Full behavior](opencode-reconstruction-full-behavior.md),
 The paired AO work is tracked on
 [its scoped work branch](https://github.com/Binary-Refinery/agent-orchestrator/tree/feat/opencode-backbone-governance).
 Its tests and reviews are separate evidence; this record does not certify them.
+
+## Preparation for the reviewed activation repair update
+
+The initial published PR #16 used remote head
+`f22ef07ef018f41f487450465b757b658da6b396`, tree-equivalent to local
+`a821da64c3468ebafe0e8586fc669b062b408907`. All five actual CI jobs passed,
+including 414 foundation tests, actual Linux/Windows native smoke, and Docker
+build/offline Copier checks. The [initial remote record](opencode-remote-initial-checks.md)
+preserves those results and their exact source binding.
+
+The advisory remote review then identified REC-BB-REMOTE-001: activation could
+change the reviewed seed's native inputs while enabling its companion. Separate
+triage confirmed it. The bounded repair now compares the complete five-role
+package's path set and raw bytes, with only the companion's parsed enabled flag
+exception. The [repair record](opencode-remote-activation-repair.md) retains the
+failed-before regression and passing focused checks.
+
+Fresh [independent quality checks](opencode-remote-repair-checks.md) passed
+**418 tests and all nine additional gates** on commit
+`4a0a4310dc54aba062654ab889ac16f8ac42558c`. The independent
+[Delta](opencode-remote-delta-security.md) reviewed commit
+`4e4c1f6456bbd349818e5faf8969b938e617ed50`, tree
+`dad7809e8ad92d808d1541144406db8ed9d95014`, with only evidence records added
+after the tested source. Separate [closure triage](opencode-reconstruction-triage.md)
+closed REC-BB-REMOTE-001 without reopening the previously closed predecessor
+finding. These records supersede the interim open finding; they do not erase it.
+
+| Acceptance at repair-update preparation | State and evidence |
+| --- | --- |
+| AC-1 through AC-4 and AC-7 | PASS for the recorded local scope: complete repaired-source checks, both original Fulls, separate triage and both bounded Deltas. |
+| AC-5 | PENDING: the paired AO reviews found a Windows test-selection issue whose separate repair/check/Delta chain is still underway. |
+| AC-6 | PASS for distinct evidence states: actual Linux and Windows smoke passed; all 22 native inputs and the runner remain unchanged, with Windows CRLF correspondence explicitly checked. No real-model tuple is qualified or installed, and this is no OS-confinement claim. |
+| AC-8 | PENDING for this update: verify the new remote tree and inspect refreshed CI and scoped advisory review. Earlier remote successes are not relabeled as runs on the repaired head. |
+
+The source base remains unchanged. The final update adds only closure/acceptance
+records after the reviewed Delta; it introduces no further product change.
+Actual subsequent remote outcomes belong in the PR discussion so reporting them
+does not create another untested source revision. Human merge/release approval,
+separate downstream adoption and explicit qualification remain required.
