@@ -1,0 +1,207 @@
+{
+  "schema_version": "1",
+  "id": "BB-OPENCODE-010",
+  "title": "OpenCode governance adapter and controlled runner contract",
+  "objective": "Reconstruct the approved opt-in OpenCode adapter, verified navigation and controlled AO interface after workspace pruning; rerun checks and independent review before PR publication.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "bf8e901ecd066e8e6d1b05f0c56a66081a473c0a",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "User authorization2026-10-15 retained2026-10-16",
+    "plans/opencode-governance.md",
+    "AGENTS.md, CONTRIBUTING.md and policy/core.md",
+    "Pinned OpenCode1.19.0 source733b2c627e5aec39cb33cc22373bdce33053ef2c"
+  ],
+  "scope": {
+    "include": [
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      "copier.yml",
+      "policy/core.md",
+      "schemas/**",
+      "scripts/**",
+      "templates/**",
+      ".github/**",
+      ".opencode/**",
+      "opencode.json",
+      "tests/**",
+      "docs/**",
+      "plans/opencode-governance*",
+      ".engineering-backbone/opencode.json"
+    ],
+    "exclude": [
+      "tests/fixtures/historical/**",
+      "requirements*",
+      "standards/**",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Opt-in native configuration, five roles and shared procedures preserve legacy adapters and authority.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
+      ]
+    },
+    {
+      "id": "AC-2",
+      "description": "Trusted data-only guards reject unsafe/inherited weakened native contracts, nested skill identities and legacy mode aliases.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
+      ]
+    },
+    {
+      "id": "AC-3",
+      "description": "Scoped navigation binds selected role and required procedures including independent plan review; changed context fails.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
+      ]
+    },
+    {
+      "id": "AC-4",
+      "description": "Real Copier initial/update and legacy tests preserve local files and installation choices.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-reconstruction-delta-security.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
+      ]
+    },
+    {
+      "id": "AC-5",
+      "description": "AO contract covers supported fresh ACP/chat launch, resume and queued/delegated admission; TUI and unsupported isolation remain denied.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
+      ]
+    },
+    {
+      "id": "AC-6",
+      "description": "Native Windows/Linux and real-model qualification have separate honest observed states; unsupported activation remains blocked.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
+      ]
+    },
+    {
+      "id": "AC-7",
+      "description": "Fresh full checks, predecessor compatibility, two independent Full reviews and triage/Delta close confirmed findings.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-reconstruction-full-behavior.md",
+        "docs/reviews/opencode-reconstruction-full-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md",
+        "docs/reviews/opencode-reconstruction-delta-security.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md"
+      ]
+    },
+    {
+      "id": "AC-8",
+      "description": "Published PR remote tree verified with visible Codex request and actual CI/review outcomes.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": [
+        "docs/reviews/opencode-publication-state.md",
+        "docs/reviews/opencode-reconstruction-repair-checks.md",
+        "docs/reviews/opencode-remote-initial-checks.md",
+        "docs/reviews/opencode-remote-repair-checks.md",
+        "docs/reviews/opencode-remote-delta-security.md",
+        "docs/reviews/opencode-reconstruction-triage.md"
+      ]
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_navigation.py --check",
+      "python scripts/compile_quality_framework.py --check",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python scripts/compile_workflow_kit.py --check",
+      "python scripts/check_source_dependencies.py",
+      "python -m unittest discover -s tests -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "actionlint",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Fresh independent plan, quality, twoFull, separatetriage and necessaryDelta records",
+      "Actual native CLI evidence separate from model qualification",
+      "Paired AO contract/implementation and visible remotePR/check/review state",
+      "Historical tests are not reused as reconstructed-source PASS"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Failed required check without resolved diagnosis",
+    "Unresolved confirmed review finding",
+    "Scope/authorization conflict",
+    "Unexpected overwrite or weakening of local policy"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release or deployment",
+    "Automatic downstream activation or settings changes",
+    "Force push or destructive cleanup",
+    "Claiming static or synthetic evidence proves native model behavior or OS confinement"
+  ],
+  "status": "active"
+}

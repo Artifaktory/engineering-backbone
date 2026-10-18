@@ -80,3 +80,11 @@ container build/smoke; record missing execution evidence explicitly. Source CI
 checks these inputs directly because this repository has no active navigation seed.
 The Dockerfile belongs to Backbone tooling and is not a consumer application's
 container definition. Preserve authoritative version files and scoped review.
+
+## OpenCode adapter
+
+Read [the OpenCode operating contract](docs/opencode/workflow.md) and
+[controlled runner contract](docs/opencode/opencode-runner-contract.md) before
+OpenCode work. Its inactive companion is not a native discovery switch. Validate
+the exact primary, current scoped receipt and effective permissions before runtime
+use; tool defaults do not establish OS isolation or model qualification.

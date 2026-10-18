@@ -241,3 +241,16 @@ fragments; copying the catalog alone does not activate those instructions. Check
 actual instruction discovery and custom-subagent inheritance in the selected
 client, including CLI options that disable or opt in to custom instructions.
 Structural CI does not prove the client followed a rule.
+
+## Optional OpenCode package
+
+[OpenCode](opencode/workflow.md) adds five native primary roles and the same eight
+shared procedures through `use_opencode`, false by default and fixed during ordinary
+updates. The exact Codex/Copilot project-facts schema stays unchanged; OpenCode has
+its own preserved companion. An inactive companion disables routing, not native
+discovery. Native JSON/JSONC and `.opencode/**` stay preserved; conflicting layers
+block controlled validation until reviewed reconciliation. The resolver includes
+only the selected role and applicable procedures, including plan review for reviewers.
+Read [the controlled runner contract](opencode/opencode-runner-contract.md) for actual
+permission/input closure and explicit qualification. Profile defaults alone do not
+provide OS isolation, native model assurance or automatic PR review.

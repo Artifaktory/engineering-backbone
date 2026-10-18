@@ -31,6 +31,8 @@ COPILOT_START = '# BEGIN COMPILED COPILOT GUARD'
 COPILOT_END = '# END COMPILED COPILOT GUARD'
 CODEX_START = '# BEGIN COMPILED CODEX GUARD'
 CODEX_END = '# END COMPILED CODEX GUARD'
+OPENCODE_START = '# BEGIN COMPILED OPENCODE GUARD'
+OPENCODE_END = '# END COMPILED OPENCODE GUARD'
 
 
 def guard_function(name: str, source: Path = ROOT):
@@ -71,6 +73,16 @@ def replace_codex_guard(workflow: str, source: Path = ROOT):
         raise ValueError('Expected exactly one compiled Codex workflow guard block')
     return refreshed
 
+
+
+def replace_opencode_guard(workflow: str, source: Path = ROOT):
+    pattern = re.compile(r'(?m)^(          ' + re.escape(OPENCODE_START) + r'\n).*?(^          ' + re.escape(OPENCODE_END) + r'$)', re.S)
+    compiled = '\n'.join('          ' + line if line else ''
+                         for line in guard_function('opencode_errors', source).splitlines())
+    refreshed, count = pattern.subn(lambda match: match.group(1) + compiled + '\n' + match.group(2), workflow)
+    if count != 1:
+        raise ValueError('Expected exactly one compiled OpenCode workflow guard block')
+    return refreshed
 
 
 def bundle_digest(root: Path):
@@ -122,6 +134,7 @@ def main(argv=None):
             parser.error('Expected exactly one current workflow fingerprint literal')
         text = replace_copilot_guard(text, args.source.resolve())
         text = replace_codex_guard(text, args.source.resolve())
+        text = replace_opencode_guard(text, args.source.resolve())
         workflow_path.write_text(text, encoding='utf-8')
     if args.check:
         text = workflow_path.read_text(encoding='utf-8')
@@ -130,6 +143,9 @@ def main(argv=None):
             return 1
         if replace_codex_guard(text, args.source.resolve()) != text:
             print('FAIL: compiled Codex workflow guard is stale; regenerate trusted source guard')
+            return 1
+        if replace_opencode_guard(text, args.source.resolve()) != text:
+            print('FAIL: compiled OpenCode workflow guard is stale; regenerate trusted source guard')
             return 1
         workflow = yaml.safe_load(text)
         step = next(step for step in workflow['jobs']['validate']['steps']
