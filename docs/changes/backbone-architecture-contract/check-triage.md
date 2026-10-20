@@ -8,6 +8,7 @@
 - Input: the independent quality report originally returned as
   `/tmp/backbone-architecture-failed-checks.md`, plus the actual complete-suite log
   and unchanged historical-consumer fixture implementation.
+- Quality report SHA-256: `f02d5b2cc9f9b5ef8ae1ad3317e6a17a3d2f86cba4b82bda9dd0b1cd624affea`.
 - Phase: pre-Full deterministic-check failure. No formal Full round has started.
 
 ## Decision
@@ -17,6 +18,10 @@ high confidence. The five failure events have one common cause. There are no
 rejected findings or unresolved human decisions in this triage. Author repair of
 this confirmed defect may proceed within the approved plan and Task Packet.
 The failed head is not qualified for Full review or a passing delivery claim.
+The confirmed disposition and permitted narrow repair were sent to the root before
+author edits; this durable report was finalized after that message. Root subsequently
+reported starting the two-file repair and focused checks in its separate worktree.
+Those later checks are not results of this triage session.
 
 ## Evidence and causation
 
