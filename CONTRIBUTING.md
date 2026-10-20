@@ -1,5 +1,16 @@
 # Contributing to Engineering Backbone
 
+The active [BB-LAYOUT-013 Task Packet](plans/layout-compatibility-task.json) and
+[reviewed plan](plans/layout-compatibility.md) cover the trusted source-layout
+compatibility prerequisite for PR18. The source tree keeps its existing layout.
+This prerequisite must be independently checked and human-merged before PR18 can
+obtain the updated validator from its trusted base; it does not waive that gate.
+
+Before publication, after the final code or evidence commit, run
+`git diff --check <actual-base-sha> <actual-head-sha>` using the resolved full PR
+revisions and record their exit code. Working-tree-only checks do not cover
+already committed edits. Repeat this check after any later evidence-only commit.
+
 Read [AGENTS.md](AGENTS.md), [the common policy](policy/core.md) and the active
 Task Packet. The active OpenCode delivery uses
 [its Task Packet](plans/opencode-governance-task.json) and

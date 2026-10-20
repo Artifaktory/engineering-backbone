@@ -1,0 +1,140 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-013",
+  "title": "Trusted source-layout compatibility prerequisite",
+  "objective": "Prepare and publish a separately reviewed old-layout prerequisite on main so a future base-owned validator can validate PR18's new source layout without weakening existing trust or consumer contracts.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "212608aa50ee517b3dd3107a9480da997222fd4f",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "User request 2026-10-20 to correct PR18 Copilot omissions and red checks; prerequisite publication is necessary to resolve the base-owned layout incompatibility.",
+    "plans/layout-compatibility.md",
+    "AGENTS.md, CONTRIBUTING.md and policy/core.md at the recorded base.",
+    "PR18 frozen published snapshot c50108773ba3195bf0f7503e5dffb2d7bfc78cd3 and its independent layout review evidence."
+  ],
+  "scope": {
+    "include": [
+      "scripts/validate.py",
+      "scripts/navigation.py",
+      "scripts/quality_framework.py",
+      "scripts/source_layout.py",
+      "scripts/compile_navigation.py",
+      "scripts/compile_quality_framework.py",
+      "scripts/compile_toolchain_fingerprint.py",
+      ".github/workflows/governance-checks.yml",
+      "tests/**",
+      "plans/layout-compatibility.md",
+      "plans/layout-compatibility-task.json",
+      "docs/reviews/layout-compatibility-*",
+      "AGENTS.md",
+      "CONTRIBUTING.md"
+    ],
+    "exclude": [
+      "artifacts/**",
+      "Existing historical fixture byte changes",
+      "Historical plan/review edits",
+      "File relocations and product scaffolding",
+      "Schema, core invariant or dependency version changes",
+      "Native permission or provider activation changes",
+      "PR18 implementation worktree and external repositories"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "The prerequisite preserves the old repository layout and exact core invariants, dependency pins, existing historical fixtures and native permission contracts.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-2",
+      "description": "Source-only layout resolution independently handles old/new candidate and trusted-base roots while rejecting ambiguous, missing, mixed or aliased canonical authorities without falling back to consumer mode.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-3",
+      "description": "The actual previous main validator accepts this prerequisite at its old paths, and the prerequisite trusted validator accepts the exact frozen PR18 new-layout candidate against the old-layout trusted base.",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-4",
+      "description": "Policy, schema, adapter, permission, dependency and historical-map/hash negative cases remain rejecting; new named task/review artifacts are validated by trusted schemas.",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-5",
+      "description": "All original 418 test methods/assertions and immutable fixtures remain; affected and complete suites, compilers, source dependency checks and committed-patch whitespace checks pass with actual environment/runtime limits recorded.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-6",
+      "description": "Independent plan review, quality checks, two frozen Full reviews, separate triage and any necessary Delta are recorded against exact revisions and patch digests.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-7",
+      "description": "A separate prerequisite PR targets main with verified remote tree/check state and explicit human-merge-then-update-PR18 ordering; no merge, release, deployment or downstream activation occurs.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python scripts/validate.py",
+      "python scripts/compile_navigation.py --check",
+      "python scripts/compile_quality_framework.py --check",
+      "python scripts/compile_workflow_kit.py --check",
+      "python scripts/compile_toolchain_fingerprint.py --check",
+      "python scripts/check_source_dependencies.py",
+      "python -m unittest discover -s tests -v",
+      "python trusted-base/scripts/validate.py --root prerequisite --trusted-base trusted-base",
+      "python prerequisite/scripts/validate.py --root frozen-pr18 --trusted-base trusted-base",
+      "git diff --check",
+      "git diff --check BASE HEAD"
+    ],
+    "manual_evidence": [
+      "Independent read-only plan review before implementation.",
+      "Exact old-main-to-prerequisite and prerequisite-to-frozen-new-layout transition checks without projection or candidate execution.",
+      "Negative authority, schema, history, permission and dependency regressions, with original consumer/upgrade retention.",
+      "Actual container/native CI evidence for this prerequisite or explicit pending/unexecuted status.",
+      "Two independent Full reviewers on one immutable base/head/tree/patch, separate triage and necessary bounded Delta.",
+      "Published prerequisite URL, verified remote tree/check states and explicit human merge before PR18 integration."
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 6
+  },
+  "stop_conditions": [
+    "Failed required check without diagnosed and documented disposition.",
+    "Unresolved confirmed review finding before a readiness claim.",
+    "Scope/authorization conflict or weakened trust, policy, assertions, permissions or gates.",
+    "Ambiguous source authority, unexpected overwrite, changed historical bytes or unreviewed candidate fallback.",
+    "Two Full rounds or six implementation iterations exhausted without accepted bounded closeout.",
+    "Human prerequisite merge has not occurred: do not claim PR18 trusted-base acceptance on main."
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge either PR.",
+    "Release, deploy, change repository access/settings or activate integrations.",
+    "Candidate validator fallback, candidate-controlled historical authority, path projection, catch-and-pass or skipped required gates.",
+    "Automatic downstream application or changes to external repositories.",
+    "Force push, destructive cleanup or rewriting original historical evidence.",
+    "Claiming prior PR18 or simulated results prove this prerequisite passed remote checks, native model behavior or OS isolation."
+  ],
+  "status": "planned"
+}

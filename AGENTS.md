@@ -1,7 +1,9 @@
 # Engineering Backbone agent instructions
 
 Read [policy/core.md](policy/core.md), [CONTRIBUTING.md](CONTRIBUTING.md), the active
-Task Packet and project instructions before non-trivial work. This repository is
+Task Packet and project instructions before non-trivial work. The current delivery is
+[BB-LAYOUT-013](plans/layout-compatibility-task.json), with its independently reviewed
+[trusted-layout compatibility plan](plans/layout-compatibility.md). This repository is
 the shared agent/engineering control plane: its changes are HIGH risk by default.
 
 - Work within an explicitly authorized, scoped Task Packet. Inspect the branch,
@@ -33,6 +35,11 @@ python scripts/check_source_dependencies.py
 python -m unittest discover -s tests -v
 git diff --check
 ```
+
+After the final evidence/code commit, also run `git diff --check BASE_SHA HEAD_SHA`
+with the actual resolved PR base/head commits and record both identities. A clean
+working-tree diff does not validate a committed PR patch. Any later commit requires
+this publication check again.
 
 Changes target the project-configured base branch (`main` for this repository).
 Run evidence belongs in ignored `artifacts/` directories; durable redacted review

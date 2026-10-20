@@ -45,6 +45,1370 @@ MACHINE_PATH = re.compile(r"(?:[A-Za-z]:[\\/]|/(?:workspace|home|Users|root|tmp|
 SOURCE_LEAK = re.compile(r"(?:\bArtifaktory/|\bBinary-Refinery/|github\.com/(?:Artifaktory|Binary-Refinery)/|\btars\.trading\b)", re.I)
 
 
+# Reviewed PR18 archive authority, verified against all495 base paths and88
+# historical Git blobs at212608aa50ee517b3dd3107a9480da997222fd4f.
+# Candidate mapping files never grant exemptions or set expected hashes.
+HISTORICAL_FILES = {'docs/changes/backbone-bootstrap/plans/bootstrap-task.json': ('plans/bootstrap-task.json',
+                                                               'eb90566bc275722449807a4577fde27fc2d4863a171618426fcc452afb83713c'),
+ 'docs/changes/backbone-bootstrap/plans/bootstrap.md': ('plans/bootstrap.md',
+                                                        '6361fddd7545b70e996858bdd45556a68d3d2cbd66edfb13abdd733eed244905'),
+ 'docs/changes/backbone-bootstrap/reviews/bootstrap-result.md': ('docs/reviews/bootstrap-result.md',
+                                                                 'd6de303ba2270b80482d1103963fc427e95a920e95b500e0b5c7247a7c9df1c8'),
+ 'docs/changes/backbone-bootstrap/reviews/bootstrap-triage.md': ('docs/reviews/bootstrap-triage.md',
+                                                                 'b57f5df5834b0f0da3305f6864682e6e3e3f53aebafbd8e985c7980bd9cc1c88'),
+ 'docs/changes/backbone-ci-clone-repair/plans/ci-clone-repair-task.json': ('plans/ci-clone-repair-task.json',
+                                                                           '63efc493318eeb1fef0e40b8f5678514707adaa6c9867ecc208ea10cb2c635b8'),
+ 'docs/changes/backbone-ci-clone-repair/plans/ci-clone-repair.md': ('plans/ci-clone-repair.md',
+                                                                    '831bdb2a2b48ae7fddfe7416c850a29100b4ba56e1256bec94e1c8a765a64556'),
+ 'docs/changes/backbone-ci-clone-repair/reviews/ci-clone-checks.md': ('docs/reviews/ci-clone-checks.md',
+                                                                      '66591e636edd4784df74874aa055d919803f22a1eb71eb559abf88af522e2756'),
+ 'docs/changes/backbone-ci-clone-repair/reviews/ci-clone-plan-review.md': ('docs/reviews/ci-clone-plan-review.md',
+                                                                           '03965b933ec87a3b78fa552b43280165cc7f15db36701a02088c1219a083d79f'),
+ 'docs/changes/backbone-ci-clone-repair/reviews/ci-clone-result.md': ('docs/reviews/ci-clone-result.md',
+                                                                      'f1a1938933a0e0cb6dceee218c949248996d0b56d78ed22907a3280804e0a96d'),
+ 'docs/changes/backbone-codex-consolidation/plans/codex-consolidation-task.json': ('plans/codex-consolidation-task.json',
+                                                                                   '1eda229764a224f87bd7629ce4573bcf132a8f54a89dff93ff16372f4c3e6828'),
+ 'docs/changes/backbone-codex-consolidation/plans/codex-consolidation.md': ('plans/codex-consolidation.md',
+                                                                            '3dee5efd942f22a3b37b0ce30abd9db9cff0feb16945669f5ea5a2f67359f8ec'),
+ 'docs/changes/backbone-codex-consolidation/plans/codex-findings-task.json': ('plans/codex-findings-task.json',
+                                                                              '702f443abb03a41e22952ac0b93ad57d2cf8f83548dec82e272cfe0ea21512f7'),
+ 'docs/changes/backbone-codex-consolidation/reviews/codex-consolidation-result.md': ('docs/reviews/codex-consolidation-result.md',
+                                                                                     '3319f5dd7e52eacba79bbeee1ae71a11f290bd57d464f94f79f7250bf9abb5cf'),
+ 'docs/changes/backbone-codex-consolidation/reviews/codex-final-delta-result.md': ('docs/reviews/codex-final-delta-result.md',
+                                                                                   'b75450085395475faea0cffe7b10e0a8bcb0bc45aa2cd0d2c0a94e7d8c744e3a'),
+ 'docs/changes/backbone-codex-consolidation/reviews/codex-fixture-checkout-result.md': ('docs/reviews/codex-fixture-checkout-result.md',
+                                                                                        'd6e6a39b33dfb82314131e84eb2dfa9318605e4f4b205ea12fa2d0ad9fbc4071'),
+ 'docs/changes/backbone-codex-consolidation/reviews/codex-followup-result.md': ('docs/reviews/codex-followup-result.md',
+                                                                                '21be38e5781b8dc7243b2586a77dc5cc061ab4bc3094848fd6a7cf238b7744bf'),
+ 'docs/changes/backbone-codex-consolidation/reviews/codex-followup-triage.md': ('docs/reviews/codex-followup-triage.md',
+                                                                                'b08322892f0fa1d181ce3bf396aa443b6d5391b55478acf0b4c9309580b37785'),
+ 'docs/changes/backbone-codex-consolidation/reviews/codex-result.md': ('docs/reviews/codex-result.md',
+                                                                       '1a408f84b7be8fd236b57c7c1b19dddf92a91ad78e350fbeab217d8e1f46527d'),
+ 'docs/changes/backbone-codex-consolidation/reviews/codex-triage.md': ('docs/reviews/codex-triage.md',
+                                                                       '5eaf2d1117de1863f9da063dc282810e1619d64c8cc9a1d516e97d73580c4468'),
+ 'docs/changes/backbone-codex-security/plans/codex-security-task.json': ('plans/codex-security-task.json',
+                                                                         '99ac6a5f70b656625cb05e5c55d04f2c4c556ab1f8e38ac39108a918994724cf'),
+ 'docs/changes/backbone-codex-security/plans/codex-security.md': ('plans/codex-security.md',
+                                                                  'e29a64bb2f6a6d9409013b3a93415c4834b5b7c3202b22d362a50b12aa781ff9'),
+ 'docs/changes/backbone-codex-security/reviews/codex-security-checks.md': ('docs/reviews/codex-security-checks.md',
+                                                                           '877559f2da6a5b8d52e37ac44ac0243d0e8765efd6c9e462ee48a1bd2b0b3c2f'),
+ 'docs/changes/backbone-codex-security/reviews/codex-security-plan-review.md': ('docs/reviews/codex-security-plan-review.md',
+                                                                                '4f83b8e1f60ea7cee04d1c9e659712442a8217fdfeb52d7587232120d2aca740'),
+ 'docs/changes/backbone-codex-security/reviews/codex-security-result.md': ('docs/reviews/codex-security-result.md',
+                                                                           '2747781b5c578b99f564f922099cb1271a658e7bf166e21f2d8112b75d221353'),
+ 'docs/changes/backbone-codex-security/reviews/codex-security-triage.md': ('docs/reviews/codex-security-triage.md',
+                                                                           'f2f236a9fb268c529b0297ef4ac86345b918cc11844786479c5f380b4a431022'),
+ 'docs/changes/backbone-copilot-development/plans/copilot-development-task.json': ('plans/copilot-development-task.json',
+                                                                                   'bb073006668d50a617e4037ad4159ffd565ae332285ef4d90631de192e7c3311'),
+ 'docs/changes/backbone-copilot-development/plans/copilot-development.md': ('plans/copilot-development.md',
+                                                                            '20d93585979866e7c2b43ff445d88989add224dbbac135a7ee7b6f2682042ac0'),
+ 'docs/changes/backbone-copilot-development/reviews/copilot-development-result.md': ('docs/reviews/copilot-development-result.md',
+                                                                                     '693eef05c5c834d052e8f95ea2d6b3e15f381f6a823c58bb1c75309847ac2ddd'),
+ 'docs/changes/backbone-copilot-development/reviews/copilot-development-triage.md': ('docs/reviews/copilot-development-triage.md',
+                                                                                     'db272dd57dd3a97ea34545765bbd6c79b2a136c3e4201f6c86413cb27243b916'),
+ 'docs/changes/backbone-copilot-development/reviews/copilot-forward-check.md': ('docs/reviews/copilot-forward-check.md',
+                                                                                'd639d75b491c4ffcdf2f4c6b2bdad69de195a998e12a06badc688bd029b99afe'),
+ 'docs/changes/backbone-copilot-development/reviews/copilot-publication-result.md': ('docs/reviews/copilot-publication-result.md',
+                                                                                     '3ccb7d12235d21d85177143cf97bb442a3d34c66625c625680e37106a6824d65'),
+ 'docs/changes/backbone-copilot-development/reviews/copilot-publication-triage.md': ('docs/reviews/copilot-publication-triage.md',
+                                                                                     'e041d04427dd92612739a8a8d5780f1ed75a7bdd1ffb038ae59addd445f9ac61'),
+ 'docs/changes/backbone-dependency-compatibility/plans/dependency-compatibility-task.json': ('plans/dependency-compatibility-task.json',
+                                                                                             '115f1e76e73c30c5d80ce92a28d43d5d6eeb4665d1cbb3a24bf5a71d4132bf8a'),
+ 'docs/changes/backbone-dependency-compatibility/plans/dependency-compatibility.md': ('plans/dependency-compatibility.md',
+                                                                                      'da5a06c79d491b3dec4ff1cda660200f5152114e7bfac4268b2ea8139cf54a3f'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-checks.md': ('docs/reviews/dependency-compatibility-checks.md',
+                                                                                               '97cc345324f6ba8f0c987fb9a10240fddb186b0782ebd260e489a14532e55c6c'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-closeout.md': ('docs/reviews/dependency-compatibility-closeout.md',
+                                                                                                 'a92b92397fbbcd7ad6b347bcb390ef025ef0ba85900bf73896e518befa2bde54'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-delta.md': ('docs/reviews/dependency-compatibility-delta.md',
+                                                                                              'f1430e2da43894f75b5527d4b34852514913fe8865a7e3465191d96d6d3f2f5f'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-evidence-review.md': ('docs/reviews/dependency-compatibility-evidence-review.md',
+                                                                                                        '121b957053b2ba157bf66806c343b5be69f512584fa834daacf35970b1232ff6'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-full-authority.md': ('docs/reviews/dependency-compatibility-full-authority.md',
+                                                                                                       'ca5a760c2d2eeeacd58f7385f85aa5fc169c4fc588e4dd265e31c0df37ebd3b1'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-full-behavior.md': ('docs/reviews/dependency-compatibility-full-behavior.md',
+                                                                                                      '118aa418c891f92246d2fdd932b622dd7b1e9c067d6c0b927ca98699e0e94d0d'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-plan-review.md': ('docs/reviews/dependency-compatibility-plan-review.md',
+                                                                                                    '3fbf4c4aaddfaddeafd371254dbf58d7c1e9f012f58951ee56f431902a6b92e1'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-publication-review.md': ('docs/reviews/dependency-compatibility-publication-review.md',
+                                                                                                           'fd3c9b412a2adcad083a57a32f8459c5da62324d3c4236e09cb122ff348cd5be'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-publication.md': ('docs/reviews/dependency-compatibility-publication.md',
+                                                                                                    '1a1d48ef85b4cf55ade19415ac28e677ba079b8c92edadaf73d27f5b5841444d'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-remote-triage.md': ('docs/reviews/dependency-compatibility-remote-triage.md',
+                                                                                                      '5a2b206710b0ea51572d0f8f864594401d444158a2244c880a338aa7d2d7ffcb'),
+ 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-triage.md': ('docs/reviews/dependency-compatibility-triage.md',
+                                                                                               '8d001e00cfbd6a124aeb8c84c479d323222362c94115fe827cf67690bb722bff'),
+ 'docs/changes/backbone-opencode-governance/plans/opencode-governance-task.json': ('plans/opencode-governance-task.json',
+                                                                                   '9026c1d1240941a230e90f14d8028433fe02d41b3b3170b9436f0b3a25f9b4cd'),
+ 'docs/changes/backbone-opencode-governance/plans/opencode-governance.md': ('plans/opencode-governance.md',
+                                                                            '76a9695817447bfa6517499b1928cc8baa526135e5bd163c23dc439f5aa63f34'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-publication-state.md': ('docs/reviews/opencode-publication-state.md',
+                                                                                     '5c3bc1d48d72a5b58b9ad221d02671f797f0b51148cbcd1bde9abdf3c958b43f'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-checks.md': ('docs/reviews/opencode-reconstruction-checks.md',
+                                                                                         '8ee4cc6ff8d42b7f503e72ad3879e497c3ad8a7f7379fce154519d0e223b130f'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-delta-security.md': ('docs/reviews/opencode-reconstruction-delta-security.md',
+                                                                                                 '77f79038348b2e8cc52815d132d7e36d0f90e5db47be984fc918a4fbfa12c6f2'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-full-behavior.md': ('docs/reviews/opencode-reconstruction-full-behavior.md',
+                                                                                                'c84c9837ea0fa19802b03b4fa72fc4348323dcd4fcfff07a42411d1b076ed9c8'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-full-security.md': ('docs/reviews/opencode-reconstruction-full-security.md',
+                                                                                                'fa02d9419bc533ef21c63cfe639d9c3eaa490f6824b2042366fa7ae361c999da'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-plan-review.md': ('docs/reviews/opencode-reconstruction-plan-review.md',
+                                                                                              'fac87e81ee2593bfe273b8b13b92f90a154fc48de2d77a9ebc8dd2948d05bc43'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-repair-checks.md': ('docs/reviews/opencode-reconstruction-repair-checks.md',
+                                                                                                '4dfe1e02cbbd47e8eb8fba042c434bab6e98794abe661547bd87fd010a6e49c7'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-triage.md': ('docs/reviews/opencode-reconstruction-triage.md',
+                                                                                         '1ea6adef2f6b6cda520b66e3c3e6136c81c529d1bf74b4d8462abd5e0c6dea49'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-remote-activation-repair.md': ('docs/reviews/opencode-remote-activation-repair.md',
+                                                                                            '4d42cd38755f68fc6d8292c33a6517fc37a302407b6befec7c8f636a56467924'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-remote-delta-security.md': ('docs/reviews/opencode-remote-delta-security.md',
+                                                                                         '704dbcf8b21fc3e065e4efd349ee2b69c91841f4ffcf4076f69b63eb616774b9'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-remote-initial-checks.md': ('docs/reviews/opencode-remote-initial-checks.md',
+                                                                                         '512e1ae53ecde04b5727586386e527ec3b2f45c2a483c3e31845d6eb1b1d8535'),
+ 'docs/changes/backbone-opencode-governance/reviews/opencode-remote-repair-checks.md': ('docs/reviews/opencode-remote-repair-checks.md',
+                                                                                        '6442dff53e9f680875467e05e1f8b58dd1982399cbae06a3c6a86ce25445f20f'),
+ 'docs/changes/backbone-quality-framework/plans/quality-framework-task.json': ('plans/quality-framework-task.json',
+                                                                               '52a5777265ac3b1cd075a1ed9336f2027b9b4ba08800460b2b36277c3d69c626'),
+ 'docs/changes/backbone-quality-framework/plans/quality-framework.md': ('plans/quality-framework.md',
+                                                                        'f0dba94d7b141c54172f824b33639dcea0d333d496216647919d879a23bf4382'),
+ 'docs/changes/backbone-quality-framework/reviews/quality-check-triage.md': ('docs/reviews/quality-check-triage.md',
+                                                                             '1b411d15f578996b08474cd7d446c1110ff64de83e288448fd5883cbd2ec1a42'),
+ 'docs/changes/backbone-quality-framework/reviews/quality-checks.md': ('docs/reviews/quality-checks.md',
+                                                                       '0d228d11a7bbe2d86fda2632de78816e4c0b10974290bf9afa9a08f7dd51304e'),
+ 'docs/changes/backbone-quality-framework/reviews/quality-delta-review.md': ('docs/reviews/quality-delta-review.md',
+                                                                             'c0987d57428abfdbb9250164b7cc5d4f2fd9941c9d07a3a17661ef7c0253a1ae'),
+ 'docs/changes/backbone-quality-framework/reviews/quality-full-review.md': ('docs/reviews/quality-full-review.md',
+                                                                            'c392f67dfe7281adcef4b5fd4d1aeecc998e3466b15336130404cf9fc61f7e34'),
+ 'docs/changes/backbone-quality-framework/reviews/quality-plan-review.md': ('docs/reviews/quality-plan-review.md',
+                                                                            '9b00cb3d3acc4dc6f56550e737ca381e4fcc25d51e5ed243428b5faa11d56bc6'),
+ 'docs/changes/backbone-quality-framework/reviews/quality-result.md': ('docs/reviews/quality-result.md',
+                                                                       'bd98fed9386699ef1820b26653afe70e536c682151315a5154c9be910c560829'),
+ 'docs/changes/backbone-quality-framework/reviews/quality-triage.md': ('docs/reviews/quality-triage.md',
+                                                                       '14cbe48be64621d87666081d5665672f237b54f649815c183eccd1dc10fc5b5e'),
+ 'docs/changes/backbone-technology-navigation/plans/technology-navigation-task.json': ('plans/technology-navigation-task.json',
+                                                                                       '2ad203469a866bc58147ed5a475b5985566ac47376c4307bff59f00b942f76fe'),
+ 'docs/changes/backbone-technology-navigation/plans/technology-navigation.md': ('plans/technology-navigation.md',
+                                                                                'ac3eed388b25b97ab88e48a91fd0991655fbbbdf717f5a30dfb6c96c129a17be'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-checks.md': ('docs/reviews/technology-navigation-checks.md',
+                                                                                         '6deb96f2e1797e7e34f22b81e3926a5a39c595256d5a6b4b0b8600bc3dc2d08e'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-review.md': ('docs/reviews/technology-navigation-delta-review.md',
+                                                                                               '8e90fc99495c9f4edbabd8de6a6aca7a5350a5156c8564331b2f8631c5f6cae1'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-round1.md': ('docs/reviews/technology-navigation-delta-round1.md',
+                                                                                               'f7428230d9cb729b3d608bf1750bc588b7839ee061c283b1ea6bf6cab00ac7bd'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-triage.md': ('docs/reviews/technology-navigation-delta-triage.md',
+                                                                                               '66a9fbb0d0049678dfc2272b1e42efa84f7206b8e1daed0b220445ca353cc7f9'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-final-checks.md': ('docs/reviews/technology-navigation-final-checks.md',
+                                                                                               'e6548f9ac8bfd72055d36408147eb6b78cd6fa500cc32092fe152fe5e0603f1a'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-full-review.md': ('docs/reviews/technology-navigation-full-review.md',
+                                                                                              'd51c5bf7b5ef3b4af8270090121fafe4f7e24ce1a45c674faa4414704260e12f'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-plan-review.md': ('docs/reviews/technology-navigation-plan-review.md',
+                                                                                              'e24cdb63d7b0fcb90944d48f8413a7ae94379c42eea8b0e431a030feb28fb0f7'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-repair-checks.md': ('docs/reviews/technology-navigation-repair-checks.md',
+                                                                                                'ab5846d8d09c5c438442f7eb952f3b3c3328a128ee4bd685b4adcaf3b56f11fd'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-result.md': ('docs/reviews/technology-navigation-result.md',
+                                                                                         'c398549ed386c47e75b1a29fb11ed6e8716e50fdb2a77534b7db869ab7b35ecc'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-smoke-followup.md': ('docs/reviews/technology-navigation-smoke-followup.md',
+                                                                                                 '46cd9ef3cc107cf3212a31dfc7354098aa484b22ed0f545f6a617e41222e05f9'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-smoke.md': ('docs/reviews/technology-navigation-smoke.md',
+                                                                                        '1dfdf8b17ff9801301fc220731042fdc5cdd6cba680ad8c0f6a8dad5ecfd420c'),
+ 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-triage.md': ('docs/reviews/technology-navigation-triage.md',
+                                                                                         'b8f0e358ac6ae0f2630bc5499061ab751a424a5ee72dbb89246042ee2e073ce7'),
+ 'docs/changes/backbone-workflow-kit/plans/workflow-kit-task.json': ('plans/workflow-kit-task.json',
+                                                                     'a809e85770a43c86128025df364ab11e7663c11a27012b4e45ec66a558e0d394'),
+ 'docs/changes/backbone-workflow-kit/plans/workflow-kit.md': ('plans/workflow-kit.md',
+                                                              '7750b0beefcbc791bd1759b0945791a3d33bc5b6ce774de8d026f347cab59dcc'),
+ 'docs/changes/backbone-workflow-kit/reviews/workflow-kit-checks.md': ('docs/reviews/workflow-kit-checks.md',
+                                                                       '8f2388bd58807fba13abaa91b01446b963c77e6beacc131251cf6d9afefb8b0e'),
+ 'docs/changes/backbone-workflow-kit/reviews/workflow-kit-plan-review.md': ('docs/reviews/workflow-kit-plan-review.md',
+                                                                            'e9c37085ff9d1692ee0a66febfc55d2f49afe481594862f1e0967ca850330149'),
+ 'docs/changes/backbone-workflow-kit/reviews/workflow-kit-result.md': ('docs/reviews/workflow-kit-result.md',
+                                                                       '87c8d621e527d806ef4cf83c180409fbd1b9b5aae9785998f55e3308ff5dc52b'),
+ 'docs/changes/backbone-workflow-kit/reviews/workflow-kit-triage.md': ('docs/reviews/workflow-kit-triage.md',
+                                                                       'e79e570072b3de48b9bf33f19647d73f2a8ecb2f9cc5f100971058b3d2124327')}
+ORIGINAL_TO_CURRENT = {'.codex/agents/backbone-implementer.toml': '.codex/agents/backbone-implementer.toml',
+ '.codex/agents/backbone-planner.toml': '.codex/agents/backbone-planner.toml',
+ '.codex/agents/backbone-reviewer.toml': '.codex/agents/backbone-reviewer.toml',
+ '.dockerignore': '.dockerignore',
+ '.engineering-backbone/opencode.json': '.engineering-backbone/opencode.json',
+ '.engineering-backbone/project.json': '.engineering-backbone/project.json',
+ '.github/agents/backbone-analyst.agent.md': '.github/agents/backbone-analyst.agent.md',
+ '.github/agents/backbone-documentation.agent.md': '.github/agents/backbone-documentation.agent.md',
+ '.github/agents/backbone-finding-triage.agent.md': '.github/agents/backbone-finding-triage.agent.md',
+ '.github/agents/backbone-implementer.agent.md': '.github/agents/backbone-implementer.agent.md',
+ '.github/agents/backbone-plan-reviewer.agent.md': '.github/agents/backbone-plan-reviewer.agent.md',
+ '.github/agents/backbone-planner.agent.md': '.github/agents/backbone-planner.agent.md',
+ '.github/agents/backbone-quality-checker.agent.md': '.github/agents/backbone-quality-checker.agent.md',
+ '.github/agents/backbone-reviewer.agent.md': '.github/agents/backbone-reviewer.agent.md',
+ '.github/agents/backbone-security-reviewer.agent.md': '.github/agents/backbone-security-reviewer.agent.md',
+ '.github/agents/backbone-test-engineer.agent.md': '.github/agents/backbone-test-engineer.agent.md',
+ '.github/copilot-instructions.md': '.github/copilot-instructions.md',
+ '.github/dependabot.yml': '.github/dependabot.yml',
+ '.github/instructions/backbone-docs.instructions.md': '.github/instructions/backbone-docs.instructions.md',
+ '.github/instructions/backbone-frontend.instructions.md': '.github/instructions/backbone-frontend.instructions.md',
+ '.github/instructions/backbone-governance.instructions.md': '.github/instructions/backbone-governance.instructions.md',
+ '.github/instructions/backbone-python.instructions.md': '.github/instructions/backbone-python.instructions.md',
+ '.github/instructions/backbone-tests.instructions.md': '.github/instructions/backbone-tests.instructions.md',
+ '.github/pull_request_template.md': '.github/pull_request_template.md',
+ '.github/skills/bug-reproduction/SKILL.md': '.github/skills/bug-reproduction/SKILL.md',
+ '.github/skills/code-review/SKILL.md': '.github/skills/code-review/SKILL.md',
+ '.github/skills/delta-review/SKILL.md': '.github/skills/delta-review/SKILL.md',
+ '.github/skills/docs-traceability/SKILL.md': '.github/skills/docs-traceability/SKILL.md',
+ '.github/skills/finding-triage/SKILL.md': '.github/skills/finding-triage/SKILL.md',
+ '.github/skills/implementation-plan/SKILL.md': '.github/skills/implementation-plan/SKILL.md',
+ '.github/skills/task-intake/SKILL.md': '.github/skills/task-intake/SKILL.md',
+ '.github/skills/test-and-quality/SKILL.md': '.github/skills/test-and-quality/SKILL.md',
+ '.github/workflows/governance-checks.yml': '.github/workflows/governance-checks.yml',
+ '.github/workflows/opencode-native.yml': '.github/workflows/opencode-native.yml',
+ '.github/workflows/quality.yml': '.github/workflows/quality.yml',
+ '.github/workflows/workflow-kit-maintenance.yml': '.github/workflows/workflow-kit-maintenance.yml',
+ '.github/workflows/workflow-kit-pr.yml': '.github/workflows/workflow-kit-pr.yml',
+ '.gitignore': '.gitignore',
+ '.opencode/agents/backbone-implementer.md': '.opencode/agents/backbone-implementer.md',
+ '.opencode/agents/backbone-planner.md': '.opencode/agents/backbone-planner.md',
+ '.opencode/agents/backbone-quality-checker.md': '.opencode/agents/backbone-quality-checker.md',
+ '.opencode/agents/backbone-reviewer.md': '.opencode/agents/backbone-reviewer.md',
+ '.opencode/agents/backbone-triage.md': '.opencode/agents/backbone-triage.md',
+ '.opencode/skills/bug-reproduction/SKILL.md': '.opencode/skills/bug-reproduction/SKILL.md',
+ '.opencode/skills/code-review/SKILL.md': '.opencode/skills/code-review/SKILL.md',
+ '.opencode/skills/delta-review/SKILL.md': '.opencode/skills/delta-review/SKILL.md',
+ '.opencode/skills/docs-traceability/SKILL.md': '.opencode/skills/docs-traceability/SKILL.md',
+ '.opencode/skills/finding-triage/SKILL.md': '.opencode/skills/finding-triage/SKILL.md',
+ '.opencode/skills/implementation-plan/SKILL.md': '.opencode/skills/implementation-plan/SKILL.md',
+ '.opencode/skills/task-intake/SKILL.md': '.opencode/skills/task-intake/SKILL.md',
+ '.opencode/skills/test-and-quality/SKILL.md': '.opencode/skills/test-and-quality/SKILL.md',
+ 'AGENTS.md': 'AGENTS.md',
+ 'CONTRIBUTING.md': 'CONTRIBUTING.md',
+ 'Dockerfile': 'infra/docker/engineering-backbone/Dockerfile',
+ 'README.md': 'README.md',
+ 'SECURITY.md': 'SECURITY.md',
+ 'copier.yml': 'copier.yml',
+ 'docs/adoption.md': 'docs/agent-governance/adoption.md',
+ 'docs/agent-adapters.md': 'docs/agent-governance/agent-adapters.md',
+ 'docs/agent-navigation.md': 'docs/agent-governance/agent-navigation.md',
+ 'docs/codex-consolidation.md': 'docs/agent-governance/adapters/codex-consolidation.md',
+ 'docs/copilot/clients.md': 'docs/agent-governance/adapters/copilot/clients.md',
+ 'docs/copilot/smoke-tests.md': 'docs/agent-governance/adapters/copilot/smoke-tests.md',
+ 'docs/copilot/source-provenance.md': 'docs/agent-governance/adapters/copilot/source-provenance.md',
+ 'docs/copilot/workflow.md': 'docs/agent-governance/adapters/copilot/workflow.md',
+ 'docs/dependency-compatibility.md': 'docs/operations/engineering/dependency-compatibility.md',
+ 'docs/opencode/opencode-runner-contract.md': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+ 'docs/opencode/smoke-tests.md': 'docs/agent-governance/adapters/opencode/smoke-tests.md',
+ 'docs/opencode/source-provenance.md': 'docs/agent-governance/adapters/opencode/source-provenance.md',
+ 'docs/opencode/workflow.md': 'docs/agent-governance/adapters/opencode/workflow.md',
+ 'docs/planning.md': 'docs/agent-governance/planning.md',
+ 'docs/quality/README.md': 'docs/quality/README.md',
+ 'docs/quality/source-provenance.md': 'docs/quality/source-provenance.md',
+ 'docs/quality/technology-profiles.md': 'docs/quality/technology-profiles.md',
+ 'docs/quality/technology-source-provenance.md': 'docs/quality/technology-source-provenance.md',
+ 'docs/quality/testing.md': 'docs/quality/testing.md',
+ 'docs/repository-controls.md': 'docs/operations/engineering/repository-controls.md',
+ 'docs/reviews/bootstrap-result.md': 'docs/changes/backbone-bootstrap/reviews/bootstrap-result.md',
+ 'docs/reviews/bootstrap-triage.md': 'docs/changes/backbone-bootstrap/reviews/bootstrap-triage.md',
+ 'docs/reviews/ci-clone-checks.md': 'docs/changes/backbone-ci-clone-repair/reviews/ci-clone-checks.md',
+ 'docs/reviews/ci-clone-plan-review.md': 'docs/changes/backbone-ci-clone-repair/reviews/ci-clone-plan-review.md',
+ 'docs/reviews/ci-clone-result.md': 'docs/changes/backbone-ci-clone-repair/reviews/ci-clone-result.md',
+ 'docs/reviews/codex-consolidation-result.md': 'docs/changes/backbone-codex-consolidation/reviews/codex-consolidation-result.md',
+ 'docs/reviews/codex-final-delta-result.md': 'docs/changes/backbone-codex-consolidation/reviews/codex-final-delta-result.md',
+ 'docs/reviews/codex-fixture-checkout-result.md': 'docs/changes/backbone-codex-consolidation/reviews/codex-fixture-checkout-result.md',
+ 'docs/reviews/codex-followup-result.md': 'docs/changes/backbone-codex-consolidation/reviews/codex-followup-result.md',
+ 'docs/reviews/codex-followup-triage.md': 'docs/changes/backbone-codex-consolidation/reviews/codex-followup-triage.md',
+ 'docs/reviews/codex-result.md': 'docs/changes/backbone-codex-consolidation/reviews/codex-result.md',
+ 'docs/reviews/codex-security-checks.md': 'docs/changes/backbone-codex-security/reviews/codex-security-checks.md',
+ 'docs/reviews/codex-security-plan-review.md': 'docs/changes/backbone-codex-security/reviews/codex-security-plan-review.md',
+ 'docs/reviews/codex-security-result.md': 'docs/changes/backbone-codex-security/reviews/codex-security-result.md',
+ 'docs/reviews/codex-security-triage.md': 'docs/changes/backbone-codex-security/reviews/codex-security-triage.md',
+ 'docs/reviews/codex-triage.md': 'docs/changes/backbone-codex-consolidation/reviews/codex-triage.md',
+ 'docs/reviews/copilot-development-result.md': 'docs/changes/backbone-copilot-development/reviews/copilot-development-result.md',
+ 'docs/reviews/copilot-development-triage.md': 'docs/changes/backbone-copilot-development/reviews/copilot-development-triage.md',
+ 'docs/reviews/copilot-forward-check.md': 'docs/changes/backbone-copilot-development/reviews/copilot-forward-check.md',
+ 'docs/reviews/copilot-publication-result.md': 'docs/changes/backbone-copilot-development/reviews/copilot-publication-result.md',
+ 'docs/reviews/copilot-publication-triage.md': 'docs/changes/backbone-copilot-development/reviews/copilot-publication-triage.md',
+ 'docs/reviews/dependency-compatibility-checks.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-checks.md',
+ 'docs/reviews/dependency-compatibility-closeout.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-closeout.md',
+ 'docs/reviews/dependency-compatibility-delta.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-delta.md',
+ 'docs/reviews/dependency-compatibility-evidence-review.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-evidence-review.md',
+ 'docs/reviews/dependency-compatibility-full-authority.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-full-authority.md',
+ 'docs/reviews/dependency-compatibility-full-behavior.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-full-behavior.md',
+ 'docs/reviews/dependency-compatibility-plan-review.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-plan-review.md',
+ 'docs/reviews/dependency-compatibility-publication-review.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-publication-review.md',
+ 'docs/reviews/dependency-compatibility-publication.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-publication.md',
+ 'docs/reviews/dependency-compatibility-remote-triage.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-remote-triage.md',
+ 'docs/reviews/dependency-compatibility-triage.md': 'docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-triage.md',
+ 'docs/reviews/opencode-publication-state.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-publication-state.md',
+ 'docs/reviews/opencode-reconstruction-checks.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-checks.md',
+ 'docs/reviews/opencode-reconstruction-delta-security.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-delta-security.md',
+ 'docs/reviews/opencode-reconstruction-full-behavior.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-full-behavior.md',
+ 'docs/reviews/opencode-reconstruction-full-security.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-full-security.md',
+ 'docs/reviews/opencode-reconstruction-plan-review.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-plan-review.md',
+ 'docs/reviews/opencode-reconstruction-repair-checks.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-repair-checks.md',
+ 'docs/reviews/opencode-reconstruction-triage.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-triage.md',
+ 'docs/reviews/opencode-remote-activation-repair.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-remote-activation-repair.md',
+ 'docs/reviews/opencode-remote-delta-security.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-remote-delta-security.md',
+ 'docs/reviews/opencode-remote-initial-checks.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-remote-initial-checks.md',
+ 'docs/reviews/opencode-remote-repair-checks.md': 'docs/changes/backbone-opencode-governance/reviews/opencode-remote-repair-checks.md',
+ 'docs/reviews/quality-check-triage.md': 'docs/changes/backbone-quality-framework/reviews/quality-check-triage.md',
+ 'docs/reviews/quality-checks.md': 'docs/changes/backbone-quality-framework/reviews/quality-checks.md',
+ 'docs/reviews/quality-delta-review.md': 'docs/changes/backbone-quality-framework/reviews/quality-delta-review.md',
+ 'docs/reviews/quality-full-review.md': 'docs/changes/backbone-quality-framework/reviews/quality-full-review.md',
+ 'docs/reviews/quality-plan-review.md': 'docs/changes/backbone-quality-framework/reviews/quality-plan-review.md',
+ 'docs/reviews/quality-result.md': 'docs/changes/backbone-quality-framework/reviews/quality-result.md',
+ 'docs/reviews/quality-triage.md': 'docs/changes/backbone-quality-framework/reviews/quality-triage.md',
+ 'docs/reviews/technology-navigation-checks.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-checks.md',
+ 'docs/reviews/technology-navigation-delta-review.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-review.md',
+ 'docs/reviews/technology-navigation-delta-round1.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-round1.md',
+ 'docs/reviews/technology-navigation-delta-triage.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-triage.md',
+ 'docs/reviews/technology-navigation-final-checks.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-final-checks.md',
+ 'docs/reviews/technology-navigation-full-review.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-full-review.md',
+ 'docs/reviews/technology-navigation-plan-review.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-plan-review.md',
+ 'docs/reviews/technology-navigation-repair-checks.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-repair-checks.md',
+ 'docs/reviews/technology-navigation-result.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-result.md',
+ 'docs/reviews/technology-navigation-smoke-followup.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-smoke-followup.md',
+ 'docs/reviews/technology-navigation-smoke.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-smoke.md',
+ 'docs/reviews/technology-navigation-triage.md': 'docs/changes/backbone-technology-navigation/reviews/technology-navigation-triage.md',
+ 'docs/reviews/workflow-kit-checks.md': 'docs/changes/backbone-workflow-kit/reviews/workflow-kit-checks.md',
+ 'docs/reviews/workflow-kit-plan-review.md': 'docs/changes/backbone-workflow-kit/reviews/workflow-kit-plan-review.md',
+ 'docs/reviews/workflow-kit-result.md': 'docs/changes/backbone-workflow-kit/reviews/workflow-kit-result.md',
+ 'docs/reviews/workflow-kit-triage.md': 'docs/changes/backbone-workflow-kit/reviews/workflow-kit-triage.md',
+ 'docs/source-inventory/README.md': 'docs/agent-governance/sources/inventory/README.md',
+ 'docs/source-inventory/artifaktory-notes.md': 'docs/agent-governance/sources/inventory/artifaktory-notes.md',
+ 'docs/source-inventory/artifaktory.json': 'docs/agent-governance/sources/inventory/artifaktory.json',
+ 'docs/source-inventory/tars-notes.md': 'docs/agent-governance/sources/inventory/tars-notes.md',
+ 'docs/source-inventory/tars.json': 'docs/agent-governance/sources/inventory/tars.json',
+ 'docs/source-provenance.md': 'docs/agent-governance/sources/source-provenance.md',
+ 'docs/workflows/README.md': 'docs/operations/engineering/workflows/README.md',
+ 'docs/workflows/profiles.json': 'docs/operations/engineering/workflows/profiles.json',
+ 'examples/requirement.json': 'docs/templates/examples/requirement.json',
+ 'examples/review-evidence.json': 'docs/templates/examples/review-evidence.json',
+ 'examples/task-packet.json': 'docs/templates/examples/task-packet.json',
+ 'opencode.json': 'opencode.json',
+ 'plans/bootstrap-task.json': 'docs/changes/backbone-bootstrap/plans/bootstrap-task.json',
+ 'plans/bootstrap.md': 'docs/changes/backbone-bootstrap/plans/bootstrap.md',
+ 'plans/ci-clone-repair-task.json': 'docs/changes/backbone-ci-clone-repair/plans/ci-clone-repair-task.json',
+ 'plans/ci-clone-repair.md': 'docs/changes/backbone-ci-clone-repair/plans/ci-clone-repair.md',
+ 'plans/codex-consolidation-task.json': 'docs/changes/backbone-codex-consolidation/plans/codex-consolidation-task.json',
+ 'plans/codex-consolidation.md': 'docs/changes/backbone-codex-consolidation/plans/codex-consolidation.md',
+ 'plans/codex-findings-task.json': 'docs/changes/backbone-codex-consolidation/plans/codex-findings-task.json',
+ 'plans/codex-security-task.json': 'docs/changes/backbone-codex-security/plans/codex-security-task.json',
+ 'plans/codex-security.md': 'docs/changes/backbone-codex-security/plans/codex-security.md',
+ 'plans/copilot-development-task.json': 'docs/changes/backbone-copilot-development/plans/copilot-development-task.json',
+ 'plans/copilot-development.md': 'docs/changes/backbone-copilot-development/plans/copilot-development.md',
+ 'plans/dependency-compatibility-task.json': 'docs/changes/backbone-dependency-compatibility/plans/dependency-compatibility-task.json',
+ 'plans/dependency-compatibility.md': 'docs/changes/backbone-dependency-compatibility/plans/dependency-compatibility.md',
+ 'plans/opencode-governance-task.json': 'docs/changes/backbone-opencode-governance/plans/opencode-governance-task.json',
+ 'plans/opencode-governance.md': 'docs/changes/backbone-opencode-governance/plans/opencode-governance.md',
+ 'plans/quality-framework-task.json': 'docs/changes/backbone-quality-framework/plans/quality-framework-task.json',
+ 'plans/quality-framework.md': 'docs/changes/backbone-quality-framework/plans/quality-framework.md',
+ 'plans/technology-navigation-task.json': 'docs/changes/backbone-technology-navigation/plans/technology-navigation-task.json',
+ 'plans/technology-navigation.md': 'docs/changes/backbone-technology-navigation/plans/technology-navigation.md',
+ 'plans/workflow-kit-task.json': 'docs/changes/backbone-workflow-kit/plans/workflow-kit-task.json',
+ 'plans/workflow-kit.md': 'docs/changes/backbone-workflow-kit/plans/workflow-kit.md',
+ 'policy/core.json': '.engineering-backbone/core.json',
+ 'policy/core.md': 'docs/agent-governance/core.md',
+ 'policy/dependencies.md': 'docs/quality/dependencies.md',
+ 'policy/quality.md': 'docs/quality/policy.md',
+ 'requirements.lock': '.engineering-backbone/requirements.lock',
+ 'requirements.txt': '.engineering-backbone/requirements.txt',
+ 'schemas/core-policy.schema.json': '.engineering-backbone/schemas/core-policy.schema.json',
+ 'schemas/dependencies.schema.json': '.engineering-backbone/schemas/dependencies.schema.json',
+ 'schemas/navigation-request.schema.json': '.engineering-backbone/schemas/navigation-request.schema.json',
+ 'schemas/navigation.schema.json': '.engineering-backbone/schemas/navigation.schema.json',
+ 'schemas/opencode.schema.json': '.engineering-backbone/schemas/opencode.schema.json',
+ 'schemas/project.schema.json': '.engineering-backbone/schemas/project.schema.json',
+ 'schemas/quality-profile.schema.json': '.engineering-backbone/schemas/quality-profile.schema.json',
+ 'schemas/requirement.schema.json': '.engineering-backbone/schemas/requirement.schema.json',
+ 'schemas/review-evidence.schema.json': '.engineering-backbone/schemas/review-evidence.schema.json',
+ 'schemas/task-packet.schema.json': '.engineering-backbone/schemas/task-packet.schema.json',
+ 'schemas/workflows.schema.json': '.engineering-backbone/schemas/workflows.schema.json',
+ 'scripts/check_source_dependencies.py': '.engineering-backbone/src/check_source_dependencies.py',
+ 'scripts/compile_navigation.py': '.engineering-backbone/src/maintenance/compile_navigation.py',
+ 'scripts/compile_quality_framework.py': '.engineering-backbone/src/maintenance/compile_quality_framework.py',
+ 'scripts/compile_toolchain_fingerprint.py': '.engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py',
+ 'scripts/compile_workflow_kit.py': '.engineering-backbone/src/maintenance/compile_workflow_kit.py',
+ 'scripts/navigation.py': '.engineering-backbone/src/navigation.py',
+ 'scripts/opencode_native_smoke.py': '.engineering-backbone/src/opencode_native_smoke.py',
+ 'scripts/quality_framework.py': '.engineering-backbone/src/quality_framework.py',
+ 'scripts/validate.py': '.engineering-backbone/src/validate.py',
+ 'scripts/workflow_kit.py': '.engineering-backbone/src/workflow_kit.py',
+ 'standards/profiles/agentic.json': '.engineering-backbone/standards/profiles/agentic.json',
+ 'standards/profiles/baseline.json': '.engineering-backbone/standards/profiles/baseline.json',
+ 'standards/profiles/cpp17.json': '.engineering-backbone/standards/profiles/cpp17.json',
+ 'standards/profiles/high-risk.json': '.engineering-backbone/standards/profiles/high-risk.json',
+ 'standards/profiles/iec61508.json': '.engineering-backbone/standards/profiles/iec61508.json',
+ 'standards/profiles/iec62304.json': '.engineering-backbone/standards/profiles/iec62304.json',
+ 'standards/profiles/python.json': '.engineering-backbone/standards/profiles/python.json',
+ 'standards/profiles/software.json': '.engineering-backbone/standards/profiles/software.json',
+ 'standards/profiles/typescript.json': '.engineering-backbone/standards/profiles/typescript.json',
+ 'standards/rules.json': '.engineering-backbone/standards/rules.json',
+ 'standards/sources.json': '.engineering-backbone/standards/sources.json',
+ 'standards/technologies/profiles/bash.json': '.engineering-backbone/standards/technologies/profiles/bash.json',
+ 'standards/technologies/profiles/c.json': '.engineering-backbone/standards/technologies/profiles/c.json',
+ 'standards/technologies/profiles/cpp.json': '.engineering-backbone/standards/technologies/profiles/cpp.json',
+ 'standards/technologies/profiles/csharp.json': '.engineering-backbone/standards/technologies/profiles/csharp.json',
+ 'standards/technologies/profiles/css.json': '.engineering-backbone/standards/technologies/profiles/css.json',
+ 'standards/technologies/profiles/docker.json': '.engineering-backbone/standards/technologies/profiles/docker.json',
+ 'standards/technologies/profiles/dockerfile.json': '.engineering-backbone/standards/technologies/profiles/dockerfile.json',
+ 'standards/technologies/profiles/dotnet.json': '.engineering-backbone/standards/technologies/profiles/dotnet.json',
+ 'standards/technologies/profiles/fastapi.json': '.engineering-backbone/standards/technologies/profiles/fastapi.json',
+ 'standards/technologies/profiles/github-actions.json': '.engineering-backbone/standards/technologies/profiles/github-actions.json',
+ 'standards/technologies/profiles/go.json': '.engineering-backbone/standards/technologies/profiles/go.json',
+ 'standards/technologies/profiles/html.json': '.engineering-backbone/standards/technologies/profiles/html.json',
+ 'standards/technologies/profiles/java.json': '.engineering-backbone/standards/technologies/profiles/java.json',
+ 'standards/technologies/profiles/javascript.json': '.engineering-backbone/standards/technologies/profiles/javascript.json',
+ 'standards/technologies/profiles/json.json': '.engineering-backbone/standards/technologies/profiles/json.json',
+ 'standards/technologies/profiles/jvm.json': '.engineering-backbone/standards/technologies/profiles/jvm.json',
+ 'standards/technologies/profiles/linux.json': '.engineering-backbone/standards/technologies/profiles/linux.json',
+ 'standards/technologies/profiles/nextjs.json': '.engineering-backbone/standards/technologies/profiles/nextjs.json',
+ 'standards/technologies/profiles/node.json': '.engineering-backbone/standards/technologies/profiles/node.json',
+ 'standards/technologies/profiles/php.json': '.engineering-backbone/standards/technologies/profiles/php.json',
+ 'standards/technologies/profiles/postgresql.json': '.engineering-backbone/standards/technologies/profiles/postgresql.json',
+ 'standards/technologies/profiles/powershell.json': '.engineering-backbone/standards/technologies/profiles/powershell.json',
+ 'standards/technologies/profiles/python.json': '.engineering-backbone/standards/technologies/profiles/python.json',
+ 'standards/technologies/profiles/react.json': '.engineering-backbone/standards/technologies/profiles/react.json',
+ 'standards/technologies/profiles/sql.json': '.engineering-backbone/standards/technologies/profiles/sql.json',
+ 'standards/technologies/profiles/typescript.json': '.engineering-backbone/standards/technologies/profiles/typescript.json',
+ 'standards/technologies/profiles/windows.json': '.engineering-backbone/standards/technologies/profiles/windows.json',
+ 'standards/technologies/profiles/yaml.json': '.engineering-backbone/standards/technologies/profiles/yaml.json',
+ 'standards/technologies/rules.json': '.engineering-backbone/standards/technologies/rules.json',
+ 'standards/technologies/sources.json': '.engineering-backbone/standards/technologies/sources.json',
+ 'templates/.engineering-backbone/.gitattributes': '.engineering-backbone/legacy/templates/.engineering-backbone/.gitattributes',
+ 'templates/.engineering-backbone/AGENTS.fragment.md.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/AGENTS.fragment.md.jinja',
+ 'templates/.engineering-backbone/Copilot.fragment.md.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/Copilot.fragment.md.jinja',
+ 'templates/.engineering-backbone/README.md.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/README.md.jinja',
+ 'templates/.engineering-backbone/copier-answers.yml.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/copier-answers.yml.jinja',
+ 'templates/.engineering-backbone/copilot-guide.md.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/copilot-guide.md.jinja',
+ 'templates/.engineering-backbone/core.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/core.json.jinja',
+ 'templates/.engineering-backbone/core.md.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/core.md.jinja',
+ 'templates/.engineering-backbone/dependency-policy.md.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/dependency-policy.md.jinja',
+ 'templates/.engineering-backbone/project.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/project.json.jinja',
+ 'templates/.engineering-backbone/quality-policy.md.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/quality-policy.md.jinja',
+ 'templates/.engineering-backbone/requirements.lock.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/requirements.lock.jinja',
+ 'templates/.engineering-backbone/requirements.txt.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/requirements.txt.jinja',
+ 'templates/.engineering-backbone/schemas/core-policy.schema.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/schemas/core-policy.schema.json.jinja',
+ 'templates/.engineering-backbone/schemas/project.schema.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/schemas/project.schema.json.jinja',
+ 'templates/.engineering-backbone/schemas/requirement.schema.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/schemas/requirement.schema.json.jinja',
+ 'templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja',
+ 'templates/.engineering-backbone/schemas/task-packet.schema.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/schemas/task-packet.schema.json.jinja',
+ 'templates/.engineering-backbone/schemas/\x7b% if use_workflow_kit %}workflows.schema.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/schemas/\x7b% '
+                                                                                                            'if '
+                                                                                                            'use_workflow_kit '
+                                                                                                            '%}workflows.schema.json\x7b% '
+                                                                                                            'endif '
+                                                                                                            '%}.jinja',
+ 'templates/.engineering-backbone/validate.py.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/validate.py.jinja',
+ 'templates/.engineering-backbone/workflow-example.md.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/workflow-example.md.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_opencode %}opencode-guide.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                            'if '
+                                                                                            'use_opencode '
+                                                                                            '%}opencode-guide.md\x7b% '
+                                                                                            'endif '
+                                                                                            '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_opencode %}opencode-runner-contract.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                      'if '
+                                                                                                      'use_opencode '
+                                                                                                      '%}opencode-runner-contract.md\x7b% '
+                                                                                                      'endif '
+                                                                                                      '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_opencode %}opencode.fragment.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                 'if '
+                                                                                                 'use_opencode '
+                                                                                                 '%}opencode.fragment.json\x7b% '
+                                                                                                 'endif '
+                                                                                                 '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_opencode %}opencode.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                        'if '
+                                                                                        'use_opencode '
+                                                                                        '%}opencode.json\x7b% '
+                                                                                        'endif %}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_opencode %}opencode.schema.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                               'if '
+                                                                                               'use_opencode '
+                                                                                               '%}opencode.schema.json\x7b% '
+                                                                                               'endif '
+                                                                                               '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}dependencies.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                     'if '
+                                                                                                     'use_quality_framework '
+                                                                                                     '%}dependencies.json\x7b% '
+                                                                                                     'endif '
+                                                                                                     '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}dependencies.schema.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                            'if '
+                                                                                                            'use_quality_framework '
+                                                                                                            '%}dependencies.schema.json\x7b% '
+                                                                                                            'endif '
+                                                                                                            '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}navigation-guide.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                       'if '
+                                                                                                       'use_quality_framework '
+                                                                                                       '%}navigation-guide.md\x7b% '
+                                                                                                       'endif '
+                                                                                                       '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}navigation-request.schema.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                  'if '
+                                                                                                                  'use_quality_framework '
+                                                                                                                  '%}navigation-request.schema.json\x7b% '
+                                                                                                                  'endif '
+                                                                                                                  '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}navigation.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                   'if '
+                                                                                                   'use_quality_framework '
+                                                                                                   '%}navigation.json\x7b% '
+                                                                                                   'endif '
+                                                                                                   '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}navigation.schema.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                          'if '
+                                                                                                          'use_quality_framework '
+                                                                                                          '%}navigation.schema.json\x7b% '
+                                                                                                          'endif '
+                                                                                                          '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}quality-guard.py\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                    'if '
+                                                                                                    'use_quality_framework '
+                                                                                                    '%}quality-guard.py\x7b% '
+                                                                                                    'endif '
+                                                                                                    '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}quality-guide.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                    'if '
+                                                                                                    'use_quality_framework '
+                                                                                                    '%}quality-guide.md\x7b% '
+                                                                                                    'endif '
+                                                                                                    '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}quality-profile.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                        'if '
+                                                                                                        'use_quality_framework '
+                                                                                                        '%}quality-profile.json\x7b% '
+                                                                                                        'endif '
+                                                                                                        '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}quality-profile.schema.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                               'if '
+                                                                                                               'use_quality_framework '
+                                                                                                               '%}quality-profile.schema.json\x7b% '
+                                                                                                               'endif '
+                                                                                                               '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/agentic.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                   'if '
+                                                                                                                   'use_quality_framework '
+                                                                                                                   '%}standards\x7b% '
+                                                                                                                   'endif '
+                                                                                                                   '%}/profiles/agentic.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/baseline.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                    'if '
+                                                                                                                    'use_quality_framework '
+                                                                                                                    '%}standards\x7b% '
+                                                                                                                    'endif '
+                                                                                                                    '%}/profiles/baseline.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/cpp17.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                 'if '
+                                                                                                                 'use_quality_framework '
+                                                                                                                 '%}standards\x7b% '
+                                                                                                                 'endif '
+                                                                                                                 '%}/profiles/cpp17.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/high-risk.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                     'if '
+                                                                                                                     'use_quality_framework '
+                                                                                                                     '%}standards\x7b% '
+                                                                                                                     'endif '
+                                                                                                                     '%}/profiles/high-risk.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/iec61508.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                    'if '
+                                                                                                                    'use_quality_framework '
+                                                                                                                    '%}standards\x7b% '
+                                                                                                                    'endif '
+                                                                                                                    '%}/profiles/iec61508.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/iec62304.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                    'if '
+                                                                                                                    'use_quality_framework '
+                                                                                                                    '%}standards\x7b% '
+                                                                                                                    'endif '
+                                                                                                                    '%}/profiles/iec62304.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/python.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                  'if '
+                                                                                                                  'use_quality_framework '
+                                                                                                                  '%}standards\x7b% '
+                                                                                                                  'endif '
+                                                                                                                  '%}/profiles/python.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/software.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                    'if '
+                                                                                                                    'use_quality_framework '
+                                                                                                                    '%}standards\x7b% '
+                                                                                                                    'endif '
+                                                                                                                    '%}/profiles/software.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/profiles/typescript.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                      'if '
+                                                                                                                      'use_quality_framework '
+                                                                                                                      '%}standards\x7b% '
+                                                                                                                      'endif '
+                                                                                                                      '%}/profiles/typescript.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/rules.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                        'if '
+                                                                                                        'use_quality_framework '
+                                                                                                        '%}standards\x7b% '
+                                                                                                        'endif '
+                                                                                                        '%}/rules.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/sources.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                          'if '
+                                                                                                          'use_quality_framework '
+                                                                                                          '%}standards\x7b% '
+                                                                                                          'endif '
+                                                                                                          '%}/sources.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/bash.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                             'if '
+                                                                                                                             'use_quality_framework '
+                                                                                                                             '%}standards\x7b% '
+                                                                                                                             'endif '
+                                                                                                                             '%}/technologies/profiles/bash.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/c.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                          'if '
+                                                                                                                          'use_quality_framework '
+                                                                                                                          '%}standards\x7b% '
+                                                                                                                          'endif '
+                                                                                                                          '%}/technologies/profiles/c.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/cpp.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                            'if '
+                                                                                                                            'use_quality_framework '
+                                                                                                                            '%}standards\x7b% '
+                                                                                                                            'endif '
+                                                                                                                            '%}/technologies/profiles/cpp.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/csharp.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                               'if '
+                                                                                                                               'use_quality_framework '
+                                                                                                                               '%}standards\x7b% '
+                                                                                                                               'endif '
+                                                                                                                               '%}/technologies/profiles/csharp.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/css.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                            'if '
+                                                                                                                            'use_quality_framework '
+                                                                                                                            '%}standards\x7b% '
+                                                                                                                            'endif '
+                                                                                                                            '%}/technologies/profiles/css.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/docker.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                               'if '
+                                                                                                                               'use_quality_framework '
+                                                                                                                               '%}standards\x7b% '
+                                                                                                                               'endif '
+                                                                                                                               '%}/technologies/profiles/docker.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/dockerfile.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                                   'if '
+                                                                                                                                   'use_quality_framework '
+                                                                                                                                   '%}standards\x7b% '
+                                                                                                                                   'endif '
+                                                                                                                                   '%}/technologies/profiles/dockerfile.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/dotnet.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                               'if '
+                                                                                                                               'use_quality_framework '
+                                                                                                                               '%}standards\x7b% '
+                                                                                                                               'endif '
+                                                                                                                               '%}/technologies/profiles/dotnet.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/fastapi.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                                'if '
+                                                                                                                                'use_quality_framework '
+                                                                                                                                '%}standards\x7b% '
+                                                                                                                                'endif '
+                                                                                                                                '%}/technologies/profiles/fastapi.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/github-actions.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                                       'if '
+                                                                                                                                       'use_quality_framework '
+                                                                                                                                       '%}standards\x7b% '
+                                                                                                                                       'endif '
+                                                                                                                                       '%}/technologies/profiles/github-actions.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/go.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                           'if '
+                                                                                                                           'use_quality_framework '
+                                                                                                                           '%}standards\x7b% '
+                                                                                                                           'endif '
+                                                                                                                           '%}/technologies/profiles/go.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/html.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                             'if '
+                                                                                                                             'use_quality_framework '
+                                                                                                                             '%}standards\x7b% '
+                                                                                                                             'endif '
+                                                                                                                             '%}/technologies/profiles/html.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/java.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                             'if '
+                                                                                                                             'use_quality_framework '
+                                                                                                                             '%}standards\x7b% '
+                                                                                                                             'endif '
+                                                                                                                             '%}/technologies/profiles/java.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/javascript.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                                   'if '
+                                                                                                                                   'use_quality_framework '
+                                                                                                                                   '%}standards\x7b% '
+                                                                                                                                   'endif '
+                                                                                                                                   '%}/technologies/profiles/javascript.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/json.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                             'if '
+                                                                                                                             'use_quality_framework '
+                                                                                                                             '%}standards\x7b% '
+                                                                                                                             'endif '
+                                                                                                                             '%}/technologies/profiles/json.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/jvm.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                            'if '
+                                                                                                                            'use_quality_framework '
+                                                                                                                            '%}standards\x7b% '
+                                                                                                                            'endif '
+                                                                                                                            '%}/technologies/profiles/jvm.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/linux.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                              'if '
+                                                                                                                              'use_quality_framework '
+                                                                                                                              '%}standards\x7b% '
+                                                                                                                              'endif '
+                                                                                                                              '%}/technologies/profiles/linux.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/nextjs.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                               'if '
+                                                                                                                               'use_quality_framework '
+                                                                                                                               '%}standards\x7b% '
+                                                                                                                               'endif '
+                                                                                                                               '%}/technologies/profiles/nextjs.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/node.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                             'if '
+                                                                                                                             'use_quality_framework '
+                                                                                                                             '%}standards\x7b% '
+                                                                                                                             'endif '
+                                                                                                                             '%}/technologies/profiles/node.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/php.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                            'if '
+                                                                                                                            'use_quality_framework '
+                                                                                                                            '%}standards\x7b% '
+                                                                                                                            'endif '
+                                                                                                                            '%}/technologies/profiles/php.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/postgresql.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                                   'if '
+                                                                                                                                   'use_quality_framework '
+                                                                                                                                   '%}standards\x7b% '
+                                                                                                                                   'endif '
+                                                                                                                                   '%}/technologies/profiles/postgresql.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/powershell.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                                   'if '
+                                                                                                                                   'use_quality_framework '
+                                                                                                                                   '%}standards\x7b% '
+                                                                                                                                   'endif '
+                                                                                                                                   '%}/technologies/profiles/powershell.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/python.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                               'if '
+                                                                                                                               'use_quality_framework '
+                                                                                                                               '%}standards\x7b% '
+                                                                                                                               'endif '
+                                                                                                                               '%}/technologies/profiles/python.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/react.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                              'if '
+                                                                                                                              'use_quality_framework '
+                                                                                                                              '%}standards\x7b% '
+                                                                                                                              'endif '
+                                                                                                                              '%}/technologies/profiles/react.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/sql.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                            'if '
+                                                                                                                            'use_quality_framework '
+                                                                                                                            '%}standards\x7b% '
+                                                                                                                            'endif '
+                                                                                                                            '%}/technologies/profiles/sql.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/typescript.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                                   'if '
+                                                                                                                                   'use_quality_framework '
+                                                                                                                                   '%}standards\x7b% '
+                                                                                                                                   'endif '
+                                                                                                                                   '%}/technologies/profiles/typescript.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/windows.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                                'if '
+                                                                                                                                'use_quality_framework '
+                                                                                                                                '%}standards\x7b% '
+                                                                                                                                'endif '
+                                                                                                                                '%}/technologies/profiles/windows.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/profiles/yaml.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                             'if '
+                                                                                                                             'use_quality_framework '
+                                                                                                                             '%}standards\x7b% '
+                                                                                                                             'endif '
+                                                                                                                             '%}/technologies/profiles/yaml.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/rules.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                     'if '
+                                                                                                                     'use_quality_framework '
+                                                                                                                     '%}standards\x7b% '
+                                                                                                                     'endif '
+                                                                                                                     '%}/technologies/rules.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}standards\x7b% endif %}/technologies/sources.json.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                       'if '
+                                                                                                                       'use_quality_framework '
+                                                                                                                       '%}standards\x7b% '
+                                                                                                                       'endif '
+                                                                                                                       '%}/technologies/sources.json.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_quality_framework %}technology-guide.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                       'if '
+                                                                                                       'use_quality_framework '
+                                                                                                       '%}technology-guide.md\x7b% '
+                                                                                                       'endif '
+                                                                                                       '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_workflow_kit %}profiles.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                            'if '
+                                                                                            'use_workflow_kit '
+                                                                                            '%}profiles.json\x7b% '
+                                                                                            'endif '
+                                                                                            '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_workflow_kit %}workflow-examples\x7b% endif %}/deploy.yml.example.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                   'if '
+                                                                                                                   'use_workflow_kit '
+                                                                                                                   '%}workflow-examples\x7b% '
+                                                                                                                   'endif '
+                                                                                                                   '%}/deploy.yml.example.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_workflow_kit %}workflow-examples\x7b% endif %}/release.yml.example.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                                    'if '
+                                                                                                                    'use_workflow_kit '
+                                                                                                                    '%}workflow-examples\x7b% '
+                                                                                                                    'endif '
+                                                                                                                    '%}/release.yml.example.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_workflow_kit %}workflow-guide.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                                'if '
+                                                                                                'use_workflow_kit '
+                                                                                                '%}workflow-guide.md\x7b% '
+                                                                                                'endif '
+                                                                                                '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_workflow_kit %}workflow-kit.py\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                              'if '
+                                                                                              'use_workflow_kit '
+                                                                                              '%}workflow-kit.py\x7b% '
+                                                                                              'endif '
+                                                                                              '%}.jinja',
+ 'templates/.engineering-backbone/\x7b% if use_workflow_kit %}workflows.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/.engineering-backbone/\x7b% '
+                                                                                             'if '
+                                                                                             'use_workflow_kit '
+                                                                                             '%}workflows.json\x7b% '
+                                                                                             'endif '
+                                                                                             '%}.jinja',
+ 'templates/_partials/copilot/analyst.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/analyst.md.jinja',
+ 'templates/_partials/copilot/documentation.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/documentation.md.jinja',
+ 'templates/_partials/copilot/entry.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/entry.md.jinja',
+ 'templates/_partials/copilot/finding-triage.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/finding-triage.md.jinja',
+ 'templates/_partials/copilot/implementer.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/implementer.md.jinja',
+ 'templates/_partials/copilot/instruction-docs.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/instruction-docs.md.jinja',
+ 'templates/_partials/copilot/instruction-frontend.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/instruction-frontend.md.jinja',
+ 'templates/_partials/copilot/instruction-governance.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/instruction-governance.md.jinja',
+ 'templates/_partials/copilot/instruction-python.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/instruction-python.md.jinja',
+ 'templates/_partials/copilot/instruction-tests.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/instruction-tests.md.jinja',
+ 'templates/_partials/copilot/plan-reviewer.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/plan-reviewer.md.jinja',
+ 'templates/_partials/copilot/planner.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/planner.md.jinja',
+ 'templates/_partials/copilot/quality-checker.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/quality-checker.md.jinja',
+ 'templates/_partials/copilot/reviewer.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/reviewer.md.jinja',
+ 'templates/_partials/copilot/security-reviewer.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/security-reviewer.md.jinja',
+ 'templates/_partials/copilot/skill-bug-reproduction.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/skill-bug-reproduction.md.jinja',
+ 'templates/_partials/copilot/skill-code-review.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/skill-code-review.md.jinja',
+ 'templates/_partials/copilot/skill-delta-review.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/skill-delta-review.md.jinja',
+ 'templates/_partials/copilot/skill-docs-traceability.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/skill-docs-traceability.md.jinja',
+ 'templates/_partials/copilot/skill-finding-triage.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/skill-finding-triage.md.jinja',
+ 'templates/_partials/copilot/skill-implementation-plan.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/skill-implementation-plan.md.jinja',
+ 'templates/_partials/copilot/skill-task-intake.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/skill-task-intake.md.jinja',
+ 'templates/_partials/copilot/skill-test-and-quality.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/skill-test-and-quality.md.jinja',
+ 'templates/_partials/copilot/test-engineer.md.jinja': '.engineering-backbone/legacy/templates/_partials/copilot/test-engineer.md.jinja',
+ 'templates/_partials/essential.md.jinja': '.engineering-backbone/legacy/templates/_partials/essential.md.jinja',
+ 'templates/_partials/implementer.md.jinja': '.engineering-backbone/legacy/templates/_partials/implementer.md.jinja',
+ 'templates/_partials/planner.md.jinja': '.engineering-backbone/legacy/templates/_partials/planner.md.jinja',
+ 'templates/_partials/reviewer.md.jinja': '.engineering-backbone/legacy/templates/_partials/reviewer.md.jinja',
+ 'templates/\x7b% if backbone_workflow_ref %}.github\x7b% endif %}/workflows/engineering-backbone.yml.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                        'if '
+                                                                                                        'backbone_workflow_ref '
+                                                                                                        '%}.github\x7b% '
+                                                                                                        'endif '
+                                                                                                        '%}/workflows/engineering-backbone.yml.jinja',
+ 'templates/\x7b% if use_codex %}.codex\x7b% endif %}/agents/backbone-implementer.toml.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                         'if use_codex '
+                                                                                         '%}.codex\x7b% '
+                                                                                         'endif '
+                                                                                         '%}/agents/backbone-implementer.toml.jinja',
+ 'templates/\x7b% if use_codex %}.codex\x7b% endif %}/agents/backbone-planner.toml.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                     'if use_codex '
+                                                                                     '%}.codex\x7b% endif '
+                                                                                     '%}/agents/backbone-planner.toml.jinja',
+ 'templates/\x7b% if use_codex %}.codex\x7b% endif %}/agents/backbone-reviewer.toml.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                      'if use_codex '
+                                                                                      '%}.codex\x7b% endif '
+                                                                                      '%}/agents/backbone-reviewer.toml.jinja',
+ 'templates/\x7b% if use_codex %}AGENTS.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                           'if use_codex %}AGENTS.md\x7b% endif %}.jinja',
+ 'templates/\x7b% if use_codex or use_opencode %}AGENTS.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                           'if use_codex or '
+                                                                           'use_opencode %}AGENTS.md\x7b% '
+                                                                           'endif %}.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-analyst.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                            'if '
+                                                                                            'use_copilot '
+                                                                                            '%}.github\x7b% '
+                                                                                            'endif '
+                                                                                            '%}/agents/backbone-analyst.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-documentation.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                  'if '
+                                                                                                  'use_copilot '
+                                                                                                  '%}.github\x7b% '
+                                                                                                  'endif '
+                                                                                                  '%}/agents/backbone-documentation.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-finding-triage.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                   'if '
+                                                                                                   'use_copilot '
+                                                                                                   '%}.github\x7b% '
+                                                                                                   'endif '
+                                                                                                   '%}/agents/backbone-finding-triage.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-implementer.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                'if '
+                                                                                                'use_copilot '
+                                                                                                '%}.github\x7b% '
+                                                                                                'endif '
+                                                                                                '%}/agents/backbone-implementer.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-plan-reviewer.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                  'if '
+                                                                                                  'use_copilot '
+                                                                                                  '%}.github\x7b% '
+                                                                                                  'endif '
+                                                                                                  '%}/agents/backbone-plan-reviewer.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-planner.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                            'if '
+                                                                                            'use_copilot '
+                                                                                            '%}.github\x7b% '
+                                                                                            'endif '
+                                                                                            '%}/agents/backbone-planner.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-quality-checker.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                    'if '
+                                                                                                    'use_copilot '
+                                                                                                    '%}.github\x7b% '
+                                                                                                    'endif '
+                                                                                                    '%}/agents/backbone-quality-checker.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-reviewer.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                             'if '
+                                                                                             'use_copilot '
+                                                                                             '%}.github\x7b% '
+                                                                                             'endif '
+                                                                                             '%}/agents/backbone-reviewer.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-security-reviewer.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                      'if '
+                                                                                                      'use_copilot '
+                                                                                                      '%}.github\x7b% '
+                                                                                                      'endif '
+                                                                                                      '%}/agents/backbone-security-reviewer.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-test-engineer.agent.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                  'if '
+                                                                                                  'use_copilot '
+                                                                                                  '%}.github\x7b% '
+                                                                                                  'endif '
+                                                                                                  '%}/agents/backbone-test-engineer.agent.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/copilot-instructions.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                   'if use_copilot '
+                                                                                   '%}.github\x7b% endif '
+                                                                                   '%}/copilot-instructions.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/instructions/backbone-docs.instructions.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                      'if '
+                                                                                                      'use_copilot '
+                                                                                                      '%}.github\x7b% '
+                                                                                                      'endif '
+                                                                                                      '%}/instructions/backbone-docs.instructions.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/instructions/backbone-governance.instructions.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                            'if '
+                                                                                                            'use_copilot '
+                                                                                                            '%}.github\x7b% '
+                                                                                                            'endif '
+                                                                                                            '%}/instructions/backbone-governance.instructions.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/instructions/backbone-tests.instructions.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                       'if '
+                                                                                                       'use_copilot '
+                                                                                                       '%}.github\x7b% '
+                                                                                                       'endif '
+                                                                                                       '%}/instructions/backbone-tests.instructions.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/instructions/\x7b% if copilot_frontend_profile %}backbone-frontend.instructions.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                                                                      'if '
+                                                                                                                                                      'use_copilot '
+                                                                                                                                                      '%}.github\x7b% '
+                                                                                                                                                      'endif '
+                                                                                                                                                      '%}/instructions/\x7b% '
+                                                                                                                                                      'if '
+                                                                                                                                                      'copilot_frontend_profile '
+                                                                                                                                                      '%}backbone-frontend.instructions.md\x7b% '
+                                                                                                                                                      'endif '
+                                                                                                                                                      '%}.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/instructions/\x7b% if copilot_python_profile %}backbone-python.instructions.md\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                                                                  'if '
+                                                                                                                                                  'use_copilot '
+                                                                                                                                                  '%}.github\x7b% '
+                                                                                                                                                  'endif '
+                                                                                                                                                  '%}/instructions/\x7b% '
+                                                                                                                                                  'if '
+                                                                                                                                                  'copilot_python_profile '
+                                                                                                                                                  '%}backbone-python.instructions.md\x7b% '
+                                                                                                                                                  'endif '
+                                                                                                                                                  '%}.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/skills/bug-reproduction/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                            'if '
+                                                                                            'use_copilot '
+                                                                                            '%}.github\x7b% '
+                                                                                            'endif '
+                                                                                            '%}/skills/bug-reproduction/SKILL.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/skills/code-review/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                       'if use_copilot '
+                                                                                       '%}.github\x7b% '
+                                                                                       'endif '
+                                                                                       '%}/skills/code-review/SKILL.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/skills/delta-review/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                        'if use_copilot '
+                                                                                        '%}.github\x7b% '
+                                                                                        'endif '
+                                                                                        '%}/skills/delta-review/SKILL.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/skills/docs-traceability/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                             'if '
+                                                                                             'use_copilot '
+                                                                                             '%}.github\x7b% '
+                                                                                             'endif '
+                                                                                             '%}/skills/docs-traceability/SKILL.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/skills/finding-triage/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                          'if '
+                                                                                          'use_copilot '
+                                                                                          '%}.github\x7b% '
+                                                                                          'endif '
+                                                                                          '%}/skills/finding-triage/SKILL.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/skills/implementation-plan/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                               'if '
+                                                                                               'use_copilot '
+                                                                                               '%}.github\x7b% '
+                                                                                               'endif '
+                                                                                               '%}/skills/implementation-plan/SKILL.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/skills/task-intake/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                       'if use_copilot '
+                                                                                       '%}.github\x7b% '
+                                                                                       'endif '
+                                                                                       '%}/skills/task-intake/SKILL.md.jinja',
+ 'templates/\x7b% if use_copilot %}.github\x7b% endif %}/skills/test-and-quality/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                            'if '
+                                                                                            'use_copilot '
+                                                                                            '%}.github\x7b% '
+                                                                                            'endif '
+                                                                                            '%}/skills/test-and-quality/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/agents/backbone-implementer.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                             'if '
+                                                                                             'use_opencode '
+                                                                                             '%}.opencode\x7b% '
+                                                                                             'endif '
+                                                                                             '%}/agents/backbone-implementer.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/agents/backbone-planner.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                         'if '
+                                                                                         'use_opencode '
+                                                                                         '%}.opencode\x7b% '
+                                                                                         'endif '
+                                                                                         '%}/agents/backbone-planner.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/agents/backbone-quality-checker.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                 'if '
+                                                                                                 'use_opencode '
+                                                                                                 '%}.opencode\x7b% '
+                                                                                                 'endif '
+                                                                                                 '%}/agents/backbone-quality-checker.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/agents/backbone-reviewer.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                          'if '
+                                                                                          'use_opencode '
+                                                                                          '%}.opencode\x7b% '
+                                                                                          'endif '
+                                                                                          '%}/agents/backbone-reviewer.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/agents/backbone-triage.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                        'if '
+                                                                                        'use_opencode '
+                                                                                        '%}.opencode\x7b% '
+                                                                                        'endif '
+                                                                                        '%}/agents/backbone-triage.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/skills/bug-reproduction/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                               'if '
+                                                                                               'use_opencode '
+                                                                                               '%}.opencode\x7b% '
+                                                                                               'endif '
+                                                                                               '%}/skills/bug-reproduction/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/skills/code-review/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                          'if '
+                                                                                          'use_opencode '
+                                                                                          '%}.opencode\x7b% '
+                                                                                          'endif '
+                                                                                          '%}/skills/code-review/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/skills/delta-review/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                           'if '
+                                                                                           'use_opencode '
+                                                                                           '%}.opencode\x7b% '
+                                                                                           'endif '
+                                                                                           '%}/skills/delta-review/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/skills/docs-traceability/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                'if '
+                                                                                                'use_opencode '
+                                                                                                '%}.opencode\x7b% '
+                                                                                                'endif '
+                                                                                                '%}/skills/docs-traceability/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/skills/finding-triage/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                             'if '
+                                                                                             'use_opencode '
+                                                                                             '%}.opencode\x7b% '
+                                                                                             'endif '
+                                                                                             '%}/skills/finding-triage/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/skills/implementation-plan/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                  'if '
+                                                                                                  'use_opencode '
+                                                                                                  '%}.opencode\x7b% '
+                                                                                                  'endif '
+                                                                                                  '%}/skills/implementation-plan/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/skills/task-intake/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                          'if '
+                                                                                          'use_opencode '
+                                                                                          '%}.opencode\x7b% '
+                                                                                          'endif '
+                                                                                          '%}/skills/task-intake/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}.opencode\x7b% endif %}/skills/test-and-quality/SKILL.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                               'if '
+                                                                                               'use_opencode '
+                                                                                               '%}.opencode\x7b% '
+                                                                                               'endif '
+                                                                                               '%}/skills/test-and-quality/SKILL.md.jinja',
+ 'templates/\x7b% if use_opencode %}opencode.json\x7b% endif %}.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                  'if use_opencode %}opencode.json\x7b% '
+                                                                  'endif %}.jinja',
+ 'templates/\x7b% if use_quality_framework %}docs\x7b% endif %}/dependency-compatibility.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                              'if '
+                                                                                              'use_quality_framework '
+                                                                                              '%}docs\x7b% '
+                                                                                              'endif '
+                                                                                              '%}/dependency-compatibility.md.jinja',
+ 'templates/\x7b% if use_quality_framework %}docs\x7b% endif %}/quality/exceptions.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                        'if '
+                                                                                        'use_quality_framework '
+                                                                                        '%}docs\x7b% endif '
+                                                                                        '%}/quality/exceptions.md.jinja',
+ 'templates/\x7b% if use_quality_framework %}docs\x7b% endif %}/quality/quality-plan.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                          'if '
+                                                                                          'use_quality_framework '
+                                                                                          '%}docs\x7b% '
+                                                                                          'endif '
+                                                                                          '%}/quality/quality-plan.md.jinja',
+ 'templates/\x7b% if use_quality_framework %}docs\x7b% endif %}/quality/test-strategy.md.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                           'if '
+                                                                                           'use_quality_framework '
+                                                                                           '%}docs\x7b% '
+                                                                                           'endif '
+                                                                                           '%}/quality/test-strategy.md.jinja',
+ 'templates/\x7b% if use_quality_framework %}docs\x7b% endif %}/quality/traceability.csv.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                           'if '
+                                                                                           'use_quality_framework '
+                                                                                           '%}docs\x7b% '
+                                                                                           'endif '
+                                                                                           '%}/quality/traceability.csv.jinja',
+ 'templates/\x7b% if use_workflow_kit and workflow_kit_ref %}.github\x7b% endif %}/workflows/backbone-maintenance.yml.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                                        'if '
+                                                                                                                        'use_workflow_kit '
+                                                                                                                        'and '
+                                                                                                                        'workflow_kit_ref '
+                                                                                                                        '%}.github\x7b% '
+                                                                                                                        'endif '
+                                                                                                                        '%}/workflows/backbone-maintenance.yml.jinja',
+ 'templates/\x7b% if use_workflow_kit and workflow_kit_ref %}.github\x7b% endif %}/workflows/backbone-pr-checks.yml.jinja': '.engineering-backbone/legacy/templates/\x7b% '
+                                                                                                                      'if '
+                                                                                                                      'use_workflow_kit '
+                                                                                                                      'and '
+                                                                                                                      'workflow_kit_ref '
+                                                                                                                      '%}.github\x7b% '
+                                                                                                                      'endif '
+                                                                                                                      '%}/workflows/backbone-pr-checks.yml.jinja',
+ 'tests/fixtures/historical/.gitattributes': '.engineering-backbone/tst/fixtures/historical/.gitattributes',
+ 'tests/fixtures/historical/README.md': '.engineering-backbone/tst/fixtures/historical/README.md',
+ 'tests/fixtures/historical/attested-review/copier.yml': '.engineering-backbone/tst/fixtures/historical/attested-review/copier.yml',
+ 'tests/fixtures/historical/attested-review/schemas/project.schema.json': '.engineering-backbone/tst/fixtures/historical/attested-review/schemas/project.schema.json',
+ 'tests/fixtures/historical/attested-review/schemas/task-packet.schema.json': '.engineering-backbone/tst/fixtures/historical/attested-review/schemas/task-packet.schema.json',
+ 'tests/fixtures/historical/attested-review/scripts/validate.py': '.engineering-backbone/tst/fixtures/historical/attested-review/scripts/validate.py',
+ 'tests/fixtures/historical/attested-review/templates/.engineering-backbone/.gitattributes': '.engineering-backbone/tst/fixtures/historical/attested-review/templates/.engineering-backbone/.gitattributes',
+ 'tests/fixtures/historical/attested-review/templates/.engineering-backbone/README.md.jinja': '.engineering-backbone/tst/fixtures/historical/attested-review/templates/.engineering-backbone/README.md.jinja',
+ 'tests/fixtures/historical/attested-review/templates/.engineering-backbone/workflow-example.md.jinja': '.engineering-backbone/tst/fixtures/historical/attested-review/templates/.engineering-backbone/workflow-example.md.jinja',
+ 'tests/fixtures/historical/attested-review/templates/\x7b% if backbone_workflow_ref %}.github\x7b% endif %}/workflows/engineering-backbone.yml.jinja': '.engineering-backbone/tst/fixtures/historical/attested-review/templates/\x7b% '
+                                                                                                                                                  'if '
+                                                                                                                                                  'backbone_workflow_ref '
+                                                                                                                                                  '%}.github\x7b% '
+                                                                                                                                                  'endif '
+                                                                                                                                                  '%}/workflows/engineering-backbone.yml.jinja',
+ 'tests/fixtures/historical/bootstrap/copier.yml': '.engineering-backbone/tst/fixtures/historical/bootstrap/copier.yml',
+ 'tests/fixtures/historical/bootstrap/policy/core.json': '.engineering-backbone/tst/fixtures/historical/bootstrap/policy/core.json',
+ 'tests/fixtures/historical/bootstrap/policy/core.md': '.engineering-backbone/tst/fixtures/historical/bootstrap/policy/core.md',
+ 'tests/fixtures/historical/bootstrap/requirements.lock': '.engineering-backbone/tst/fixtures/historical/bootstrap/requirements.lock',
+ 'tests/fixtures/historical/bootstrap/requirements.txt': '.engineering-backbone/tst/fixtures/historical/bootstrap/requirements.txt',
+ 'tests/fixtures/historical/bootstrap/schemas/core-policy.schema.json': '.engineering-backbone/tst/fixtures/historical/bootstrap/schemas/core-policy.schema.json',
+ 'tests/fixtures/historical/bootstrap/schemas/project.schema.json': '.engineering-backbone/tst/fixtures/historical/bootstrap/schemas/project.schema.json',
+ 'tests/fixtures/historical/bootstrap/schemas/requirement.schema.json': '.engineering-backbone/tst/fixtures/historical/bootstrap/schemas/requirement.schema.json',
+ 'tests/fixtures/historical/bootstrap/schemas/review-evidence.schema.json': '.engineering-backbone/tst/fixtures/historical/bootstrap/schemas/review-evidence.schema.json',
+ 'tests/fixtures/historical/bootstrap/schemas/task-packet.schema.json': '.engineering-backbone/tst/fixtures/historical/bootstrap/schemas/task-packet.schema.json',
+ 'tests/fixtures/historical/bootstrap/scripts/validate.py': '.engineering-backbone/tst/fixtures/historical/bootstrap/scripts/validate.py',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/AGENTS.fragment.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/AGENTS.fragment.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/Copilot.fragment.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/Copilot.fragment.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/README.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/README.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/copier-answers.yml.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/copier-answers.yml.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/core.json.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/core.json.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/core.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/core.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/project.json.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/project.json.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.lock.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.lock.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.txt.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.txt.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/core-policy.schema.json.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/core-policy.schema.json.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/project.schema.json.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/project.schema.json.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/requirement.schema.json.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/requirement.schema.json.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/task-packet.schema.json.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/task-packet.schema.json.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/validate.py.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/validate.py.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/.engineering-backbone/workflow-example.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/workflow-example.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/_partials/essential.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/_partials/essential.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/_partials/implementer.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/_partials/implementer.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/_partials/planner.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/_partials/planner.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/_partials/reviewer.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/_partials/reviewer.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if backbone_workflow_ref %}.github\x7b% endif %}/workflows/engineering-backbone.yml.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                                                                            'if '
+                                                                                                                                            'backbone_workflow_ref '
+                                                                                                                                            '%}.github\x7b% '
+                                                                                                                                            'endif '
+                                                                                                                                            '%}/workflows/engineering-backbone.yml.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if use_codex %}.codex\x7b% endif %}/agents/backbone-implementer.toml.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                                                             'if '
+                                                                                                                             'use_codex '
+                                                                                                                             '%}.codex\x7b% '
+                                                                                                                             'endif '
+                                                                                                                             '%}/agents/backbone-implementer.toml.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if use_codex %}.codex\x7b% endif %}/agents/backbone-planner.toml.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                                                         'if '
+                                                                                                                         'use_codex '
+                                                                                                                         '%}.codex\x7b% '
+                                                                                                                         'endif '
+                                                                                                                         '%}/agents/backbone-planner.toml.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if use_codex %}.codex\x7b% endif %}/agents/backbone-reviewer.toml.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                                                          'if '
+                                                                                                                          'use_codex '
+                                                                                                                          '%}.codex\x7b% '
+                                                                                                                          'endif '
+                                                                                                                          '%}/agents/backbone-reviewer.toml.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if use_codex %}AGENTS.md\x7b% endif %}.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                               'if '
+                                                                                               'use_codex '
+                                                                                               '%}AGENTS.md\x7b% '
+                                                                                               'endif '
+                                                                                               '%}.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-implementer.agent.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                                                                    'if '
+                                                                                                                                    'use_copilot '
+                                                                                                                                    '%}.github\x7b% '
+                                                                                                                                    'endif '
+                                                                                                                                    '%}/agents/backbone-implementer.agent.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-planner.agent.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                                                                'if '
+                                                                                                                                'use_copilot '
+                                                                                                                                '%}.github\x7b% '
+                                                                                                                                'endif '
+                                                                                                                                '%}/agents/backbone-planner.agent.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if use_copilot %}.github\x7b% endif %}/agents/backbone-reviewer.agent.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                                                                 'if '
+                                                                                                                                 'use_copilot '
+                                                                                                                                 '%}.github\x7b% '
+                                                                                                                                 'endif '
+                                                                                                                                 '%}/agents/backbone-reviewer.agent.md.jinja',
+ 'tests/fixtures/historical/bootstrap/templates/\x7b% if use_copilot %}.github\x7b% endif %}/copilot-instructions.md.jinja': '.engineering-backbone/tst/fixtures/historical/bootstrap/templates/\x7b% '
+                                                                                                                       'if '
+                                                                                                                       'use_copilot '
+                                                                                                                       '%}.github\x7b% '
+                                                                                                                       'endif '
+                                                                                                                       '%}/copilot-instructions.md.jinja',
+ 'tests/fixtures/historical/manifest.json': '.engineering-backbone/tst/fixtures/historical/manifest.json',
+ 'tests/fixtures/historical/pre-attestation/copier.yml': '.engineering-backbone/tst/fixtures/historical/pre-attestation/copier.yml',
+ 'tests/fixtures/historical/pre-attestation/schemas/project.schema.json': '.engineering-backbone/tst/fixtures/historical/pre-attestation/schemas/project.schema.json',
+ 'tests/fixtures/historical/pre-attestation/schemas/task-packet.schema.json': '.engineering-backbone/tst/fixtures/historical/pre-attestation/schemas/task-packet.schema.json',
+ 'tests/fixtures/historical/pre-attestation/scripts/validate.py': '.engineering-backbone/tst/fixtures/historical/pre-attestation/scripts/validate.py',
+ 'tests/fixtures/historical/pre-attestation/templates/.engineering-backbone/README.md.jinja': '.engineering-backbone/tst/fixtures/historical/pre-attestation/templates/.engineering-backbone/README.md.jinja',
+ 'tests/fixtures/historical/pre-attestation/templates/.engineering-backbone/workflow-example.md.jinja': '.engineering-backbone/tst/fixtures/historical/pre-attestation/templates/.engineering-backbone/workflow-example.md.jinja',
+ 'tests/fixtures/opencode-predecessor/consumer.zip': '.engineering-backbone/tst/fixtures/opencode-predecessor/consumer.zip',
+ 'tests/fixtures/opencode-predecessor/manifest.json': '.engineering-backbone/tst/fixtures/opencode-predecessor/manifest.json',
+ 'tests/test_attributes.py': '.engineering-backbone/tst/test_attributes.py',
+ 'tests/test_codex_consolidation.py': '.engineering-backbone/tst/test_codex_consolidation.py',
+ 'tests/test_codex_security.py': '.engineering-backbone/tst/test_codex_security.py',
+ 'tests/test_codex_workflow_guard.py': '.engineering-backbone/tst/test_codex_workflow_guard.py',
+ 'tests/test_copier.py': '.engineering-backbone/tst/test_copier.py',
+ 'tests/test_copilot_distribution.py': '.engineering-backbone/tst/test_copilot_distribution.py',
+ 'tests/test_copilot_validation.py': '.engineering-backbone/tst/test_copilot_validation.py',
+ 'tests/test_copilot_workflow_guard.py': '.engineering-backbone/tst/test_copilot_workflow_guard.py',
+ 'tests/test_dependencies.py': '.engineering-backbone/tst/test_dependencies.py',
+ 'tests/test_dependency_integration.py': '.engineering-backbone/tst/test_dependency_integration.py',
+ 'tests/test_navigation.py': '.engineering-backbone/tst/test_navigation.py',
+ 'tests/test_navigation_integration.py': '.engineering-backbone/tst/test_navigation_integration.py',
+ 'tests/test_opencode_distribution.py': '.engineering-backbone/tst/test_opencode_distribution.py',
+ 'tests/test_opencode_native_smoke.py': '.engineering-backbone/tst/test_opencode_native_smoke.py',
+ 'tests/test_opencode_navigation.py': '.engineering-backbone/tst/test_opencode_navigation.py',
+ 'tests/test_opencode_validation.py': '.engineering-backbone/tst/test_opencode_validation.py',
+ 'tests/test_opencode_workflow_guard.py': '.engineering-backbone/tst/test_opencode_workflow_guard.py',
+ 'tests/test_quality_copier.py': '.engineering-backbone/tst/test_quality_copier.py',
+ 'tests/test_quality_framework.py': '.engineering-backbone/tst/test_quality_framework.py',
+ 'tests/test_quality_workflows.py': '.engineering-backbone/tst/test_quality_workflows.py',
+ 'tests/test_source_dependencies.py': '.engineering-backbone/tst/test_source_dependencies.py',
+ 'tests/test_technology_catalog.py': '.engineering-backbone/tst/test_technology_catalog.py',
+ 'tests/test_validation.py': '.engineering-backbone/tst/test_validation.py',
+ 'tests/test_workflow_kit.py': '.engineering-backbone/tst/test_workflow_kit.py',
+ 'tests/test_workflow_kit_copier.py': '.engineering-backbone/tst/test_workflow_kit_copier.py',
+ 'tests/test_workflow_kit_validation.py': '.engineering-backbone/tst/test_workflow_kit_validation.py',
+ 'tests/test_workflow_kit_workflows.py': '.engineering-backbone/tst/test_workflow_kit_workflows.py',
+ 'tests/test_workflows.py': '.engineering-backbone/tst/test_workflows.py'}
+
+# BEGIN COMPILED VALIDATOR SOURCE LAYOUT
+def source_layout(root):
+    """Select one complete canonical source policy without weakening source mode.
+
+    Candidate and trusted-base snapshots must be resolved independently. Native
+    dependency files at the product root are deliberately not layout selectors.
+    """
+    from pathlib import Path
+
+    root = Path(root).absolute()
+    contracts = {
+        'old': {
+            'policy_json': 'policy/core.json',
+            'policy_md': 'policy/core.md',
+            'quality_policy': 'policy/quality.md',
+            'dependency_policy': 'policy/dependencies.md',
+            'standards': 'standards',
+            'dependencies': '',
+            'navigation_guide': 'docs/agent-navigation.md',
+            'opencode_guide': 'docs/opencode/workflow.md',
+            'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+        },
+        'new': {
+            'policy_json': '.engineering-backbone/core.json',
+            'policy_md': 'docs/agent-governance/core.md',
+            'quality_policy': 'docs/quality/policy.md',
+            'dependency_policy': 'docs/quality/dependencies.md',
+            'standards': '.engineering-backbone/standards',
+            'dependencies': '.engineering-backbone',
+            'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+            'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+            'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+        },
+    }
+    canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+    def present(relative):
+        # Check aliases before existence/type filtering: a dangling alternative
+        # or a symlinked parent is ambiguity, never permission to use the other.
+        path = root
+        if path.is_symlink():
+            return True
+        for part in Path(relative).parts:
+            path /= part
+            if path.is_symlink():
+                return True
+        return path.exists()
+
+    old = present(contracts['old']['policy_json'])
+    new = present(contracts['new']['policy_json'])
+    if old == new:
+        kind = 'ambiguous' if old else 'absent'
+        raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+    selected, alternate = ('old', 'new') if old else ('new', 'old')
+    chosen = contracts[selected]
+    if any(present(contracts[alternate][key]) for key in canonical):
+        raise ValueError('Source layout: mixed canonical policy authorities')
+    for key in canonical:
+        path = root
+        components = [root]
+        for part in Path(chosen[key]).parts:
+            path /= part
+            components.append(path)
+        if any(component.is_symlink() for component in components):
+            raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+        if not path.is_file():
+            raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+    return dict(chosen, layout=selected)
+# END COMPILED VALIDATOR SOURCE LAYOUT
+
+
 def read_json(path: Path):
     def unique_keys(pairs):
         out = {}
@@ -619,6 +1983,76 @@ def opencode_errors(root, trusted_base=None, *, source=False):
     from urllib.parse import unquote, urlsplit
     import yaml
 
+    # BEGIN COMPILED OPENCODE SOURCE LAYOUT
+    def source_layout(root):
+        """Select one complete canonical source policy without weakening source mode.
+
+        Candidate and trusted-base snapshots must be resolved independently. Native
+        dependency files at the product root are deliberately not layout selectors.
+        """
+        from pathlib import Path
+
+        root = Path(root).absolute()
+        contracts = {
+            'old': {
+                'policy_json': 'policy/core.json',
+                'policy_md': 'policy/core.md',
+                'quality_policy': 'policy/quality.md',
+                'dependency_policy': 'policy/dependencies.md',
+                'standards': 'standards',
+                'dependencies': '',
+                'navigation_guide': 'docs/agent-navigation.md',
+                'opencode_guide': 'docs/opencode/workflow.md',
+                'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+            },
+            'new': {
+                'policy_json': '.engineering-backbone/core.json',
+                'policy_md': 'docs/agent-governance/core.md',
+                'quality_policy': 'docs/quality/policy.md',
+                'dependency_policy': 'docs/quality/dependencies.md',
+                'standards': '.engineering-backbone/standards',
+                'dependencies': '.engineering-backbone',
+                'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+                'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+                'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+            },
+        }
+        canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+        def present(relative):
+            # Check aliases before existence/type filtering: a dangling alternative
+            # or a symlinked parent is ambiguity, never permission to use the other.
+            path = root
+            if path.is_symlink():
+                return True
+            for part in Path(relative).parts:
+                path /= part
+                if path.is_symlink():
+                    return True
+            return path.exists()
+
+        old = present(contracts['old']['policy_json'])
+        new = present(contracts['new']['policy_json'])
+        if old == new:
+            kind = 'ambiguous' if old else 'absent'
+            raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+        selected, alternate = ('old', 'new') if old else ('new', 'old')
+        chosen = contracts[selected]
+        if any(present(contracts[alternate][key]) for key in canonical):
+            raise ValueError('Source layout: mixed canonical policy authorities')
+        for key in canonical:
+            path = root
+            components = [root]
+            for part in Path(chosen[key]).parts:
+                path /= part
+                components.append(path)
+            if any(component.is_symlink() for component in components):
+                raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+            if not path.is_file():
+                raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+        return dict(chosen, layout=selected)
+    # END COMPILED OPENCODE SOURCE LAYOUT
+
     root = Path(root).absolute()
     base = Path(trusted_base).absolute() if trusted_base is not None else None
     companion = '.engineering-backbone/opencode.json'
@@ -633,9 +2067,11 @@ def opencode_errors(root, trusted_base=None, *, source=False):
     budgets['implementer'].update(edit='ask', bash='ask')
     budgets['quality-checker']['bash'] = 'ask'
     rank = {'deny': 0, 'ask': 1, 'allow': 2}
-    source_instructions = ('AGENTS.md', 'policy/core.md', 'policy/core.json', 'policy/quality.md',
-                           'policy/dependencies.md', '.engineering-backbone/project.json',
-                           'docs/opencode/workflow.md', 'CONTRIBUTING.md')
+    def source_instructions(owner):
+        paths = source_layout(owner)
+        return ('AGENTS.md', paths['policy_md'], paths['policy_json'], paths['quality_policy'],
+                paths['dependency_policy'], '.engineering-backbone/project.json',
+                paths['opencode_guide'], 'CONTRIBUTING.md')
     installed_instructions = ('AGENTS.md', '.engineering-backbone/core.md', '.engineering-backbone/core.json',
                               '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
                               '.engineering-backbone/project.json', '.engineering-backbone/opencode-guide.md')
@@ -823,7 +2259,11 @@ def opencode_errors(root, trusted_base=None, *, source=False):
                 instructions = value
                 if len(set(value)) != len(value):
                     errors.append('opencode.json: duplicate instruction paths')
-                required = source_instructions if is_source else installed_instructions
+                try:
+                    required = source_instructions(owner) if is_source else installed_instructions
+                except (OSError, ValueError) as exc:
+                    errors.append(str(exc))
+                    required = ()
                 if not set(required).issubset(value):
                     errors.append('opencode.json: missing mandatory shared instructions')
                 for relative in value:
@@ -931,7 +2371,17 @@ def opencode_errors(root, trusted_base=None, *, source=False):
         old_seed, old_instructions, old_permission, old_profiles = inspect(base, source, False)
         if isinstance(old_seed, dict) and old_seed.get('enabled') is True and (not isinstance(seed, dict) or seed.get('enabled') is not True):
             errors.append('adapter regression: trusted-base enabled OpenCode must remain enabled')
-        if not set(old_instructions).issubset(instructions):
+        inherited_instructions = set(old_instructions)
+        if source:
+            try:
+                # Only reviewed mandatory source paths have layout equivalents.
+                # Additional project-owned inherited instructions retain their
+                # exact identity and cannot disappear during this migration.
+                moved = dict(zip(source_instructions(base), source_instructions(root)))
+                inherited_instructions = {moved.get(name, name) for name in old_instructions}
+            except (OSError, ValueError) as exc:
+                errors.append(str(exc))
+        if not inherited_instructions.issubset(instructions):
             errors.append('adapter regression: inherited OpenCode instructions cannot disappear')
         for label, old, new in [('opencode.json', old_permission, permission)] + [
                 (role_paths[role], old_profiles.get(role), profile_permissions.get(role)) for role in roles]:
@@ -1385,6 +2835,76 @@ def workflow_kit_main(argv=None):
 def quality_errors(root, trusted_base=None, *, source=False, navigation_request=None,
                    navigation_expected=None, navigation_output=None):
     """Return bounded contract errors, not semantic approval or certification."""
+    # BEGIN COMPILED QUALITY SOURCE LAYOUT
+    def source_layout(root):
+        """Select one complete canonical source policy without weakening source mode.
+
+        Candidate and trusted-base snapshots must be resolved independently. Native
+        dependency files at the product root are deliberately not layout selectors.
+        """
+        from pathlib import Path
+
+        root = Path(root).absolute()
+        contracts = {
+            'old': {
+                'policy_json': 'policy/core.json',
+                'policy_md': 'policy/core.md',
+                'quality_policy': 'policy/quality.md',
+                'dependency_policy': 'policy/dependencies.md',
+                'standards': 'standards',
+                'dependencies': '',
+                'navigation_guide': 'docs/agent-navigation.md',
+                'opencode_guide': 'docs/opencode/workflow.md',
+                'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+            },
+            'new': {
+                'policy_json': '.engineering-backbone/core.json',
+                'policy_md': 'docs/agent-governance/core.md',
+                'quality_policy': 'docs/quality/policy.md',
+                'dependency_policy': 'docs/quality/dependencies.md',
+                'standards': '.engineering-backbone/standards',
+                'dependencies': '.engineering-backbone',
+                'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+                'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+                'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+            },
+        }
+        canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+        def present(relative):
+            # Check aliases before existence/type filtering: a dangling alternative
+            # or a symlinked parent is ambiguity, never permission to use the other.
+            path = root
+            if path.is_symlink():
+                return True
+            for part in Path(relative).parts:
+                path /= part
+                if path.is_symlink():
+                    return True
+            return path.exists()
+
+        old = present(contracts['old']['policy_json'])
+        new = present(contracts['new']['policy_json'])
+        if old == new:
+            kind = 'ambiguous' if old else 'absent'
+            raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+        selected, alternate = ('old', 'new') if old else ('new', 'old')
+        chosen = contracts[selected]
+        if any(present(contracts[alternate][key]) for key in canonical):
+            raise ValueError('Source layout: mixed canonical policy authorities')
+        for key in canonical:
+            path = root
+            components = [root]
+            for part in Path(chosen[key]).parts:
+                path /= part
+                components.append(path)
+            if any(component.is_symlink() for component in components):
+                raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+            if not path.is_file():
+                raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+        return dict(chosen, layout=selected)
+    # END COMPILED QUALITY SOURCE LAYOUT
+
     import csv
     from datetime import date
     import io
@@ -1399,6 +2919,76 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
     def navigation_context(root, trusted_base=None, *, source=False, request=None,
                            expected=None, authority=None):
         """Validate routes and optionally resolve/verify a complete handoff context."""
+        # BEGIN COMPILED NAVIGATION SOURCE LAYOUT
+        def source_layout(root):
+            """Select one complete canonical source policy without weakening source mode.
+
+            Candidate and trusted-base snapshots must be resolved independently. Native
+            dependency files at the product root are deliberately not layout selectors.
+            """
+            from pathlib import Path
+
+            root = Path(root).absolute()
+            contracts = {
+                'old': {
+                    'policy_json': 'policy/core.json',
+                    'policy_md': 'policy/core.md',
+                    'quality_policy': 'policy/quality.md',
+                    'dependency_policy': 'policy/dependencies.md',
+                    'standards': 'standards',
+                    'dependencies': '',
+                    'navigation_guide': 'docs/agent-navigation.md',
+                    'opencode_guide': 'docs/opencode/workflow.md',
+                    'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+                },
+                'new': {
+                    'policy_json': '.engineering-backbone/core.json',
+                    'policy_md': 'docs/agent-governance/core.md',
+                    'quality_policy': 'docs/quality/policy.md',
+                    'dependency_policy': 'docs/quality/dependencies.md',
+                    'standards': '.engineering-backbone/standards',
+                    'dependencies': '.engineering-backbone',
+                    'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+                    'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+                    'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+                },
+            }
+            canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+            def present(relative):
+                # Check aliases before existence/type filtering: a dangling alternative
+                # or a symlinked parent is ambiguity, never permission to use the other.
+                path = root
+                if path.is_symlink():
+                    return True
+                for part in Path(relative).parts:
+                    path /= part
+                    if path.is_symlink():
+                        return True
+                return path.exists()
+
+            old = present(contracts['old']['policy_json'])
+            new = present(contracts['new']['policy_json'])
+            if old == new:
+                kind = 'ambiguous' if old else 'absent'
+                raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+            selected, alternate = ('old', 'new') if old else ('new', 'old')
+            chosen = contracts[selected]
+            if any(present(contracts[alternate][key]) for key in canonical):
+                raise ValueError('Source layout: mixed canonical policy authorities')
+            for key in canonical:
+                path = root
+                components = [root]
+                for part in Path(chosen[key]).parts:
+                    path /= part
+                    components.append(path)
+                if any(component.is_symlink() for component in components):
+                    raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+                if not path.is_file():
+                    raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+            return dict(chosen, layout=selected)
+        # END COMPILED NAVIGATION SOURCE LAYOUT
+
         import fnmatch
         from functools import lru_cache
         import hashlib
@@ -1415,8 +3005,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
         profile_path = '.engineering-backbone/quality-profile.json'
         workflows_path = '.engineering-backbone/workflows.json'
         dependencies_path = '.engineering-backbone/dependencies.json'
-        dependency_policy_path = ('policy/dependencies.md' if source else
-                                  '.engineering-backbone/dependency-policy.md')
+        def dependency_policy_path(folder):
+            return source_layout(folder)['dependency_policy'] if source else '.engineering-backbone/dependency-policy.md'
         missing = object()
 
         def fail(message):
@@ -1572,7 +3162,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             return {'path': reference, 'sha256': hashlib.sha256(data).hexdigest()}
 
         def package(folder, catalog):
-            prefix = 'standards/technologies' if source else '.engineering-backbone/standards/technologies'
+            prefix = source_layout(folder)['standards'] + '/technologies' if source else '.engineering-backbone/standards/technologies'
             for name in ('sources', 'rules'):
                 wanted = {'schema_version': '1', 'version': catalog['version'], name: catalog[name]}
                 if json_file(folder, prefix + '/' + name + '.json') != wanted:
@@ -1761,7 +3351,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                     fail('Active dependencies require active navigation, quality and workflow profiles')
                 if not components:
                     fail('Active dependencies require mapped components')
-                document(folder, dependency_policy_path)
+                document(folder, dependency_policy_path(folder))
             mapped = {} if navigation is None else {item['id']: item for item in navigation['components']}
             checks = {} if not isinstance(workflow, dict) else {item['id']: item for item in workflow.get('checks', [])}
             found = set()
@@ -1827,8 +3417,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                 fail('Invalid OpenCode native config contract')
             instructions = sequence(native['instructions'], 'OpenCode instructions', nonempty=True, maximum=64)
             required = {'AGENTS.md', '.engineering-backbone/project.json'}
-            required.update({'policy/core.md', 'policy/core.json', 'policy/quality.md',
-                             'policy/dependencies.md', 'docs/opencode/workflow.md', 'CONTRIBUTING.md'} if source else
+            required.update({source_layout(folder)[key] for key in ('policy_md', 'policy_json', 'quality_policy',
+                             'dependency_policy', 'opencode_guide')} | {'CONTRIBUTING.md'} if source else
                             {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
                              '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
                              '.engineering-backbone/opencode-guide.md'})
@@ -1841,15 +3431,15 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                 if navigation is None or navigation['enabled'] is not True:
                     fail('Active OpenCode requires active navigation')
                 for role in roles:
-                    for name in opencode_paths(role, native):
+                    for name in opencode_paths(folder, role, native):
                         document(folder, name)
             return value
 
-        def opencode_paths(role, native):
+        def opencode_paths(folder, role, native):
             name = role.replace('_', '-')
             paths = {opencode_path, 'opencode.json', '.opencode/agents/backbone-' + name + '.md'}
             paths.update(native['instructions'])
-            paths.update({'docs/opencode/workflow.md', 'docs/opencode/opencode-runner-contract.md'} if source else
+            paths.update({source_layout(folder)[key] for key in ('opencode_guide', 'opencode_runner')} if source else
                          {'.engineering-backbone/opencode-guide.md', '.engineering-backbone/opencode-runner-contract.md'})
             paths.update('.opencode/skills/' + skill + '/SKILL.md'
                          for skill in ('task-intake', *opencode_procedures[role]))
@@ -2061,15 +3651,15 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             paths.update({manifest_path, profile_path, workflows_path, request['task_packet'],
                           '.engineering-backbone/project.json'})
             if opencode_candidate is not None and opencode_candidate['enabled']:
-                paths.update(opencode_paths(packet['role'], json_file(root, 'opencode.json')))
-            prefix = 'standards' if source else '.engineering-backbone/standards'
+                paths.update(opencode_paths(root, packet['role'], json_file(root, 'opencode.json')))
+            prefix = source_layout(root)['standards'] if source else '.engineering-backbone/standards'
             paths.update({prefix + '/sources.json', prefix + '/rules.json',
                           prefix + '/technologies/sources.json', prefix + '/technologies/rules.json'})
             paths.update(prefix + '/profiles/' + key + '.json' for key in quality['profiles'])
             paths.update(prefix + '/technologies/profiles/' + key + '.json' for key in selected_profiles)
             paths.update(path for path in quality['documents'].values() if path)
-            paths.update({'policy/core.md', 'policy/core.json', 'policy/quality.md', 'docs/quality/README.md',
-                          'docs/quality/technology-profiles.md', 'docs/agent-navigation.md'} if source else
+            paths.update({source_layout(root)[key] for key in ('policy_md', 'policy_json', 'quality_policy', 'navigation_guide')} |
+                         {'docs/quality/README.md', 'docs/quality/technology-profiles.md'} if source else
                          {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
                           '.engineering-backbone/quality-policy.md',
                           '.engineering-backbone/quality-guide.md', '.engineering-backbone/technology-guide.md',
@@ -2117,7 +3707,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             selected_check_ids.update(check for binding in quality['checks'] for check in binding['check_ids'])
             dependency_artifacts = set()
             if dependency_candidate is not None and dependency_candidate['enabled']:
-                paths.update({dependencies_path, dependency_policy_path})
+                paths.update({dependencies_path, dependency_policy_path(root)})
                 for component in dependency_candidate['components']:
                     if component['id'] in selected:
                         paths.add(component['compatibility_document'])
@@ -2358,7 +3948,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
         return value, rules, profiles
 
     def package(folder, authority, *, central=False):
-        prefix = folder / ('standards' if central else '.engineering-backbone/standards')
+        prefix = folder / (source_layout(folder)['standards'] if central else '.engineering-backbone/standards')
         for key in ('sources', 'rules'):
             expected = {'schema_version': '1', 'version': authority['version'],
                         key: authority[key]}
@@ -2673,6 +4263,7 @@ class RepositoryValidator:
         if selected_mode not in {"source", "consumer"}:
             raise ValueError("validator mode must be source or consumer")
         self.source = selected_mode == "source"
+        self.source_contract = None
         self.agents = {}
         self.root = root.resolve()
         self.trusted_base = trusted_base.resolve() if trusted_base is not None else None
@@ -2736,7 +4327,7 @@ class RepositoryValidator:
                     self.error(f"{label}: acceptance criterion IDs must be unique")
 
     def policy_path(self, root: Path):
-        return root / "policy" / "core.json" if self.source else root / ".engineering-backbone" / "core.json"
+        return root / source_layout(root)["policy_json"] if self.source else root / ".engineering-backbone" / "core.json"
 
     def read_policy(self, root: Path):
         path = self.policy_path(root)
@@ -2749,8 +4340,9 @@ class RepositoryValidator:
         return read_json(path)
 
     def policy(self):
-        path = self.policy_path(self.root)
+        path = self.root
         try:
+            path = self.policy_path(self.root)
             policy = self.read_policy(self.root)
         except (OSError, ValueError) as exc:
             self.error(f"{self.label(path)}: {exc}")
@@ -2782,6 +4374,30 @@ class RepositoryValidator:
             self.error(f"{relative}: file resolves outside the repository")
             return False
         return True
+
+    def diagnose_unselected_policies(self):
+        """Report bad invariants without selecting a failed source layout.
+
+        The layout failure remains fatal. Inspect only the two fixed regular
+        policy locations with executing-bundle schemas; never follow aliases or
+        interpret these diagnostics as a fallback validation mode.
+        """
+        for relative in ("policy/core.json", ".engineering-backbone/core.json"):
+            path = self.root
+            components = [path]
+            for part in Path(relative).parts:
+                path /= part
+                components.append(path)
+            if any(component.is_symlink() for component in components) or not path.is_file():
+                continue
+            policy = self.load(path)
+            if policy is None:
+                continue
+            self.validate_data("core-policy", policy, self.label(path))
+            invariants = policy.get("invariants", {}) if isinstance(policy, dict) else {}
+            for key, value in POLICY_FLOOR.items():
+                if not isinstance(invariants, dict) or invariants.get(key) is not value:
+                    self.error(f"{self.label(path)}: mandatory policy invariant {key} must be {value}")
 
     def adapters(self, project):
         if not isinstance(project, dict) or not isinstance(project.get("agents"), dict):
@@ -2840,7 +4456,7 @@ class RepositoryValidator:
         return paths
 
     def dependencies(self, source):
-        directory = self.root if source else self.root / ".engineering-backbone"
+        directory = self.root / (self.source_contract["dependencies"] if source else ".engineering-backbone")
         parsed = {}
         for filename in ("requirements.txt", "requirements.lock"):
             path = directory / filename
@@ -2943,6 +4559,26 @@ class RepositoryValidator:
                         if not isinstance(with_values, dict) or with_values.get("persist-credentials") is not False:
                             self.error(f"{relative}: checkout requires persist-credentials: false")
 
+    def historical_origin(self, path: Path):
+        if not self.source or self.source_contract["layout"] != "new":
+            return None
+        return HISTORICAL_FILES.get(path.relative_to(self.root).as_posix())
+
+    def historical_bytes(self, path: Path):
+        archive = self.historical_origin(path)
+        if archive is None:
+            return True
+        import hashlib
+        try:
+            data = path.read_bytes()
+        except OSError as exc:
+            self.error(f"{self.label(path)}: cannot read historical record: {exc}")
+            return False
+        if path.is_symlink() or hashlib.sha256(data).hexdigest() != archive[1]:
+            self.error(f"{self.label(path)}: historical record bytes differ from the reviewed archive")
+            return False
+        return True
+
     def markdown(self, path: Path, content: str):
         # Templates are checked again after rendering; source Jinja paths and
         # placeholders are not actual consumer paths.
@@ -2962,7 +4598,19 @@ class RepositoryValidator:
             if relative.startswith("/"):
                 self.error(f"{self.label(path)}: absolute Markdown link {target}")
                 continue
-            linked = (path.parent / relative).resolve()
+            archive = self.historical_origin(path)
+            if archive is not None:
+                # Resolve from the original repository location, then apply only
+                # this executable's reviewed crosswalk to the resulting target.
+                original = (self.root / archive[0]).parent / relative
+                normalized = Path(os.path.normpath(str(original)))
+                if not normalized.is_relative_to(self.root):
+                    self.error(f"{self.label(path)}: broken historical Markdown link {target}")
+                    continue
+                old_target = normalized.relative_to(self.root).as_posix()
+                linked = (self.root / ORIGINAL_TO_CURRENT.get(old_target, old_target)).resolve()
+            else:
+                linked = (path.parent / relative).resolve()
             if not linked.is_relative_to(self.root) or not linked.exists():
                 self.error(f"{self.label(path)}: broken local Markdown link {target}")
 
@@ -2977,7 +4625,7 @@ class RepositoryValidator:
                     except SchemaError as exc:
                         self.error(f"{self.label(path)}: invalid JSON schema: {exc}")
                 continue
-            if path.suffix != ".json" or not any(p in {"examples", "plans", "requirements", "reviews", "tasks"} for p in parts):
+            if path.suffix != ".json" or not (path.name in {"task-packet.json", "review-evidence.json"} or any(p in {"examples", "plans", "requirements", "reviews", "tasks"} for p in parts)):
                 continue
             data = self.load(path)
             if data is None:
@@ -2997,6 +4645,13 @@ class RepositoryValidator:
         if not self.root.is_dir():
             self.error(f"repository root does not exist: {self.root}")
             return self.errors
+        if self.source:
+            try:
+                self.source_contract = source_layout(self.root)
+            except (OSError, ValueError) as exc:
+                self.error(str(exc))
+                self.diagnose_unselected_policies()
+                return self.errors
         self.policy()
         project_path = self.root / ".engineering-backbone" / "project.json"
         project = self.load(project_path)
@@ -3004,7 +4659,7 @@ class RepositoryValidator:
             self.validate_data("project", project, self.label(project_path))
             self.adapters(project)
         source = self.source
-        self.required_file("policy/core.md" if source else ".engineering-backbone/core.md")
+        self.required_file(self.source_contract["policy_md"] if source else ".engineering-backbone/core.md")
         self.workflows(source)
         # This compiled guard is part of the existing attested validator bytes.
         # Only its validation mode is used here; no project command executes.
@@ -3023,8 +4678,7 @@ class RepositoryValidator:
         paths = self.walk()
         self.artifacts(paths)
         portable = {self.policy_path(self.root), project_path}
-        if not source:
-            portable.add(self.root / ".engineering-backbone" / "core.md")
+        portable.add(self.root / (self.source_contract["policy_md"] if source else ".engineering-backbone/core.md"))
         for path in paths:
             if path.suffix not in TEXT_SUFFIXES:
                 continue
@@ -3035,6 +4689,8 @@ class RepositoryValidator:
                 content = path.read_text(encoding="utf-8")
             except (OSError, UnicodeError) as exc:
                 self.error(f"{self.label(path)}: cannot read text: {exc}")
+                continue
+            if not self.historical_bytes(path):
                 continue
             if CONFLICT.search(content):
                 self.error(f"{self.label(path)}: unresolved merge conflict marker")

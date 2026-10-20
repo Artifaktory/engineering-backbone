@@ -179,6 +179,9 @@ class QualityFrameworkTests(unittest.TestCase):
     def test_real_current_source_catalog_is_checked_without_project_profile(self):
         self.assert_ok(ROOT, source=True)
         self.package(self.candidate, central=True)
+        (self.candidate / 'policy').mkdir()
+        for name in ('core.json', 'core.md', 'quality.md', 'dependencies.md'):
+            shutil.copyfile(ROOT / 'policy' / name, self.candidate / 'policy' / name)
         self.assert_rejected('Required document or directory absent: standards/technologies/sources.json',
                              source=True)
         shutil.copytree(ROOT / 'standards/technologies',
