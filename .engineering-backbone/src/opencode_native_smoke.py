@@ -477,7 +477,7 @@ def smoke(repo: Path, archive: Path | None, report: dict, timeout: int) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--repo', type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument('--repo', type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument('--archive', type=Path, help='optional cached archive; pin is still verified')
     parser.add_argument('--report', type=Path, default=Path('artifacts/opencode-native/report.json'))
     parser.add_argument('--timeout', type=int, default=60)

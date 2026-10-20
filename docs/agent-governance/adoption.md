@@ -354,7 +354,7 @@ established by these structural checks.
 The dependency policy ships with the neutral quality policy for every installation;
 the optional quality package adds managed `dependencies.schema.json`, an inactive
 project-owned `.engineering-backbone/dependencies.json`, and project-owned
-`docs/operations/engineering/dependency-compatibility.md`. Existing files are preserved during updates.
+`docs/dependency-compatibility.md`. Existing files are preserved during updates.
 Copier does not copy this source repository's tooling Dockerfile into applications.
 
 1. Read [the dependency policy](../quality/dependencies.md) and the

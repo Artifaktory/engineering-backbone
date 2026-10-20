@@ -33,7 +33,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test smoke failure paths
-        run: python -m unittest tests.test_opencode_native_smoke -v
+        run: python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -p test_opencode_native_smoke.py -v
       - name: Exercise pinned native discovery and read-only boundary
         run: python .engineering-backbone/src/opencode_native_smoke.py --report artifacts/opencode-native/report.json
       - name: Upload actual native evidence

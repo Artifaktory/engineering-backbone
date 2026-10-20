@@ -1,6 +1,7 @@
 """Portable failure-path tests; native CLI evidence is a separate command."""
 from __future__ import annotations
 
+from contextlib import chdir
 import io
 import json
 from pathlib import Path
@@ -21,6 +22,33 @@ class NativeSmokeTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(prefix='native-smoke-test-')
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
+
+    def test_main_default_repo_prepares_the_real_relocated_repository(self):
+        repository = Path(__file__).resolve().parents[2]
+        workspace = self.root / 'prepared-fixture'
+        report_path = self.root / 'report.json'
+
+        def fixture_only(repo, archive, report, timeout):
+            # Mock only the download/native execution wrapper. The actual
+            # argparse default and declared-input fixture preparation run.
+            smoke.prepare_fixture(repo, workspace, report)
+            self.assertEqual(repo, repository)
+            self.assertIsNone(archive)
+            self.assertEqual(timeout, 60)
+            report['status'] = 'passed'
+            report['limitations'] = ['Unit fixture preparation only; native execution is mocked.']
+
+        with chdir(self.root), patch.object(smoke, 'smoke', side_effect=fixture_only) as native:
+            result = smoke.main(['--report', str(report_path)])
+        native.assert_called_once()
+        report = json.loads(report_path.read_text())
+        self.assertEqual(result, 0, report)
+        self.assertEqual(len(report['inputs']), 22)
+        self.assertEqual(report['inputs']['opencode.json']['source_sha256'],
+                         smoke.file_digest(repository / 'opencode.json'))
+        self.assertEqual(json.loads((workspace / 'opencode.json').read_text()),
+                         json.loads((repository / 'opencode.json').read_text()))
+        self.assertIn('docs/agent-governance/core.md', report['inputs'])
 
     def tar(self, members):
         archive = self.root / 'test.tar.gz'
