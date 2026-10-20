@@ -1,0 +1,52 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-011-DELTA-1",
+  "kind": "delta",
+  "subject": {
+    "base_revision": "54501f1ed542e7f42b5aa315db8863b35e80aeed",
+    "head_revision": "97e68ecefbd21b0d022514f46520a75a6a025536"
+  },
+  "implementer": "root and delegated implementation sessions",
+  "reviewers": [
+    {
+      "id": "layout_behavior_review",
+      "role": "independent_reviewer"
+    },
+    {
+      "id": "layout_security_review",
+      "role": "independent_reviewer"
+    }
+  ],
+  "outcome": "no_findings",
+  "checks": [
+    {
+      "name": "Confirmed behavior findings and direct regressions",
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout/behavior-delta.md: LBEH-01 through LBEH-03 resolved.",
+        "docs/changes/backbone-layout/repair-checks.md: exact workflow invocation passed 12 affected tests; validator, actionlint and diff checks passed."
+      ]
+    },
+    {
+      "name": "Direct security and trust effects of repairs",
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout/security-delta.md: no confirmed in-scope findings; unchanged permission and failure contracts."
+      ]
+    }
+  ],
+  "findings": [],
+  "delta": {
+    "finding_ids": [
+      "LBEH-01",
+      "LBEH-02",
+      "LBEH-03"
+    ],
+    "regressions_checked": [
+      "Workflow discovers the relocated failure-path tests.",
+      "Legacy consumer documentation matches actual template and preservation paths.",
+      "Default CLI root resolves canonical repository and real fixture inputs from a different current directory.",
+      "Native permission validation, archive verification, timeouts and failure propagation remain unchanged."
+    ]
+  }
+}
