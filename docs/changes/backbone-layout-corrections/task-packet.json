@@ -8,13 +8,15 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "c50108773ba3195bf0f7503e5dffb2d7bfc78cd3",
-    "head_revision": "dbe05e14a255488e3416465971ece755fb04aba3"
+    "head_revision": null
   },
   "approved_sources": [
     "User request to correct missed Copilot/root-file handling and red checks on existing PR18",
     "docs/changes/backbone-layout-corrections/plan.md",
     "AGENTS.md, CONTRIBUTING.md and docs/agent-governance/core.md at corrective baseline c50108773ba3195bf0f7503e5dffb2d7bfc78cd3",
-    "Read-only Copilot audit COP-LAYOUT-01 and exact remote CI observations to be retained in this corrective record"
+    "Read-only Copilot audit COP-LAYOUT-01 and exact remote CI observations to be retained in this corrective record",
+    "docs/changes/backbone-layout-corrections/clone-repair-plan.md and independent clone-repair-plan-review.md",
+    "Confirmed COP-CI-02 after two actual Foundation local-clone errors; clone-repair-triage.md."
   ],
   "scope": {
     "include": [
@@ -62,7 +64,8 @@
       "verification": "automatic",
       "status": "pending",
       "evidence": [
-        "checks.md: old failure reproduced; both committed diffs pass at dbe05e14. Final evidence-commit checks and publication readback must be recorded in PR18 before claiming completion."
+        "checks.md: old failure reproduced; both committed diffs pass at dbe05e14. Final evidence-commit checks and publication readback must be recorded in PR18 before claiming completion.",
+        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot."
       ]
     },
     {
@@ -78,9 +81,10 @@
       "id": "AC-4",
       "description": "Affected positive and negative Copilot checks, canonical structural/compiled-output checks and independent Full/triage/necessary Delta pass without weakening preserved contracts or history.",
       "verification": "hybrid",
-      "status": "pass",
+      "status": "pending",
       "evidence": [
-        "plan-review.md, checks.md, full-review.md, triage.md; no confirmed findings, no repair Delta required."
+        "plan-review.md, checks.md, full-review.md, triage.md; no confirmed findings, no repair Delta required.",
+        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot."
       ]
     },
     {
@@ -89,7 +93,8 @@
       "verification": "hybrid",
       "status": "pass",
       "evidence": [
-        "ci-observations.md records exact prior-head CI failures and successes; separate BB-LAYOUT-013 prerequisite retains human merge dependency."
+        "ci-observations.md records exact prior-head CI failures and successes; separate BB-LAYOUT-013 prerequisite retains human merge dependency.",
+        "clone-initial-triage.md and clone-repair-triage.md retain the two actual433-test Foundation failures and prohibit further unchanged retries."
       ]
     },
     {
@@ -98,7 +103,8 @@
       "verification": "hybrid",
       "status": "pending",
       "evidence": [
-        "Publication and current-head checks remain pending at this evidence commit; PR18 body will record exact final identities and results."
+        "Publication and current-head checks remain pending at this evidence commit; PR18 body will record exact final identities and results.",
+        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot."
       ]
     }
   ],
@@ -145,5 +151,5 @@
     "Force push, destructive cleanup or automatic downstream application",
     "Claim pending CI or unrelated-head results prove current-head PASS"
   ],
-  "status": "ready_for_review"
+  "status": "active"
 }

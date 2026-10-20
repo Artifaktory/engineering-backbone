@@ -292,11 +292,16 @@ class CopilotDistributionTests(unittest.TestCase):
         commit(source, "Pinned historical three-role fixture")
         git(source, "tag", "v0.1.0")
         target = self.workspace / "upgraded-project"
-        run_copy(str(source), target, data={
+        # Use Git transport for both tagged revisions, avoiding local object-copy optimization.
+        source_url = "git+" + source.resolve().as_uri()
+        run_copy(source_url, target, data={
             "project_name": "existing-client", "language": "Go", "has_frontend": False,
             "base_branch": "integration/local", "validation_command": "go test ./...",
             "backbone_workflow_ref": "a" * 40,
         }, vcs_ref="v0.1.0", defaults=True, quiet=True, skip_tasks=True)
+        initial_answers = yaml.safe_load((target / ".engineering-backbone/copier-answers.yml").read_text())
+        self.assertEqual(initial_answers["_src_path"], source_url)
+        self.assertEqual(initial_answers["_commit"], "v0.1.0")
         self.assertEqual({path.name for path in (target / ".github/agents").glob("*.agent.md")},
                          {f"backbone-{role}.agent.md" for role in ORIGINAL_ROLES})
         self.assertFalse((target / ".github/skills").exists())
@@ -353,6 +358,7 @@ class CopilotDistributionTests(unittest.TestCase):
         self.assertNotEqual((target / ".engineering-backbone/Copilot.fragment.md").read_bytes(), previous_fragment)
         self.assertTrue((target / ".engineering-backbone/copilot-guide.md").is_file())
         answers = yaml.safe_load((target / ".engineering-backbone/copier-answers.yml").read_text())
+        self.assertEqual(answers["_src_path"], source_url)
         self.assertEqual(answers["_commit"], "v0.2.0")
         self.assertEqual({key: answers[key] for key in PROFILE_CHOICES}, {key: False for key in PROFILE_CHOICES})
         self.assertEqual(answers["backbone_workflow_ref"], "a" * 40)
