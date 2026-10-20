@@ -1,0 +1,186 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-014",
+  "title": "Integrate merged trusted-layout prerequisite into PR 18",
+  "objective": "Resolve PR18 conflicts by integrating actual main 537576f658bbd79c3bc49b26ade948116c664943 into the existing direct-copy branch, preserve both reviewed contracts and immutable history, repair separately confirmed INT-ARCHIVE-01, and publish the independently verified correction without merging the PR.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "537576f658bbd79c3bc49b26ade948116c664943",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "User request on 2026-10-20: PR18 now conflicts; continuation of authorized scoped PR18 corrections and Codex review",
+    "docs/changes/backbone-layout-integration/plan.md",
+    "AGENTS.md, CONTRIBUTING.md and docs/agent-governance/core.md at PR18 starting head f1c1410cff6407109f286173f1ecc980cd2a14b7",
+    "Actual main merge 537576f658bbd79c3bc49b26ade948116c664943 of PR19 head fc707a8d51981d52445c2176711154dfd26145aa",
+    "Separate triage of Codex PR19 discussion_r4325322772 as INT-ARCHIVE-01; repair only the confirmed archive-completeness defect",
+    "Separately confirmed PR18 Codex follow-up reports discussion_r4325511354 (INT-ARCHIVE-02: fresh exact-f1 checkout gives88archive hash errors) and discussion_r4325511366 (INT-NAV-01: active AGENTS/CONTRIBUTING/index pointers stale); amended independent plan review required before implementation"
+  ],
+  "scope": {
+    "include": [
+      ".gitattributes",
+      ".engineering-backbone/src/validate.py",
+      ".engineering-backbone/src/source_layout.py",
+      ".engineering-backbone/src/navigation.py",
+      ".engineering-backbone/src/quality_framework.py",
+      ".engineering-backbone/src/maintenance/compile_navigation.py",
+      ".engineering-backbone/src/maintenance/compile_quality_framework.py",
+      ".engineering-backbone/src/maintenance/compile_workflow_kit.py",
+      ".engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py",
+      ".engineering-backbone/tst/test_dependency_integration.py",
+      ".engineering-backbone/tst/test_navigation.py",
+      ".engineering-backbone/tst/test_navigation_integration.py",
+      ".engineering-backbone/tst/test_opencode_validation.py",
+      ".engineering-backbone/tst/test_quality_framework.py",
+      ".engineering-backbone/tst/test_source_layout_compatibility.py",
+      ".engineering-backbone/tst/test_workflows.py",
+      ".engineering-backbone/tst/test_reference_layout.py",
+      ".engineering-backbone/tst/test_validation.py",
+      ".engineering-backbone/tst/fixtures/layout-compatibility/**",
+      ".github/workflows/governance-checks.yml",
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      "docs/changes/README.md",
+      "docs/changes/backbone-layout-integration/**",
+      "docs/changes/backbone-layout-compatibility/**",
+      "plans/layout-compatibility.md",
+      "plans/layout-compatibility-task.json",
+      "docs/reviews/layout-compatibility-*",
+      "scripts/source_layout.py",
+      "tests/test_source_layout_compatibility.py",
+      "tests/fixtures/layout-compatibility/**"
+    ],
+    "exclude": [
+      ".engineering-backbone/core.json",
+      ".engineering-backbone/schemas/**",
+      ".engineering-backbone/standards/**",
+      ".engineering-backbone/requirements*",
+      ".engineering-backbone/legacy/**",
+      ".engineering-backbone/tst/fixtures/historical/**",
+      ".engineering-backbone/tst/fixtures/layout-predecessor/**",
+      ".github/agents/**",
+      ".github/instructions/**",
+      ".codex/**",
+      ".opencode/**",
+      "docs/agent-governance/core.md",
+      "docs/changes/backbone-layout/layout-map.json",
+      "copier.yml",
+      "apps/**",
+      "packages/**",
+      "contracts/**",
+      "config/**",
+      "infra/**",
+      "External repositories",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Conflict-free merge preserves actual main and starting PR18 ancestry, with explicit destinations and byte-preserving incoming-history mapping.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-2",
+      "description": "Integrated new physical layout preserves dual-layout trusted validation, canonical policy rejection, permissions and source/consumer separation; actual merged-main validator checks the exact candidate.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-3",
+      "description": "Confirmed INT-ARCHIVE-01 is reproduced and repaired: absent or linked required history is rejected using executable-owned authority, intact history remains valid, and candidate mapping cannot bypass it.",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-4",
+      "description": "Both prior branches' assertions, exact historical fixtures, Copilot correction and real Copier upgrades remain effective; the complete merged suite passes.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-5",
+      "description": "All four compiler checks, dependencies, workflow lint, links, candidate/trusted validation and final committed main-to-head and starting-head-to-head diffs pass with recorded identities.",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-6",
+      "description": "Independent plan review, quality checks, frozen behavior/security Full reviews, separate triage and necessary Delta complete without unresolved confirmed in-scope blockers.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-7",
+      "description": "Only existing PR18 is updated without force push; exact remote ancestry/tree/patch, conflict status, current-head checks and visible Codex review status are verified and reported without merge.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-8",
+      "description": "Confirmed INT-ARCHIVE-02 has a real fresh core.autocrlf=true Git checkout regression preserving historical archive hashes and source validation; INT-NAV-01 active pointers identify BB-LAYOUT-014. Nested fixture attributes and committed historical bytes remain unchanged.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python .engineering-backbone/src/validate.py",
+      "python <immutable-main-checkout>/scripts/validate.py --root <candidate-checkout> --trusted-base <immutable-main-checkout>",
+      "python .engineering-backbone/src/maintenance/compile_navigation.py --check",
+      "python .engineering-backbone/src/maintenance/compile_quality_framework.py --check",
+      "python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check",
+      "python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check",
+      "python .engineering-backbone/src/check_source_dependencies.py",
+      "PYTHONPATH=.engineering-backbone python -m unittest tst.test_source_layout_compatibility tst.test_reference_layout -v",
+      "python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v",
+      "actionlint -shellcheck= -pyflakes=",
+      "git ls-files --unmerged",
+      "git diff --check",
+      "git diff --cached --check",
+      "git diff --check 537576f658bbd79c3bc49b26ade948116c664943 HEAD",
+      "git diff --check f1c1410cff6407109f286173f1ecc980cd2a14b7 HEAD"
+    ],
+    "manual_evidence": [
+      "Independent plan review before implementation and separately retained INT-ARCHIVE-01 triage with actual failing before-fix behavior",
+      "Explicit incoming-file relocation inventory and exact blob/ZIP/fixture preservation; original495 map unchanged",
+      "Prior test/assertion preservation audit; native paths and permissions unchanged; actual real Copier update behavior",
+      "Frozen base/head/tree and binary patch SHA256 shared by both Full reviewers, with separate triage and any required Delta",
+      "Final post-evidence-commit complete diff checks, exact remote publication ancestry/tree/patch readback and current-main freshness",
+      "Actual current-head remote Foundation, trusted base, container and Windows/Linux outcomes; local missing engines remain explicit",
+      "Visible Codex request/result with exact reviewed revisions; prior-head review never substituted for integrated-head evidence",
+      "Separate triage for INT-ARCHIVE-02 and INT-NAV-01, real autocrlf checkout before/after evidence, scoped LF attribute and unchanged nested historical attributes"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 6
+  },
+  "stop_conditions": [
+    "Unexpected live PR/main changes requiring new inspection or unrelated worktree changes",
+    "Scope or trust-boundary expansion without updated independent plan and Full review",
+    "Unresolved confirmed in-scope blocker, unclear authority or exhausted two-Full/six-iteration budget",
+    "New unexplained required-check failure or unreviewed loss of assertions, fixtures, history or stricter policy",
+    "Actual trusted-base validator failure; candidate code or path projection cannot replace that gate"
+  ],
+  "forbidden_actions": [
+    "Merge PR18 into main, release, deployment or downstream application",
+    "Force push, overwrite unrelated changes, destructive cleanup or repository-setting changes",
+    "Weaken checks, permissions, policy invariants, schemas, assertions, timeouts or immutable fixture provenance",
+    "Alter original byte-preserved history or original495 crosswalk; candidate-derived historical exemptions",
+    "Change dependency versions, product code, native discovery paths or legacy generated consumer contracts beyond reviewed integrated validator bytes",
+    "Claim prior-head CI/review results or local simulated trusted bases qualify the final published candidate"
+  ],
+  "status": "active"
+}

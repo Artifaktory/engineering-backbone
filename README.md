@@ -6,10 +6,12 @@ the paths used by a copied project. New projects start by copying the reviewed t
 and filling in their own product facts; they do not need to render a template.
 
 **This first layout refactor is a draft for inspection, not an approved release.**
-The old trusted-base validator expects the previous paths and blocks merge of this
-layout until a separately reviewed trust migration is resolved. Candidate checks,
-legacy compatibility and independent reviews are recorded in the
-[current change](docs/changes/backbone-layout/plan.md); a draft does not imply PASS.
+The trusted-layout prerequisite in PR #19 has been human-merged. The
+[current integration](docs/changes/backbone-layout-integration/plan.md) brings that
+actual `main` into this structure and records the required checks and reviews.
+Its [incoming-file map](docs/changes/backbone-layout-integration/incoming-map.json)
+complements the original refactor inventory. A draft or a previous-head PASS does
+not establish that the current tree is ready to merge.
 
 ## Where files belong
 

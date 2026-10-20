@@ -1,0 +1,38 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-013-FULL-1",
+  "kind": "full",
+  "subject": {
+    "base_revision": "212608aa50ee517b3dd3107a9480da997222fd4f",
+    "head_revision": "aaa74e3dfc60836f8aae7c2751bc9dd889c52470"
+  },
+  "implementer": "root, runtime_assess and bridge_tests",
+  "reviewers": [
+    {
+      "id": "bridge_behavior_review",
+      "role": "independent_reviewer"
+    },
+    {
+      "id": "bridge_security_review",
+      "role": "independent_reviewer"
+    }
+  ],
+  "outcome": "no_findings",
+  "checks": [
+    {
+      "name": "Independent behavior and consumer-compatibility Full review",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/layout-compatibility-behavior-review.md"
+      ]
+    },
+    {
+      "name": "Independent security and trusted-authority Full review",
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/layout-compatibility-security-review.md"
+      ]
+    }
+  ],
+  "findings": []
+}

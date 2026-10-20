@@ -5,8 +5,12 @@ and repair evidence together under `docs/changes/<delivery>/`. New records repor
 actual revisions and results. A copied plan, an old PASS statement or a valid schema
 is not evidence that the receiving project was checked or approved.
 
-The active layout refactor is [BB-LAYOUT-011](backbone-layout/task-packet.json), with
-its [plan](backbone-layout/plan.md) and [file relocation crosswalk](backbone-layout/mapping.md).
+The active integration is [BB-LAYOUT-014](backbone-layout-integration/task-packet.json),
+with its [reviewed plan](backbone-layout-integration/plan.md) and
+[incoming-file map](backbone-layout-integration/incoming-map.json). The original
+[BB-LAYOUT-011 refactor](backbone-layout/task-packet.json),
+[BB-LAYOUT-012 corrections](backbone-layout-corrections/task-packet.json) and
+[original relocation crosswalk](backbone-layout/mapping.md) retain their recorded scope.
 
 ## Preserved earlier deliveries
 
@@ -27,6 +31,12 @@ current implementation, CI, runtime qualification or release readiness.
 | Technology profiles and navigation | [Navigation](backbone-technology-navigation/plans/technology-navigation.md) |
 | Dependency compatibility | [Dependencies](backbone-dependency-compatibility/plans/dependency-compatibility.md) |
 | OpenCode governance | [OpenCode](backbone-opencode-governance/plans/opencode-governance.md) |
+| Trusted-layout prerequisite (PR #19) | [Compatibility](backbone-layout-compatibility/plans/layout-compatibility.md) |
+
+The compatibility delivery retains `plans/` and `docs/reviews/` beneath its own
+directory so its original relative links work without rewriting recorded evidence.
+All eleven records retain their exact bytes from merged main `537576f...`; the
+integration map records each original Git blob and destination.
 
 Use [layout-map.json](backbone-layout/layout-map.json) to look up an `old_path` and
 its `new_path`. Each entry includes the original Git blob and byte size from base

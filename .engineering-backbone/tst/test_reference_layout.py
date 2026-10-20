@@ -10,6 +10,8 @@ import sys
 import tempfile
 import unittest
 
+from tst.test_source_layout_compatibility import archived_records
+
 
 ROOT = Path(__file__).resolve().parents[2]
 MAP = 'docs/changes/backbone-layout/layout-map.json'
@@ -68,6 +70,58 @@ class ReferenceMappingTests(unittest.TestCase):
 
     def test_product_and_backbone_paths_have_distinct_ownership(self):
         assert_reference_ownership(self, ROOT)
+
+
+class ReferenceCheckoutTests(unittest.TestCase):
+    def test_fresh_autocrlf_checkout_preserves_archives_and_nested_fixture_contract(self):
+        with tempfile.TemporaryDirectory(prefix='backbone-reference-checkout-') as temporary:
+            workspace = Path(temporary)
+            seed = workspace / 'seed'
+            checkout = workspace / 'checkout'
+            shutil.copytree(ROOT, seed, ignore=shutil.ignore_patterns(
+                '.git', '.venv', 'venv', '__pycache__', 'node_modules', 'artifacts',
+                '.pytest_cache', '.mypy_cache', 'dist', 'build'))
+
+            def git(directory, *args):
+                return subprocess.run(['git', *args], cwd=directory, check=True,
+                                      capture_output=True, text=True, timeout=60).stdout
+
+            git(seed, '-c', 'init.defaultBranch=main', 'init')
+            git(seed, 'config', 'user.name', 'Archive checkout fixture')
+            git(seed, 'config', 'user.email', 'archive-checkout@example.invalid')
+            git(seed, 'config', 'core.autocrlf', 'false')
+            git(seed, 'add', '.')
+            git(seed, 'commit', '-m', 'Exact integration fixture for fresh checkout')
+            git(workspace, 'clone', '--no-local', '--no-checkout', str(seed), str(checkout))
+            git(checkout, 'config', 'core.autocrlf', 'true')
+            git(checkout, 'checkout', '-f', 'HEAD')
+            self.assertEqual(git(checkout, 'config', '--get', 'core.autocrlf').strip(), 'true')
+            archive = archived_records()
+            self.assertEqual(len(archive), 88)
+            for relative, expected in archive.items():
+                with self.subTest(archive=relative):
+                    actual = (checkout / relative).read_bytes()
+                    self.assertEqual(hashlib.sha256(actual).hexdigest(), hashlib.sha256(expected).hexdigest())
+                    self.assertNotIn(b'\r\n', actual)
+            fixture_root = '.engineering-backbone/tst/fixtures/historical'
+            for path in (ROOT / fixture_root).rglob('*'):
+                if path.is_file():
+                    relative = path.relative_to(ROOT)
+                    with self.subTest(nested_fixture=relative.as_posix()):
+                        self.assertEqual((checkout / relative).read_bytes(), path.read_bytes())
+            archived = 'docs/changes/backbone-bootstrap/plans/bootstrap-task.json'
+            nested = fixture_root + '/bootstrap/policy/core.md'
+            attributes = git(checkout, 'check-attr', 'text', 'eol', 'filter',
+                             'working-tree-encoding', '--', archived, nested)
+            for attribute, value in (('text', 'set'), ('eol', 'lf'), ('filter', 'unset'),
+                                     ('working-tree-encoding', 'unset')):
+                self.assertIn(archived + ': ' + attribute + ': ' + value, attributes)
+            for attribute in ('text', 'filter', 'working-tree-encoding'):
+                self.assertIn(nested + ': ' + attribute + ': unset', attributes)
+            result = subprocess.run([sys.executable, '-I', str(checkout / VALIDATOR),
+                                     '--root', str(checkout)], cwd=checkout,
+                                    capture_output=True, text=True, timeout=60)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 class DirectCopyTests(unittest.TestCase):

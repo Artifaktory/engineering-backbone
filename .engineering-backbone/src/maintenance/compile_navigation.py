@@ -155,6 +155,29 @@ def function_text(content):
     return '\n'.join(content.splitlines()[node.lineno - 1:node.end_lineno])
 
 
+def source_layout_function(source):
+    """Extract reviewed resolver text without importing candidate Python."""
+    content = (source / '.engineering-backbone/src/source_layout.py').read_text(encoding='utf-8')
+    nodes = [node for node in ast.parse(content).body
+             if isinstance(node, ast.FunctionDef) and node.name == 'source_layout']
+    if len(nodes) != 1 or nodes[0].decorator_list:
+        raise ValueError('Expected one undecorated source_layout resolver')
+    node = nodes[0]
+    return '\n'.join(content.splitlines()[node.lineno - 1:node.end_lineno])
+
+
+def replace_source_layout(content, function, label, indent):
+    start = indent + '# BEGIN COMPILED ' + label + ' SOURCE LAYOUT'
+    end = indent + '# END COMPILED ' + label + ' SOURCE LAYOUT'
+    pattern = re.compile(r'(?m)^(' + re.escape(start) + r'\n).*?(^'
+                         + re.escape(end) + r'$)', re.S)
+    body = '\n'.join(indent + line if line else '' for line in function.splitlines())
+    updated, count = pattern.subn(lambda match: match.group(1) + body + '\n' + match.group(2), content)
+    if count != 1:
+        raise ValueError('Expected one compiled source-layout block: ' + label)
+    return updated
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -164,17 +187,25 @@ def main(argv=None):
     args = parser.parse_args(argv)
     source = args.source.resolve()
     try:
+        layout_function = source_layout_function(source)
         path = source / '.engineering-backbone/src/navigation.py'
         current = path.read_text(encoding='utf-8')
-        expected = compiled_resolver(current, technology_catalog(source))
+        expected = replace_source_layout(current, layout_function, 'NAVIGATION', '    ')
+        expected = compiled_resolver(expected, technology_catalog(source))
         target = source / '.engineering-backbone/src/quality_framework.py'
         original = target.read_text(encoding='utf-8')
+        quality = replace_source_layout(original, layout_function, 'QUALITY', '    ')
         body = '\n'.join('    ' + line if line else '' for line in function_text(expected).splitlines())
         pattern = re.compile(r'(?m)^(' + re.escape(START) + r'\n).*?(^' + re.escape(END) + r'$)', re.S)
-        updated, count = pattern.subn(lambda match: match.group(1) + body + '\n' + match.group(2), original)
+        updated, count = pattern.subn(lambda match: match.group(1) + body + '\n' + match.group(2), quality)
         if count != 1:
             raise ValueError('Expected one nested navigation guard block')
         changes = [(path, current, expected), (target, original, updated)]
+        validator = source / '.engineering-backbone/src/validate.py'
+        old_validator = validator.read_text(encoding='utf-8')
+        new_validator = replace_source_layout(old_validator, layout_function, 'VALIDATOR', '')
+        new_validator = replace_source_layout(new_validator, layout_function, 'OPENCODE', '    ')
+        changes.append((validator, old_validator, new_validator))
         if args.write:
             for file, old, new in changes:
                 if old != new:

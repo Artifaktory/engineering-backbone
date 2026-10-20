@@ -1,0 +1,210 @@
+{
+  "base_revision": "537576f658bbd79c3bc49b26ade948116c664943",
+  "pr_start_revision": "f1c1410cff6407109f286173f1ecc980cd2a14b7",
+  "entry_count": 29,
+  "entries": [
+    {
+      "old_path": ".github/workflows/governance-checks.yml",
+      "new_path": ".github/workflows/governance-checks.yml",
+      "base_blob": "d3674e5aaec49b54328fe05ad2fed179b69c4fef",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "AGENTS.md",
+      "new_path": "AGENTS.md",
+      "base_blob": "8b83106d975420159aee90a2054bf264c9e8a52f",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "CONTRIBUTING.md",
+      "new_path": "CONTRIBUTING.md",
+      "base_blob": "4182993c7d5de088fb43b590218c10cfe50da621",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-behavior-review.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-behavior-review.md",
+      "base_blob": "f7686aef1315235a315b7ddc8528392f0327f29b",
+      "sha256": "3a073ac877097548c7fa645b848c08f3a114f35be8ef062a650f80038f9d8fe1",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-check-failures.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-check-failures.md",
+      "base_blob": "120ed225c6d43fb780ec64231c7ccd8d6438ab96",
+      "sha256": "663879951ea2bc32e902080124e91be76cb48fd49b5524dc5faaccd7b32f6898",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-check-triage.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-check-triage.md",
+      "base_blob": "133eb8066dd40091b6b2071b86b5939df0294a08",
+      "sha256": "9ca33555ab5249e442425fff5bd67dfa6d232a670c709b2cea31623885b5e3db",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-checks.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-checks.md",
+      "base_blob": "159db315c3f3973fc53b4ef43a916ba02090616c",
+      "sha256": "2137f52553c5127944966f9bd2d9b9c79cb044153206256e7e3208037a894738",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-closeout.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-closeout.md",
+      "base_blob": "73b44789206391cd01b84b05d93ef97a92012f48",
+      "sha256": "01dec1a0b33e7d2a8f33a9c09cde25e02512df592c8ed7bfa26a12f688816439",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-plan-review.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-plan-review.md",
+      "base_blob": "6712ab978a451bc99405ad30b7723c82e2b5c5cd",
+      "sha256": "3ca13e10a4660f387663a29e746b0dc24589c1f98dc3679e62d41df91013eee4",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-review-evidence.json",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-review-evidence.json",
+      "base_blob": "0fefad2f75cc4f36053dc6b7e026aeea828f91ff",
+      "sha256": "f7a8d781e3bcf90fffc229833c1a4acc638a4dbd6e5126e1dfc7d4f9d5bef32d",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-review-triage.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-review-triage.md",
+      "base_blob": "bdeb96b231dc138631a81be7638e322e544d4590",
+      "sha256": "12f7eb26b5e942b69178d3b2703b179a56fdb311823f34c3a18daa831dd68f74",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/layout-compatibility-security-review.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/docs/reviews/layout-compatibility-security-review.md",
+      "base_blob": "c727437543c26a834dd4783853666a213ff7ec21",
+      "sha256": "f744573543b95a4dd1acd3a5401d64d9d02af19a893da5bb7c76bc2295a850dd",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/layout-compatibility-task.json",
+      "new_path": "docs/changes/backbone-layout-compatibility/plans/layout-compatibility-task.json",
+      "base_blob": "4018d03f8dbb48ffdc87157cc8034c008405e835",
+      "sha256": "8f9d5f1a292622ed0539212380c83cd5c076d05079a248b6772098099d2451fa",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/layout-compatibility.md",
+      "new_path": "docs/changes/backbone-layout-compatibility/plans/layout-compatibility.md",
+      "base_blob": "e40b335cb3c4e8134a4cca2c59c876474b6175fd",
+      "sha256": "42790b52ffaab24e27e8ab897f2a869271de3e63805f1033a6577877159fea65",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "scripts/compile_navigation.py",
+      "new_path": ".engineering-backbone/src/maintenance/compile_navigation.py",
+      "base_blob": "6320187a2b55f3176a8055bdfb045603fa3e6b53",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "scripts/navigation.py",
+      "new_path": ".engineering-backbone/src/navigation.py",
+      "base_blob": "2f9c903c49b512161531c49925fa4414fcef10e8",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "scripts/quality_framework.py",
+      "new_path": ".engineering-backbone/src/quality_framework.py",
+      "base_blob": "4db437c1991ea81ccbb0e53e3c7534304df0f1b6",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "scripts/source_layout.py",
+      "new_path": ".engineering-backbone/src/source_layout.py",
+      "base_blob": "8223dbcf6265c43e28872894dd362dc53365df8f",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "scripts/validate.py",
+      "new_path": ".engineering-backbone/src/validate.py",
+      "base_blob": "f3fa5a2919d5f1ba197b40dcee6a3014c79dd775",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "tests/fixtures/layout-compatibility/manifest.json",
+      "new_path": ".engineering-backbone/tst/fixtures/layout-compatibility/manifest.json",
+      "base_blob": "2127b4e722112b599d4c68e275007a8963c1ab06",
+      "preserve_bytes": true,
+      "action": "retain immutable fixture"
+    },
+    {
+      "old_path": "tests/fixtures/layout-compatibility/old-source.zip",
+      "new_path": ".engineering-backbone/tst/fixtures/layout-compatibility/old-source.zip",
+      "base_blob": "439ef8a9982586f0827371c29edc9a7157ade195",
+      "preserve_bytes": true,
+      "action": "retain immutable fixture"
+    },
+    {
+      "old_path": "tests/fixtures/layout-compatibility/pr18-source.zip",
+      "new_path": ".engineering-backbone/tst/fixtures/layout-compatibility/pr18-source.zip",
+      "base_blob": "06b902cbe953511659737f4239e12dfdee3b96e7",
+      "preserve_bytes": true,
+      "action": "retain immutable fixture"
+    },
+    {
+      "old_path": "tests/test_dependency_integration.py",
+      "new_path": ".engineering-backbone/tst/test_dependency_integration.py",
+      "base_blob": "6eae37e897ecd5530fe7443764c98b4f97423c58",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "tests/test_navigation.py",
+      "new_path": ".engineering-backbone/tst/test_navigation.py",
+      "base_blob": "55393b9c45faf114dd0b5a2a2f2e3ad34eb152d4",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "tests/test_navigation_integration.py",
+      "new_path": ".engineering-backbone/tst/test_navigation_integration.py",
+      "base_blob": "232a4546cf19992f7d5013213a2ccae105bc4a1b",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "tests/test_opencode_validation.py",
+      "new_path": ".engineering-backbone/tst/test_opencode_validation.py",
+      "base_blob": "c9b4db28ae8b03e36edb219a7ae0c3d2d9bde0b1",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "tests/test_quality_framework.py",
+      "new_path": ".engineering-backbone/tst/test_quality_framework.py",
+      "base_blob": "a24567a286bf137eaa3d2d540ca680d685d272fe",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "tests/test_source_layout_compatibility.py",
+      "new_path": ".engineering-backbone/tst/test_source_layout_compatibility.py",
+      "base_blob": "5c1c5618bbde085edf2ad14d9798baf58f905069",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    },
+    {
+      "old_path": "tests/test_workflows.py",
+      "new_path": ".engineering-backbone/tst/test_workflows.py",
+      "base_blob": "31aa7cac0caa1ba81fa3be79b33a5273accaa664",
+      "preserve_bytes": false,
+      "action": "integrate both reviewed branches"
+    }
+  ]
+}

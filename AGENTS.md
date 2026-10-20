@@ -2,8 +2,8 @@
 
 Read [the canonical policy](docs/agent-governance/core.md), [CONTRIBUTING.md](CONTRIBUTING.md), the active
 Task Packet and project instructions before non-trivial work. The current delivery is
-[BB-LAYOUT-011](docs/changes/backbone-layout/task-packet.json), with
-[its independently reviewed plan](docs/changes/backbone-layout/plan.md). This repository is
+[BB-LAYOUT-014](docs/changes/backbone-layout-integration/task-packet.json), with
+[its independently reviewed plan](docs/changes/backbone-layout-integration/plan.md). This repository is
 the shared agent/engineering control plane: its changes are HIGH risk by default.
 
 - Work within an explicitly authorized, scoped Task Packet. Inspect the branch,
@@ -37,13 +37,20 @@ python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbon
 git diff --check
 ```
 
+After the final evidence/code commit, also run `git diff --check BASE_SHA HEAD_SHA`
+with the actual resolved PR base/head commits and record both identities. A clean
+working-tree diff does not validate a committed PR patch. Any later commit requires
+this publication check again.
+
 Changes target the project-configured base branch (`main` for this repository).
 Run evidence belongs in ignored `artifacts/` directories; durable redacted review
 records belong in `docs/changes/<delivery>/`. Earlier Backbone records are historical
 only. The human requested this scoped draft refactoring PR; that authorizes its
-publication for inspection, not merge or release. The previous trusted-base
-validator remains a visible failed layout-migration gate; do not substitute a
-candidate validator or call that failure a passed trust check.
+publication for inspection, not merge or release. PR #19 was human-merged into
+`main` as `537576f658bbd79c3bc49b26ade948116c664943`. This integration must pass
+the validator executed from that actual trusted base against the new tree. Keep
+its result distinct from candidate checks; prior-head results do not qualify the
+current head. See the [integration record](docs/changes/backbone-layout-integration/plan.md).
 
 When copying this reference tree into another project, replace these source-specific
 task references and commands with that project's reviewed facts. Follow the

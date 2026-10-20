@@ -317,6 +317,7 @@ class NavigationTests(unittest.TestCase):
         self.resolve_ok(expected=context)
 
     def test_source_core_and_existing_project_facts_are_required(self):
+        self.write('docs/quality/dependencies.md', (ROOT / 'docs/quality/dependencies.md').read_text())
         for name, installed in (
             ('docs/agent-governance/core.md', '.engineering-backbone/core.md'),
             ('docs/quality/policy.md', '.engineering-backbone/quality-policy.md'),

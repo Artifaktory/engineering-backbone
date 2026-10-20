@@ -16,6 +16,7 @@ from copier import run_copy, run_update
 import yaml
 
 from src.maintenance.compile_toolchain_fingerprint import bundle_digest, rendered_digest
+from tst.test_source_layout_compatibility import frozen_files
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -36,6 +37,7 @@ LAYOUT_PREDECESSOR_TREE = 'c31ee9b6e418325936b59e31cd7e9b9865ed0064'
 LAYOUT_PREDECESSOR_DIGEST = '35678afb51ae9f1c5bc806dd7f1397d4ebde878d3f30adc7685399da386c950b'
 LAYOUT_PREDECESSOR_ARCHIVE = 'a67c6db7f5e418a414b09f3433548990c60964bd613c577b3e8abfe49a377ea0'
 LAYOUT_PREDECESSOR_FIXTURE = ROOT / '.engineering-backbone/tst/fixtures/layout-predecessor'
+MERGED_MAIN_DIGEST = 'a9355b863956489a0da750849dd890cdb8745f64172dedb3449f816e844bb524'
 
 
 def predecessor_consumer(destination, *, fixture=PREDECESSOR_FIXTURE,
@@ -407,6 +409,29 @@ class WorkflowTests(unittest.TestCase):
                 self.assertEqual(observed[-1], manifest['versions'][version]['rendered_toolchain_sha256'])
                 result = self.validate()
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        # Retain the prerequisite's real historical rendering check, and add
+        # actual merged main. Verify Git bytes independently before Copier,
+        # measure each rendered identity and exercise the current workflow.
+        for snapshot in ('old-source', 'merged-main'):
+            with self.subTest(snapshot=snapshot):
+                source = self.workspace / (snapshot + '-source')
+                for relative, content in frozen_files(snapshot).items():
+                    path = source / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_bytes(content)
+                    path.chmod(0o644)
+                shutil.rmtree(self.trusted)
+                run_copy(str(source), self.trusted, defaults=True, quiet=True, skip_tasks=True)
+                shutil.rmtree(self.candidate)
+                shutil.copytree(self.trusted, self.candidate)
+                measured = bundle_digest(self.trusted)
+                if snapshot == 'old-source':
+                    self.assertEqual(measured, LAYOUT_PREDECESSOR_DIGEST)
+                else:
+                    self.assertEqual(measured, MERGED_MAIN_DIGEST)
+                result = self.validate()
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                observed.append(measured)
         # Preserve original and explicitly reviewed predecessor identities,
         # including merged dependency/navigation tooling and the reviewed
         # OpenCode PR snapshot before its activation repair. Never infer

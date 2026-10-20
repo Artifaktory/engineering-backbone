@@ -52,9 +52,10 @@ MD_REFERENCE = re.compile(r"^\s{0,3}\[[^\]\n]+\]:\s*(<[^>]+>|[^\s]+)", re.M)
 MACHINE_PATH = re.compile(r"(?:[A-Za-z]:[\\/]|/(?:workspace|home|Users|root|tmp|mnt)/)")
 SOURCE_LEAK = re.compile(r"(?:\bArtifaktory/|\bBinary-Refinery/|github\.com/(?:Artifaktory|Binary-Refinery)/|\btars\.trading\b)", re.I)
 
-# Reviewed layout migration authority, copied with this executing validator.
-# Never read archive identity, expected bytes or link mapping from candidate data.
-# Only these exact historical files receive original-context link resolution.
+
+# Reviewed PR18 archive authority, verified against all495 base paths and88
+# historical Git blobs at212608aa50ee517b3dd3107a9480da997222fd4f.
+# Candidate mapping files never grant exemptions or set expected hashes.
 HISTORICAL_FILES = {'docs/changes/backbone-bootstrap/plans/bootstrap-task.json': ('plans/bootstrap-task.json',
                                                                'eb90566bc275722449807a4577fde27fc2d4863a171618426fcc452afb83713c'),
  'docs/changes/backbone-bootstrap/plans/bootstrap.md': ('plans/bootstrap.md',
@@ -1345,6 +1346,76 @@ ORIGINAL_TO_CURRENT = {'.codex/agents/backbone-implementer.toml': '.codex/agents
  'tests/test_workflow_kit_workflows.py': '.engineering-backbone/tst/test_workflow_kit_workflows.py',
  'tests/test_workflows.py': '.engineering-backbone/tst/test_workflows.py'}
 
+# BEGIN COMPILED VALIDATOR SOURCE LAYOUT
+def source_layout(root):
+    """Select one complete canonical source policy without weakening source mode.
+
+    Candidate and trusted-base snapshots must be resolved independently. Native
+    dependency files at the product root are deliberately not layout selectors.
+    """
+    from pathlib import Path
+
+    root = Path(root).absolute()
+    contracts = {
+        'old': {
+            'policy_json': 'policy/core.json',
+            'policy_md': 'policy/core.md',
+            'quality_policy': 'policy/quality.md',
+            'dependency_policy': 'policy/dependencies.md',
+            'standards': 'standards',
+            'dependencies': '',
+            'navigation_guide': 'docs/agent-navigation.md',
+            'opencode_guide': 'docs/opencode/workflow.md',
+            'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+        },
+        'new': {
+            'policy_json': '.engineering-backbone/core.json',
+            'policy_md': 'docs/agent-governance/core.md',
+            'quality_policy': 'docs/quality/policy.md',
+            'dependency_policy': 'docs/quality/dependencies.md',
+            'standards': '.engineering-backbone/standards',
+            'dependencies': '.engineering-backbone',
+            'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+            'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+            'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+        },
+    }
+    canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+    def present(relative):
+        # Check aliases before existence/type filtering: a dangling alternative
+        # or a symlinked parent is ambiguity, never permission to use the other.
+        path = root
+        if path.is_symlink():
+            return True
+        for part in Path(relative).parts:
+            path /= part
+            if path.is_symlink():
+                return True
+        return path.exists()
+
+    old = present(contracts['old']['policy_json'])
+    new = present(contracts['new']['policy_json'])
+    if old == new:
+        kind = 'ambiguous' if old else 'absent'
+        raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+    selected, alternate = ('old', 'new') if old else ('new', 'old')
+    chosen = contracts[selected]
+    if any(present(contracts[alternate][key]) for key in canonical):
+        raise ValueError('Source layout: mixed canonical policy authorities')
+    for key in canonical:
+        path = root
+        components = [root]
+        for part in Path(chosen[key]).parts:
+            path /= part
+            components.append(path)
+        if any(component.is_symlink() for component in components):
+            raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+        if not path.is_file():
+            raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+    return dict(chosen, layout=selected)
+# END COMPILED VALIDATOR SOURCE LAYOUT
+
 
 def read_json(path: Path):
     def unique_keys(pairs):
@@ -1920,6 +1991,76 @@ def opencode_errors(root, trusted_base=None, *, source=False):
     from urllib.parse import unquote, urlsplit
     import yaml
 
+    # BEGIN COMPILED OPENCODE SOURCE LAYOUT
+    def source_layout(root):
+        """Select one complete canonical source policy without weakening source mode.
+
+        Candidate and trusted-base snapshots must be resolved independently. Native
+        dependency files at the product root are deliberately not layout selectors.
+        """
+        from pathlib import Path
+
+        root = Path(root).absolute()
+        contracts = {
+            'old': {
+                'policy_json': 'policy/core.json',
+                'policy_md': 'policy/core.md',
+                'quality_policy': 'policy/quality.md',
+                'dependency_policy': 'policy/dependencies.md',
+                'standards': 'standards',
+                'dependencies': '',
+                'navigation_guide': 'docs/agent-navigation.md',
+                'opencode_guide': 'docs/opencode/workflow.md',
+                'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+            },
+            'new': {
+                'policy_json': '.engineering-backbone/core.json',
+                'policy_md': 'docs/agent-governance/core.md',
+                'quality_policy': 'docs/quality/policy.md',
+                'dependency_policy': 'docs/quality/dependencies.md',
+                'standards': '.engineering-backbone/standards',
+                'dependencies': '.engineering-backbone',
+                'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+                'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+                'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+            },
+        }
+        canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+        def present(relative):
+            # Check aliases before existence/type filtering: a dangling alternative
+            # or a symlinked parent is ambiguity, never permission to use the other.
+            path = root
+            if path.is_symlink():
+                return True
+            for part in Path(relative).parts:
+                path /= part
+                if path.is_symlink():
+                    return True
+            return path.exists()
+
+        old = present(contracts['old']['policy_json'])
+        new = present(contracts['new']['policy_json'])
+        if old == new:
+            kind = 'ambiguous' if old else 'absent'
+            raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+        selected, alternate = ('old', 'new') if old else ('new', 'old')
+        chosen = contracts[selected]
+        if any(present(contracts[alternate][key]) for key in canonical):
+            raise ValueError('Source layout: mixed canonical policy authorities')
+        for key in canonical:
+            path = root
+            components = [root]
+            for part in Path(chosen[key]).parts:
+                path /= part
+                components.append(path)
+            if any(component.is_symlink() for component in components):
+                raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+            if not path.is_file():
+                raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+        return dict(chosen, layout=selected)
+    # END COMPILED OPENCODE SOURCE LAYOUT
+
     root = Path(root).absolute()
     base = Path(trusted_base).absolute() if trusted_base is not None else None
     companion = '.engineering-backbone/opencode.json'
@@ -1934,9 +2075,11 @@ def opencode_errors(root, trusted_base=None, *, source=False):
     budgets['implementer'].update(edit='ask', bash='ask')
     budgets['quality-checker']['bash'] = 'ask'
     rank = {'deny': 0, 'ask': 1, 'allow': 2}
-    source_instructions = ('AGENTS.md', 'docs/agent-governance/core.md', '.engineering-backbone/core.json', 'docs/quality/policy.md',
-                           'docs/quality/dependencies.md', '.engineering-backbone/project.json',
-                           'docs/agent-governance/adapters/opencode/workflow.md', 'CONTRIBUTING.md')
+    def source_instructions(owner):
+        paths = source_layout(owner)
+        return ('AGENTS.md', paths['policy_md'], paths['policy_json'], paths['quality_policy'],
+                paths['dependency_policy'], '.engineering-backbone/project.json',
+                paths['opencode_guide'], 'CONTRIBUTING.md')
     installed_instructions = ('AGENTS.md', '.engineering-backbone/core.md', '.engineering-backbone/core.json',
                               '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
                               '.engineering-backbone/project.json', '.engineering-backbone/opencode-guide.md')
@@ -2124,7 +2267,11 @@ def opencode_errors(root, trusted_base=None, *, source=False):
                 instructions = value
                 if len(set(value)) != len(value):
                     errors.append('opencode.json: duplicate instruction paths')
-                required = source_instructions if is_source else installed_instructions
+                try:
+                    required = source_instructions(owner) if is_source else installed_instructions
+                except (OSError, ValueError) as exc:
+                    errors.append(str(exc))
+                    required = ()
                 if not set(required).issubset(value):
                     errors.append('opencode.json: missing mandatory shared instructions')
                 for relative in value:
@@ -2232,7 +2379,17 @@ def opencode_errors(root, trusted_base=None, *, source=False):
         old_seed, old_instructions, old_permission, old_profiles = inspect(base, source, False)
         if isinstance(old_seed, dict) and old_seed.get('enabled') is True and (not isinstance(seed, dict) or seed.get('enabled') is not True):
             errors.append('adapter regression: trusted-base enabled OpenCode must remain enabled')
-        if not set(old_instructions).issubset(instructions):
+        inherited_instructions = set(old_instructions)
+        if source:
+            try:
+                # Only reviewed mandatory source paths have layout equivalents.
+                # Additional project-owned inherited instructions retain their
+                # exact identity and cannot disappear during this migration.
+                moved = dict(zip(source_instructions(base), source_instructions(root)))
+                inherited_instructions = {moved.get(name, name) for name in old_instructions}
+            except (OSError, ValueError) as exc:
+                errors.append(str(exc))
+        if not inherited_instructions.issubset(instructions):
             errors.append('adapter regression: inherited OpenCode instructions cannot disappear')
         for label, old, new in [('opencode.json', old_permission, permission)] + [
                 (role_paths[role], old_profiles.get(role), profile_permissions.get(role)) for role in roles]:
@@ -2686,6 +2843,76 @@ def workflow_kit_main(argv=None):
 def quality_errors(root, trusted_base=None, *, source=False, navigation_request=None,
                    navigation_expected=None, navigation_output=None):
     """Return bounded contract errors, not semantic approval or certification."""
+    # BEGIN COMPILED QUALITY SOURCE LAYOUT
+    def source_layout(root):
+        """Select one complete canonical source policy without weakening source mode.
+
+        Candidate and trusted-base snapshots must be resolved independently. Native
+        dependency files at the product root are deliberately not layout selectors.
+        """
+        from pathlib import Path
+
+        root = Path(root).absolute()
+        contracts = {
+            'old': {
+                'policy_json': 'policy/core.json',
+                'policy_md': 'policy/core.md',
+                'quality_policy': 'policy/quality.md',
+                'dependency_policy': 'policy/dependencies.md',
+                'standards': 'standards',
+                'dependencies': '',
+                'navigation_guide': 'docs/agent-navigation.md',
+                'opencode_guide': 'docs/opencode/workflow.md',
+                'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+            },
+            'new': {
+                'policy_json': '.engineering-backbone/core.json',
+                'policy_md': 'docs/agent-governance/core.md',
+                'quality_policy': 'docs/quality/policy.md',
+                'dependency_policy': 'docs/quality/dependencies.md',
+                'standards': '.engineering-backbone/standards',
+                'dependencies': '.engineering-backbone',
+                'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+                'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+                'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+            },
+        }
+        canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+        def present(relative):
+            # Check aliases before existence/type filtering: a dangling alternative
+            # or a symlinked parent is ambiguity, never permission to use the other.
+            path = root
+            if path.is_symlink():
+                return True
+            for part in Path(relative).parts:
+                path /= part
+                if path.is_symlink():
+                    return True
+            return path.exists()
+
+        old = present(contracts['old']['policy_json'])
+        new = present(contracts['new']['policy_json'])
+        if old == new:
+            kind = 'ambiguous' if old else 'absent'
+            raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+        selected, alternate = ('old', 'new') if old else ('new', 'old')
+        chosen = contracts[selected]
+        if any(present(contracts[alternate][key]) for key in canonical):
+            raise ValueError('Source layout: mixed canonical policy authorities')
+        for key in canonical:
+            path = root
+            components = [root]
+            for part in Path(chosen[key]).parts:
+                path /= part
+                components.append(path)
+            if any(component.is_symlink() for component in components):
+                raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+            if not path.is_file():
+                raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+        return dict(chosen, layout=selected)
+    # END COMPILED QUALITY SOURCE LAYOUT
+
     import csv
     from datetime import date
     import io
@@ -2700,6 +2927,76 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
     def navigation_context(root, trusted_base=None, *, source=False, request=None,
                            expected=None, authority=None):
         """Validate routes and optionally resolve/verify a complete handoff context."""
+        # BEGIN COMPILED NAVIGATION SOURCE LAYOUT
+        def source_layout(root):
+            """Select one complete canonical source policy without weakening source mode.
+
+            Candidate and trusted-base snapshots must be resolved independently. Native
+            dependency files at the product root are deliberately not layout selectors.
+            """
+            from pathlib import Path
+
+            root = Path(root).absolute()
+            contracts = {
+                'old': {
+                    'policy_json': 'policy/core.json',
+                    'policy_md': 'policy/core.md',
+                    'quality_policy': 'policy/quality.md',
+                    'dependency_policy': 'policy/dependencies.md',
+                    'standards': 'standards',
+                    'dependencies': '',
+                    'navigation_guide': 'docs/agent-navigation.md',
+                    'opencode_guide': 'docs/opencode/workflow.md',
+                    'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+                },
+                'new': {
+                    'policy_json': '.engineering-backbone/core.json',
+                    'policy_md': 'docs/agent-governance/core.md',
+                    'quality_policy': 'docs/quality/policy.md',
+                    'dependency_policy': 'docs/quality/dependencies.md',
+                    'standards': '.engineering-backbone/standards',
+                    'dependencies': '.engineering-backbone',
+                    'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+                    'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+                    'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+                },
+            }
+            canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+            def present(relative):
+                # Check aliases before existence/type filtering: a dangling alternative
+                # or a symlinked parent is ambiguity, never permission to use the other.
+                path = root
+                if path.is_symlink():
+                    return True
+                for part in Path(relative).parts:
+                    path /= part
+                    if path.is_symlink():
+                        return True
+                return path.exists()
+
+            old = present(contracts['old']['policy_json'])
+            new = present(contracts['new']['policy_json'])
+            if old == new:
+                kind = 'ambiguous' if old else 'absent'
+                raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+            selected, alternate = ('old', 'new') if old else ('new', 'old')
+            chosen = contracts[selected]
+            if any(present(contracts[alternate][key]) for key in canonical):
+                raise ValueError('Source layout: mixed canonical policy authorities')
+            for key in canonical:
+                path = root
+                components = [root]
+                for part in Path(chosen[key]).parts:
+                    path /= part
+                    components.append(path)
+                if any(component.is_symlink() for component in components):
+                    raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+                if not path.is_file():
+                    raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+            return dict(chosen, layout=selected)
+        # END COMPILED NAVIGATION SOURCE LAYOUT
+
         import fnmatch
         from functools import lru_cache
         import hashlib
@@ -2716,8 +3013,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
         profile_path = '.engineering-backbone/quality-profile.json'
         workflows_path = '.engineering-backbone/workflows.json'
         dependencies_path = '.engineering-backbone/dependencies.json'
-        dependency_policy_path = ('docs/quality/dependencies.md' if source else
-                                  '.engineering-backbone/dependency-policy.md')
+        def dependency_policy_path(folder):
+            return source_layout(folder)['dependency_policy'] if source else '.engineering-backbone/dependency-policy.md'
         missing = object()
 
         def fail(message):
@@ -2873,7 +3170,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             return {'path': reference, 'sha256': hashlib.sha256(data).hexdigest()}
 
         def package(folder, catalog):
-            prefix = '.engineering-backbone/standards/technologies'
+            prefix = source_layout(folder)['standards'] + '/technologies' if source else '.engineering-backbone/standards/technologies'
             for name in ('sources', 'rules'):
                 wanted = {'schema_version': '1', 'version': catalog['version'], name: catalog[name]}
                 if json_file(folder, prefix + '/' + name + '.json') != wanted:
@@ -3062,7 +3359,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                     fail('Active dependencies require active navigation, quality and workflow profiles')
                 if not components:
                     fail('Active dependencies require mapped components')
-                document(folder, dependency_policy_path)
+                document(folder, dependency_policy_path(folder))
             mapped = {} if navigation is None else {item['id']: item for item in navigation['components']}
             checks = {} if not isinstance(workflow, dict) else {item['id']: item for item in workflow.get('checks', [])}
             found = set()
@@ -3128,8 +3425,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                 fail('Invalid OpenCode native config contract')
             instructions = sequence(native['instructions'], 'OpenCode instructions', nonempty=True, maximum=64)
             required = {'AGENTS.md', '.engineering-backbone/project.json'}
-            required.update({'docs/agent-governance/core.md', '.engineering-backbone/core.json', 'docs/quality/policy.md',
-                             'docs/quality/dependencies.md', 'docs/agent-governance/adapters/opencode/workflow.md', 'CONTRIBUTING.md'} if source else
+            required.update({source_layout(folder)[key] for key in ('policy_md', 'policy_json', 'quality_policy',
+                             'dependency_policy', 'opencode_guide')} | {'CONTRIBUTING.md'} if source else
                             {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
                              '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
                              '.engineering-backbone/opencode-guide.md'})
@@ -3142,15 +3439,15 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                 if navigation is None or navigation['enabled'] is not True:
                     fail('Active OpenCode requires active navigation')
                 for role in roles:
-                    for name in opencode_paths(role, native):
+                    for name in opencode_paths(folder, role, native):
                         document(folder, name)
             return value
 
-        def opencode_paths(role, native):
+        def opencode_paths(folder, role, native):
             name = role.replace('_', '-')
             paths = {opencode_path, 'opencode.json', '.opencode/agents/backbone-' + name + '.md'}
             paths.update(native['instructions'])
-            paths.update({'docs/agent-governance/adapters/opencode/workflow.md', 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md'} if source else
+            paths.update({source_layout(folder)[key] for key in ('opencode_guide', 'opencode_runner')} if source else
                          {'.engineering-backbone/opencode-guide.md', '.engineering-backbone/opencode-runner-contract.md'})
             paths.update('.opencode/skills/' + skill + '/SKILL.md'
                          for skill in ('task-intake', *opencode_procedures[role]))
@@ -3217,8 +3514,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                     # current task's selected role or newly hashed candidate bytes.
                     seed_native = json_file(trusted_base, 'opencode.json')
                     candidate_native = json_file(root, 'opencode.json')
-                    seed_paths = set().union(*(opencode_paths(role, seed_native) for role in roles))
-                    candidate_paths = set().union(*(opencode_paths(role, candidate_native) for role in roles))
+                    seed_paths = set().union(*(opencode_paths(trusted_base, role, seed_native) for role in roles))
+                    candidate_paths = set().union(*(opencode_paths(root, role, candidate_native) for role in roles))
                     if candidate_paths != seed_paths:
                         fail('OpenCode activation must match the reviewed seed input paths')
                     # The exact companion comparison above permits only enabled to
@@ -3362,15 +3659,15 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             paths.update({manifest_path, profile_path, workflows_path, request['task_packet'],
                           '.engineering-backbone/project.json'})
             if opencode_candidate is not None and opencode_candidate['enabled']:
-                paths.update(opencode_paths(packet['role'], json_file(root, 'opencode.json')))
-            prefix = '.engineering-backbone/standards'
+                paths.update(opencode_paths(root, packet['role'], json_file(root, 'opencode.json')))
+            prefix = source_layout(root)['standards'] if source else '.engineering-backbone/standards'
             paths.update({prefix + '/sources.json', prefix + '/rules.json',
                           prefix + '/technologies/sources.json', prefix + '/technologies/rules.json'})
             paths.update(prefix + '/profiles/' + key + '.json' for key in quality['profiles'])
             paths.update(prefix + '/technologies/profiles/' + key + '.json' for key in selected_profiles)
             paths.update(path for path in quality['documents'].values() if path)
-            paths.update({'docs/agent-governance/core.md', '.engineering-backbone/core.json', 'docs/quality/policy.md', 'docs/quality/README.md',
-                          'docs/quality/technology-profiles.md', 'docs/agent-governance/agent-navigation.md'} if source else
+            paths.update({source_layout(root)[key] for key in ('policy_md', 'policy_json', 'quality_policy', 'navigation_guide')} |
+                         {'docs/quality/README.md', 'docs/quality/technology-profiles.md'} if source else
                          {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
                           '.engineering-backbone/quality-policy.md',
                           '.engineering-backbone/quality-guide.md', '.engineering-backbone/technology-guide.md',
@@ -3418,7 +3715,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             selected_check_ids.update(check for binding in quality['checks'] for check in binding['check_ids'])
             dependency_artifacts = set()
             if dependency_candidate is not None and dependency_candidate['enabled']:
-                paths.update({dependencies_path, dependency_policy_path})
+                paths.update({dependencies_path, dependency_policy_path(root)})
                 for component in dependency_candidate['components']:
                     if component['id'] in selected:
                         paths.add(component['compatibility_document'])
@@ -3659,7 +3956,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
         return value, rules, profiles
 
     def package(folder, authority, *, central=False):
-        prefix = folder / '.engineering-backbone/standards'
+        prefix = folder / (source_layout(folder)['standards'] if central else '.engineering-backbone/standards')
         for key in ('sources', 'rules'):
             expected = {'schema_version': '1', 'version': authority['version'],
                         key: authority[key]}
@@ -3974,6 +4271,7 @@ class RepositoryValidator:
         if selected_mode not in {"source", "consumer"}:
             raise ValueError("validator mode must be source or consumer")
         self.source = selected_mode == "source"
+        self.source_contract = None
         self.agents = {}
         self.root = root.resolve()
         self.trusted_base = trusted_base.resolve() if trusted_base is not None else None
@@ -4037,7 +4335,7 @@ class RepositoryValidator:
                     self.error(f"{label}: acceptance criterion IDs must be unique")
 
     def policy_path(self, root: Path):
-        return root / ".engineering-backbone" / "core.json"
+        return root / source_layout(root)["policy_json"] if self.source else root / ".engineering-backbone" / "core.json"
 
     def read_policy(self, root: Path):
         path = self.policy_path(root)
@@ -4050,8 +4348,9 @@ class RepositoryValidator:
         return read_json(path)
 
     def policy(self):
-        path = self.policy_path(self.root)
+        path = self.root
         try:
+            path = self.policy_path(self.root)
             policy = self.read_policy(self.root)
         except (OSError, ValueError) as exc:
             self.error(f"{self.label(path)}: {exc}")
@@ -4083,6 +4382,30 @@ class RepositoryValidator:
             self.error(f"{relative}: file resolves outside the repository")
             return False
         return True
+
+    def diagnose_unselected_policies(self):
+        """Report bad invariants without selecting a failed source layout.
+
+        The layout failure remains fatal. Inspect only the two fixed regular
+        policy locations with executing-bundle schemas; never follow aliases or
+        interpret these diagnostics as a fallback validation mode.
+        """
+        for relative in ("policy/core.json", ".engineering-backbone/core.json"):
+            path = self.root
+            components = [path]
+            for part in Path(relative).parts:
+                path /= part
+                components.append(path)
+            if any(component.is_symlink() for component in components) or not path.is_file():
+                continue
+            policy = self.load(path)
+            if policy is None:
+                continue
+            self.validate_data("core-policy", policy, self.label(path))
+            invariants = policy.get("invariants", {}) if isinstance(policy, dict) else {}
+            for key, value in POLICY_FLOOR.items():
+                if not isinstance(invariants, dict) or invariants.get(key) is not value:
+                    self.error(f"{self.label(path)}: mandatory policy invariant {key} must be {value}")
 
     def adapters(self, project):
         if not isinstance(project, dict) or not isinstance(project.get("agents"), dict):
@@ -4141,7 +4464,7 @@ class RepositoryValidator:
         return paths
 
     def dependencies(self, source):
-        directory = self.root / ".engineering-backbone"
+        directory = self.root / (self.source_contract["dependencies"] if source else ".engineering-backbone")
         parsed = {}
         for filename in ("requirements.txt", "requirements.lock"):
             path = directory / filename
@@ -4245,9 +4568,29 @@ class RepositoryValidator:
                             self.error(f"{relative}: checkout requires persist-credentials: false")
 
     def historical_origin(self, path: Path):
-        if not self.source:
+        if not self.source or self.source_contract["layout"] != "new":
             return None
         return HISTORICAL_FILES.get(path.relative_to(self.root).as_posix())
+
+    def historical_inventory(self, paths):
+        """Require the complete reviewed archive even when the walk omits it.
+
+        A missing parent or a linked replacement must not remove a declared
+        obligation. The expected set belongs to this executing validator, never
+        to candidate mapping data. Old source and legacy consumers are unchanged.
+        """
+        if not self.source or self.source_contract["layout"] != "new":
+            return
+        observed = {path.relative_to(self.root).as_posix() for path in paths}
+        for relative in HISTORICAL_FILES:
+            path = self.root
+            components = [path]
+            for part in Path(relative).parts:
+                path /= part
+                components.append(path)
+            if (any(component.is_symlink() for component in components)
+                    or relative not in observed or not path.is_file()):
+                self.error(f"{relative}: required historical record must be a regular file with no symlink ancestors")
 
     def historical_bytes(self, path: Path):
         archive = self.historical_origin(path)
@@ -4330,6 +4673,13 @@ class RepositoryValidator:
         if not self.root.is_dir():
             self.error(f"repository root does not exist: {self.root}")
             return self.errors
+        if self.source:
+            try:
+                self.source_contract = source_layout(self.root)
+            except (OSError, ValueError) as exc:
+                self.error(str(exc))
+                self.diagnose_unselected_policies()
+                return self.errors
         self.policy()
         project_path = self.root / ".engineering-backbone" / "project.json"
         project = self.load(project_path)
@@ -4337,7 +4687,7 @@ class RepositoryValidator:
             self.validate_data("project", project, self.label(project_path))
             self.adapters(project)
         source = self.source
-        self.required_file("docs/agent-governance/core.md" if source else ".engineering-backbone/core.md")
+        self.required_file(self.source_contract["policy_md"] if source else ".engineering-backbone/core.md")
         self.workflows(source)
         # This compiled guard is part of the existing attested validator bytes.
         # Only its validation mode is used here; no project command executes.
@@ -4354,9 +4704,10 @@ class RepositoryValidator:
         self.errors.extend(quality_errors(self.root, self.trusted_base, source=source))
         self.dependencies(source)
         paths = self.walk()
+        self.historical_inventory(paths)
         self.artifacts(paths)
         portable = {self.policy_path(self.root), project_path}
-        portable.add(self.root / ("docs/agent-governance/core.md" if source else ".engineering-backbone/core.md"))
+        portable.add(self.root / (self.source_contract["policy_md"] if source else ".engineering-backbone/core.md"))
         for path in paths:
             if path.suffix not in TEXT_SUFFIXES:
                 continue

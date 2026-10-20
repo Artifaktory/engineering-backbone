@@ -1,8 +1,8 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](docs/agent-governance/core.md),
-the active [BB-LAYOUT-011 Task Packet](docs/changes/backbone-layout/task-packet.json)
-and [its plan](docs/changes/backbone-layout/plan.md). Prior delivery plans and reviews
+the active [BB-LAYOUT-014 Task Packet](docs/changes/backbone-layout-integration/task-packet.json)
+and [its plan](docs/changes/backbone-layout-integration/plan.md). Prior delivery plans and reviews
 are preserved in [change history](docs/changes/README.md). Their claims refer to their
 original snapshots and do not authorize or certify this refactor.
 
@@ -39,12 +39,14 @@ patch checks again, including documentation-only commits.
 
 For a subsequent policy update, run the previous trusted revision's validator
 against the candidate and supply `--trusted-base` with that previous checkout.
-For this path refactor, the previous validator still expects the previous source
-layout. Its actual failure remains visible and blocks merge readiness. Never retry
-with candidate code and describe that as trusted-base PASS. The draft PR provides
-a reviewable migration; resolving the trust transition requires separate explicit
-review. In later deliveries, use the new path only when the validator belongs to
-the already trusted base itself.
+PR #19 was human-merged as `537576f658bbd79c3bc49b26ade948116c664943`; its
+base-owned validator supports both source layouts. During this integration, run
+that checkout's `scripts/validate.py --root CANDIDATE --trusted-base TRUSTED_BASE`.
+Use the moved executable path only after it belongs to the actual trusted base.
+Never substitute candidate code or claim that a prior-head run qualifies the new
+tree. The archive-completeness repair additionally needs its own negative tests:
+the already merged base still contains that known defect until a reviewed fix is
+human-merged.
 
 ## Change and review process
 

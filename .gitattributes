@@ -3,3 +3,6 @@
 .engineering-backbone/schemas/** text eol=lf -filter -working-tree-encoding
 .engineering-backbone/requirements.txt text eol=lf -filter -working-tree-encoding
 .engineering-backbone/requirements.lock text eol=lf -filter -working-tree-encoding
+
+# Byte-attested history must stay identical in Windows autocrlf checkouts.
+docs/changes/** text eol=lf -filter -working-tree-encoding

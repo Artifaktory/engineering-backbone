@@ -9,11 +9,16 @@ import unittest
 from pathlib import Path
 
 from src.validate import BUNDLE, POLICY_FLOOR, validate_root
+from tst.test_source_layout_compatibility import archived_records
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 class ValidationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.archive = archived_records()
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -96,6 +101,24 @@ class ValidationTests(unittest.TestCase):
         for directory in ("schemas", "standards"):
             shutil.copytree(BUNDLE / directory, self.root / ".engineering-backbone" / directory)
         shutil.copytree(ROOT / "docs/templates/examples", self.root / "docs/templates/examples")
+        # New-source fixtures retain the required, byte-exact historical package.
+        # The archived records are independently verified frozen input, not
+        # selected from the candidate's map or the validator's expected set.
+        for relative, content in self.archive.items():
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+        # These minimal documentation targets model the ordinary references from
+        # that immutable archive, just like the scoped policy fixtures above.
+        for relative in (
+                '.engineering-backbone/tst/fixtures/historical/README.md',
+                'docs/agent-governance/adapters/copilot/clients.md',
+                'docs/agent-governance/adapters/copilot/smoke-tests.md',
+                'docs/agent-governance/adapters/copilot/source-provenance.md',
+                'docs/operations/engineering/repository-controls.md',
+                'docs/quality/README.md', 'docs/quality/source-provenance.md',
+                'docs/quality/technology-profiles.md', 'docs/quality/technology-source-provenance.md'):
+            self.write(relative, '# Archived reference target\nStructural fixture only.\n')
 
     def write(self, path, data):
         file = self.root / path

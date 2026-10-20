@@ -179,6 +179,11 @@ class QualityFrameworkTests(unittest.TestCase):
     def test_real_current_source_catalog_is_checked_without_project_profile(self):
         self.assert_ok(ROOT, source=True)
         self.package(self.candidate, central=True)
+        for relative in ('.engineering-backbone/core.json', 'docs/agent-governance/core.md',
+                         'docs/quality/policy.md', 'docs/quality/dependencies.md'):
+            destination = self.candidate / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / relative, destination)
         self.assert_rejected('Required document or directory absent: .engineering-backbone/standards/technologies/sources.json',
                              source=True)
         shutil.copytree(ROOT / '.engineering-backbone/standards/technologies',
