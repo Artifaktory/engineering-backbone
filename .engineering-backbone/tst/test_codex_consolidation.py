@@ -143,7 +143,7 @@ class CodexConsolidationTests(unittest.TestCase):
                     copilot_partial = environment.get_template(f".engineering-backbone/legacy/templates/_partials/copilot/{role}.md.jinja")
                     copilot_expected = copilot_partial.render(
                         core_link="../../docs/agent-governance/core.md" if root == self.source else "../../.engineering-backbone/core.md",
-                        guide_link="../../docs/copilot/workflow.md" if root == self.source else "../../.engineering-backbone/copilot-guide.md",
+                        guide_link="../../docs/agent-governance/adapters/copilot/workflow.md" if root == self.source else "../../.engineering-backbone/copilot-guide.md",
                     ).strip()
                     self.assertEqual(copilot_body, copilot_expected)
                     self.assertEqual(set(codex), {"name", "description", "sandbox_mode", "developer_instructions"})
@@ -172,7 +172,7 @@ class CodexConsolidationTests(unittest.TestCase):
                 })
                 self.assertEqual(
                     (target / ".engineering-backbone/core.md").read_bytes().strip(),
-                    (self.source / "docs/agent-governance/core.md").read_bytes().strip().replace(b"(quality.md)", b"(quality-policy.md)"),
+                    (self.source / "docs/agent-governance/core.md").read_bytes().strip().replace(b"(../quality/policy.md)", b"(quality-policy.md)"),
                 )
                 self.assert_shared_fragments(target)
                 self.assert_reviewer_contract(codex_profile(target, "reviewer")["developer_instructions"])
@@ -294,7 +294,7 @@ class CodexConsolidationTests(unittest.TestCase):
         self.assertNotEqual((target / ".engineering-backbone/core.md").read_bytes(), previous_core)
         self.assertEqual(
             (target / ".engineering-backbone/core.md").read_bytes().strip(),
-            (self.source / "docs/agent-governance/core.md").read_bytes().strip().replace(b"(quality.md)", b"(quality-policy.md)"),
+            (self.source / "docs/agent-governance/core.md").read_bytes().strip().replace(b"(../quality/policy.md)", b"(quality-policy.md)"),
         )
         self.assert_shared_fragments(target)
         for name, old_content in previous_fragments.items():

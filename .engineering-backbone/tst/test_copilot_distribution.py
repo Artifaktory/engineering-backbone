@@ -189,7 +189,21 @@ class CopilotDistributionTests(unittest.TestCase):
                     relative = Path(directory.format(name=name)) / filename.format(name=name)
                     source_header, source_body = native_document(self.source / relative)
                     consumer_header, consumer_body = native_document(target / relative)
-                    self.assertEqual(source_header, consumer_header)
+                    # Source/reference rules cover the new repository paths;
+                    # legacy installations keep their reviewed existing globs.
+                    # Role/skill metadata, including permissions, stays equal.
+                    if kind == "rule" and name == "governance":
+                        self.assertEqual(source_header, {"applyTo":
+                            ".github/**,.codex/**,.opencode/**,.engineering-backbone/**,docs/agent-governance/**,docs/quality/**,copier.yml,opencode.json"})
+                        self.assertEqual(consumer_header, {"applyTo":
+                            ".github/**,.engineering-backbone/**,templates/**,scripts/validate.py,scripts/compile_toolchain_fingerprint.py,policy/**,schemas/**,copier.yml"})
+                    elif kind == "rule" and name == "tests":
+                        self.assertEqual(source_header, {"applyTo":
+                            "tst/**,**/tst/**,tests/**,**/test_*.py,**/*.test.*,**/*.spec.*"})
+                        self.assertEqual(consumer_header, {"applyTo":
+                            "tests/**,**/test_*.py,**/*.test.*,**/*.spec.*"})
+                    else:
+                        self.assertEqual(source_header, consumer_header)
                     self.assertEqual(source_body, partial.render(
                         core_link=prefix + "docs/agent-governance/core.md", guide_link=prefix + "docs/agent-governance/adapters/copilot/workflow.md",
                     ).strip())

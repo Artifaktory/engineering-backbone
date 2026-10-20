@@ -111,7 +111,7 @@ class CopierTests(unittest.TestCase):
                 self.assertEqual(
                     (target / ".engineering-backbone/core.md").read_text().strip(),
                     (self.source / "docs/agent-governance/core.md").read_text().replace(
-                        '(quality.md)', '(quality-policy.md)').strip(),
+                        '(../quality/policy.md)', '(quality-policy.md)').strip(),
                 )
                 self.assertEqual(
                     (target / ".engineering-backbone/requirements.lock").read_bytes(),
@@ -342,7 +342,7 @@ class CopierTests(unittest.TestCase):
     def test_consumer_accepts_unrelated_app_content_and_stricter_native_permissions(self):
         target = self.copy()
         for relative, content in {
-            ".engineering-backbone/core.json": '{"application": "unrelated business policy"}\n',
+            "policy/core.json": '{"application": "unrelated business policy"}\n',
             "examples/api-response.json": '{"items": []}\n',
             "README.md": "[Site documentation](/docs)\n",
             "AGENTS.md": "Stricter local guidance with [project link](local-doc-not-managed.md).\n",

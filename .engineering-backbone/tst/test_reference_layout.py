@@ -22,6 +22,24 @@ def git_blob(content):
     return hashlib.sha1(b'blob ' + str(len(content)).encode() + b'\0' + content).hexdigest()
 
 
+def assert_reference_ownership(case, root):
+    """Product/IDE folders are optional; retained tooling has canonical paths."""
+    for app in ('frontend', 'backend', 'automation'):
+        component = root / 'apps' / app
+        if component.exists():
+            case.assertTrue(component.is_dir(), str(component))
+            for directory in ('src', 'tst'):
+                case.assertTrue((component / directory).is_dir(), str(component / directory))
+    for directory in ('packages', 'contracts', 'tst', 'config', 'scripts',
+                      'docs/requirements', 'docs/architecture', '.vscode'):
+        path = root / directory
+        if path.exists():
+            case.assertTrue(path.is_dir(), directory)
+    for filename in ('requirements.txt', 'requirements.lock'):
+        case.assertTrue((root / '.engineering-backbone' / filename).is_file())
+    case.assertTrue((root / 'infra/docker/engineering-backbone/Dockerfile').is_file())
+
+
 class ReferenceMappingTests(unittest.TestCase):
     def test_all_baseline_files_have_unique_present_destinations_and_preserved_bytes(self):
         raw = (ROOT / MAP).read_bytes()
@@ -47,21 +65,9 @@ class ReferenceMappingTests(unittest.TestCase):
                     content = path.read_bytes()
                     self.assertEqual(len(content), item['base_size'])
                     self.assertEqual(git_blob(content), item['base_blob'])
-                if item['old_path'] != item['new_path']:
-                    self.assertFalse((ROOT / item['old_path']).exists(), item['old_path'])
 
     def test_product_and_backbone_paths_have_distinct_ownership(self):
-        for app in ('frontend', 'backend', 'automation'):
-            for directory in ('src', 'tst'):
-                self.assertTrue((ROOT / 'apps' / app / directory).is_dir())
-        for directory in ('packages', 'contracts', 'tst', 'infra', 'config', 'scripts',
-                          'docs/requirements', 'docs/architecture', '.vscode'):
-            self.assertTrue((ROOT / directory).is_dir(), directory)
-        for filename in ('requirements.txt', 'requirements.lock'):
-            self.assertTrue((ROOT / '.engineering-backbone' / filename).is_file())
-            self.assertFalse((ROOT / filename).exists())
-        self.assertTrue((ROOT / 'infra/docker/engineering-backbone/Dockerfile').is_file())
-        self.assertFalse((ROOT / 'Dockerfile').exists())
+        assert_reference_ownership(self, ROOT)
 
 
 class DirectCopyTests(unittest.TestCase):
@@ -101,6 +107,53 @@ class DirectCopyTests(unittest.TestCase):
         self.assertTrue((self.destination / '.opencode/agents/backbone-reviewer.md').is_file())
         self.assert_valid()
         self.assert_valid(trusted_source=True)
+
+    def test_optional_product_and_ide_folders_can_be_omitted(self):
+        for relative in ('apps/frontend', '.vscode'):
+            path = self.destination / relative
+            if path.exists():
+                shutil.rmtree(path)
+            self.assertFalse(path.exists(), relative)
+        self.assert_valid()
+        self.assert_valid(trusted_source=True)
+        assert_reference_ownership(self, self.destination)
+
+    def test_pruned_copy_can_execute_its_ownership_and_pruning_regressions(self):
+        for relative in ('apps/frontend', '.vscode'):
+            path = self.destination / relative
+            if path.exists():
+                shutil.rmtree(path)
+            self.assertFalse(path.exists(), relative)
+        result = subprocess.run([
+            sys.executable, '-m', 'unittest',
+            'tst.test_reference_layout.ReferenceMappingTests',
+            'tst.test_reference_layout.DirectCopyTests.test_optional_product_and_ide_folders_can_be_omitted',
+            '-v',
+        ], cwd=self.destination / '.engineering-backbone',
+            capture_output=True, text=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_project_root_build_inputs_are_independent_of_backbone_tooling(self):
+        (self.destination / 'requirements.txt').write_text('project-runtime==1.0.0\n')
+        (self.destination / 'requirements.lock').write_text(
+            'project-runtime==1.0.0 --hash=sha256:' + 'a' * 64 + '\n')
+        (self.destination / 'Dockerfile').write_text('FROM scratch\n')
+        self.assert_valid()
+        self.assert_valid(trusted_source=True)
+        result = subprocess.run([
+            sys.executable, '-m', 'unittest',
+            'tst.test_reference_layout.ReferenceMappingTests', '-v',
+        ], cwd=self.destination / '.engineering-backbone',
+            capture_output=True, text=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        # Root application manifests do not replace or relax the actual tooling
+        # bundle: its own direct/resolved dependency mismatch still rejects.
+        manifest = self.destination / '.engineering-backbone/requirements.txt'
+        original = manifest.read_text()
+        self.assertIn('jsonschema==4.26.0', original)
+        manifest.write_text(original.replace('jsonschema==4.26.0', 'jsonschema==999.0.0'))
+        self.assert_invalid('dependency lock mismatch')
+        self.assert_invalid('dependency lock mismatch', trusted_source=True)
 
     def test_copy_rejects_policy_weakening_and_missing_canonical_policy(self):
         path = self.destination / '.engineering-backbone/core.json'
