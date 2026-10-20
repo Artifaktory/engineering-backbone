@@ -318,6 +318,7 @@ class NavigationTests(unittest.TestCase):
 
     def test_source_core_and_existing_project_facts_are_required(self):
         shutil.copytree(self.root / '.engineering-backbone/standards', self.root / 'standards')
+        self.write('policy/dependencies.md', (ROOT / 'policy/dependencies.md').read_text())
         for name, installed in (
             ('policy/core.md', '.engineering-backbone/core.md'),
             ('policy/quality.md', '.engineering-backbone/quality-policy.md'),

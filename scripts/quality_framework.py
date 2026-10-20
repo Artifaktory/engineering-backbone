@@ -10,6 +10,76 @@ files are input data and cannot supply authority.
 def quality_errors(root, trusted_base=None, *, source=False, navigation_request=None,
                    navigation_expected=None, navigation_output=None):
     """Return bounded contract errors, not semantic approval or certification."""
+    # BEGIN COMPILED QUALITY SOURCE LAYOUT
+    def source_layout(root):
+        """Select one complete canonical source policy without weakening source mode.
+
+        Candidate and trusted-base snapshots must be resolved independently. Native
+        dependency files at the product root are deliberately not layout selectors.
+        """
+        from pathlib import Path
+
+        root = Path(root).absolute()
+        contracts = {
+            'old': {
+                'policy_json': 'policy/core.json',
+                'policy_md': 'policy/core.md',
+                'quality_policy': 'policy/quality.md',
+                'dependency_policy': 'policy/dependencies.md',
+                'standards': 'standards',
+                'dependencies': '',
+                'navigation_guide': 'docs/agent-navigation.md',
+                'opencode_guide': 'docs/opencode/workflow.md',
+                'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+            },
+            'new': {
+                'policy_json': '.engineering-backbone/core.json',
+                'policy_md': 'docs/agent-governance/core.md',
+                'quality_policy': 'docs/quality/policy.md',
+                'dependency_policy': 'docs/quality/dependencies.md',
+                'standards': '.engineering-backbone/standards',
+                'dependencies': '.engineering-backbone',
+                'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+                'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+                'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+            },
+        }
+        canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+        def present(relative):
+            # Check aliases before existence/type filtering: a dangling alternative
+            # or a symlinked parent is ambiguity, never permission to use the other.
+            path = root
+            if path.is_symlink():
+                return True
+            for part in Path(relative).parts:
+                path /= part
+                if path.is_symlink():
+                    return True
+            return path.exists()
+
+        old = present(contracts['old']['policy_json'])
+        new = present(contracts['new']['policy_json'])
+        if old == new:
+            kind = 'ambiguous' if old else 'absent'
+            raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+        selected, alternate = ('old', 'new') if old else ('new', 'old')
+        chosen = contracts[selected]
+        if any(present(contracts[alternate][key]) for key in canonical):
+            raise ValueError('Source layout: mixed canonical policy authorities')
+        for key in canonical:
+            path = root
+            components = [root]
+            for part in Path(chosen[key]).parts:
+                path /= part
+                components.append(path)
+            if any(component.is_symlink() for component in components):
+                raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+            if not path.is_file():
+                raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+        return dict(chosen, layout=selected)
+    # END COMPILED QUALITY SOURCE LAYOUT
+
     import csv
     from datetime import date
     import io
@@ -24,6 +94,76 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
     def navigation_context(root, trusted_base=None, *, source=False, request=None,
                            expected=None, authority=None):
         """Validate routes and optionally resolve/verify a complete handoff context."""
+        # BEGIN COMPILED NAVIGATION SOURCE LAYOUT
+        def source_layout(root):
+            """Select one complete canonical source policy without weakening source mode.
+
+            Candidate and trusted-base snapshots must be resolved independently. Native
+            dependency files at the product root are deliberately not layout selectors.
+            """
+            from pathlib import Path
+
+            root = Path(root).absolute()
+            contracts = {
+                'old': {
+                    'policy_json': 'policy/core.json',
+                    'policy_md': 'policy/core.md',
+                    'quality_policy': 'policy/quality.md',
+                    'dependency_policy': 'policy/dependencies.md',
+                    'standards': 'standards',
+                    'dependencies': '',
+                    'navigation_guide': 'docs/agent-navigation.md',
+                    'opencode_guide': 'docs/opencode/workflow.md',
+                    'opencode_runner': 'docs/opencode/opencode-runner-contract.md',
+                },
+                'new': {
+                    'policy_json': '.engineering-backbone/core.json',
+                    'policy_md': 'docs/agent-governance/core.md',
+                    'quality_policy': 'docs/quality/policy.md',
+                    'dependency_policy': 'docs/quality/dependencies.md',
+                    'standards': '.engineering-backbone/standards',
+                    'dependencies': '.engineering-backbone',
+                    'navigation_guide': 'docs/agent-governance/agent-navigation.md',
+                    'opencode_guide': 'docs/agent-governance/adapters/opencode/workflow.md',
+                    'opencode_runner': 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md',
+                },
+            }
+            canonical = ('policy_json', 'policy_md', 'quality_policy', 'dependency_policy')
+
+            def present(relative):
+                # Check aliases before existence/type filtering: a dangling alternative
+                # or a symlinked parent is ambiguity, never permission to use the other.
+                path = root
+                if path.is_symlink():
+                    return True
+                for part in Path(relative).parts:
+                    path /= part
+                    if path.is_symlink():
+                        return True
+                return path.exists()
+
+            old = present(contracts['old']['policy_json'])
+            new = present(contracts['new']['policy_json'])
+            if old == new:
+                kind = 'ambiguous' if old else 'absent'
+                raise ValueError('Source layout: ' + kind + ' canonical policy authority')
+            selected, alternate = ('old', 'new') if old else ('new', 'old')
+            chosen = contracts[selected]
+            if any(present(contracts[alternate][key]) for key in canonical):
+                raise ValueError('Source layout: mixed canonical policy authorities')
+            for key in canonical:
+                path = root
+                components = [root]
+                for part in Path(chosen[key]).parts:
+                    path /= part
+                    components.append(path)
+                if any(component.is_symlink() for component in components):
+                    raise ValueError('Source layout: canonical policy must be a regular file; symlinked canonical policy: ' + chosen[key])
+                if not path.is_file():
+                    raise ValueError('Source layout: missing canonical policy file: ' + chosen[key])
+            return dict(chosen, layout=selected)
+        # END COMPILED NAVIGATION SOURCE LAYOUT
+
         import fnmatch
         from functools import lru_cache
         import hashlib
@@ -40,8 +180,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
         profile_path = '.engineering-backbone/quality-profile.json'
         workflows_path = '.engineering-backbone/workflows.json'
         dependencies_path = '.engineering-backbone/dependencies.json'
-        dependency_policy_path = ('policy/dependencies.md' if source else
-                                  '.engineering-backbone/dependency-policy.md')
+        def dependency_policy_path(folder):
+            return source_layout(folder)['dependency_policy'] if source else '.engineering-backbone/dependency-policy.md'
         missing = object()
 
         def fail(message):
@@ -197,7 +337,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             return {'path': reference, 'sha256': hashlib.sha256(data).hexdigest()}
 
         def package(folder, catalog):
-            prefix = 'standards/technologies' if source else '.engineering-backbone/standards/technologies'
+            prefix = source_layout(folder)['standards'] + '/technologies' if source else '.engineering-backbone/standards/technologies'
             for name in ('sources', 'rules'):
                 wanted = {'schema_version': '1', 'version': catalog['version'], name: catalog[name]}
                 if json_file(folder, prefix + '/' + name + '.json') != wanted:
@@ -386,7 +526,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                     fail('Active dependencies require active navigation, quality and workflow profiles')
                 if not components:
                     fail('Active dependencies require mapped components')
-                document(folder, dependency_policy_path)
+                document(folder, dependency_policy_path(folder))
             mapped = {} if navigation is None else {item['id']: item for item in navigation['components']}
             checks = {} if not isinstance(workflow, dict) else {item['id']: item for item in workflow.get('checks', [])}
             found = set()
@@ -452,8 +592,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                 fail('Invalid OpenCode native config contract')
             instructions = sequence(native['instructions'], 'OpenCode instructions', nonempty=True, maximum=64)
             required = {'AGENTS.md', '.engineering-backbone/project.json'}
-            required.update({'policy/core.md', 'policy/core.json', 'policy/quality.md',
-                             'policy/dependencies.md', 'docs/opencode/workflow.md', 'CONTRIBUTING.md'} if source else
+            required.update({source_layout(folder)[key] for key in ('policy_md', 'policy_json', 'quality_policy',
+                             'dependency_policy', 'opencode_guide')} | {'CONTRIBUTING.md'} if source else
                             {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
                              '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
                              '.engineering-backbone/opencode-guide.md'})
@@ -466,15 +606,15 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                 if navigation is None or navigation['enabled'] is not True:
                     fail('Active OpenCode requires active navigation')
                 for role in roles:
-                    for name in opencode_paths(role, native):
+                    for name in opencode_paths(folder, role, native):
                         document(folder, name)
             return value
 
-        def opencode_paths(role, native):
+        def opencode_paths(folder, role, native):
             name = role.replace('_', '-')
             paths = {opencode_path, 'opencode.json', '.opencode/agents/backbone-' + name + '.md'}
             paths.update(native['instructions'])
-            paths.update({'docs/opencode/workflow.md', 'docs/opencode/opencode-runner-contract.md'} if source else
+            paths.update({source_layout(folder)[key] for key in ('opencode_guide', 'opencode_runner')} if source else
                          {'.engineering-backbone/opencode-guide.md', '.engineering-backbone/opencode-runner-contract.md'})
             paths.update('.opencode/skills/' + skill + '/SKILL.md'
                          for skill in ('task-intake', *opencode_procedures[role]))
@@ -541,8 +681,8 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
                     # current task's selected role or newly hashed candidate bytes.
                     seed_native = json_file(trusted_base, 'opencode.json')
                     candidate_native = json_file(root, 'opencode.json')
-                    seed_paths = set().union(*(opencode_paths(role, seed_native) for role in roles))
-                    candidate_paths = set().union(*(opencode_paths(role, candidate_native) for role in roles))
+                    seed_paths = set().union(*(opencode_paths(trusted_base, role, seed_native) for role in roles))
+                    candidate_paths = set().union(*(opencode_paths(root, role, candidate_native) for role in roles))
                     if candidate_paths != seed_paths:
                         fail('OpenCode activation must match the reviewed seed input paths')
                     # The exact companion comparison above permits only enabled to
@@ -686,15 +826,15 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             paths.update({manifest_path, profile_path, workflows_path, request['task_packet'],
                           '.engineering-backbone/project.json'})
             if opencode_candidate is not None and opencode_candidate['enabled']:
-                paths.update(opencode_paths(packet['role'], json_file(root, 'opencode.json')))
-            prefix = 'standards' if source else '.engineering-backbone/standards'
+                paths.update(opencode_paths(root, packet['role'], json_file(root, 'opencode.json')))
+            prefix = source_layout(root)['standards'] if source else '.engineering-backbone/standards'
             paths.update({prefix + '/sources.json', prefix + '/rules.json',
                           prefix + '/technologies/sources.json', prefix + '/technologies/rules.json'})
             paths.update(prefix + '/profiles/' + key + '.json' for key in quality['profiles'])
             paths.update(prefix + '/technologies/profiles/' + key + '.json' for key in selected_profiles)
             paths.update(path for path in quality['documents'].values() if path)
-            paths.update({'policy/core.md', 'policy/core.json', 'policy/quality.md', 'docs/quality/README.md',
-                          'docs/quality/technology-profiles.md', 'docs/agent-navigation.md'} if source else
+            paths.update({source_layout(root)[key] for key in ('policy_md', 'policy_json', 'quality_policy', 'navigation_guide')} |
+                         {'docs/quality/README.md', 'docs/quality/technology-profiles.md'} if source else
                          {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
                           '.engineering-backbone/quality-policy.md',
                           '.engineering-backbone/quality-guide.md', '.engineering-backbone/technology-guide.md',
@@ -742,7 +882,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
             selected_check_ids.update(check for binding in quality['checks'] for check in binding['check_ids'])
             dependency_artifacts = set()
             if dependency_candidate is not None and dependency_candidate['enabled']:
-                paths.update({dependencies_path, dependency_policy_path})
+                paths.update({dependencies_path, dependency_policy_path(root)})
                 for component in dependency_candidate['components']:
                     if component['id'] in selected:
                         paths.add(component['compatibility_document'])
@@ -983,7 +1123,7 @@ def quality_errors(root, trusted_base=None, *, source=False, navigation_request=
         return value, rules, profiles
 
     def package(folder, authority, *, central=False):
-        prefix = folder / ('standards' if central else '.engineering-backbone/standards')
+        prefix = folder / (source_layout(folder)['standards'] if central else '.engineering-backbone/standards')
         for key in ('sources', 'rules'):
             expected = {'schema_version': '1', 'version': authority['version'],
                         key: authority[key]}

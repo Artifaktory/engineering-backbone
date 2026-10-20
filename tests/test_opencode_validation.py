@@ -20,6 +20,10 @@ INSTALLED_INSTRUCTIONS = ['AGENTS.md', '.engineering-backbone/core.md', '.engine
 
 
 def opencode_fixture(root, *, source=False):
+    if source:
+        # Replacing an installed fixture with a source fixture must leave one
+        # canonical policy authority, just as a real source checkout does.
+        (root / '.engineering-backbone/core.json').unlink(missing_ok=True)
     def write(relative, value):
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
