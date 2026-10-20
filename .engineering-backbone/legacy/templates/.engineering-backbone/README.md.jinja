@@ -5,6 +5,13 @@ frontend/backend flags are descriptive metadata; they do not invent application
 commands, workflows or required infrastructure.
 
 - Review [project facts](project.json) and the [canonical policy](core.md).
+- Follow the [architecture contract](architecture.md) for scoped requirements,
+  design and architecture review. The [reusable documents](architecture-templates/README.md)
+  and [source provenance](architecture-sources.md) are always installed, independently
+  of optional adapters and quality packages. These managed references refresh on
+  update; author project requirements and architecture in the project's declared
+  locations, outside this managed directory. Existing product documents are not
+  created or overwritten by this package.
 - Read [the dependency policy](dependency-policy.md) for dependency, runtime and
   container changes; actual component versions remain project facts.
 - Integrate [agent guidance](AGENTS.fragment.md) and

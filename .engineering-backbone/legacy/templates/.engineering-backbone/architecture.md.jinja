@@ -1,0 +1,2 @@
+{% set architecture_text %}{% include 'docs/agent-governance/architecture.md' %}{% endset %}
+{{ architecture_text | replace('(../templates/architecture/', '(architecture-templates/') }}

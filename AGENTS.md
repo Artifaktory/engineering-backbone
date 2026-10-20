@@ -2,8 +2,8 @@
 
 Read [the canonical policy](docs/agent-governance/core.md), [CONTRIBUTING.md](CONTRIBUTING.md), the active
 Task Packet and project instructions before non-trivial work. The current delivery is
-[BB-LAYOUT-014](docs/changes/backbone-layout-integration/task-packet.json), with
-[its independently reviewed plan](docs/changes/backbone-layout-integration/plan.md). This repository is
+[BB-ARCH-015](docs/changes/backbone-architecture-contract/task-packet.json), with
+[its independently reviewed plan](docs/changes/backbone-architecture-contract/plan.md). This repository is
 the shared agent/engineering control plane: its changes are HIGH risk by default.
 
 - Work within an explicitly authorized, scoped Task Packet. Inspect the branch,
@@ -45,12 +45,13 @@ this publication check again.
 Changes target the project-configured base branch (`main` for this repository).
 Run evidence belongs in ignored `artifacts/` directories; durable redacted review
 records belong in `docs/changes/<delivery>/`. Earlier Backbone records are historical
-only. The human requested this scoped draft refactoring PR; that authorizes its
-publication for inspection, not merge or release. PR #19 was human-merged into
-`main` as `537576f658bbd79c3bc49b26ade948116c664943`. This integration must pass
-the validator executed from that actual trusted base against the new tree. Keep
-its result distinct from candidate checks; prior-head results do not qualify the
-current head. See the [integration record](docs/changes/backbone-layout-integration/plan.md).
+only. The human requested the architecture documents and a PR for review; this authorizes
+publication, not merge or release. The actual trusted base is human-merged `main`
+`ae317bf30576914d4ed53856be4ae496c6ed64b3`. Run its
+`.engineering-backbone/src/validate.py --root CANDIDATE --trusted-base TRUSTED_BASE`
+from that separate base checkout. Keep the trusted-base result distinct from
+candidate checks; previous delivery results do not qualify this change. See the
+[architecture delivery plan](docs/changes/backbone-architecture-contract/plan.md).
 
 When copying this reference tree into another project, replace these source-specific
 task references and commands with that project's reviewed facts. Follow the

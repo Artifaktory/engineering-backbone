@@ -6,6 +6,10 @@ root/path instructions; preserve stricter local policy and unrelated work. This
 entry is shared context; agent profiles select responsibilities and tool budgets,
 and skills supply procedures when needed.
 
+For scoped requirements or design work, read the
+[architecture contract](../docs/agent-governance/architecture.md) and carry its
+source/decision/view/verification context into planning and independent review.
+
 - Start with an authorized Task Packet, actual branch/base/head and approved scope.
   Map acceptance to real verification; classify control-plane changes as HIGH risk.
 - Use separate planning, implementation, quality, independent review and triage

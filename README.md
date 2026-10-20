@@ -5,13 +5,11 @@ documentation and validation tools. The files in this repository already occupy
 the paths used by a copied project. New projects start by copying the reviewed tree
 and filling in their own product facts; they do not need to render a template.
 
-**This first layout refactor is a draft for inspection, not an approved release.**
-The trusted-layout prerequisite in PR #19 has been human-merged. The
-[current integration](docs/changes/backbone-layout-integration/plan.md) brings that
-actual `main` into this structure and records the required checks and reviews.
-Its [incoming-file map](docs/changes/backbone-layout-integration/incoming-map.json)
-complements the original refactor inventory. A draft or a previous-head PASS does
-not establish that the current tree is ready to merge.
+The direct-copy layout was human-merged in PR #18. The current
+[architecture-contract delivery](docs/changes/backbone-architecture-contract/plan.md)
+adds the shared route from requirements to justified design and verification.
+A merged layout, a draft document or a previous-head PASS does not establish an
+approved release, product readiness or adoption in another repository.
 
 ## Where files belong
 
@@ -37,7 +35,9 @@ engineering-backbone/                 # becomes your project's repository root
 ├─ scripts/                           # shared product/repository commands
 ├─ docs/
 │  ├─ agent-governance/               # shared policy, procedures and adapter guides
-│  ├─ templates/examples/            # task, requirement and review document examples
+│  ├─ templates/                     # reusable engineering document kits
+│  │  ├─ examples/                   # task, requirement and review JSON examples
+│  │  └─ architecture/               # architecture, decisions, scenarios and reviews
 │  ├─ requirements/                   # product requirements
 │  ├─ architecture/                   # product design and decisions
 │  ├─ changes/                        # plans, reviews and evidence by delivery
@@ -143,6 +143,7 @@ failed gates stay visible.
 - [Core policy](docs/agent-governance/core.md) and [quality policy](docs/quality/policy.md)
 - [Agent adapters](docs/agent-governance/agent-adapters.md), [Copilot workflow](docs/agent-governance/adapters/copilot/workflow.md) and [OpenCode contract](docs/agent-governance/adapters/opencode/workflow.md)
 - [Planning and evidence formats](docs/agent-governance/planning.md) and [document navigation](docs/agent-governance/agent-navigation.md)
+- [Requirements-to-architecture contract](docs/agent-governance/architecture.md), [document kit](docs/templates/architecture/README.md) and [worked example](docs/templates/architecture/worked-example.md)
 - [Quality framework](docs/quality/README.md), [testing](docs/quality/testing.md) and [dependency policy](docs/quality/dependencies.md)
 - [Engineering workflows](docs/operations/engineering/workflows/README.md) and [repository controls](docs/operations/engineering/repository-controls.md)
 - [Contribution process](CONTRIBUTING.md), [source provenance](docs/agent-governance/sources/source-provenance.md) and [security reporting](SECURITY.md)

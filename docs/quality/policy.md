@@ -91,6 +91,13 @@ documentation rules during implementation. Obtain required deterministic results
 before independent Full review; use triage, confirmed repairs and scoped Delta
 reviews as defined by the core policy. Preserve local publication and human gates.
 
+For architecture-specific obligations, follow the architecture contract referenced
+by the project's adopted canonical core. Updating this optional quality package
+alone does not adopt a newer core policy. The architecture contract's document
+rule IDs are not new quality-catalog rules or automatically installed checks.
+Preserve the existing quality profile and traceability CSV schema; link architecture
+records through their existing fields.
+
 ## Tests and evidence
 
 Maintain a project quality plan, test strategy and rule-to-requirement/risk

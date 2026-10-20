@@ -5,6 +5,12 @@ behavior. Start during planning; update it when design, contracts or risk change
 Assign a responsible owner, environments, data/fixtures, execution commands,
 thresholds, evidence location and unresolved limitations for each required area.
 
+Use the [architecture contract](../agent-governance/architecture.md) to derive
+verification from requirement acceptance, quality scenarios, design claims and
+material risks. Select the method during design; add actual results only after
+execution on a recorded revision. A prototype supports only its tested assumptions,
+and a reviewed target architecture does not establish implemented behavior.
+
 | Area | Minimum selection criterion | Evidence purpose |
 |---|---|---|
 | Unit/component | Own logic, validation, calculations or state transitions | Isolate relevant success, boundary and failure behavior quickly |
