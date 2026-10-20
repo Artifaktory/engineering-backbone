@@ -8,7 +8,7 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "c50108773ba3195bf0f7503e5dffb2d7bfc78cd3",
-    "head_revision": null
+    "head_revision": "dbe05e14a255488e3416465971ece755fb04aba3"
   },
   "approved_sources": [
     "User request to correct missed Copilot/root-file handling and red checks on existing PR18",
@@ -51,43 +51,55 @@
       "id": "AC-1",
       "description": "The confirmed source Copilot docs selector covers root and nested Markdown plus docs data, excludes unrelated code, and preserves legacy consumer selectors, native discovery paths and instruction permissions.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "checks.md: 41 affected tests; full-review.md and triage.md: source selector and unchanged legacy/native contracts."
+      ]
     },
     {
       "id": "AC-2",
       "description": "The committed EOF defect is reproduced and repaired; post-final-commit checks cover both the corrective and complete live PR diffs, with exact revisions and exit codes.",
       "verification": "automatic",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "checks.md: old failure reproduced; both committed diffs pass at dbe05e14. Final evidence-commit checks and publication readback must be recorded in PR18 before claiming completion."
+      ]
     },
     {
       "id": "AC-3",
       "description": "Current contributor publication instructions require committed base-to-head diff checks after the final evidence commit, avoiding the clean-worktree blind spot.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "CONTRIBUTING.md requires final committed patch checks; full-review.md confirms coverage."
+      ]
     },
     {
       "id": "AC-4",
       "description": "Affected positive and negative Copilot checks, canonical structural/compiled-output checks and independent Full/triage/necessary Delta pass without weakening preserved contracts or history.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "plan-review.md, checks.md, full-review.md, triage.md; no confirmed findings, no repair Delta required."
+      ]
     },
     {
       "id": "AC-5",
       "description": "Remote CI evidence is recorded for exact tested heads; the legacy trusted-base path incompatibility remains a visible blocked gate, with a concrete separately reviewed migration follow-up and no implemented bypass.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "ci-observations.md records exact prior-head CI failures and successes; separate BB-LAYOUT-013 prerequisite retains human merge dependency."
+      ]
     },
     {
       "id": "AC-6",
       "description": "Only existing draft PR18 is updated, its remote head/tree and latest checks are reread, and repaired versus unresolved checks are stated accurately without merge or downstream changes.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "Publication and current-head checks remain pending at this evidence commit; PR18 body will record exact final identities and results."
+      ]
     }
   ],
   "validation": {
@@ -133,5 +145,5 @@
     "Force push, destructive cleanup or automatic downstream application",
     "Claim pending CI or unrelated-head results prove current-head PASS"
   ],
-  "status": "active"
+  "status": "ready_for_review"
 }
