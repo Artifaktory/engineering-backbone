@@ -29,6 +29,14 @@ python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbon
 git diff --check
 ```
 
+Before publishing, also check the committed PR patch after the final code or
+evidence commit. Resolve the actual PR base and candidate head, then run
+`git diff --check <actual-base-sha> <actual-head-sha>` with those full revisions.
+For a correction, also check its recorded starting revision against the final
+head. Record both identities and exit codes. A clean working-tree or staged diff
+does not check already committed changes; any later commit requires these final
+patch checks again, including documentation-only commits.
+
 For a subsequent policy update, run the previous trusted revision's validator
 against the candidate and supply `--trusted-base` with that previous checkout.
 For this path refactor, the previous validator still expects the previous source

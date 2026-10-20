@@ -5,6 +5,7 @@ that a live Copilot client discovers profiles, obeys instructions or runs tools.
 """
 from __future__ import annotations
 
+import glob
 import hashlib
 import itertools
 import json
@@ -174,6 +175,48 @@ class CopilotDistributionTests(unittest.TestCase):
         self.assert_package(target, codex=True, copilot=True)
         self.validate(target)
 
+    def test_source_docs_rule_covers_nested_markdown_and_docs_data(self):
+        header, _ = native_document(self.source / ".github/instructions/backbone-docs.instructions.md")
+        expected = {
+            "README.md",
+            "apps/frontend/README.md",
+            ".engineering-backbone/README.md",
+            "docs/templates/examples/task-packet.json",
+        }
+        code_path = ".engineering-backbone/src/validate.py"
+        optional_path = "apps/frontend/README.md"
+        for relative in (expected - {optional_path}) | {code_path}:
+            self.assertTrue((self.source / relative).is_file(), relative)
+        selection_roots = [self.source]
+        if not (self.source / optional_path).is_file():
+            # Adopted projects can omit the frontend component. Keep its path
+            # example in a separate fixture without restoring it in the repo.
+            fixture_root = self.workspace / "docs-selection-fixture"
+            fixture_path = fixture_root / optional_path
+            fixture_path.parent.mkdir(parents=True)
+            fixture_path.write_text("# Optional frontend documentation\n", encoding="utf-8")
+            selection_roots.append(fixture_root)
+
+        def selected_paths(selector):
+            # Model slash-aware glob selection over real repository files;
+            # this is not a native Copilot-host execution test.
+            return {
+                relative
+                for root in selection_roots
+                for pattern in selector.split(",")
+                for relative in glob.glob(
+                    pattern, root_dir=root, recursive=True, include_hidden=True,
+                )
+                if (root / relative).is_file()
+            }
+
+        old_selection = selected_paths("*.md,docs/**,plans/**")
+        for relative in ("apps/frontend/README.md", ".engineering-backbone/README.md"):
+            self.assertNotIn(relative, old_selection, "The previous selector missed nested Markdown")
+        selection = selected_paths(header["applyTo"])
+        self.assertTrue(expected <= selection, f"Docs selector misses: {sorted(expected - selection)}")
+        self.assertNotIn(code_path, selection)
+
     def test_native_source_and_generated_bodies_share_copilot_partials(self):
         target = self.copy(copilot_python_profile=True, copilot_frontend_profile=True)
         environment = Environment(loader=FileSystemLoader(self.source), undefined=StrictUndefined,
@@ -202,6 +245,9 @@ class CopilotDistributionTests(unittest.TestCase):
                             "tst/**,**/tst/**,tests/**,**/test_*.py,**/*.test.*,**/*.spec.*"})
                         self.assertEqual(consumer_header, {"applyTo":
                             "tests/**,**/test_*.py,**/*.test.*,**/*.spec.*"})
+                    elif kind == "rule" and name == "docs":
+                        self.assertEqual(source_header, {"applyTo": "*.md,**/*.md,docs/**"})
+                        self.assertEqual(consumer_header, {"applyTo": "*.md,docs/**,plans/**"})
                     else:
                         self.assertEqual(source_header, consumer_header)
                     self.assertEqual(source_body, partial.render(

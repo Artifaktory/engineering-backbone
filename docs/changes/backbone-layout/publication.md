@@ -53,4 +53,3 @@ repository-setting change or integration activation was performed.
 AC-8 is satisfied by this draft publication and exact-tree/check-state evidence.
 Completing this scoped delivery does not mark the PR ready to merge or certify
 a copied project's operation. See [closeout](closeout.md) for remaining work.
-

@@ -1,5 +1,5 @@
 ---
-applyTo: "*.md,docs/**,plans/**"
+applyTo: "*.md,**/*.md,docs/**"
 ---
 
 Follow the [canonical policy](../../docs/agent-governance/core.md) and
