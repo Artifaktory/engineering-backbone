@@ -220,6 +220,7 @@ class DependencyIntegrationTests(unittest.TestCase):
             path = target / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(target / installed, path)
+        (target / '.engineering-backbone/core.json').unlink()
         result = subprocess.run([
             sys.executable, '-I', str(ROOT / 'scripts/quality_framework.py'),
             'resolve', '--source', '--root', str(target),

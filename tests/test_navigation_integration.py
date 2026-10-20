@@ -65,6 +65,10 @@ class NavigationCompilerIntegrationTests(unittest.TestCase):
             destination = self.source / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / relative, destination)
+        shutil.copyfile(ROOT / 'scripts/source_layout.py', self.source / 'scripts/source_layout.py')
+        (self.source / 'policy').mkdir()
+        for name in ('core.json', 'core.md', 'quality.md', 'dependencies.md'):
+            shutil.copyfile(ROOT / 'policy' / name, self.source / 'policy' / name)
 
     def compile(self, script, mode):
         return subprocess.run(
@@ -454,6 +458,7 @@ class NavigationCopierIntegrationTests(unittest.TestCase):
             ('policy/core.md', '.engineering-backbone/core.md'),
             ('policy/core.json', '.engineering-backbone/core.json'),
             ('policy/quality.md', '.engineering-backbone/quality-policy.md'),
+            ('policy/dependencies.md', '.engineering-backbone/dependency-policy.md'),
             ('docs/quality/README.md', '.engineering-backbone/quality-guide.md'),
             ('docs/quality/technology-profiles.md', '.engineering-backbone/technology-guide.md'),
             ('docs/agent-navigation.md', '.engineering-backbone/navigation-guide.md'),
@@ -461,6 +466,7 @@ class NavigationCopierIntegrationTests(unittest.TestCase):
             path = target / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(target / installed, path)
+        (target / '.engineering-backbone/core.json').unlink()
         relative = '.engineering-backbone/project.json'
         project = target / relative
         original = (ROOT / relative).read_bytes()

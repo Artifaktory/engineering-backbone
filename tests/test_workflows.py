@@ -16,6 +16,7 @@ from copier import run_copy, run_update
 import yaml
 
 from scripts.compile_toolchain_fingerprint import bundle_digest, rendered_digest
+from tests.test_source_layout_compatibility import frozen_files
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,6 +32,7 @@ PREDECESSOR_COMMIT = 'bf8e901ecd066e8e6d1b05f0c56a66081a473c0a'
 PREDECESSOR_TREE = '7e4bc46ec7d4ca4805bcd9f03d49c05d662ebd31'
 PREDECESSOR_DIGEST = 'dddb8af676cd793653263cd126d9b2b5e88a053b6525e50d8424876133f1e615'
 PREDECESSOR_FIXTURE = ROOT / 'tests/fixtures/opencode-predecessor'
+LAYOUT_PREDECESSOR_DIGEST = '35678afb51ae9f1c5bc806dd7f1397d4ebde878d3f30adc7685399da386c950b'
 
 
 def predecessor_consumer(destination):
@@ -362,6 +364,24 @@ class WorkflowTests(unittest.TestCase):
                 self.assertEqual(observed[-1], manifest['versions'][version]['rendered_toolchain_sha256'])
                 result = self.validate()
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        # The bridge makes the independently frozen previous main a historical
+        # consumer identity. Render its verified Git bytes, then measure and
+        # exercise it; the workflow allowlist never supplies the expectation.
+        source = self.workspace / 'layout-predecessor-source'
+        for relative, content in frozen_files('old-source').items():
+            path = source / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+            path.chmod(0o644)
+        shutil.rmtree(self.trusted)
+        run_copy(str(source), self.trusted, defaults=True, quiet=True, skip_tasks=True)
+        shutil.rmtree(self.candidate)
+        shutil.copytree(self.trusted, self.candidate)
+        measured = bundle_digest(self.trusted)
+        self.assertEqual(measured, LAYOUT_PREDECESSOR_DIGEST)
+        result = self.validate()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        observed.append(measured)
         # Preserve original and explicitly reviewed predecessor identities,
         # including merged dependency/navigation tooling and the reviewed
         # OpenCode PR snapshot before its activation repair. Never infer
