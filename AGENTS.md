@@ -1,9 +1,9 @@
 # Engineering Backbone agent instructions
 
-Read [policy/core.md](policy/core.md), [CONTRIBUTING.md](CONTRIBUTING.md), the active
+Read [the canonical policy](docs/agent-governance/core.md), [CONTRIBUTING.md](CONTRIBUTING.md), the active
 Task Packet and project instructions before non-trivial work. The current delivery is
-[BB-LAYOUT-013](plans/layout-compatibility-task.json), with its independently reviewed
-[trusted-layout compatibility plan](plans/layout-compatibility.md). This repository is
+[BB-LAYOUT-014](docs/changes/backbone-layout-integration/task-packet.json), with
+[its independently reviewed plan](docs/changes/backbone-layout-integration/plan.md). This repository is
 the shared agent/engineering control plane: its changes are HIGH risk by default.
 
 - Work within an explicitly authorized, scoped Task Packet. Inspect the branch,
@@ -24,15 +24,16 @@ the shared agent/engineering control plane: its changes are HIGH risk by default
 
 ## Repository commands
 
-Install `requirements.lock` with `--require-hashes` in an isolated Python 3.12 environment. Run:
+Install `.engineering-backbone/requirements.lock` with `--require-hashes` in an isolated Python 3.12 environment. Run:
 
 ```sh
-python scripts/validate.py
-python scripts/compile_toolchain_fingerprint.py --check
-python scripts/compile_navigation.py --check
-python scripts/compile_quality_framework.py --check
-python scripts/check_source_dependencies.py
-python -m unittest discover -s tests -v
+python .engineering-backbone/src/validate.py
+python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check
+python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check
+python .engineering-backbone/src/maintenance/compile_navigation.py --check
+python .engineering-backbone/src/maintenance/compile_quality_framework.py --check
+python .engineering-backbone/src/check_source_dependencies.py
+python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v
 git diff --check
 ```
 
@@ -43,8 +44,18 @@ this publication check again.
 
 Changes target the project-configured base branch (`main` for this repository).
 Run evidence belongs in ignored `artifacts/` directories; durable redacted review
-records belong in `docs/reviews/`. This bootstrap PR was explicitly requested by
-the human task owner; that authorizes publishing its scoped changes for review.
+records belong in `docs/changes/<delivery>/`. Earlier Backbone records are historical
+only. The human requested this scoped draft refactoring PR; that authorizes its
+publication for inspection, not merge or release. PR #19 was human-merged into
+`main` as `537576f658bbd79c3bc49b26ade948116c664943`. This integration must pass
+the validator executed from that actual trusted base against the new tree. Keep
+its result distinct from candidate checks; prior-head results do not qualify the
+current head. See the [integration record](docs/changes/backbone-layout-integration/plan.md).
+
+When copying this reference tree into another project, replace these source-specific
+task references and commands with that project's reviewed facts. Follow the
+[adoption guide](docs/agent-governance/adoption.md); copied history does not authorize
+new work or establish that project's evidence.
 
 ## Shared source-project operating contract
 
@@ -68,7 +79,7 @@ does not implement or authenticate them. Structural PASS is not semantic review.
 ## Active document navigation
 
 When `.engineering-backbone/navigation.json` is enabled, follow the navigation
-guide (`docs/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+guide (`docs/agent-governance/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
 when installed). After a Task Packet exists, resolve its scoped request with the
 approved guard, verify received context against the current snapshot, then actually
 read every resolved document before scoped work. Transfer the request, complete
@@ -79,10 +90,10 @@ prove native instruction loading or authorize additional work.
 
 ## Dependency and container inputs
 
-For dependency, runtime or container work, read [the shared dependency policy](policy/dependencies.md)
-and [this repository's compatibility contract](docs/dependency-compatibility.md).
-Use the actual tracked [Dockerfile](Dockerfile), [direct manifest](requirements.txt)
-and [reviewed resolution](requirements.lock). Run the declared source checks and
+For dependency, runtime or container work, read [the shared dependency policy](docs/quality/dependencies.md)
+and [this repository's compatibility contract](docs/operations/engineering/dependency-compatibility.md).
+Use the actual tracked [Dockerfile](infra/docker/engineering-backbone/Dockerfile), [direct manifest](.engineering-backbone/requirements.txt)
+and [reviewed resolution](.engineering-backbone/requirements.lock). Run the declared source checks and
 container build/smoke; record missing execution evidence explicitly. Source CI
 checks these inputs directly because this repository has no active navigation seed.
 The Dockerfile belongs to Backbone tooling and is not a consumer application's
@@ -90,8 +101,8 @@ container definition. Preserve authoritative version files and scoped review.
 
 ## OpenCode adapter
 
-Read [the OpenCode operating contract](docs/opencode/workflow.md) and
-[controlled runner contract](docs/opencode/opencode-runner-contract.md) before
+Read [the OpenCode operating contract](docs/agent-governance/adapters/opencode/workflow.md) and
+[controlled runner contract](docs/agent-governance/adapters/opencode/opencode-runner-contract.md) before
 OpenCode work. Its inactive companion is not a native discovery switch. Validate
 the exact primary, current scoped receipt and effective permissions before runtime
 use; tool defaults do not establish OS isolation or model qualification.

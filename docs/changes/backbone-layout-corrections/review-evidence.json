@@ -1,0 +1,28 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-012-FULL-1",
+  "kind": "full",
+  "subject": {
+    "base_revision": "c50108773ba3195bf0f7503e5dffb2d7bfc78cd3",
+    "head_revision": "dbe05e14a255488e3416465971ece755fb04aba3"
+  },
+  "implementer": "root and layout_tests",
+  "reviewers": [
+    {
+      "id": "correction_full_review",
+      "role": "independent_reviewer"
+    }
+  ],
+  "outcome": "no_findings",
+  "checks": [
+    {
+      "name": "Bounded behavior and governance Full review with separate triage",
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-corrections/full-review.md",
+        "docs/changes/backbone-layout-corrections/triage.md"
+      ]
+    }
+  ],
+  "findings": []
+}

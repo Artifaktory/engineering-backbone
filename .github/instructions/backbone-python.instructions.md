@@ -2,8 +2,8 @@
 applyTo: "**/*.py"
 ---
 
-Follow the [canonical policy](../../policy/core.md) and
-[Copilot workflow](../../docs/copilot/workflow.md) together with applicable project instructions.
+Follow the [canonical policy](../../docs/agent-governance/core.md) and
+[Copilot workflow](../../docs/agent-governance/adapters/copilot/workflow.md) together with applicable project instructions.
 
 This optional profile adds Python-specific guidance without selecting a framework.
 Read project package/runtime configuration, path instructions and approved commands.

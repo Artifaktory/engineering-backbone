@@ -1,0 +1,27 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-012-FULL-2",
+  "kind": "full",
+  "subject": {
+    "base_revision": "2ddfa803688c70b556dc83bcf07a4c3911713be5",
+    "head_revision": "e2bd3c7dc881348967af28a6da99be992e94e122"
+  },
+  "implementer": "layout_tests and root evidence coordination",
+  "reviewers": [
+    {
+      "id": "correction_full_review",
+      "role": "independent_reviewer"
+    }
+  ],
+  "outcome": "no_findings",
+  "checks": [
+    {
+      "name": "Bounded second Full of local Git transport repair",
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-corrections/clone-repair-full-review.md"
+      ]
+    }
+  ],
+  "findings": []
+}

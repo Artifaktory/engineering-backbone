@@ -11,20 +11,22 @@ the same policy authority; its version is tracked separately.
 
 | Source location | Purpose | Owner and use |
 |---|---|---|
-| `policy/quality.md` | Common quality obligations and evidence boundaries | Project owner selects applicability; every role follows the active contract |
-| `standards/sources.json` | Official source editions, URLs, access and adoption limits | Source maintainers review provenance before catalog updates |
-| `standards/rules.json` | Stable rule IDs, responsibilities, phases, evidence and check groups | Planner selects; implementer applies; reviewer checks |
-| `standards/profiles/*.json` | Baseline and bounded refinements | Project owner selects during adoption; reviewer evaluates suitability |
-| `standards/technologies/` | Versioned technology sources, mandatory rules, defaults and free choices | Source maintainers review; components select only applicable profiles |
+| `docs/quality/policy.md` | Common quality obligations and evidence boundaries | Project owner selects applicability; every role follows the active contract |
+| `.engineering-backbone/standards/sources.json` | Official source editions, URLs, access and adoption limits | Source maintainers review provenance before catalog updates |
+| `.engineering-backbone/standards/rules.json` | Stable rule IDs, responsibilities, phases, evidence and check groups | Planner selects; implementer applies; reviewer checks |
+| `.engineering-backbone/standards/profiles/*.json` | Baseline and bounded refinements | Project owner selects during adoption; reviewer evaluates suitability |
+| `.engineering-backbone/standards/technologies/` | Versioned technology sources, mandatory rules, defaults and free choices | Source maintainers review; components select only applicable profiles |
 | `.engineering-backbone/navigation.json` | Project document routes, component technology selections and additional check bindings | Project owner reviews; agents resolve and verify scoped context |
 | `.engineering-backbone/quality-profile.json` | Project-owned reviewed commit, selection, document paths and bindings | Project owner maintains through reviewed PRs |
 | `docs/quality/quality-plan.md` | Project goals, risks, responsibilities and release criteria | Planner establishes before work; reviewers assess changes |
 | `docs/quality/test-strategy.md` | Test selection, coverage, data, environments and limitations | Planner and test implementer maintain; quality checker records execution |
 | `docs/quality/traceability.csv` | Rule to requirement/risk, design, test/check and evidence mapping | Implementer updates; independent reviewer evaluates adequacy |
 | `docs/quality/exceptions.md` | Declared bounded exceptions and compensating measures | Project human owner approves; review verifies authority and expiry |
-| Existing requirements, architecture and `docs/reviews/` | Authoritative decisions and frozen-snapshot review evidence | Existing project owners and independent reviewers |
+| Existing requirements, architecture and `docs/changes/<delivery>/reviews/` | Authoritative decisions and frozen-snapshot review evidence | Existing project owners and independent reviewers |
 
-Document paths above are defaults. The profile may point to other safe
+The source/reference layout uses the paths above. Legacy Copier consumers retain
+their older installed guide/policy names, described below. Project document paths
+are defaults. The profile may point to other safe
 repository-relative locations. Exception documentation is required when exceptions
 exist. Installed catalogs are managed beneath `.engineering-backbone/standards/`;
 the installed policy and guide are `.engineering-backbone/quality-policy.md` and
@@ -75,7 +77,7 @@ explicit trusted-source review.
 
 ## Technology profiles and navigation
 
-Use `docs/quality/technology-profiles.md` and `docs/agent-navigation.md` in the source,
+Use `docs/quality/technology-profiles.md` and `docs/agent-governance/agent-navigation.md` in the source,
 or `.engineering-backbone/technology-guide.md` and
 `.engineering-backbone/navigation-guide.md` when installed. Navigation selects
 technology profiles by explicit component paths. All matching components combine;
@@ -138,6 +140,12 @@ schema-valid profile or an AI review does not authenticate signatures, alter
 repository protection or grant permission to merge/deploy.
 
 ## Adoption and updates
+
+Direct copies retain the existing inactive/unadopted state; copying a catalog does
+not enable a quality contract. Follow the [adoption guide](../agent-governance/adoption.md)
+for reference-layout adoption. The retained optional Copier package uses the
+following legacy seed/update sequence; its enabled-only trust gates also remain
+binding for any later reviewed integration.
 
 1. Opt into Copier's quality package during a reviewed installation. It creates
    an explicitly inactive, incomplete profile and project document skeletons.

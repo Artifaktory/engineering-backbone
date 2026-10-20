@@ -1,7 +1,7 @@
 # Copilot repository instructions
 
-Read the [canonical policy](../policy/core.md), [repository facts](../CONTRIBUTING.md) and
-[Copilot workflow](../docs/copilot/workflow.md) before non-trivial work. Discover applicable
+Read the [canonical policy](../docs/agent-governance/core.md), [repository facts](../CONTRIBUTING.md) and
+[Copilot workflow](../docs/agent-governance/adapters/copilot/workflow.md) before non-trivial work. Discover applicable
 root/path instructions; preserve stricter local policy and unrelated work. This
 entry is shared context; agent profiles select responsibilities and tool budgets,
 and skills supply procedures when needed.
@@ -20,7 +20,7 @@ and skills supply procedures when needed.
 - Human merge/release approval and installed local Publish-Go/signature/history
   gates remain required. Instructions and schema checks do not enforce these gates.
 
-Select a role from [agent profiles](agents/) and a procedure from [skills](skills/).
+Select a role from [agent profiles](agents) and a procedure from [skills](skills).
 Handoffs are optional host conveniences: transfer Task Packet, revisions and evidence
 manually to a fresh session where unsupported. Role selection alone does not make
 review independent; verify the intended client actually loads its files and tools.
@@ -51,17 +51,19 @@ structural validation is not semantic review, certification or human acceptance.
 ## Repository checks
 
 Use an isolated Python 3.12 environment with hash-locked requirements. Run
-`python scripts/validate.py`,
-`python scripts/compile_toolchain_fingerprint.py --check`,
-`python scripts/compile_navigation.py --check`,
-`python scripts/compile_quality_framework.py --check`,
-`python -m unittest discover -s tests -v` and `git diff --check`.
+`python .engineering-backbone/src/validate.py`,
+`python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check`,
+`python .engineering-backbone/src/maintenance/compile_navigation.py --check`,
+`python .engineering-backbone/src/maintenance/compile_quality_framework.py --check`,
+`python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check`,
+`python .engineering-backbone/src/check_source_dependencies.py`,
+`python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v` and `git diff --check`.
 Read [CONTRIBUTING.md](../CONTRIBUTING.md) and the active Task Packet first.
 
 ## Active document navigation
 
 When `.engineering-backbone/navigation.json` is enabled, follow the navigation
-guide (`docs/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+guide (`docs/agent-governance/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
 when installed). After a Task Packet exists, resolve its scoped request with the
 approved guard, verify received context against the current snapshot, then actually
 read every resolved document before scoped work. Transfer the request, complete

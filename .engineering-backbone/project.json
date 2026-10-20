@@ -6,7 +6,10 @@
     "language": "Python tooling; language-neutral governance",
     "has_frontend": false,
     "has_backend": false,
-    "validation_command": "python scripts/validate.py && python -m unittest discover -s tests -v"
+    "validation_command": "python .engineering-backbone/src/validate.py && python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v"
   },
-  "agents": {"codex": true, "copilot": true}
+  "agents": {
+    "codex": true,
+    "copilot": true
+  }
 }

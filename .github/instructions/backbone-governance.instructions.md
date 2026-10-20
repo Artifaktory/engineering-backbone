@@ -1,9 +1,9 @@
 ---
-applyTo: ".github/**,.engineering-backbone/**,templates/**,scripts/validate.py,scripts/compile_toolchain_fingerprint.py,policy/**,schemas/**,copier.yml"
+applyTo: ".github/**,.codex/**,.opencode/**,.engineering-backbone/**,docs/agent-governance/**,docs/quality/**,copier.yml,opencode.json"
 ---
 
-Follow the [canonical policy](../../policy/core.md) and
-[Copilot workflow](../../docs/copilot/workflow.md) together with applicable project instructions.
+Follow the [canonical policy](../../docs/agent-governance/core.md) and
+[Copilot workflow](../../docs/agent-governance/adapters/copilot/workflow.md) together with applicable project instructions.
 
 These paths are control-plane changes and HIGH risk by default. Check the trusted
 base as well as candidate rules. Preserve native files and stricter consumer policy;

@@ -1,0 +1,17 @@
+# Copilot integration for {{ project_name }}
+
+{% if use_copilot %}
+Copilot files were selected for creation when absent. Existing native files remain
+protected; reconcile them in this project's reviewed adoption or update PR.
+{% else %}
+Copilot was not selected. This guide is reference material; it does not install or
+activate the provider. A provider migration needs separate reviewed authorization.
+{% endif %}
+
+Project facts: [project.json](project.json). Canonical policy: [core.md](core.md).
+Use the matching source release's `docs/copilot/clients.md`,
+`docs/copilot/smoke-tests.md` and `docs/copilot/source-provenance.md` for client
+setup, practical-source provenance and runtime acceptance. No client smoke test is
+implied by template generation.
+
+{% include 'docs/agent-governance/adapters/copilot/workflow.md' %}

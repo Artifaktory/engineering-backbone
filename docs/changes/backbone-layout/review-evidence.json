@@ -1,0 +1,91 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-011-FULL-1",
+  "kind": "full",
+  "subject": {
+    "base_revision": "212608aa50ee517b3dd3107a9480da997222fd4f",
+    "head_revision": "54501f1ed542e7f42b5aa315db8863b35e80aeed"
+  },
+  "implementer": "root and delegated implementation sessions",
+  "reviewers": [
+    {
+      "id": "layout_behavior_review",
+      "role": "independent_reviewer"
+    },
+    {
+      "id": "layout_security_review",
+      "role": "independent_reviewer"
+    }
+  ],
+  "outcome": "changes_requested",
+  "checks": [
+    {
+      "name": "Behavior and compatibility Full review",
+      "status": "fail",
+      "evidence": [
+        "docs/changes/backbone-layout/behavior-review.md; LBEH-01 through LBEH-03 confirmed by independent triage."
+      ]
+    },
+    {
+      "name": "Focused security and governance audit",
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout/security-review.md; unchanged copy accepted and four negative probes rejected."
+      ]
+    },
+    {
+      "name": "Previous trusted validator layout migration",
+      "status": "blocked",
+      "evidence": [
+        "docs/changes/backbone-layout/checks.md; actual previous validator exit 1 with 34 errors; draft merge blocker retained."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "LBEH-01",
+      "severity": "P2",
+      "location": {
+        "path": ".github/workflows/opencode-native.yml",
+        "line": 36
+      },
+      "claim": "Removed tests package remains in the native workflow command; both matrix jobs stop before native smoke. Category, high confidence, diff causation and regression scope are detailed in behavior-review.md and review-triage.md.",
+      "evidence": [
+        "Exact frozen workflow command exited 1 with ModuleNotFoundError; corrected discovery command passed 11 existing tests.",
+        "docs/changes/backbone-layout/review-triage.md"
+      ],
+      "triage": "confirmed",
+      "disposition": "proposed"
+    },
+    {
+      "id": "LBEH-02",
+      "severity": "P3",
+      "location": {
+        "path": "docs/agent-governance/adoption.md",
+        "line": 357
+      },
+      "claim": "Legacy adoption instructions identify the source-only dependency document path rather than the retained consumer output. Category, high confidence, diff causation and regression scope are detailed in behavior-review.md and review-triage.md.",
+      "evidence": [
+        "Baseline guide, retained template output and copier.yml preservation list identify docs/dependency-compatibility.md.",
+        "docs/changes/backbone-layout/review-triage.md"
+      ],
+      "triage": "confirmed",
+      "disposition": "proposed"
+    },
+    {
+      "id": "LBEH-03",
+      "severity": "P2",
+      "location": {
+        "path": ".engineering-backbone/src/opencode_native_smoke.py",
+        "line": 480
+      },
+      "claim": "Moved native runner defaults to the tooling directory instead of the repository root. Category, high confidence, diff causation and regression scope are detailed in behavior-review.md and review-triage.md.",
+      "evidence": [
+        "Actual default argparse plus real prepare_fixture exits 1 with native config outside contract; explicit repository root succeeds with 22 inputs.",
+        "docs/changes/backbone-layout/review-triage.md"
+      ],
+      "triage": "confirmed",
+      "disposition": "proposed"
+    }
+  ]
+}

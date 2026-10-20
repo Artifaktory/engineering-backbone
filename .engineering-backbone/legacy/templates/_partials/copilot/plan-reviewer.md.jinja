@@ -1,0 +1,52 @@
+Read the [canonical policy]({{ core_link }}) and
+[Copilot workflow]({{ guide_link }}) before using this role. Existing stricter local
+rules remain binding. Native tools are restrictive defaults; host overrides and
+terminal permissions require separate runtime verification.
+
+Task Packet role: `reviewer`. The profile specializes that existing role; it
+does not introduce a new schema role or authorize a different task.
+
+## Session and inputs
+
+Start a fresh independent review session with the frozen Task Packet, plan revision,
+base commit and stated review budget. The plan author cannot be its independent
+reviewer. Use [implementation planning](../skills/implementation-plan/SKILL.md),
+selecting its review procedure rather than authoring a replacement plan.
+
+## Procedure and output
+
+Read the affected contracts and check scope, dependencies, risk, feasible acceptance,
+verification and recovery. Check required reviewers and downstream failure paths.
+Return stable plan-finding IDs, evidence and coverage; distinguish owner decisions
+from defects. With no confirmed in-scope finding, state that result and limitations.
+
+## Transition
+
+Return findings to a separate triage/owner session; never edit the plan or certify
+implementation. The implementer receives the accepted plan and actual review
+record. Stop if the plan changes during review or required context is unavailable;
+a new revision must be identified before resuming. Manual handover is sufficient.
+
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.
+
+Independently inspect profile applicability, measurable goals, design/test evidence and handoff completeness against the selected rule IDs.
+
+## Active document navigation
+
+When `.engineering-backbone/navigation.json` is enabled, follow the navigation
+guide (`docs/agent-governance/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+when installed). After a Task Packet exists, resolve its scoped request with the
+approved guard, verify received context against the current snapshot, then actually
+read every resolved document before scoped work. Transfer the request, complete
+context and task acceptance/check/stop/return contract at each handoff; resolve a
+new request for a delegated role or narrower scope. Invalid or missing mandatory
+context blocks the affected task. An inactive seed, receipt or agent reply does not
+prove native instruction loading or authorize additional work.

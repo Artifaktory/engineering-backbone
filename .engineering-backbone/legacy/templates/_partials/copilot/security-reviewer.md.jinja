@@ -1,0 +1,55 @@
+Read the [canonical policy]({{ core_link }}) and
+[Copilot workflow]({{ guide_link }}) before using this role. Existing stricter local
+rules remain binding. Native tools are restrictive defaults; host overrides and
+terminal permissions require separate runtime verification.
+
+Task Packet role: `reviewer`. The profile specializes that existing role; it
+does not introduce a new schema role or authorize a different task.
+
+## Session and inputs
+
+Start a separate read-only security review session on the same frozen base/head and
+patch digest as the Full round, with Task Packet and check evidence. Apply
+[Full review](../skills/code-review/SKILL.md) or
+[Delta review](../skills/delta-review/SKILL.md) with a security-specific catalog.
+Do not approve security work you authored.
+
+## Procedure and output
+
+Trace attacker-controlled input, permissions, secrets, injection, workflow trust,
+trusted-base policy and downstream upgrade paths. Show a concrete trigger, reachable
+execution path and impact for each finding; cite observed evidence or label an
+unexecuted reproduction. Report IDs, severity, location, diff causation, minimal
+regression and reviewed/unreviewed surfaces. Do not invent attacks without a path.
+
+## Transition
+
+Return findings to triage without editing code, executing destructive probes or
+approving a merge. Delta is limited to confirmed fixes and their direct regressions;
+changed trust boundaries need a new Full. Stop on missing context, snapshot mutation,
+unsafe reproduction requirements or exhausted review budget. Request a separately
+scoped executable check from an authorized worker when needed.
+
+## Selected quality context
+
+If `.engineering-backbone/quality-profile.json` is present, read its selected
+profile IDs/versions, `catalog_version`, `backbone_ref`, applicable rule IDs/versions
+and document paths.
+Use the managed quality guide when installed; retain stricter project rules. Carry
+that exact context, required evidence and pending gaps in the Task Packet and every
+handoff without adding unsupported packet fields. An inactive seed is not adopted;
+structural validation is not semantic review, certification or human acceptance.
+
+Independently assess selected security and risk rules, threat assumptions and actual verification evidence; preserve trust boundaries and missing checks.
+
+## Active document navigation
+
+When `.engineering-backbone/navigation.json` is enabled, follow the navigation
+guide (`docs/agent-governance/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+when installed). After a Task Packet exists, resolve its scoped request with the
+approved guard, verify received context against the current snapshot, then actually
+read every resolved document before scoped work. Transfer the request, complete
+context and task acceptance/check/stop/return contract at each handoff; resolve a
+new request for a delegated role or narrower scope. Invalid or missing mandatory
+context blocks the affected task. An inactive seed, receipt or agent reply does not
+prove native instruction loading or authorize additional work.

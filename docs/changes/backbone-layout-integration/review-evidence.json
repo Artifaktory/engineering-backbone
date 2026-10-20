@@ -1,0 +1,38 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-014-FULL-1",
+  "kind": "full",
+  "subject": {
+    "base_revision": "537576f658bbd79c3bc49b26ade948116c664943",
+    "head_revision": "ab8fa240a1588f68e78d3aebffa0ef531250d638"
+  },
+  "implementer": "root documentation/integration, runtime_assess and bridge_tests",
+  "reviewers": [
+    {
+      "id": "bridge_behavior_review",
+      "role": "independent_reviewer"
+    },
+    {
+      "id": "bridge_security_review",
+      "role": "independent_reviewer"
+    }
+  ],
+  "outcome": "no_findings",
+  "checks": [
+    {
+      "name": "Independent behavior and compatibility Full review",
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/behavior-review.md"
+      ]
+    },
+    {
+      "name": "Independent security and trusted-authority Full review",
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/security-review.md"
+      ]
+    }
+  ],
+  "findings": []
+}

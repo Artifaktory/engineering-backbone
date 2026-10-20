@@ -2,12 +2,12 @@
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
     "AGENTS.md",
-    "policy/core.md",
-    "policy/core.json",
-    "policy/quality.md",
-    "policy/dependencies.md",
+    "docs/agent-governance/core.md",
+    ".engineering-backbone/core.json",
+    "docs/quality/policy.md",
+    "docs/quality/dependencies.md",
     ".engineering-backbone/project.json",
-    "docs/opencode/workflow.md",
+    "docs/agent-governance/adapters/opencode/workflow.md",
     "CONTRIBUTING.md"
   ],
   "permission": {

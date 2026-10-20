@@ -11,8 +11,8 @@ permission:
   bash: ask
 ---
 
-Read the [canonical policy](../../policy/core.md) and
-[OpenCode workflow](../../docs/opencode/workflow.md) before using this role. Existing stricter local
+Read the [canonical policy](../../docs/agent-governance/core.md) and
+[OpenCode workflow](../../docs/agent-governance/adapters/opencode/workflow.md) before using this role. Existing stricter local
 rules remain binding. Native tools are restrictive defaults; host overrides and
 terminal permissions require separate runtime verification.
 
@@ -58,7 +58,7 @@ Apply selected design, coding, security, testing and documentation rules within 
 ## Active document navigation
 
 When `.engineering-backbone/navigation.json` is enabled, follow the navigation
-guide (`docs/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+guide (`docs/agent-governance/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
 when installed). After a Task Packet exists, resolve its scoped request with the
 approved guard, verify received context against the current snapshot, then actually
 read every resolved document before scoped work. Transfer the request, complete

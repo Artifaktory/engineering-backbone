@@ -1,7 +1,7 @@
 # Quality source provenance
 
-Reviewed on 2026-10-13. `standards/sources.json` is the machine-readable register;
-`standards/rules.json` records the organization-owned derivation for each rule.
+Reviewed on 2026-10-13. `.engineering-backbone/standards/sources.json` is the machine-readable register;
+`.engineering-backbone/standards/rules.json` records the organization-owned derivation for each rule.
 This record preserves what was actually inspected, rather than claiming access to
 full normative material or a certification assessment.
 

@@ -1,0 +1,157 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-012",
+  "title": "PR 18 Copilot selector and publication-check corrections",
+  "objective": "Correct the confirmed Copilot nested-document selector omission and committed EOF CI failure in existing draft PR18, strengthen the final committed-diff publication procedure, and report exact current CI/trust-migration evidence without bypassing the old trusted-base gate.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "c50108773ba3195bf0f7503e5dffb2d7bfc78cd3",
+    "head_revision": "e2bd3c7dc881348967af28a6da99be992e94e122"
+  },
+  "approved_sources": [
+    "User request to correct missed Copilot/root-file handling and red checks on existing PR18",
+    "docs/changes/backbone-layout-corrections/plan.md",
+    "AGENTS.md, CONTRIBUTING.md and docs/agent-governance/core.md at corrective baseline c50108773ba3195bf0f7503e5dffb2d7bfc78cd3",
+    "Read-only Copilot audit COP-LAYOUT-01 and exact remote CI observations to be retained in this corrective record",
+    "docs/changes/backbone-layout-corrections/clone-repair-plan.md and independent clone-repair-plan-review.md",
+    "Confirmed COP-CI-02 after two actual Foundation local-clone errors; clone-repair-triage.md."
+  ],
+  "scope": {
+    "include": [
+      ".github/instructions/backbone-docs.instructions.md",
+      ".engineering-backbone/tst/test_copilot_distribution.py",
+      ".engineering-backbone/tst/test_copilot_validation.py",
+      ".engineering-backbone/tst/test_copilot_workflow_guard.py",
+      "CONTRIBUTING.md",
+      "docs/changes/backbone-layout/publication.md",
+      "docs/changes/backbone-layout-corrections/**"
+    ],
+    "exclude": [
+      "AGENTS.md",
+      "README.md",
+      "copier.yml",
+      ".engineering-backbone/legacy/**",
+      ".engineering-backbone/src/**",
+      ".engineering-backbone/schemas/**",
+      ".engineering-backbone/standards/**",
+      ".engineering-backbone/tst/fixtures/**",
+      ".engineering-backbone/core.json",
+      ".engineering-backbone/requirements*",
+      ".github/workflows/**",
+      ".codex/**",
+      ".opencode/**",
+      "docs/agent-governance/core.md",
+      "Previously archived preserve_bytes records",
+      "External repositories",
+      "artifacts/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "The confirmed source Copilot docs selector covers root and nested Markdown plus docs data, excludes unrelated code, and preserves legacy consumer selectors, native discovery paths and instruction permissions.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "checks.md: 41 affected tests; full-review.md and triage.md: source selector and unchanged legacy/native contracts."
+      ]
+    },
+    {
+      "id": "AC-2",
+      "description": "The committed EOF defect is reproduced and repaired; post-final-commit checks cover both the corrective and complete live PR diffs, with exact revisions and exit codes.",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": [
+        "checks.md: old failure reproduced; both committed diffs pass at dbe05e14. Final evidence-commit checks and publication readback must be recorded in PR18 before claiming completion.",
+        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot.",
+        "clone-repair-checks.md: all three committed diffs PASS at e2bd3c7; exact final post-evidence checks must be recorded in PR18 before publication."
+      ]
+    },
+    {
+      "id": "AC-3",
+      "description": "Current contributor publication instructions require committed base-to-head diff checks after the final evidence commit, avoiding the clean-worktree blind spot.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "CONTRIBUTING.md requires final committed patch checks; full-review.md confirms coverage."
+      ]
+    },
+    {
+      "id": "AC-4",
+      "description": "Affected positive and negative Copilot checks, canonical structural/compiled-output checks and independent Full/triage/necessary Delta pass without weakening preserved contracts or history.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "Original checks.md/full-review.md/triage.md retained for selector correction.",
+        "clone-repair-checks.md:41tests78.308s and11commandsPASS; clone-repair-full-review.md and clone-repair-review-triage.md record bounded secondFull and separate triage."
+      ]
+    },
+    {
+      "id": "AC-5",
+      "description": "Remote CI evidence is recorded for exact tested heads; the legacy trusted-base path incompatibility remains a visible blocked gate, with a concrete separately reviewed migration follow-up and no implemented bypass.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "ci-observations.md records exact prior-head CI failures and successes; separate BB-LAYOUT-013 prerequisite retains human merge dependency.",
+        "clone-initial-triage.md and clone-repair-triage.md retain the two actual433-test Foundation failures and prohibit further unchanged retries."
+      ]
+    },
+    {
+      "id": "AC-6",
+      "description": "Only existing draft PR18 is updated, its remote head/tree and latest checks are reread, and repaired versus unresolved checks are stated accurately without merge or downstream changes.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": [
+        "Publication and current-head checks remain pending at this evidence commit; PR18 body will record exact final identities and results.",
+        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot.",
+        "PR18 current2ddfa803 was verified; clone repair publication/current-head remote qualification remain pending at this commit. Separate prerequisitePR19 is published and independently reviewed."
+      ]
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python .engineering-backbone/src/validate.py",
+      "python .engineering-backbone/src/maintenance/compile_navigation.py --check",
+      "python .engineering-backbone/src/maintenance/compile_quality_framework.py --check",
+      "python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check",
+      "python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check",
+      "python .engineering-backbone/src/check_source_dependencies.py",
+      "PYTHONPATH=.engineering-backbone python -m unittest tst.test_copilot_distribution tst.test_copilot_validation tst.test_copilot_workflow_guard -v",
+      "git diff --check",
+      "git diff --cached --check",
+      "git diff --check c50108773ba3195bf0f7503e5dffb2d7bfc78cd3 HEAD",
+      "git diff --check 212608aa50ee517b3dd3107a9480da997222fd4f HEAD"
+    ],
+    "manual_evidence": [
+      "Independent read-only plan review before implementation",
+      "Pre-fix selector and committed EOF failure reproductions, followed by affected regression evidence",
+      "Frozen corrective base/head/patch digest and independent Full, separate triage and necessary Delta",
+      "Exact current remote head/run IDs and CI conclusions, distinguishing old tested heads from new publication",
+      "Concrete trust-migration follow-up plan with unchanged failed gate and no bypass",
+      "Final committed complete live-PR diff check and PR18 remote head/tree readback"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 6
+  },
+  "stop_conditions": [
+    "Scope expansion beyond confirmed corrections or unclear authority",
+    "Unresolved confirmed in-scope review finding before claiming corrected readiness",
+    "New or undiagnosed required-check failure",
+    "Unexpected change to preserved history, permissions, generated legacy contracts or trusted-policy gates",
+    "Review or implementation budget exhausted"
+  ],
+  "forbidden_actions": [
+    "Merge, release or deployment",
+    "Create an unrelated branch or PR",
+    "Change repository settings or required checks",
+    "Bypass, suppress or replace the old trusted-base validator gate",
+    "Move native Copilot configuration or root Copier discovery entry speculatively",
+    "Change canonical policy, dependency pins, legacy generated contracts or byte-preserved history",
+    "Force push, destructive cleanup or automatic downstream application",
+    "Claim pending CI or unrelated-head results prove current-head PASS"
+  ],
+  "status": "ready_for_review"
+}

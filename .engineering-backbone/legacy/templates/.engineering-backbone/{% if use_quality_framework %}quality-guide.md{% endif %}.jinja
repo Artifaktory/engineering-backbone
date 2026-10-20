@@ -1,0 +1,2 @@
+{% set guide %}{% include 'docs/quality/README.md' %}{% endset %}
+{{ guide | replace('[adoption guide](../agent-governance/adoption.md)', 'source repository adoption guide (`docs/agent-governance/adoption.md`)') }}

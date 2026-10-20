@@ -1,8 +1,8 @@
 # Security
 
 Treat policy, validators, schemas, templates, native agent permissions and workflows
-as a HIGH-risk control plane. See [the common policy](policy/core.md) and
-[repository controls](docs/repository-controls.md).
+as a HIGH-risk control plane. See [the common policy](docs/agent-governance/core.md) and
+[repository controls](docs/operations/engineering/repository-controls.md).
 
 Report sensitive vulnerabilities privately to the repository maintainers through
 an established private channel. Use GitHub private reporting only if it is enabled;
