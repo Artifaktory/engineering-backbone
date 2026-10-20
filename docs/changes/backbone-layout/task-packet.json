@@ -133,9 +133,10 @@
       "id": "AC-8",
       "description": "A scoped draft refactoring PR is published with its exact remote tree, blocked legacy trusted-base gate and real check state; no merge, release, downstream changes or auto-activation occurs.",
       "verification": "hybrid",
-      "status": "pending",
+      "status": "pass",
       "evidence": [
-        "Publication is the next authorized action. Exact remote snapshot and observed CI state will be recorded after GitHub confirms the draft PR."
+        "https://github.com/Artifaktory/engineering-backbone/pull/18: open draft, merged false, expected base and head independently reread.",
+        "docs/changes/backbone-layout/publication.md: exact local/remote tree correspondence and actual initial remote CI states."
       ]
     }
   ],
@@ -178,5 +179,5 @@
     "Force push or destructive cleanup",
     "Claiming old historical PASS records, synthetic tests or structural validation prove new runtime qualification"
   ],
-  "status": "ready_for_review"
+  "status": "completed"
 }

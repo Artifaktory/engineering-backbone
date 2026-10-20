@@ -26,7 +26,7 @@ layout. No product repository, deployment, release or integration was activated.
 
 The [Task Packet](task-packet.json) maps AC-1 through AC-7 to these observations.
 AC-6 is satisfied by honestly exercising and retaining the failed old-layout gate,
-not by passing that gate. AC-8 remains pending until actual draft publication.
+not by passing that gate. AC-8 is satisfied by [the published draft PR and recorded remote checks](publication.md).
 The packet's head names the repaired implementation, while subsequent commits
 contain evidence only. Exact Full and Delta patch digests are in their reports.
 
