@@ -1,0 +1,3967 @@
+{
+  "format": "engineering-backbone-layout-map-v1",
+  "base_revision": "212608aa50ee517b3dd3107a9480da997222fd4f",
+  "entry_count": 495,
+  "entries": [
+    {
+      "old_path": ".codex/agents/backbone-implementer.toml",
+      "new_path": ".codex/agents/backbone-implementer.toml",
+      "base_blob": "a62f22b45b367515d721aa29925362835d949c96",
+      "base_size": 2902,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".codex/agents/backbone-planner.toml",
+      "new_path": ".codex/agents/backbone-planner.toml",
+      "base_blob": "c2904709b5df9c5c210b74041e5645000bdb6631",
+      "base_size": 2575,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".codex/agents/backbone-reviewer.toml",
+      "new_path": ".codex/agents/backbone-reviewer.toml",
+      "base_blob": "422b8bbd328a531ba42e177478f86aebd4daf7f4",
+      "base_size": 3474,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".dockerignore",
+      "new_path": ".dockerignore",
+      "base_blob": "7c8eb499604f5ffaef03a29d727dd7bed767296c",
+      "base_size": 136,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".engineering-backbone/opencode.json",
+      "new_path": ".engineering-backbone/opencode.json",
+      "base_blob": "84d13a599bf5f296ac9276e9dbed37fb773a3ba2",
+      "base_size": 146,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".engineering-backbone/project.json",
+      "new_path": ".engineering-backbone/project.json",
+      "base_blob": "1de5d9f5dfb428f890896c54ce70679c0a348dca",
+      "base_size": 371,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-analyst.agent.md",
+      "new_path": ".github/agents/backbone-analyst.agent.md",
+      "base_blob": "d1a8719e82a035dfe72330d9502689b490af21e3",
+      "base_size": 3260,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-documentation.agent.md",
+      "new_path": ".github/agents/backbone-documentation.agent.md",
+      "base_blob": "57b44e52cbf483e0140df1cb3e1983e34f454d30",
+      "base_size": 3237,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-finding-triage.agent.md",
+      "new_path": ".github/agents/backbone-finding-triage.agent.md",
+      "base_blob": "d9047543318c0761cf9f8d359a5283644104c28f",
+      "base_size": 3234,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-implementer.agent.md",
+      "new_path": ".github/agents/backbone-implementer.agent.md",
+      "base_blob": "1e12b6693069245a62a4d6429b304154d1e93ae5",
+      "base_size": 3291,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-plan-reviewer.agent.md",
+      "new_path": ".github/agents/backbone-plan-reviewer.agent.md",
+      "base_blob": "1e4b21d9022d4ba193647855a9c9fc6556a3a053",
+      "base_size": 3076,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-planner.agent.md",
+      "new_path": ".github/agents/backbone-planner.agent.md",
+      "base_blob": "890aaf13a8192bfc9ef124fdfa3c6e3fd7e5481d",
+      "base_size": 3082,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-quality-checker.agent.md",
+      "new_path": ".github/agents/backbone-quality-checker.agent.md",
+      "base_blob": "2b06d6c770aa03319d733b5bcd27131880b5169a",
+      "base_size": 3166,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-reviewer.agent.md",
+      "new_path": ".github/agents/backbone-reviewer.agent.md",
+      "base_blob": "33050c8bd0bd4f6a16f2382013abfa3f16da273d",
+      "base_size": 3450,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-security-reviewer.agent.md",
+      "new_path": ".github/agents/backbone-security-reviewer.agent.md",
+      "base_blob": "dddce86586ae79c5ba547f8380ab3f83523d5708",
+      "base_size": 3260,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/agents/backbone-test-engineer.agent.md",
+      "new_path": ".github/agents/backbone-test-engineer.agent.md",
+      "base_blob": "89a890b514d1a6add9e134e7317c055b1ae0f2f4",
+      "base_size": 3177,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/copilot-instructions.md",
+      "new_path": ".github/copilot-instructions.md",
+      "base_blob": "a4a2210bb407892b4db8cbb808308c9affa2500d",
+      "base_size": 4320,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/dependabot.yml",
+      "new_path": ".github/dependabot.yml",
+      "base_blob": "0c5c484bfe33ea1874772c69e11d3ff31e487efd",
+      "base_size": 257,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/instructions/backbone-docs.instructions.md",
+      "new_path": ".github/instructions/backbone-docs.instructions.md",
+      "base_blob": "16fd2feb3f12886bf794f021dc4db315a03ad6d9",
+      "base_size": 1009,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/instructions/backbone-frontend.instructions.md",
+      "new_path": ".github/instructions/backbone-frontend.instructions.md",
+      "base_blob": "f9ec3d7ac6f5e56e43e3cb9ccf382cdbc37234ca",
+      "base_size": 1016,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/instructions/backbone-governance.instructions.md",
+      "new_path": ".github/instructions/backbone-governance.instructions.md",
+      "base_blob": "d1827c6b54f59b9115b85973d2cd0be56850626f",
+      "base_size": 1132,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/instructions/backbone-python.instructions.md",
+      "new_path": ".github/instructions/backbone-python.instructions.md",
+      "base_blob": "14f7c645942759c23b35961e86aa94a7c7eca030",
+      "base_size": 985,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/instructions/backbone-tests.instructions.md",
+      "new_path": ".github/instructions/backbone-tests.instructions.md",
+      "base_blob": "8a54fb0632c529ecd9e8787012182b0fddff7951",
+      "base_size": 1032,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/pull_request_template.md",
+      "new_path": ".github/pull_request_template.md",
+      "base_blob": "b94a0164b07f1bb98dd297c443e7d3cb0529665d",
+      "base_size": 826,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/skills/bug-reproduction/SKILL.md",
+      "new_path": ".github/skills/bug-reproduction/SKILL.md",
+      "base_blob": "12a87d97ac73741b73044d5fd6e5aea29d80d1f6",
+      "base_size": 2998,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/skills/code-review/SKILL.md",
+      "new_path": ".github/skills/code-review/SKILL.md",
+      "base_blob": "876c08d715c5ce7dd50cde1d3944a5dd9d50f7a1",
+      "base_size": 3385,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/skills/delta-review/SKILL.md",
+      "new_path": ".github/skills/delta-review/SKILL.md",
+      "base_blob": "84fd78763eafdf8691dc0fe1fdf05005cf95bb6c",
+      "base_size": 3072,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/skills/docs-traceability/SKILL.md",
+      "new_path": ".github/skills/docs-traceability/SKILL.md",
+      "base_blob": "258323b68704b47923773fe946f5639aa84e54e3",
+      "base_size": 3069,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/skills/finding-triage/SKILL.md",
+      "new_path": ".github/skills/finding-triage/SKILL.md",
+      "base_blob": "570ecfa846565b1555b1c81da6b27105faf06236",
+      "base_size": 2910,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/skills/implementation-plan/SKILL.md",
+      "new_path": ".github/skills/implementation-plan/SKILL.md",
+      "base_blob": "afb4e7b1e6e671b6bbc8a502f3568ed1fb39c0c1",
+      "base_size": 3062,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/skills/task-intake/SKILL.md",
+      "new_path": ".github/skills/task-intake/SKILL.md",
+      "base_blob": "b22710aaecb0de2cc9b27dba5d421bd11f52b4cf",
+      "base_size": 2825,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/skills/test-and-quality/SKILL.md",
+      "new_path": ".github/skills/test-and-quality/SKILL.md",
+      "base_blob": "91e4b6d31580fb5a6e51d539a869a388e84fef03",
+      "base_size": 2978,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/workflows/governance-checks.yml",
+      "new_path": ".github/workflows/governance-checks.yml",
+      "base_blob": "051a2740334763723f2dbc47251f1325e9c4d388",
+      "base_size": 227774,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/workflows/opencode-native.yml",
+      "new_path": ".github/workflows/opencode-native.yml",
+      "base_blob": "790129ef98e2472306df97c6c92108c509879654",
+      "base_size": 1466,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/workflows/quality.yml",
+      "new_path": ".github/workflows/quality.yml",
+      "base_blob": "7490f349d2e2bec8dce7999ec7a5e87c450bdfab",
+      "base_size": 3284,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/workflows/workflow-kit-maintenance.yml",
+      "new_path": ".github/workflows/workflow-kit-maintenance.yml",
+      "base_blob": "4707d440ce5e7d0e4779f097596cf51116353bc2",
+      "base_size": 33747,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".github/workflows/workflow-kit-pr.yml",
+      "new_path": ".github/workflows/workflow-kit-pr.yml",
+      "base_blob": "d68548f18f36368d445a19c1ecf8621e1f1f6fc8",
+      "base_size": 37585,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".gitignore",
+      "new_path": ".gitignore",
+      "base_blob": "d0fb67a8426d9fc94ca512fdacfef408a433393b",
+      "base_size": 66,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/agents/backbone-implementer.md",
+      "new_path": ".opencode/agents/backbone-implementer.md",
+      "base_blob": "2e8e442cc4b8774d4e09acaf5f5d87009c4924d6",
+      "base_size": 3345,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/agents/backbone-planner.md",
+      "new_path": ".opencode/agents/backbone-planner.md",
+      "base_blob": "f2ee358ce4f6e878bd69cfac83a9df5a28ceb08d",
+      "base_size": 3148,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/agents/backbone-quality-checker.md",
+      "new_path": ".opencode/agents/backbone-quality-checker.md",
+      "base_blob": "8ac39fee40aac32214eb37628ce09c50ab96e40e",
+      "base_size": 3221,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/agents/backbone-reviewer.md",
+      "new_path": ".opencode/agents/backbone-reviewer.md",
+      "base_blob": "93750116486d023b107b3ffdd11856c7432f99b2",
+      "base_size": 3874,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/agents/backbone-triage.md",
+      "new_path": ".opencode/agents/backbone-triage.md",
+      "base_blob": "a4c8a1890d1ad20927d082774ad7ad3e9526ea1f",
+      "base_size": 3281,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/skills/bug-reproduction/SKILL.md",
+      "new_path": ".opencode/skills/bug-reproduction/SKILL.md",
+      "base_blob": "5934355c18b4ee3ac22f99f3bbe7290484d0677b",
+      "base_size": 3000,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/skills/code-review/SKILL.md",
+      "new_path": ".opencode/skills/code-review/SKILL.md",
+      "base_blob": "402c94a2944971306c0b64e7b1b624d3dd9a4b5a",
+      "base_size": 3387,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/skills/delta-review/SKILL.md",
+      "new_path": ".opencode/skills/delta-review/SKILL.md",
+      "base_blob": "0dcacf3a49c12469a1bf183c763121d3fcabcb9e",
+      "base_size": 3074,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/skills/docs-traceability/SKILL.md",
+      "new_path": ".opencode/skills/docs-traceability/SKILL.md",
+      "base_blob": "1ead3290a94e570c66e30e9f6ed41bad02429dfd",
+      "base_size": 3071,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/skills/finding-triage/SKILL.md",
+      "new_path": ".opencode/skills/finding-triage/SKILL.md",
+      "base_blob": "df2e91e47608bb1661f132da502c09b96fdfcf6c",
+      "base_size": 2912,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/skills/implementation-plan/SKILL.md",
+      "new_path": ".opencode/skills/implementation-plan/SKILL.md",
+      "base_blob": "708a46ac39f2e65fa3ffbadbb2a02ffe78961be1",
+      "base_size": 3064,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/skills/task-intake/SKILL.md",
+      "new_path": ".opencode/skills/task-intake/SKILL.md",
+      "base_blob": "600c8588ed3290a0454c5c97a2d44dbe54f25360",
+      "base_size": 2827,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": ".opencode/skills/test-and-quality/SKILL.md",
+      "new_path": ".opencode/skills/test-and-quality/SKILL.md",
+      "base_blob": "15f76c1983645b5c8f3aeac9c8a7254f0b5945bb",
+      "base_size": 2980,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "AGENTS.md",
+      "new_path": "AGENTS.md",
+      "base_blob": "9e4a6e02da1640db935ede2b43b754e15ef130f9",
+      "base_size": 5206,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "CONTRIBUTING.md",
+      "new_path": "CONTRIBUTING.md",
+      "base_blob": "0d72f14961541f6ae28416efbbde57d883fe0957",
+      "base_size": 5821,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "Dockerfile",
+      "new_path": "infra/docker/engineering-backbone/Dockerfile",
+      "base_blob": "ace764037564bc4e5bb5b922de3148c2fd2a106b",
+      "base_size": 868,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "README.md",
+      "new_path": "README.md",
+      "base_blob": "c1459bd5a488a67c135334f70c01dc5c4e5431ee",
+      "base_size": 12247,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "SECURITY.md",
+      "new_path": "SECURITY.md",
+      "base_blob": "de5b19d9a4d13c7bf1f7cf8a486c1896ab85b405",
+      "base_size": 1030,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "copier.yml",
+      "new_path": "copier.yml",
+      "base_blob": "90a9dd0316809853d8f51f8099c82d24c646f53b",
+      "base_size": 8998,
+      "disposition": "retain-legacy-entrypoint",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/adoption.md",
+      "new_path": "docs/agent-governance/adoption.md",
+      "base_blob": "44fea5da4a1e015d9894c03dde60a1f0bacbfc95",
+      "base_size": 18829,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/agent-adapters.md",
+      "new_path": "docs/agent-governance/agent-adapters.md",
+      "base_blob": "e8fba02602e642a7805794ac7008bb65e4a1f075",
+      "base_size": 16445,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/agent-navigation.md",
+      "new_path": "docs/agent-governance/agent-navigation.md",
+      "base_blob": "a2e14098d156d204e7e6cdd8d1b1a8d36b976314",
+      "base_size": 15381,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/codex-consolidation.md",
+      "new_path": "docs/agent-governance/adapters/codex-consolidation.md",
+      "base_blob": "59972a1194fb9b6fb930c225d3314377117ef7ad",
+      "base_size": 6577,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/copilot/clients.md",
+      "new_path": "docs/agent-governance/adapters/copilot/clients.md",
+      "base_blob": "34be0d7ee630e4999e73b9816d641c8f23853925",
+      "base_size": 7193,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/copilot/smoke-tests.md",
+      "new_path": "docs/agent-governance/adapters/copilot/smoke-tests.md",
+      "base_blob": "5da8eb920935b5ba878104022222a3542da0377a",
+      "base_size": 5761,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/copilot/source-provenance.md",
+      "new_path": "docs/agent-governance/adapters/copilot/source-provenance.md",
+      "base_blob": "ab4032b8b4ffbaafcc756213821df0c52b7d6389",
+      "base_size": 7988,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/copilot/workflow.md",
+      "new_path": "docs/agent-governance/adapters/copilot/workflow.md",
+      "base_blob": "f5186f27c016fb965ca6c3ad6e97a78510667343",
+      "base_size": 11827,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/dependency-compatibility.md",
+      "new_path": "docs/operations/engineering/dependency-compatibility.md",
+      "base_blob": "c353ceb83812f0ede7e5172749dc8d60d0ae97d0",
+      "base_size": 5141,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/opencode/opencode-runner-contract.md",
+      "new_path": "docs/agent-governance/adapters/opencode/opencode-runner-contract.md",
+      "base_blob": "657167ee330614a38d5ecd183b5f3f4a097b4db2",
+      "base_size": 5457,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/opencode/smoke-tests.md",
+      "new_path": "docs/agent-governance/adapters/opencode/smoke-tests.md",
+      "base_blob": "aa310ebf8a9b94a91c9f22d11f8c59a05120a8a0",
+      "base_size": 5103,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/opencode/source-provenance.md",
+      "new_path": "docs/agent-governance/adapters/opencode/source-provenance.md",
+      "base_blob": "36e5a17e2c785ae3e7d31c361027ee356a1e6620",
+      "base_size": 3046,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/opencode/workflow.md",
+      "new_path": "docs/agent-governance/adapters/opencode/workflow.md",
+      "base_blob": "f0bf098a7b441d7c1ebb71888457d13e81fdc116",
+      "base_size": 5747,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/planning.md",
+      "new_path": "docs/agent-governance/planning.md",
+      "base_blob": "c073b5ad224f6cf5b915a151bdcb2ee7dfed1fc6",
+      "base_size": 4614,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/quality/README.md",
+      "new_path": "docs/quality/README.md",
+      "base_blob": "ffa1f914760d17a7d84c3c92c727af7a9f24f1e8",
+      "base_size": 13645,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/quality/source-provenance.md",
+      "new_path": "docs/quality/source-provenance.md",
+      "base_blob": "b6c65b365cc13fb392298727ee49af6dbd1b0183",
+      "base_size": 3617,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/quality/technology-profiles.md",
+      "new_path": "docs/quality/technology-profiles.md",
+      "base_blob": "6c56d63b90465227acc19236b5fb246c7289107b",
+      "base_size": 10577,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/quality/technology-source-provenance.md",
+      "new_path": "docs/quality/technology-source-provenance.md",
+      "base_blob": "89d08aca2557d7208b3b7ece6b780612e1b8a944",
+      "base_size": 6218,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/quality/testing.md",
+      "new_path": "docs/quality/testing.md",
+      "base_blob": "2af3a0652cc79aa16d1e9b84e72cb9e7cadf524f",
+      "base_size": 4710,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/repository-controls.md",
+      "new_path": "docs/operations/engineering/repository-controls.md",
+      "base_blob": "08b41c55baf36d2bca86fd77d4e3bd93a5c39eb0",
+      "base_size": 8395,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/reviews/bootstrap-result.md",
+      "new_path": "docs/changes/backbone-bootstrap/reviews/bootstrap-result.md",
+      "base_blob": "ce19f72fe2af4c15cd9341e058ec8cddb463e54a",
+      "base_size": 3700,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/bootstrap-triage.md",
+      "new_path": "docs/changes/backbone-bootstrap/reviews/bootstrap-triage.md",
+      "base_blob": "d820c7b52436f3769e272ed98170df5a826b600c",
+      "base_size": 3165,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/ci-clone-checks.md",
+      "new_path": "docs/changes/backbone-ci-clone-repair/reviews/ci-clone-checks.md",
+      "base_blob": "90554ba5c11c0739a7b28c6eaadea26c5516cb40",
+      "base_size": 3811,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/ci-clone-plan-review.md",
+      "new_path": "docs/changes/backbone-ci-clone-repair/reviews/ci-clone-plan-review.md",
+      "base_blob": "5a99c92098ccb22abefced9d1e937a7abed2dc13",
+      "base_size": 1396,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/ci-clone-result.md",
+      "new_path": "docs/changes/backbone-ci-clone-repair/reviews/ci-clone-result.md",
+      "base_blob": "c3dffb47367de6df840bcae5d0b87c41ee369242",
+      "base_size": 3142,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-consolidation-result.md",
+      "new_path": "docs/changes/backbone-codex-consolidation/reviews/codex-consolidation-result.md",
+      "base_blob": "cf357bbbf36d28719d319f36722eb669877f636b",
+      "base_size": 5086,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-final-delta-result.md",
+      "new_path": "docs/changes/backbone-codex-consolidation/reviews/codex-final-delta-result.md",
+      "base_blob": "251cb17bb38d76f45eddd5375032c2f9b7061967",
+      "base_size": 4409,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-fixture-checkout-result.md",
+      "new_path": "docs/changes/backbone-codex-consolidation/reviews/codex-fixture-checkout-result.md",
+      "base_blob": "088de301db471d0bdd52cd355978eb6f79abb635",
+      "base_size": 2680,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-followup-result.md",
+      "new_path": "docs/changes/backbone-codex-consolidation/reviews/codex-followup-result.md",
+      "base_blob": "b4bdcde6cda9ae8987440d36ecd475f49c9e557c",
+      "base_size": 4719,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-followup-triage.md",
+      "new_path": "docs/changes/backbone-codex-consolidation/reviews/codex-followup-triage.md",
+      "base_blob": "4ee95a1b9b0b2f3084cc955c35fe1349899902c7",
+      "base_size": 7877,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-result.md",
+      "new_path": "docs/changes/backbone-codex-consolidation/reviews/codex-result.md",
+      "base_blob": "4383839107e214d4f138e9c839fc207fc9ccd757",
+      "base_size": 5619,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-security-checks.md",
+      "new_path": "docs/changes/backbone-codex-security/reviews/codex-security-checks.md",
+      "base_blob": "dad0c1938bb2257801d3ceed15e608d05b6ee89c",
+      "base_size": 5882,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-security-plan-review.md",
+      "new_path": "docs/changes/backbone-codex-security/reviews/codex-security-plan-review.md",
+      "base_blob": "fadec320c4c0ee5ca63070758d8cf848e660a851",
+      "base_size": 1620,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-security-result.md",
+      "new_path": "docs/changes/backbone-codex-security/reviews/codex-security-result.md",
+      "base_blob": "e0f2c7000c4a6d995f7870d9068fc8c25addec8a",
+      "base_size": 6067,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-security-triage.md",
+      "new_path": "docs/changes/backbone-codex-security/reviews/codex-security-triage.md",
+      "base_blob": "48e6ad1fae3801f4cf44efd338301b64f750c9f6",
+      "base_size": 3690,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/codex-triage.md",
+      "new_path": "docs/changes/backbone-codex-consolidation/reviews/codex-triage.md",
+      "base_blob": "f9d9b252954edf0c3bb4735be0758e352be06c30",
+      "base_size": 4766,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/copilot-development-result.md",
+      "new_path": "docs/changes/backbone-copilot-development/reviews/copilot-development-result.md",
+      "base_blob": "3152ba2cc834a449275007d413870c212cb1f9b8",
+      "base_size": 7782,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/copilot-development-triage.md",
+      "new_path": "docs/changes/backbone-copilot-development/reviews/copilot-development-triage.md",
+      "base_blob": "40228e2d9e6f212129b9ea2f166f10a2b114afc6",
+      "base_size": 3093,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/copilot-forward-check.md",
+      "new_path": "docs/changes/backbone-copilot-development/reviews/copilot-forward-check.md",
+      "base_blob": "bb0e37c2c0846efc45233384227c5aaf7162de30",
+      "base_size": 2075,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/copilot-publication-result.md",
+      "new_path": "docs/changes/backbone-copilot-development/reviews/copilot-publication-result.md",
+      "base_blob": "f817e0237bbb366c0d7978b8aa06d8d4a4f0d0d4",
+      "base_size": 5956,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/copilot-publication-triage.md",
+      "new_path": "docs/changes/backbone-copilot-development/reviews/copilot-publication-triage.md",
+      "base_blob": "45e002e853e261b7b34f201f6851201c87203224",
+      "base_size": 10319,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-checks.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-checks.md",
+      "base_blob": "a23571f3b5c13e48cacacce4c8f8fdb123d58ee6",
+      "base_size": 7153,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-closeout.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-closeout.md",
+      "base_blob": "f6f6fb15d9615d778c9b7771edd661e55afd1752",
+      "base_size": 6011,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-delta.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-delta.md",
+      "base_blob": "245ae6ecb70411d4ad99b3a5bafb2f2159646e01",
+      "base_size": 3001,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-evidence-review.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-evidence-review.md",
+      "base_blob": "d974c55413caa7ae19454f81a1eefb9ed9feaaeb",
+      "base_size": 4182,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-full-authority.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-full-authority.md",
+      "base_blob": "eb947a5ca6b4f609bce5081db62e47c50672ab17",
+      "base_size": 5774,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-full-behavior.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-full-behavior.md",
+      "base_blob": "d04ebd25d15f3cc1f662417f57707ca1d9bd2384",
+      "base_size": 4798,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-plan-review.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-plan-review.md",
+      "base_blob": "eaef58e6c2726f32f449ee2cde81d24f21b73b35",
+      "base_size": 1368,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-publication-review.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-publication-review.md",
+      "base_blob": "8f35fe66c51f513e14cffefe875bf1575acaaf41",
+      "base_size": 4199,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-publication.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-publication.md",
+      "base_blob": "26839df388ba4c7e1a0b1239e96abac695867e08",
+      "base_size": 4912,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-remote-triage.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-remote-triage.md",
+      "base_blob": "a2b79c15999ec8f3503ff18c15f6ec7a60a0b789",
+      "base_size": 5524,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/dependency-compatibility-triage.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/reviews/dependency-compatibility-triage.md",
+      "base_blob": "7fd352031093e6625220c3064b7b6a1a14eec083",
+      "base_size": 9751,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-publication-state.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-publication-state.md",
+      "base_blob": "7b7645491857e0878582bef54f0d7f61d0a8bec1",
+      "base_size": 6807,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-reconstruction-checks.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-checks.md",
+      "base_blob": "69212cb580982be50ce53b4536f7c87cfde78040",
+      "base_size": 5079,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-reconstruction-delta-security.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-delta-security.md",
+      "base_blob": "2b0b6db1d4bb0281a207d8d90591fe17361146ae",
+      "base_size": 8306,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-reconstruction-full-behavior.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-full-behavior.md",
+      "base_blob": "466dfd4e2bcc07c1df6e283f2cbc5a36371805a4",
+      "base_size": 10699,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-reconstruction-full-security.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-full-security.md",
+      "base_blob": "ed1ecab5801de88afbcb5d0ac267407d072f2598",
+      "base_size": 10970,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-reconstruction-plan-review.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-plan-review.md",
+      "base_blob": "cbbc429b5dc95b873dffb9b9987356e4873c8372",
+      "base_size": 4064,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-reconstruction-repair-checks.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-repair-checks.md",
+      "base_blob": "4526b6504d5b5f8ca1464febd4ab25726e667009",
+      "base_size": 8740,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-reconstruction-triage.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-reconstruction-triage.md",
+      "base_blob": "04f8f43e2d4cb45c65d8466858757e797fea4a3c",
+      "base_size": 32004,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-remote-activation-repair.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-remote-activation-repair.md",
+      "base_blob": "f6881651f8f285d896377c7041541619deac5a35",
+      "base_size": 8344,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-remote-delta-security.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-remote-delta-security.md",
+      "base_blob": "16f0fc22be8e4fb1bf3e45fb88bc41b4eb56ce16",
+      "base_size": 9111,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-remote-initial-checks.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-remote-initial-checks.md",
+      "base_blob": "e60e8a0d6be8885f77efba1c014c6ecaf1636342",
+      "base_size": 11089,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/opencode-remote-repair-checks.md",
+      "new_path": "docs/changes/backbone-opencode-governance/reviews/opencode-remote-repair-checks.md",
+      "base_blob": "7b849e45f674cf7698728661044eb66e5e4dabb0",
+      "base_size": 9934,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/quality-check-triage.md",
+      "new_path": "docs/changes/backbone-quality-framework/reviews/quality-check-triage.md",
+      "base_blob": "9a8c9c9f783c5e57c46a977b60c09182feef51c4",
+      "base_size": 1660,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/quality-checks.md",
+      "new_path": "docs/changes/backbone-quality-framework/reviews/quality-checks.md",
+      "base_blob": "da35558b4f275117397cea52983dcc95fa1f5261",
+      "base_size": 6341,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/quality-delta-review.md",
+      "new_path": "docs/changes/backbone-quality-framework/reviews/quality-delta-review.md",
+      "base_blob": "76f15ef76fae28c06aff62e8085dc10ba13362bc",
+      "base_size": 2398,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/quality-full-review.md",
+      "new_path": "docs/changes/backbone-quality-framework/reviews/quality-full-review.md",
+      "base_blob": "b27e7afef9bd05783c147c7ff8492f70f11dfcee",
+      "base_size": 4287,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/quality-plan-review.md",
+      "new_path": "docs/changes/backbone-quality-framework/reviews/quality-plan-review.md",
+      "base_blob": "28c355950d69b17d79a96f3d761e11b9c7321309",
+      "base_size": 1908,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/quality-result.md",
+      "new_path": "docs/changes/backbone-quality-framework/reviews/quality-result.md",
+      "base_blob": "40b327162061e4d26b3896ee1db1ef40f3636628",
+      "base_size": 2882,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/quality-triage.md",
+      "new_path": "docs/changes/backbone-quality-framework/reviews/quality-triage.md",
+      "base_blob": "dd214241d5ec6e3a99c69ed88d48ff354fa23775",
+      "base_size": 2398,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-checks.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-checks.md",
+      "base_blob": "bb42c636617d3d9f82a463037a3aa7a28cf3f838",
+      "base_size": 10671,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-delta-review.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-review.md",
+      "base_blob": "c0032a5494571a045220182a510584e38a56ead3",
+      "base_size": 14796,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-delta-round1.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-round1.md",
+      "base_blob": "583d0473e3baf8802d847c01e9c187ab48a79a36",
+      "base_size": 18664,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-delta-triage.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-delta-triage.md",
+      "base_blob": "69dff594997bcdaa281f2cf42cd95d8f9593a7ee",
+      "base_size": 9223,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-final-checks.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-final-checks.md",
+      "base_blob": "dd2adb16c9580dea97b707c45e9228227f85914d",
+      "base_size": 11358,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-full-review.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-full-review.md",
+      "base_blob": "c77496af4a0b6b76346f1e421b7402b39633e873",
+      "base_size": 21382,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-plan-review.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-plan-review.md",
+      "base_blob": "4d6d2caf5363d6a4b04a202684f97d59b6fbfe7e",
+      "base_size": 1088,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-repair-checks.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-repair-checks.md",
+      "base_blob": "b0ca04731b7ac6b3ae7f9d191d19a2ef0799e230",
+      "base_size": 11342,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-result.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-result.md",
+      "base_blob": "c73ae12194afd0bea8a7aa6817b35d47d5112390",
+      "base_size": 5964,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-smoke-followup.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-smoke-followup.md",
+      "base_blob": "85ea2443e73193a5f62757ddb2894892cf9a5897",
+      "base_size": 3328,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-smoke.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-smoke.md",
+      "base_blob": "dc68923c5a8ca0adc5360be7e97d68937d0973a8",
+      "base_size": 4965,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/technology-navigation-triage.md",
+      "new_path": "docs/changes/backbone-technology-navigation/reviews/technology-navigation-triage.md",
+      "base_blob": "f97b3f3a3577a0841bc22439e09e15bcc97ca224",
+      "base_size": 10030,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/workflow-kit-checks.md",
+      "new_path": "docs/changes/backbone-workflow-kit/reviews/workflow-kit-checks.md",
+      "base_blob": "7aadbc4a5cc4ec09068039cf5d7f58405921217e",
+      "base_size": 4919,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/workflow-kit-plan-review.md",
+      "new_path": "docs/changes/backbone-workflow-kit/reviews/workflow-kit-plan-review.md",
+      "base_blob": "51864b7d024356999d3fe99567fa29ac05eaacb8",
+      "base_size": 1203,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/workflow-kit-result.md",
+      "new_path": "docs/changes/backbone-workflow-kit/reviews/workflow-kit-result.md",
+      "base_blob": "650161a0e85b747eea2477225598d94430d4b328",
+      "base_size": 2724,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/reviews/workflow-kit-triage.md",
+      "new_path": "docs/changes/backbone-workflow-kit/reviews/workflow-kit-triage.md",
+      "base_blob": "5ce66371c2a0059619d4bf5418babfcca9258815",
+      "base_size": 2309,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/source-inventory/README.md",
+      "new_path": "docs/agent-governance/sources/inventory/README.md",
+      "base_blob": "898cf7a385b2ee5c82aaeba32a973adaf49374b6",
+      "base_size": 3618,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/source-inventory/artifaktory-notes.md",
+      "new_path": "docs/agent-governance/sources/inventory/artifaktory-notes.md",
+      "base_blob": "6c592ba07f0d9203eb9e7517c1c8bbbf18ea7b95",
+      "base_size": 10234,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/source-inventory/artifaktory.json",
+      "new_path": "docs/agent-governance/sources/inventory/artifaktory.json",
+      "base_blob": "fa16f12a56eb7c37be880d4bcf8dd3f4fa913d08",
+      "base_size": 412920,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/source-inventory/tars-notes.md",
+      "new_path": "docs/agent-governance/sources/inventory/tars-notes.md",
+      "base_blob": "6793f0f0429d2ccce6ce6b0557a3aaf130163da6",
+      "base_size": 11520,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/source-inventory/tars.json",
+      "new_path": "docs/agent-governance/sources/inventory/tars.json",
+      "base_blob": "e69e125b2d13998409ade0b2d8d12acf78e2fe08",
+      "base_size": 423575,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "docs/source-provenance.md",
+      "new_path": "docs/agent-governance/sources/source-provenance.md",
+      "base_blob": "0fa5fed0777d8a98575290c94b58ca937255c2ce",
+      "base_size": 6423,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/workflows/README.md",
+      "new_path": "docs/operations/engineering/workflows/README.md",
+      "base_blob": "08448f2a74959b1f74e3a6ce8722b3c5796e2164",
+      "base_size": 11639,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "docs/workflows/profiles.json",
+      "new_path": "docs/operations/engineering/workflows/profiles.json",
+      "base_blob": "99019f721091c7631903d396d605f2fbff307d00",
+      "base_size": 1010,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "examples/requirement.json",
+      "new_path": "docs/templates/examples/requirement.json",
+      "base_blob": "09018775e4c2a9f4a17a48342a680fe7e996c125",
+      "base_size": 509,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "examples/review-evidence.json",
+      "new_path": "docs/templates/examples/review-evidence.json",
+      "base_blob": "1fbe032fc78dd9b9d92203e9ac38ca980fe04023",
+      "base_size": 528,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "examples/task-packet.json",
+      "new_path": "docs/templates/examples/task-packet.json",
+      "base_blob": "223606863529cecdab4706229949a2b3d592c574",
+      "base_size": 1237,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "opencode.json",
+      "new_path": "opencode.json",
+      "base_blob": "9ec7db507ea777b8f05921c284edf7ef8c8c362d",
+      "base_size": 415,
+      "disposition": "retain-native-or-root",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "plans/bootstrap-task.json",
+      "new_path": "docs/changes/backbone-bootstrap/plans/bootstrap-task.json",
+      "base_blob": "ad38316b7811bcdb867d699273e10bc888a102d2",
+      "base_size": 2566,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/bootstrap.md",
+      "new_path": "docs/changes/backbone-bootstrap/plans/bootstrap.md",
+      "base_blob": "9928387beda6b97ae0648b22e0a9735e6b94cd0a",
+      "base_size": 2733,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/ci-clone-repair-task.json",
+      "new_path": "docs/changes/backbone-ci-clone-repair/plans/ci-clone-repair-task.json",
+      "base_blob": "f4247fe40762dd8282cfd0cd1fb068562629196e",
+      "base_size": 3625,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/ci-clone-repair.md",
+      "new_path": "docs/changes/backbone-ci-clone-repair/plans/ci-clone-repair.md",
+      "base_blob": "a8e0aed78f949efad1072860ecfb487691ca4af1",
+      "base_size": 3690,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/codex-consolidation-task.json",
+      "new_path": "docs/changes/backbone-codex-consolidation/plans/codex-consolidation-task.json",
+      "base_blob": "445986516449af4825ee39b1546bce845ba2042a",
+      "base_size": 4341,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/codex-consolidation.md",
+      "new_path": "docs/changes/backbone-codex-consolidation/plans/codex-consolidation.md",
+      "base_blob": "c4c495956945a6327a6531e8ebfe83aca99bf0bc",
+      "base_size": 2458,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/codex-findings-task.json",
+      "new_path": "docs/changes/backbone-codex-consolidation/plans/codex-findings-task.json",
+      "base_blob": "9e99e456c2008e4370cd1760e2407dc6501546d8",
+      "base_size": 10305,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/codex-security-task.json",
+      "new_path": "docs/changes/backbone-codex-security/plans/codex-security-task.json",
+      "base_blob": "8d2a21850abe2aec503b504c5a7d2d245d153502",
+      "base_size": 5395,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/codex-security.md",
+      "new_path": "docs/changes/backbone-codex-security/plans/codex-security.md",
+      "base_blob": "92ac7806aabd002f69df785e172b0e314d2a7dcf",
+      "base_size": 6789,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/copilot-development-task.json",
+      "new_path": "docs/changes/backbone-copilot-development/plans/copilot-development-task.json",
+      "base_blob": "343e72d40c338149cbe8f6e83acfba50357fbbb3",
+      "base_size": 4656,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/copilot-development.md",
+      "new_path": "docs/changes/backbone-copilot-development/plans/copilot-development.md",
+      "base_blob": "98f6e8fabee7caa7848fb6434daf7381d71891b2",
+      "base_size": 4521,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/dependency-compatibility-task.json",
+      "new_path": "docs/changes/backbone-dependency-compatibility/plans/dependency-compatibility-task.json",
+      "base_blob": "514b73b2977132790c34eb270cc7737bfceaba5b",
+      "base_size": 5823,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/dependency-compatibility.md",
+      "new_path": "docs/changes/backbone-dependency-compatibility/plans/dependency-compatibility.md",
+      "base_blob": "16844acc8311fcf7508e5c4a56d3d2cae58fe7dd",
+      "base_size": 5862,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/opencode-governance-task.json",
+      "new_path": "docs/changes/backbone-opencode-governance/plans/opencode-governance-task.json",
+      "base_blob": "091587901452769832e2dbe1a225a559df2a2186",
+      "base_size": 8391,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/opencode-governance.md",
+      "new_path": "docs/changes/backbone-opencode-governance/plans/opencode-governance.md",
+      "base_blob": "8479e78fe7aeded86ad682426e289195eecba732",
+      "base_size": 10165,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/quality-framework-task.json",
+      "new_path": "docs/changes/backbone-quality-framework/plans/quality-framework-task.json",
+      "base_blob": "e11fa84ff8c3aebdb61363546155dccacc13cd07",
+      "base_size": 5786,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/quality-framework.md",
+      "new_path": "docs/changes/backbone-quality-framework/plans/quality-framework.md",
+      "base_blob": "4aac0803417dd46d67082af3f2bab17d8f0061ca",
+      "base_size": 7290,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/technology-navigation-task.json",
+      "new_path": "docs/changes/backbone-technology-navigation/plans/technology-navigation-task.json",
+      "base_blob": "bbd1407c70e6a08d9aea6baef0349b7ac569e3da",
+      "base_size": 6378,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/technology-navigation.md",
+      "new_path": "docs/changes/backbone-technology-navigation/plans/technology-navigation.md",
+      "base_blob": "0412e0cfdcf5f6b36498effded6d60104eaed099",
+      "base_size": 5497,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/workflow-kit-task.json",
+      "new_path": "docs/changes/backbone-workflow-kit/plans/workflow-kit-task.json",
+      "base_blob": "c5f199754421aac9385ead88279baf4c14614d0d",
+      "base_size": 4769,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "plans/workflow-kit.md",
+      "new_path": "docs/changes/backbone-workflow-kit/plans/workflow-kit.md",
+      "base_blob": "b25b5ca2857c51b13c122dd3edc13fa52b052c02",
+      "base_size": 7250,
+      "disposition": "historical-record",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "policy/core.json",
+      "new_path": ".engineering-backbone/core.json",
+      "base_blob": "70fe8366c79e91a3f8ee248bf1892c3935a4ea87",
+      "base_size": 330,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "policy/core.md",
+      "new_path": "docs/agent-governance/core.md",
+      "base_blob": "312dccf5528854de55d4e2b5427dad512d567665",
+      "base_size": 10640,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "policy/dependencies.md",
+      "new_path": "docs/quality/dependencies.md",
+      "base_blob": "fc0cf8a6bac6115766fb389a8f0fa8a952554ee6",
+      "base_size": 7529,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "policy/quality.md",
+      "new_path": "docs/quality/policy.md",
+      "base_blob": "7d6ded9f0a915733d234279ecb15ea6eeb40a33c",
+      "base_size": 8686,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "requirements.lock",
+      "new_path": ".engineering-backbone/requirements.lock",
+      "base_blob": "c441a0f722a39792b377c98ec68a63ae075c6d0d",
+      "base_size": 49093,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "requirements.txt",
+      "new_path": ".engineering-backbone/requirements.txt",
+      "base_blob": "bfe2e9fb5646564d4f715a283a2faf83b4823bbb",
+      "base_size": 48,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "schemas/core-policy.schema.json",
+      "new_path": ".engineering-backbone/schemas/core-policy.schema.json",
+      "base_blob": "efe1f84a1659c79aa89d6c45c347e7ef184e9916",
+      "base_size": 1344,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/dependencies.schema.json",
+      "new_path": ".engineering-backbone/schemas/dependencies.schema.json",
+      "base_blob": "bf16d01bbb0c9ad8331780e0334afc08eebd372f",
+      "base_size": 2392,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/navigation-request.schema.json",
+      "new_path": ".engineering-backbone/schemas/navigation-request.schema.json",
+      "base_blob": "6afec9e5033f8cfe38177cdbdd68628763442b7c",
+      "base_size": 1844,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/navigation.schema.json",
+      "new_path": ".engineering-backbone/schemas/navigation.schema.json",
+      "base_blob": "145b4abacccd49af8223c1d8478ea5d99447ba8c",
+      "base_size": 6462,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/opencode.schema.json",
+      "new_path": ".engineering-backbone/schemas/opencode.schema.json",
+      "base_blob": "ea9aadee0db9ba810d8dc0a5ac62e39d6f77d0c2",
+      "base_size": 637,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/project.schema.json",
+      "new_path": ".engineering-backbone/schemas/project.schema.json",
+      "base_blob": "b908ade823731ab8c7abf09460cb1613d83617e6",
+      "base_size": 1576,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/quality-profile.schema.json",
+      "new_path": ".engineering-backbone/schemas/quality-profile.schema.json",
+      "base_blob": "88d803667f387ea0de2ed581fd84dea2a15b4608",
+      "base_size": 8777,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/requirement.schema.json",
+      "new_path": ".engineering-backbone/schemas/requirement.schema.json",
+      "base_blob": "7152cd46b5a373d0276b4f3f94909b7610ffa87a",
+      "base_size": 2617,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/review-evidence.schema.json",
+      "new_path": ".engineering-backbone/schemas/review-evidence.schema.json",
+      "base_blob": "7c878d96cc7108763fb6ca88fec580bead097cdb",
+      "base_size": 6907,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/task-packet.schema.json",
+      "new_path": ".engineering-backbone/schemas/task-packet.schema.json",
+      "base_blob": "6bb4db02e79513e88cc823aad808347f5f728394",
+      "base_size": 6867,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "schemas/workflows.schema.json",
+      "new_path": ".engineering-backbone/schemas/workflows.schema.json",
+      "base_blob": "327e250a11e1f96eddb5c50d7426dc1a4dd3d1c8",
+      "base_size": 30568,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/check_source_dependencies.py",
+      "new_path": ".engineering-backbone/src/check_source_dependencies.py",
+      "base_blob": "da89dc199e82a2e07247dc452b8e72230dc102b4",
+      "base_size": 6951,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/compile_navigation.py",
+      "new_path": ".engineering-backbone/src/maintenance/compile_navigation.py",
+      "base_blob": "5417571a270efc77180d5d273bdb27dda64c13f6",
+      "base_size": 10018,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/compile_quality_framework.py",
+      "new_path": ".engineering-backbone/src/maintenance/compile_quality_framework.py",
+      "base_blob": "8b5dd01e3623838a20a78d467b713393ef8cba28",
+      "base_size": 6201,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/compile_toolchain_fingerprint.py",
+      "new_path": ".engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py",
+      "base_blob": "416c56422a72e15b593605bf9b733620d0d3952c",
+      "base_size": 7721,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/compile_workflow_kit.py",
+      "new_path": ".engineering-backbone/src/maintenance/compile_workflow_kit.py",
+      "base_blob": "a76b3987cb2e171bf3671b0c2971486bd995b61e",
+      "base_size": 3272,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/navigation.py",
+      "new_path": ".engineering-backbone/src/navigation.py",
+      "base_blob": "9506b18bc025c937b2fddd85b281c89a214eff8f",
+      "base_size": 93949,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/opencode_native_smoke.py",
+      "new_path": ".engineering-backbone/src/opencode_native_smoke.py",
+      "base_blob": "b50c327c60af6b41ecf1c6357128bde1db3adcfd",
+      "base_size": 25719,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/quality_framework.py",
+      "new_path": ".engineering-backbone/src/quality_framework.py",
+      "base_blob": "9fb6cc90d1df2bc263e54b7feac9f22cba027fce",
+      "base_size": 147613,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/validate.py",
+      "new_path": ".engineering-backbone/src/validate.py",
+      "base_blob": "500ad4c2085b286012bac0d551106d40c30b69f4",
+      "base_size": 240538,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "scripts/workflow_kit.py",
+      "new_path": ".engineering-backbone/src/workflow_kit.py",
+      "base_blob": "3cd21be43c009478349e1679627a038294b81ec1",
+      "base_size": 21986,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/agentic.json",
+      "new_path": ".engineering-backbone/standards/profiles/agentic.json",
+      "base_blob": "91faa7512edd4d6ee2a35578698c39caa695dd84",
+      "base_size": 242,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/baseline.json",
+      "new_path": ".engineering-backbone/standards/profiles/baseline.json",
+      "base_blob": "d2925072f0b66ea4cb183a48736012a9549ef127",
+      "base_size": 400,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/cpp17.json",
+      "new_path": ".engineering-backbone/standards/profiles/cpp17.json",
+      "base_blob": "bd42feb9c7c14ec0f93240806d72c7be7cde5aa6",
+      "base_size": 249,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/high-risk.json",
+      "new_path": ".engineering-backbone/standards/profiles/high-risk.json",
+      "base_blob": "e37aa389b3c9e0c8c6db9c88a5651e35fef27deb",
+      "base_size": 241,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/iec61508.json",
+      "new_path": ".engineering-backbone/standards/profiles/iec61508.json",
+      "base_blob": "1e942b922eac7f9da683f45bb477e0611ec3d2e3",
+      "base_size": 248,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/iec62304.json",
+      "new_path": ".engineering-backbone/standards/profiles/iec62304.json",
+      "base_blob": "ed213d9d0df173ee3f11b9618fded49f906251cb",
+      "base_size": 254,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/python.json",
+      "new_path": ".engineering-backbone/standards/profiles/python.json",
+      "base_blob": "2c5858806dcd72170755a708bf4043b37467d3f0",
+      "base_size": 251,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/software.json",
+      "new_path": ".engineering-backbone/standards/profiles/software.json",
+      "base_blob": "0bacb02c44dc1d25e778772c6bc7a52775fc44ef",
+      "base_size": 254,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/profiles/typescript.json",
+      "new_path": ".engineering-backbone/standards/profiles/typescript.json",
+      "base_blob": "a984365a7f3ce7d2e5fc56ddd14274bae5dd2290",
+      "base_size": 263,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/rules.json",
+      "new_path": ".engineering-backbone/standards/rules.json",
+      "base_blob": "36344b18b17859b69aec934da71568ff7ca3bbd8",
+      "base_size": 15332,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/sources.json",
+      "new_path": ".engineering-backbone/standards/sources.json",
+      "base_blob": "3befe2ccc8be49a9c7769374f15c09d216c1e3c8",
+      "base_size": 5693,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/bash.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/bash.json",
+      "base_blob": "fa002f6a17cb7f6644ac349f13ebd4ad03ad3305",
+      "base_size": 544,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/c.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/c.json",
+      "base_blob": "7064592814ee003e7119f14ef60f776a90304cfd",
+      "base_size": 575,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/cpp.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/cpp.json",
+      "base_blob": "1e6e81d8951fb0e0b6d25bdf8118fb83d0aab706",
+      "base_size": 665,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/csharp.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/csharp.json",
+      "base_blob": "5f05de37bc8a61d98eabd5ec3f1eab07a2c4ed7d",
+      "base_size": 567,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/css.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/css.json",
+      "base_blob": "770ea13ff14e0195d72d5d8a22636de6e70d1632",
+      "base_size": 533,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/docker.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/docker.json",
+      "base_blob": "a30d2dd309fd5ca06040a5010833ee480950f7ec",
+      "base_size": 586,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/dockerfile.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/dockerfile.json",
+      "base_blob": "12cbd461381b7f46bff9f0b659d66928c6132100",
+      "base_size": 563,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/dotnet.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/dotnet.json",
+      "base_blob": "b3e4f3124742e0dcca0607e7743885a293d6cd52",
+      "base_size": 506,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/fastapi.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/fastapi.json",
+      "base_blob": "593f42a256eb912aa4d4db6645bf460d192b7b6a",
+      "base_size": 611,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/github-actions.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/github-actions.json",
+      "base_blob": "66a9d292229185b9f9ed5628ca3e81994386bfce",
+      "base_size": 595,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/go.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/go.json",
+      "base_blob": "5ea1ed9f353e58c822a1aa126ca4d14a37073415",
+      "base_size": 644,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/html.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/html.json",
+      "base_blob": "ce2269dabe6ffe012843074572d1f690043077a5",
+      "base_size": 594,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/java.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/java.json",
+      "base_blob": "d2cf639c2f046b9cddc51f3c95d21a9a8ae4c390",
+      "base_size": 594,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/javascript.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/javascript.json",
+      "base_blob": "faeab7a4293bb47e4b9ba647079ddf0f26635612",
+      "base_size": 638,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/json.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/json.json",
+      "base_blob": "a61ec13ce140436f2bf3f5a8ea6ea936377e38d2",
+      "base_size": 469,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/jvm.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/jvm.json",
+      "base_blob": "c88c26dad3a9ab8f9e583e9eeece133deeec0c95",
+      "base_size": 497,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/linux.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/linux.json",
+      "base_blob": "4a654628f3a9b7fd8c939a904825431dac5d9155",
+      "base_size": 497,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/nextjs.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/nextjs.json",
+      "base_blob": "85b38c9d6cef9b9def07cea1c106717b630ef3df",
+      "base_size": 563,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/node.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/node.json",
+      "base_blob": "d2b787f51fa81dc309c244c3330e9836c924d2da",
+      "base_size": 523,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/php.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/php.json",
+      "base_blob": "265629034193c61b1909c9c0ee3c0626f0a3cac4",
+      "base_size": 554,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/postgresql.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/postgresql.json",
+      "base_blob": "0448b466ba09e8ece6a91307ec8f22013bcca940",
+      "base_size": 634,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/powershell.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/powershell.json",
+      "base_blob": "78cb74f6e1378224b37fcf0eada1795e00294409",
+      "base_size": 592,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/python.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/python.json",
+      "base_blob": "4c6b93e41fb19badca632ddb928dff3351f4654b",
+      "base_size": 655,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/react.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/react.json",
+      "base_blob": "3c728a37a852ff5b365f08c7961affc248b5c3fc",
+      "base_size": 556,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/sql.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/sql.json",
+      "base_blob": "d188d7b5b5c488f5a21d1254c81a4090b9151d0a",
+      "base_size": 582,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/typescript.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/typescript.json",
+      "base_blob": "f9e25097b7af487f540e016c0da73b85cb726a64",
+      "base_size": 588,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/windows.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/windows.json",
+      "base_blob": "631c68ae691bef17e8debb7a0ae2bdbeba855497",
+      "base_size": 520,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/profiles/yaml.json",
+      "new_path": ".engineering-backbone/standards/technologies/profiles/yaml.json",
+      "base_blob": "98539a7a29699bdf1db1b3f80e8eee3cbd2fa111",
+      "base_size": 525,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/rules.json",
+      "new_path": ".engineering-backbone/standards/technologies/rules.json",
+      "base_blob": "0c8df86d3d6f2a37c59bb73eddd86d60e4d3d262",
+      "base_size": 24506,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "standards/technologies/sources.json",
+      "new_path": ".engineering-backbone/standards/technologies/sources.json",
+      "base_blob": "420f21c9f807e7b4c3d390c10baaf71692bdc690",
+      "base_size": 18445,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/.gitattributes",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/.gitattributes",
+      "base_blob": "979e88769c15115f1f6569372d4cf557ec9c283e",
+      "base_size": 632,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/AGENTS.fragment.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/AGENTS.fragment.md.jinja",
+      "base_blob": "fb84df041543e1cdbd2baea408711a1a2162253e",
+      "base_size": 324,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/Copilot.fragment.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/Copilot.fragment.md.jinja",
+      "base_blob": "00c657eca31d651ebd8a1e62c275b9b2852426e8",
+      "base_size": 984,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/README.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/README.md.jinja",
+      "base_blob": "0038955982cc2b0d8b30579a426090a8786b41c3",
+      "base_size": 7249,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/copier-answers.yml.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/copier-answers.yml.jinja",
+      "base_blob": "9ffdf61a684de941e623004109aa826e6d7c7587",
+      "base_size": 122,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/copilot-guide.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/copilot-guide.md.jinja",
+      "base_blob": "cd1fe2ad7823495cc76073c42dd52f9223073a67",
+      "base_size": 798,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/core.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/core.json.jinja",
+      "base_blob": "b95159e5ec987cd6d1821f4efb46ff922fe18e90",
+      "base_size": 33,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/core.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/core.md.jinja",
+      "base_blob": "9178866dcbd3643f6a8eaca829a4773e8bf4e0d3",
+      "base_size": 131,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/dependency-policy.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/dependency-policy.md.jinja",
+      "base_blob": "a12b3054c6f0484ca0aac42732586e5d90928c0b",
+      "base_size": 39,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/project.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/project.json.jinja",
+      "base_blob": "1988329ff594b290267ef9cfa62166ce0c2c0d59",
+      "base_size": 326,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/quality-policy.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/quality-policy.md.jinja",
+      "base_blob": "439df6ade6824dbba58153839191fd56bcd870c3",
+      "base_size": 34,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/requirements.lock.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/requirements.lock.jinja",
+      "base_blob": "83262b6d1b2b18b36969e93aa0f6f0ff03972daa",
+      "base_size": 35,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/requirements.txt.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/requirements.txt.jinja",
+      "base_blob": "1854e5b90b77d0ad4787a94514ca016cf66984f1",
+      "base_size": 33,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/schemas/core-policy.schema.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/schemas/core-policy.schema.json.jinja",
+      "base_blob": "b23ae920dc697066443296a859f127d082805654",
+      "base_size": 48,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/schemas/project.schema.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/schemas/project.schema.json.jinja",
+      "base_blob": "0b23daf08b34ad5111bf9d340a22e217f1b24a1c",
+      "base_size": 44,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/schemas/requirement.schema.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/schemas/requirement.schema.json.jinja",
+      "base_blob": "e7d77e7aa282d72772235f52bcd41a74aa6b2d9a",
+      "base_size": 48,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja",
+      "base_blob": "02c497edeb5441aea895d79d8511904eefb98c21",
+      "base_size": 52,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/schemas/task-packet.schema.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/schemas/task-packet.schema.json.jinja",
+      "base_blob": "df51ff2ae6d0e0b7c659542741e982c57858cf26",
+      "base_size": 48,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/schemas/{% if use_workflow_kit %}workflows.schema.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/schemas/{% if use_workflow_kit %}workflows.schema.json{% endif %}.jinja",
+      "base_blob": "4bfe41d1df673707085067d66ebf46f96d7cdc2d",
+      "base_size": 46,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/validate.py.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/validate.py.jinja",
+      "base_blob": "09bb7ea3db39b24534482f8672831b91d3fc8d72",
+      "base_size": 36,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/workflow-example.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/workflow-example.md.jinja",
+      "base_blob": "f4ec919a10f0c298f2674fbf93704809143bcf93",
+      "base_size": 3089,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_opencode %}opencode-guide.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_opencode %}opencode-guide.md{% endif %}.jinja",
+      "base_blob": "d992afa6be6a3cc862d1e52235df63937e5816e0",
+      "base_size": 42,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_opencode %}opencode-runner-contract.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_opencode %}opencode-runner-contract.md{% endif %}.jinja",
+      "base_blob": "2ff5836d258e8ec2cc9d758f36266b7414354919",
+      "base_size": 58,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_opencode %}opencode.fragment.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_opencode %}opencode.fragment.json{% endif %}.jinja",
+      "base_blob": "dfc677a85ff3d723000e662df993741470fd1904",
+      "base_size": 478,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_opencode %}opencode.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_opencode %}opencode.json{% endif %}.jinja",
+      "base_blob": "84d13a599bf5f296ac9276e9dbed37fb773a3ba2",
+      "base_size": 146,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_opencode %}opencode.schema.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_opencode %}opencode.schema.json{% endif %}.jinja",
+      "base_blob": "cc97635713932ed5ac5f912c220a9345563fabea",
+      "base_size": 45,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}dependencies.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}dependencies.json{% endif %}.jinja",
+      "base_blob": "46f041f71249ca950427a232d926c9dd4175b162",
+      "base_size": 68,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}dependencies.schema.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}dependencies.schema.json{% endif %}.jinja",
+      "base_blob": "005af2be70b3ab11109a26767aaa511aa0a5274d",
+      "base_size": 49,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}navigation-guide.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}navigation-guide.md{% endif %}.jinja",
+      "base_blob": "98de7579a30def4ab7155d45f8ecc8d98a67213e",
+      "base_size": 41,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}navigation-request.schema.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}navigation-request.schema.json{% endif %}.jinja",
+      "base_blob": "18a0b10b396eb46f30af6fdc2653df92a8b391bf",
+      "base_size": 55,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}navigation.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}navigation.json{% endif %}.jinja",
+      "base_blob": "210abf1bab1101b954fd376d1480a3dec00e2c1b",
+      "base_size": 355,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}navigation.schema.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}navigation.schema.json{% endif %}.jinja",
+      "base_blob": "56b36067fcd8b5666ca66d207a81fe81c3977be6",
+      "base_size": 47,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}quality-guard.py{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}quality-guard.py{% endif %}.jinja",
+      "base_blob": "0cbeb294c4615da2d1cad44a8faa66ba1117e092",
+      "base_size": 45,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}quality-guide.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}quality-guide.md{% endif %}.jinja",
+      "base_blob": "a7ecace666655d7b513b40cd0e5a46f993ce573d",
+      "base_size": 39,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}quality-profile.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}quality-profile.json{% endif %}.jinja",
+      "base_blob": "0af6b361198a5056d5428e9dade86dd339d29f4a",
+      "base_size": 400,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}quality-profile.schema.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}quality-profile.schema.json{% endif %}.jinja",
+      "base_blob": "c890a5c153b4105dfd8dfc8face3341961722faa",
+      "base_size": 52,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/agentic.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/agentic.json.jinja",
+      "base_blob": "dba88c8249b5f74add61eccbfbb24b25de333190",
+      "base_size": 48,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/baseline.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/baseline.json.jinja",
+      "base_blob": "aa695aaae8f3220976100e34d0d920f86f211676",
+      "base_size": 49,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/cpp17.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/cpp17.json.jinja",
+      "base_blob": "41aed693deb8e65e062116ca32250bf6ccb6a96c",
+      "base_size": 46,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/high-risk.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/high-risk.json.jinja",
+      "base_blob": "bf9cf687318b2bbf22d8812a25ad3df167361e21",
+      "base_size": 50,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/iec61508.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/iec61508.json.jinja",
+      "base_blob": "2675c6316ed77e43fa3330ddf8ab2e0707e8e8ee",
+      "base_size": 49,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/iec62304.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/iec62304.json.jinja",
+      "base_blob": "128614fb03fb70b02262a611647d68658efea7e9",
+      "base_size": 49,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/python.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/python.json.jinja",
+      "base_blob": "d09f6741bae9621537da7f2c0f50f419a6240198",
+      "base_size": 47,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/software.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/software.json.jinja",
+      "base_blob": "b7379d82a60321df981da5c8cb5081568655fe76",
+      "base_size": 49,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/typescript.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/profiles/typescript.json.jinja",
+      "base_blob": "207e86e2acdad3495ffaf28305ea7e0e585c39d7",
+      "base_size": 51,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/rules.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/rules.json.jinja",
+      "base_blob": "6677cf178a86d9020e57ea63f43ea27fb1192dd0",
+      "base_size": 37,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/sources.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/sources.json.jinja",
+      "base_blob": "274c252304aff2daa5eb1a007435366d5f766365",
+      "base_size": 39,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/bash.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/bash.json.jinja",
+      "base_blob": "88c2cc4d27b5c823d228cba8409d7b08a395dafc",
+      "base_size": 58,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/c.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/c.json.jinja",
+      "base_blob": "315f554c183208c8ee145311ae190ea9af933a19",
+      "base_size": 55,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/cpp.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/cpp.json.jinja",
+      "base_blob": "72d8a3c22225d2ef088c999e0256fdd6f6f13544",
+      "base_size": 57,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/csharp.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/csharp.json.jinja",
+      "base_blob": "c0b2982c80c69f9e0859aa88a1a3fe9fb9b0d7d5",
+      "base_size": 60,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/css.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/css.json.jinja",
+      "base_blob": "3a7a1888301c6624fec8866941e90b69f6bc2e81",
+      "base_size": 57,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/docker.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/docker.json.jinja",
+      "base_blob": "f9cf714e8b21011b4b0b4dc71eaf0c8688dac2c1",
+      "base_size": 60,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/dockerfile.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/dockerfile.json.jinja",
+      "base_blob": "3bdd68a53bfc9cf5ecf899ec717ac21023978a4e",
+      "base_size": 64,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/dotnet.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/dotnet.json.jinja",
+      "base_blob": "340ab459bf4859a5e15711baa04351ebcf0f3329",
+      "base_size": 60,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/fastapi.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/fastapi.json.jinja",
+      "base_blob": "878ad969b5d216da34a50102c775b3d9c11e25cd",
+      "base_size": 61,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/github-actions.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/github-actions.json.jinja",
+      "base_blob": "2c85512167d8bb84b9824bce3655e702a5b6856f",
+      "base_size": 68,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/go.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/go.json.jinja",
+      "base_blob": "272bfe154e269ddfed279fedca27a4be1022a0bb",
+      "base_size": 56,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/html.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/html.json.jinja",
+      "base_blob": "e9724b020e12757e1e329dc02f06638da40c1f9f",
+      "base_size": 58,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/java.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/java.json.jinja",
+      "base_blob": "71836ad475e1f292f883e51c4a801b774841f00e",
+      "base_size": 58,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/javascript.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/javascript.json.jinja",
+      "base_blob": "7c65e70d02699621106e624d6402b21d7c253eab",
+      "base_size": 64,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/json.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/json.json.jinja",
+      "base_blob": "dc9d37205e82449d463e287f9af9a6534de95505",
+      "base_size": 58,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/jvm.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/jvm.json.jinja",
+      "base_blob": "b45baf955f3e76c53c8bf016d28516c7707641cd",
+      "base_size": 57,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/linux.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/linux.json.jinja",
+      "base_blob": "6588cbbb6b999479a81de550a16c2628536a55b9",
+      "base_size": 59,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/nextjs.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/nextjs.json.jinja",
+      "base_blob": "b6e5d18737993263f630104d59640f8c7a7eff25",
+      "base_size": 60,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/node.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/node.json.jinja",
+      "base_blob": "46f8ea68cbfd48681d11255d9364bf4470c3a98f",
+      "base_size": 58,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/php.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/php.json.jinja",
+      "base_blob": "7e3811d4de57fb62f0b9db015b79056b29aea069",
+      "base_size": 57,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/postgresql.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/postgresql.json.jinja",
+      "base_blob": "82365319097567bd2c228df4457311f54a9b58c4",
+      "base_size": 64,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/powershell.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/powershell.json.jinja",
+      "base_blob": "416bebe06be8ceec0e331a4d39b1d4d9a90b3d02",
+      "base_size": 64,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/python.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/python.json.jinja",
+      "base_blob": "050637a29c34237b5b570d7f475e23b304fcd067",
+      "base_size": 60,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/react.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/react.json.jinja",
+      "base_blob": "71b99781490734e6a5f90f2f20aeb884d81716b6",
+      "base_size": 59,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/sql.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/sql.json.jinja",
+      "base_blob": "ecaa100b698d22afe988773774c3339237386302",
+      "base_size": 57,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/typescript.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/typescript.json.jinja",
+      "base_blob": "0955bbe691ef7f864219ad44d7fbda183dcae8ab",
+      "base_size": 64,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/windows.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/windows.json.jinja",
+      "base_blob": "8564e22b0b4eea73fccb8fbca2b3e8fed76061eb",
+      "base_size": 61,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/yaml.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/profiles/yaml.json.jinja",
+      "base_blob": "75c15abc2341c25d5e108514d4ef63288d78d795",
+      "base_size": 58,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/rules.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/rules.json.jinja",
+      "base_blob": "016efdf29fd0da2166d0e4219c4068cb454f7204",
+      "base_size": 50,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/sources.json.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}standards{% endif %}/technologies/sources.json.jinja",
+      "base_blob": "bb22058322b51902ec90bf5f28f77c618cb9a3e7",
+      "base_size": 52,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_quality_framework %}technology-guide.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_quality_framework %}technology-guide.md{% endif %}.jinja",
+      "base_blob": "4ac54176c2dc666b64ea9a33e9370444fbf2a224",
+      "base_size": 52,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_workflow_kit %}profiles.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_workflow_kit %}profiles.json{% endif %}.jinja",
+      "base_blob": "5142953dcee0be0594d81cc596cf88aea273aebe",
+      "base_size": 45,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflow-examples{% endif %}/deploy.yml.example.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_workflow_kit %}workflow-examples{% endif %}/deploy.yml.example.jinja",
+      "base_blob": "730c30c043f215284763c65911a084cf34d7d405",
+      "base_size": 2426,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflow-examples{% endif %}/release.yml.example.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_workflow_kit %}workflow-examples{% endif %}/release.yml.example.jinja",
+      "base_blob": "5a2f4d69b4a53e29ed42522bcc66358864c61bec",
+      "base_size": 2529,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflow-guide.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_workflow_kit %}workflow-guide.md{% endif %}.jinja",
+      "base_blob": "c5d579c6aca2c20fded6a9e7f137a62e84d33316",
+      "base_size": 1176,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflow-kit.py{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_workflow_kit %}workflow-kit.py{% endif %}.jinja",
+      "base_blob": "49d136822a7b1e7b4fe725d1b328d1670ce5e9ac",
+      "base_size": 40,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/.engineering-backbone/{% if use_workflow_kit %}workflows.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/.engineering-backbone/{% if use_workflow_kit %}workflows.json{% endif %}.jinja",
+      "base_blob": "3eaf99fcd2a08153918f6b67c8ecdfbf3e7ca11f",
+      "base_size": 122,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/analyst.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/analyst.md.jinja",
+      "base_blob": "ce79b811fa72801c4dcce005f59ddb12b0397479",
+      "base_size": 2891,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/documentation.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/documentation.md.jinja",
+      "base_blob": "5db3b21ca57bd6910e6c56b220b4635dd4f91ac6",
+      "base_size": 3059,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/entry.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/entry.md.jinja",
+      "base_blob": "06e780968b5bdb737273387f5dd91211bf64543a",
+      "base_size": 4710,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/finding-triage.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/finding-triage.md.jinja",
+      "base_blob": "a15b86583c86e26f9aa61a26f7e439c4f77f5332",
+      "base_size": 3098,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/implementer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/implementer.md.jinja",
+      "base_blob": "a0c005749be07540c68d52b15ab8c669f68fa0c6",
+      "base_size": 3138,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/instruction-docs.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/instruction-docs.md.jinja",
+      "base_blob": "40f00c389114d856174b325f9b14af4db15d666a",
+      "base_size": 948,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/instruction-frontend.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/instruction-frontend.md.jinja",
+      "base_blob": "5c61a82d8454ee4a43fe43af62635f3177209ffd",
+      "base_size": 943,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/instruction-governance.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/instruction-governance.md.jinja",
+      "base_blob": "eead08c396bad7853a1ddabd93c6218fc2e8dd96",
+      "base_size": 951,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/instruction-python.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/instruction-python.md.jinja",
+      "base_blob": "294445c9a4ebda5c807feda620e567520d090e56",
+      "base_size": 938,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/instruction-tests.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/instruction-tests.md.jinja",
+      "base_blob": "1e186006e5109e59d335be6383a6454fdd37e017",
+      "base_size": 947,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/plan-reviewer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/plan-reviewer.md.jinja",
+      "base_blob": "7277ca649731969c079217e6bff3cebe7a9dd917",
+      "base_size": 2911,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/planner.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/planner.md.jinja",
+      "base_blob": "058ae0fa0f7dc4cfbfaa9963c0dcf1da463fe918",
+      "base_size": 2956,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/quality-checker.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/quality-checker.md.jinja",
+      "base_blob": "95721f70adf94a5bbbed5bd971fdde9a04d3c53f",
+      "base_size": 3015,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/reviewer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/reviewer.md.jinja",
+      "base_blob": "d6905caae08e812bc0cf879813b9f216695f5885",
+      "base_size": 4091,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/security-reviewer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/security-reviewer.md.jinja",
+      "base_blob": "f448e1da6b8fd93029d00f8737195fd9f5ac9196",
+      "base_size": 3084,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/skill-bug-reproduction.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/skill-bug-reproduction.md.jinja",
+      "base_blob": "5cca9cbf65860cf9b3e295a274867719af8b4f84",
+      "base_size": 2862,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/skill-code-review.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/skill-code-review.md.jinja",
+      "base_blob": "3d814648ddb1c6fda0177d438fe40d3a742b5d1d",
+      "base_size": 3265,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/skill-delta-review.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/skill-delta-review.md.jinja",
+      "base_blob": "aa87540b2d9be1c857147e47ce8f2126c75e5347",
+      "base_size": 2926,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/skill-docs-traceability.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/skill-docs-traceability.md.jinja",
+      "base_blob": "fb061553cf29647d95f0b4c38078cc88477be191",
+      "base_size": 2929,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/skill-finding-triage.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/skill-finding-triage.md.jinja",
+      "base_blob": "cd2b04d9b1d86fc2800c1f3782b5f223a19ce348",
+      "base_size": 2800,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/skill-implementation-plan.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/skill-implementation-plan.md.jinja",
+      "base_blob": "3fdc9436b684659fa234e72c3896c4939d18255d",
+      "base_size": 2928,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/skill-task-intake.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/skill-task-intake.md.jinja",
+      "base_blob": "b5f7d825949610c2546d0053ab261b6c5f192d32",
+      "base_size": 2692,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/skill-test-and-quality.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/skill-test-and-quality.md.jinja",
+      "base_blob": "efe7893a10f34fe65a43170c1cdabc35bc1d55ba",
+      "base_size": 2830,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/copilot/test-engineer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/copilot/test-engineer.md.jinja",
+      "base_blob": "bb96a96ff3f5945cb9c0cea721cfb975b24bf872",
+      "base_size": 2990,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/essential.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/essential.md.jinja",
+      "base_blob": "940152f4abe9c2fb231ca2197b6263b48167238e",
+      "base_size": 4891,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/implementer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/implementer.md.jinja",
+      "base_blob": "df9623a9b650067de3a88bb7dcf0a5b19e08cdf3",
+      "base_size": 2677,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/planner.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/planner.md.jinja",
+      "base_blob": "f068f06f1586bac7d737c2e38bdd0380e3cfdf53",
+      "base_size": 2372,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/_partials/reviewer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/_partials/reviewer.md.jinja",
+      "base_blob": "44999624947fa2ec28907ce05db7024e088885fe",
+      "base_size": 3266,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "base_blob": "7d91b55faadcb4bb5332f683ccf1d2f85b77f0d4",
+      "base_size": 326,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_codex %}.codex{% endif %}/agents/backbone-implementer.toml.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-implementer.toml.jinja",
+      "base_blob": "d3d627d7488fac2af2c1ff45d40d110305c71aa1",
+      "base_size": 355,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_codex %}.codex{% endif %}/agents/backbone-planner.toml.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-planner.toml.jinja",
+      "base_blob": "4375556d12a554d98622f6caed4926d2af7a7a92",
+      "base_size": 333,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_codex %}.codex{% endif %}/agents/backbone-reviewer.toml.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-reviewer.toml.jinja",
+      "base_blob": "c11a6f831a52707c8cf3e44f0a383543a6a57e75",
+      "base_size": 327,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_codex %}AGENTS.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_codex %}AGENTS.md{% endif %}.jinja",
+      "base_blob": "2ffb59df675d6a0457008a50911c9d2dfcd16dbf",
+      "base_size": 786,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_codex or use_opencode %}AGENTS.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_codex or use_opencode %}AGENTS.md{% endif %}.jinja",
+      "base_blob": "2ffb59df675d6a0457008a50911c9d2dfcd16dbf",
+      "base_size": 786,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-analyst.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-analyst.agent.md.jinja",
+      "base_blob": "c97f04a13eecc308ec67c7be466c8dc58e280887",
+      "base_size": 541,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-documentation.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-documentation.agent.md.jinja",
+      "base_blob": "a960f4b76a1fdb557fd6cfed0690af4513bf6e0c",
+      "base_size": 356,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-finding-triage.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-finding-triage.agent.md.jinja",
+      "base_blob": "11023516a3bd7083faf8498bfe32be66ebbd0dc6",
+      "base_size": 349,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-implementer.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-implementer.agent.md.jinja",
+      "base_blob": "56b7b71c2ba6596607f6b6433e3a7aac4c6a4ca9",
+      "base_size": 363,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-plan-reviewer.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-plan-reviewer.agent.md.jinja",
+      "base_blob": "00665e11c8ab44f3de0038900f922338f184b702",
+      "base_size": 343,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-planner.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-planner.agent.md.jinja",
+      "base_blob": "b46710a3409ed95bc23663c7346e6e0e8ebf0444",
+      "base_size": 332,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-quality-checker.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-quality-checker.agent.md.jinja",
+      "base_blob": "b781db5fc60d10e092f38fb6a3d8fb309892d06e",
+      "base_size": 365,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-reviewer.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-reviewer.agent.md.jinja",
+      "base_blob": "b9a627a66b1a92754240a38524ac37c67ed0987a",
+      "base_size": 326,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-security-reviewer.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-security-reviewer.agent.md.jinja",
+      "base_blob": "14927cf6fabb5963665335c401b87bd7090fba26",
+      "base_size": 358,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/agents/backbone-test-engineer.agent.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-test-engineer.agent.md.jinja",
+      "base_blob": "6ceb4ed64bbe39cfe31842bca9e641357fdbaa1c",
+      "base_size": 365,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/copilot-instructions.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/copilot-instructions.md.jinja",
+      "base_blob": "2aeea5c9b8ccf55d1ca976bde2f88f67c2b070e7",
+      "base_size": 382,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-docs.instructions.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-docs.instructions.md.jinja",
+      "base_blob": "f87859aec0b1d2bca179a2cac2148ca777675b49",
+      "base_size": 242,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-governance.instructions.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-governance.instructions.md.jinja",
+      "base_blob": "7ed88d7cf1da835e440684ab723e6673d23a3422",
+      "base_size": 368,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-tests.instructions.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/instructions/backbone-tests.instructions.md.jinja",
+      "base_blob": "a530816dae59fb645127a9e820ebbab51fb5fc11",
+      "base_size": 267,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/instructions/{% if copilot_frontend_profile %}backbone-frontend.instructions.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/instructions/{% if copilot_frontend_profile %}backbone-frontend.instructions.md{% endif %}.jinja",
+      "base_blob": "6897fca1fd172f24550f14a451ada2f07dfc43b1",
+      "base_size": 258,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/instructions/{% if copilot_python_profile %}backbone-python.instructions.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/instructions/{% if copilot_python_profile %}backbone-python.instructions.md{% endif %}.jinja",
+      "base_blob": "0a8b671682bb9a108d25402b97b1d77323a6ffcd",
+      "base_size": 230,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/skills/bug-reproduction/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/skills/bug-reproduction/SKILL.md.jinja",
+      "base_blob": "b6994bfc22abfae61c679c2cb569249029961d53",
+      "base_size": 357,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/skills/code-review/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/skills/code-review/SKILL.md.jinja",
+      "base_blob": "5b2aeb4ced10f601ef9b98d37ed068ee23aefdce",
+      "base_size": 336,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/skills/delta-review/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/skills/delta-review/SKILL.md.jinja",
+      "base_blob": "4d5a5fd24aec0ffd9e7989fb14db3697b6cb1d51",
+      "base_size": 363,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/skills/docs-traceability/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/skills/docs-traceability/SKILL.md.jinja",
+      "base_blob": "41d1ac44a2e1e968ef9f5a817678627da0c46e13",
+      "base_size": 362,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/skills/finding-triage/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/skills/finding-triage/SKILL.md.jinja",
+      "base_blob": "20c537a4583a772e1c2aa9d8b9eb4ba52ceea214",
+      "base_size": 329,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/skills/implementation-plan/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/skills/implementation-plan/SKILL.md.jinja",
+      "base_blob": "5ab67dda5d04c17ee3347a8b0e0935cbdce6abcc",
+      "base_size": 358,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/skills/task-intake/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/skills/task-intake/SKILL.md.jinja",
+      "base_blob": "d7f5acda18a0302c2035865d715377bc2a697b46",
+      "base_size": 349,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_copilot %}.github{% endif %}/skills/test-and-quality/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_copilot %}.github{% endif %}/skills/test-and-quality/SKILL.md.jinja",
+      "base_blob": "93468ccf3d3f419631bb28e2cfc47dcbbede4ff6",
+      "base_size": 369,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-implementer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-implementer.md.jinja",
+      "base_blob": "63cd71d8752972320475076d068ea7c4c65ae5fa",
+      "base_size": 492,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-planner.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-planner.md.jinja",
+      "base_blob": "b9a05b864f8bfca33c5711a22cab20411a0f5849",
+      "base_size": 473,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-quality-checker.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-quality-checker.md.jinja",
+      "base_blob": "d83812c9248da7cbcf7c2c36e54055c05f92a4f0",
+      "base_size": 495,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-reviewer.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-reviewer.md.jinja",
+      "base_blob": "f74f34a642f583a8a473c42399653663eeb73683",
+      "base_size": 472,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-triage.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/agents/backbone-triage.md.jinja",
+      "base_blob": "fb20f96fd9a5f3e78eda68a5afebaebf4f2e2c39",
+      "base_size": 471,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/skills/bug-reproduction/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/skills/bug-reproduction/SKILL.md.jinja",
+      "base_blob": "45e62672623d991bcbe07d45e8919900a536f05c",
+      "base_size": 405,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/skills/code-review/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/skills/code-review/SKILL.md.jinja",
+      "base_blob": "c808fc62d8d9ec04209c80bc33b9415497cb2727",
+      "base_size": 384,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/skills/delta-review/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/skills/delta-review/SKILL.md.jinja",
+      "base_blob": "4bf85d1e927c9d96b60919490d2cb40038ac304a",
+      "base_size": 411,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/skills/docs-traceability/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/skills/docs-traceability/SKILL.md.jinja",
+      "base_blob": "9b82d00cc982cdf990a197eb64ac618504607a57",
+      "base_size": 410,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/skills/finding-triage/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/skills/finding-triage/SKILL.md.jinja",
+      "base_blob": "4762337939de795b3cb9dc418bb18c2d71110f28",
+      "base_size": 377,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/skills/implementation-plan/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/skills/implementation-plan/SKILL.md.jinja",
+      "base_blob": "78d8d897faa531355fb964532f7a2d9bf82ea7e8",
+      "base_size": 406,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/skills/task-intake/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/skills/task-intake/SKILL.md.jinja",
+      "base_blob": "54efb389e87ece5b725ae225952758ecc8290fa5",
+      "base_size": 397,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}.opencode{% endif %}/skills/test-and-quality/SKILL.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}.opencode{% endif %}/skills/test-and-quality/SKILL.md.jinja",
+      "base_blob": "a28a447ed7f367acb160bbd97887f7ed427a357e",
+      "base_size": 417,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_opencode %}opencode.json{% endif %}.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_opencode %}opencode.json{% endif %}.jinja",
+      "base_blob": "dfc677a85ff3d723000e662df993741470fd1904",
+      "base_size": 478,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_quality_framework %}docs{% endif %}/dependency-compatibility.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_quality_framework %}docs{% endif %}/dependency-compatibility.md.jinja",
+      "base_blob": "24938e00955caaf95151e1f9f2d24365d185f575",
+      "base_size": 1626,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_quality_framework %}docs{% endif %}/quality/exceptions.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_quality_framework %}docs{% endif %}/quality/exceptions.md.jinja",
+      "base_blob": "db4127cb3415ea5cc641257c0a250ca2287014f8",
+      "base_size": 603,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_quality_framework %}docs{% endif %}/quality/quality-plan.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_quality_framework %}docs{% endif %}/quality/quality-plan.md.jinja",
+      "base_blob": "eeabbd4a64ff6c5fa581a355da9b4e9d46fc3de1",
+      "base_size": 1958,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_quality_framework %}docs{% endif %}/quality/test-strategy.md.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_quality_framework %}docs{% endif %}/quality/test-strategy.md.jinja",
+      "base_blob": "f78a6af10cca3a69c07fc2361f198da839af2e4c",
+      "base_size": 2156,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_quality_framework %}docs{% endif %}/quality/traceability.csv.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_quality_framework %}docs{% endif %}/quality/traceability.csv.jinja",
+      "base_blob": "00eea4d2f0f0cb40256fc9b25666a740f2e78d4b",
+      "base_size": 73,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_workflow_kit and workflow_kit_ref %}.github{% endif %}/workflows/backbone-maintenance.yml.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_workflow_kit and workflow_kit_ref %}.github{% endif %}/workflows/backbone-maintenance.yml.jinja",
+      "base_blob": "f42decdf36eaed0d7043f1fb5eb61f6ccc83e7d9",
+      "base_size": 299,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "templates/{% if use_workflow_kit and workflow_kit_ref %}.github{% endif %}/workflows/backbone-pr-checks.yml.jinja",
+      "new_path": ".engineering-backbone/legacy/templates/{% if use_workflow_kit and workflow_kit_ref %}.github{% endif %}/workflows/backbone-pr-checks.yml.jinja",
+      "base_blob": "ddaa6e16a96b40fa07502c618f9d2fa4ea816a79",
+      "base_size": 316,
+      "disposition": "legacy-compatibility",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/fixtures/historical/.gitattributes",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/.gitattributes",
+      "base_blob": "089be9e7bfd51091fcaaa84bb86a69337a206a62",
+      "base_size": 120,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/README.md",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/README.md",
+      "base_blob": "3e8f5a42a19fbcdef1c042a58b7df77160e92642",
+      "base_size": 2734,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/attested-review/copier.yml",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/attested-review/copier.yml",
+      "base_blob": "a4b1933953b0a3caf8d494f476198e813c1d13ad",
+      "base_size": 4361,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/attested-review/schemas/project.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/attested-review/schemas/project.schema.json",
+      "base_blob": "b908ade823731ab8c7abf09460cb1613d83617e6",
+      "base_size": 1576,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/attested-review/schemas/task-packet.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/attested-review/schemas/task-packet.schema.json",
+      "base_blob": "6bb4db02e79513e88cc823aad808347f5f728394",
+      "base_size": 6867,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/attested-review/scripts/validate.py",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/attested-review/scripts/validate.py",
+      "base_blob": "3424110c5c4a198104172c424646185f94e4910b",
+      "base_size": 26298,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/attested-review/templates/.engineering-backbone/.gitattributes",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/attested-review/templates/.engineering-backbone/.gitattributes",
+      "base_blob": "e89be8c766282f7ceebcac5e105954812f58c1d9",
+      "base_size": 379,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/attested-review/templates/.engineering-backbone/README.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/attested-review/templates/.engineering-backbone/README.md.jinja",
+      "base_blob": "874bf4853f0c051be4fe3354e6192a6098924fe1",
+      "base_size": 3418,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/attested-review/templates/.engineering-backbone/workflow-example.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/attested-review/templates/.engineering-backbone/workflow-example.md.jinja",
+      "base_blob": "f4ec919a10f0c298f2674fbf93704809143bcf93",
+      "base_size": 3089,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/attested-review/templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/attested-review/templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "base_blob": "7d91b55faadcb4bb5332f683ccf1d2f85b77f0d4",
+      "base_size": 326,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/copier.yml",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/copier.yml",
+      "base_blob": "0c3488e82dafd159b769cc34410c1c582bfe6038",
+      "base_size": 4287,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/policy/core.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/policy/core.json",
+      "base_blob": "70fe8366c79e91a3f8ee248bf1892c3935a4ea87",
+      "base_size": 330,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/policy/core.md",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/policy/core.md",
+      "base_blob": "5946baec701f903723c96fce18f85c514d3d0f26",
+      "base_size": 4448,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/requirements.lock",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/requirements.lock",
+      "base_blob": "c441a0f722a39792b377c98ec68a63ae075c6d0d",
+      "base_size": 49093,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/requirements.txt",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/requirements.txt",
+      "base_blob": "bfe2e9fb5646564d4f715a283a2faf83b4823bbb",
+      "base_size": 48,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/schemas/core-policy.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/schemas/core-policy.schema.json",
+      "base_blob": "efe1f84a1659c79aa89d6c45c347e7ef184e9916",
+      "base_size": 1344,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/schemas/project.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/schemas/project.schema.json",
+      "base_blob": "c43333cf1a6facaea0bc228154d7746f42291d51",
+      "base_size": 1455,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/schemas/requirement.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/schemas/requirement.schema.json",
+      "base_blob": "7152cd46b5a373d0276b4f3f94909b7610ffa87a",
+      "base_size": 2617,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/schemas/review-evidence.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/schemas/review-evidence.schema.json",
+      "base_blob": "7c878d96cc7108763fb6ca88fec580bead097cdb",
+      "base_size": 6907,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/schemas/task-packet.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/schemas/task-packet.schema.json",
+      "base_blob": "36cbbc5171331c27ef4478c6f7abc86c77493354",
+      "base_size": 6700,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/scripts/validate.py",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/scripts/validate.py",
+      "base_blob": "d2d788a521f3bed0777eab90787bb5a507074c76",
+      "base_size": 24555,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/AGENTS.fragment.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/AGENTS.fragment.md.jinja",
+      "base_blob": "fb84df041543e1cdbd2baea408711a1a2162253e",
+      "base_size": 324,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/Copilot.fragment.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/Copilot.fragment.md.jinja",
+      "base_blob": "176485931300931ee9edb12156e52aba8f3320fc",
+      "base_size": 457,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/README.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/README.md.jinja",
+      "base_blob": "1a8df5a4d67f1ef26856c369039c9a09d9d967e5",
+      "base_size": 2503,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/copier-answers.yml.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/copier-answers.yml.jinja",
+      "base_blob": "9ffdf61a684de941e623004109aa826e6d7c7587",
+      "base_size": 122,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/core.json.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/core.json.jinja",
+      "base_blob": "b95159e5ec987cd6d1821f4efb46ff922fe18e90",
+      "base_size": 33,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/core.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/core.md.jinja",
+      "base_blob": "49a0d9c3abf923712af3237d03c1336d2eee03f7",
+      "base_size": 31,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/project.json.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/project.json.jinja",
+      "base_blob": "1988329ff594b290267ef9cfa62166ce0c2c0d59",
+      "base_size": 326,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.lock.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.lock.jinja",
+      "base_blob": "83262b6d1b2b18b36969e93aa0f6f0ff03972daa",
+      "base_size": 35,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.txt.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/requirements.txt.jinja",
+      "base_blob": "1854e5b90b77d0ad4787a94514ca016cf66984f1",
+      "base_size": 33,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/core-policy.schema.json.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/core-policy.schema.json.jinja",
+      "base_blob": "b23ae920dc697066443296a859f127d082805654",
+      "base_size": 48,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/project.schema.json.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/project.schema.json.jinja",
+      "base_blob": "0b23daf08b34ad5111bf9d340a22e217f1b24a1c",
+      "base_size": 44,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/requirement.schema.json.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/requirement.schema.json.jinja",
+      "base_blob": "e7d77e7aa282d72772235f52bcd41a74aa6b2d9a",
+      "base_size": 48,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/review-evidence.schema.json.jinja",
+      "base_blob": "02c497edeb5441aea895d79d8511904eefb98c21",
+      "base_size": 52,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/task-packet.schema.json.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/schemas/task-packet.schema.json.jinja",
+      "base_blob": "df51ff2ae6d0e0b7c659542741e982c57858cf26",
+      "base_size": 48,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/validate.py.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/validate.py.jinja",
+      "base_blob": "09bb7ea3db39b24534482f8672831b91d3fc8d72",
+      "base_size": 36,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/.engineering-backbone/workflow-example.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/.engineering-backbone/workflow-example.md.jinja",
+      "base_blob": "39d780cd0b89abc9900703a9a8f6271bfaaeecb5",
+      "base_size": 1323,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/_partials/essential.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/_partials/essential.md.jinja",
+      "base_blob": "206d2afd829bcf64d2cf429096ea5dc6821c00aa",
+      "base_size": 1477,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/_partials/implementer.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/_partials/implementer.md.jinja",
+      "base_blob": "9fb9bae601e56f54abad737c74bb443c75eeaa38",
+      "base_size": 636,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/_partials/planner.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/_partials/planner.md.jinja",
+      "base_blob": "419f49924fe5b20a5d91de2e49b14b5c33763b10",
+      "base_size": 494,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/_partials/reviewer.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/_partials/reviewer.md.jinja",
+      "base_blob": "93713a3e8fcca3d73fae68e0c7bbf03769cafd8d",
+      "base_size": 702,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if backbone_workflow_ref %}.github{% endif %}/workflows/engineering-backbone.yml.jinja",
+      "base_blob": "068b48606890f2f0190da43eff8ac83e50a114e7",
+      "base_size": 305,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-implementer.toml.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-implementer.toml.jinja",
+      "base_blob": "d3d627d7488fac2af2c1ff45d40d110305c71aa1",
+      "base_size": 355,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-planner.toml.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-planner.toml.jinja",
+      "base_blob": "4375556d12a554d98622f6caed4926d2af7a7a92",
+      "base_size": 333,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-reviewer.toml.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if use_codex %}.codex{% endif %}/agents/backbone-reviewer.toml.jinja",
+      "base_blob": "c11a6f831a52707c8cf3e44f0a383543a6a57e75",
+      "base_size": 327,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if use_codex %}AGENTS.md{% endif %}.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if use_codex %}AGENTS.md{% endif %}.jinja",
+      "base_blob": "2ffb59df675d6a0457008a50911c9d2dfcd16dbf",
+      "base_size": 786,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-implementer.agent.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-implementer.agent.md.jinja",
+      "base_blob": "e0e0ceb66fb77b1fbb39799484cf536321c3cf24",
+      "base_size": 281,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-planner.agent.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-planner.agent.md.jinja",
+      "base_blob": "072d68becc3a561e906f5a23b957e628931e091c",
+      "base_size": 250,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-reviewer.agent.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/agents/backbone-reviewer.agent.md.jinja",
+      "base_blob": "70b32c84a7cbe2b1d17012cae59a1f65eeb543b6",
+      "base_size": 244,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/copilot-instructions.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/bootstrap/templates/{% if use_copilot %}.github{% endif %}/copilot-instructions.md.jinja",
+      "base_blob": "73c84e6a2ce20766513fab2821df6aeb8d48eb71",
+      "base_size": 632,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/manifest.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/manifest.json",
+      "base_blob": "0d923699dbc776ce2634088a066157b48baacf6b",
+      "base_size": 13769,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/pre-attestation/copier.yml",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/pre-attestation/copier.yml",
+      "base_blob": "a4b1933953b0a3caf8d494f476198e813c1d13ad",
+      "base_size": 4361,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/pre-attestation/schemas/project.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/pre-attestation/schemas/project.schema.json",
+      "base_blob": "b908ade823731ab8c7abf09460cb1613d83617e6",
+      "base_size": 1576,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/pre-attestation/schemas/task-packet.schema.json",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/pre-attestation/schemas/task-packet.schema.json",
+      "base_blob": "6bb4db02e79513e88cc823aad808347f5f728394",
+      "base_size": 6867,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/pre-attestation/scripts/validate.py",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/pre-attestation/scripts/validate.py",
+      "base_blob": "3e5c77e6cf09fab50c02958bca90c4c0d585c9e8",
+      "base_size": 24913,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/pre-attestation/templates/.engineering-backbone/README.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/pre-attestation/templates/.engineering-backbone/README.md.jinja",
+      "base_blob": "aade907566004d2166dc9ddb6be6105537120000",
+      "base_size": 2974,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/historical/pre-attestation/templates/.engineering-backbone/workflow-example.md.jinja",
+      "new_path": ".engineering-backbone/tst/fixtures/historical/pre-attestation/templates/.engineering-backbone/workflow-example.md.jinja",
+      "base_blob": "fc175338fed98c0576550bc0d5b8f9581e21efc2",
+      "base_size": 2292,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/opencode-predecessor/consumer.zip",
+      "new_path": ".engineering-backbone/tst/fixtures/opencode-predecessor/consumer.zip",
+      "base_blob": "121255e64ea029ebb1674a7e2ab94b602d520b45",
+      "base_size": 144439,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/fixtures/opencode-predecessor/manifest.json",
+      "new_path": ".engineering-backbone/tst/fixtures/opencode-predecessor/manifest.json",
+      "base_blob": "36d6d119e3f92da404dd927ffdc743f6ee52d3ca",
+      "base_size": 6531,
+      "disposition": "move-canonical",
+      "preserve_bytes": true
+    },
+    {
+      "old_path": "tests/test_attributes.py",
+      "new_path": ".engineering-backbone/tst/test_attributes.py",
+      "base_blob": "b67e90f8adb02cad78a6e8cba7df24c86e1c53f6",
+      "base_size": 5026,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_codex_consolidation.py",
+      "new_path": ".engineering-backbone/tst/test_codex_consolidation.py",
+      "base_blob": "8d21125b443ff918e538e15a6803c826e5e84850",
+      "base_size": 16664,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_codex_security.py",
+      "new_path": ".engineering-backbone/tst/test_codex_security.py",
+      "base_blob": "6dd5503a3b6c29bf1b15b072b62d99a1168448d5",
+      "base_size": 20146,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_codex_workflow_guard.py",
+      "new_path": ".engineering-backbone/tst/test_codex_workflow_guard.py",
+      "base_blob": "823caacda44dda7dfc9fd6baa88cf1ba8805e1fa",
+      "base_size": 13313,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_copier.py",
+      "new_path": ".engineering-backbone/tst/test_copier.py",
+      "base_blob": "b0d5d3667b85759d8ed79b26ed1460b4fa3c2093",
+      "base_size": 19886,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_copilot_distribution.py",
+      "new_path": ".engineering-backbone/tst/test_copilot_distribution.py",
+      "base_blob": "85fcbf245d1d037af0702ec447481708a7081d43",
+      "base_size": 24451,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_copilot_validation.py",
+      "new_path": ".engineering-backbone/tst/test_copilot_validation.py",
+      "base_blob": "7952b048e3319d4f0952aa2673d798a06d68beb6",
+      "base_size": 20469,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_copilot_workflow_guard.py",
+      "new_path": ".engineering-backbone/tst/test_copilot_workflow_guard.py",
+      "base_blob": "6999bb315f659cb2329cbe8da684bf21aeb76c55",
+      "base_size": 15652,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_dependencies.py",
+      "new_path": ".engineering-backbone/tst/test_dependencies.py",
+      "base_blob": "14743080016feecdb296f869261d647490987738",
+      "base_size": 19320,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_dependency_integration.py",
+      "new_path": ".engineering-backbone/tst/test_dependency_integration.py",
+      "base_blob": "322828f83c4d115221fca5bd98f84baf87494770",
+      "base_size": 13097,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_navigation.py",
+      "new_path": ".engineering-backbone/tst/test_navigation.py",
+      "base_blob": "ebbe92314fdd101700b5fbd03192c4148261ab8a",
+      "base_size": 31818,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_navigation_integration.py",
+      "new_path": ".engineering-backbone/tst/test_navigation_integration.py",
+      "base_blob": "b5e2b96f6de2d2144f34a0c7f474effca30070bb",
+      "base_size": 29541,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_opencode_distribution.py",
+      "new_path": ".engineering-backbone/tst/test_opencode_distribution.py",
+      "base_blob": "a55d30d8324ace0f8b851a9631444276c314e8d0",
+      "base_size": 9175,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_opencode_native_smoke.py",
+      "new_path": ".engineering-backbone/tst/test_opencode_native_smoke.py",
+      "base_blob": "64d5b068b7096560d1ff2c20f9b0eedfd1d5daec",
+      "base_size": 11039,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_opencode_navigation.py",
+      "new_path": ".engineering-backbone/tst/test_opencode_navigation.py",
+      "base_blob": "7a00f98b6fa22acc60cfbabc66b18d8df5130acc",
+      "base_size": 12194,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_opencode_validation.py",
+      "new_path": ".engineering-backbone/tst/test_opencode_validation.py",
+      "base_blob": "d68a9adcc3b39fb5788f5fbf1e7024e1f0a90dcc",
+      "base_size": 16985,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_opencode_workflow_guard.py",
+      "new_path": ".engineering-backbone/tst/test_opencode_workflow_guard.py",
+      "base_blob": "14a9ddb4ae8cf119435642d3505c576eef568726",
+      "base_size": 11038,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_quality_copier.py",
+      "new_path": ".engineering-backbone/tst/test_quality_copier.py",
+      "base_blob": "644160c19af34a445136ba4a28a91c2baa6be49e",
+      "base_size": 13723,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_quality_framework.py",
+      "new_path": ".engineering-backbone/tst/test_quality_framework.py",
+      "base_blob": "2693f05a67aaca2ac1b28fe900c1da9177f59f1f",
+      "base_size": 31960,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_quality_workflows.py",
+      "new_path": ".engineering-backbone/tst/test_quality_workflows.py",
+      "base_blob": "0a6ca031af9b1b78c76b2cd90a12da4c9530a759",
+      "base_size": 12986,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_source_dependencies.py",
+      "new_path": ".engineering-backbone/tst/test_source_dependencies.py",
+      "base_blob": "650582a0681b8f4e1891eaafa94dc10dd9b0aadd",
+      "base_size": 9975,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_technology_catalog.py",
+      "new_path": ".engineering-backbone/tst/test_technology_catalog.py",
+      "base_blob": "ebd5ba9a22554c3d170adbeb017ebee5a0a8bfce",
+      "base_size": 11383,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_validation.py",
+      "new_path": ".engineering-backbone/tst/test_validation.py",
+      "base_blob": "583cb317d5307ac761b436e0d2c78b39087d0a31",
+      "base_size": 36383,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_workflow_kit.py",
+      "new_path": ".engineering-backbone/tst/test_workflow_kit.py",
+      "base_blob": "53472ca99f64f38144328c7c9488590006966332",
+      "base_size": 19275,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_workflow_kit_copier.py",
+      "new_path": ".engineering-backbone/tst/test_workflow_kit_copier.py",
+      "base_blob": "8f9543ac7f11dca7c95e9149eba5b07d95943754",
+      "base_size": 19566,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_workflow_kit_validation.py",
+      "new_path": ".engineering-backbone/tst/test_workflow_kit_validation.py",
+      "base_blob": "694afc138c128877b4a2e64150bff9f340fbefc5",
+      "base_size": 4895,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_workflow_kit_workflows.py",
+      "new_path": ".engineering-backbone/tst/test_workflow_kit_workflows.py",
+      "base_blob": "4e8b5b6a54dd68a5f8f64e85a8f64b6fb559193b",
+      "base_size": 20720,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    },
+    {
+      "old_path": "tests/test_workflows.py",
+      "new_path": ".engineering-backbone/tst/test_workflows.py",
+      "base_blob": "b8651813e7be66f48642d8f2e4231884973cac4b",
+      "base_size": 41068,
+      "disposition": "move-canonical",
+      "preserve_bytes": false
+    }
+  ]
+}

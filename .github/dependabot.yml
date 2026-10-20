@@ -6,7 +6,7 @@ updates:
       interval: weekly
     open-pull-requests-limit: 3
   - package-ecosystem: pip
-    directory: /
+    directory: /.engineering-backbone
     schedule:
       interval: weekly
     open-pull-requests-limit: 3

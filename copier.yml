@@ -1,5 +1,6 @@
+# Legacy Copier compatibility entrypoint. New projects copy the reference tree directly.
 _min_copier_version: "9.11.3"
-_subdirectory: templates
+_subdirectory: .engineering-backbone/legacy/templates
 _answers_file: .engineering-backbone/copier-answers.yml
 _external_data:
   installed_answers: "{{ _copier_conf.answers_file }}"

@@ -2,8 +2,8 @@
 applyTo: "**/*.ts,**/*.tsx,**/*.js,**/*.jsx"
 ---
 
-Follow the [canonical policy](../../policy/core.md) and
-[Copilot workflow](../../docs/copilot/workflow.md) together with applicable project instructions.
+Follow the [canonical policy](../../docs/agent-governance/core.md) and
+[Copilot workflow](../../docs/agent-governance/adapters/copilot/workflow.md) together with applicable project instructions.
 
 This optional profile adds frontend guidance without assuming React or Next.js.
 Read the actual framework, package scripts and applicable project rules. Preserve

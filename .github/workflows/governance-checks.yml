@@ -65,19 +65,19 @@ jobs:
         if: inputs.source_mode
         working-directory: candidate
         run: |
-          python -m pip install --require-hashes -r requirements.lock
-          python scripts/validate.py
-          python scripts/compile_toolchain_fingerprint.py --check
-          python scripts/compile_workflow_kit.py --check
-          python scripts/compile_navigation.py --check
-          python scripts/compile_quality_framework.py --check
-          python -m unittest discover -s tests -v
+          python -m pip install --require-hashes -r .engineering-backbone/requirements.lock
+          python .engineering-backbone/src/validate.py
+          python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check
+          python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check
+          python .engineering-backbone/src/maintenance/compile_navigation.py --check
+          python .engineering-backbone/src/maintenance/compile_quality_framework.py --check
+          python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v
       - name: Validate generated consumer with trusted tooling
         if: ${{ !inputs.source_mode }}
         shell: bash
         env:
-          CURRENT_TOOLCHAIN_SHA256: '35678afb51ae9f1c5bc806dd7f1397d4ebde878d3f30adc7685399da386c950b'
-          PREVIOUS_TOOLCHAIN_SHA256: '["88d2d1e89cbff9fd925cac1a235de60867ae90a9ae231cde6cbc0a5eed8ee9b2","7e3d27e21a8db1b1320ded8b8c499dd6033a3f45b0b4b7ff519316612f83ddeb","ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb","91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321","5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9","e4cdae824eb4f1ee9286f8fd8253b510a84ea7729e12fa96c8b5289b38d18450","dddb8af676cd793653263cd126d9b2b5e88a053b6525e50d8424876133f1e615","a3cde1a611e3408d2f3801da7d6c0e723a998a98ac3a551b7485413f4d9ef896"]'
+          CURRENT_TOOLCHAIN_SHA256: '402e3fa62d99afda07bd2929afef9237e28835b3a3a349e6ca194d01cb58343f'
+          PREVIOUS_TOOLCHAIN_SHA256: '["88d2d1e89cbff9fd925cac1a235de60867ae90a9ae231cde6cbc0a5eed8ee9b2","7e3d27e21a8db1b1320ded8b8c499dd6033a3f45b0b4b7ff519316612f83ddeb","ac82ff9e47346f754865aa322db29089281569e1cf432edd43c624026f8ad3fb","91f4d1d7be5573f0939cdb9f3859d3ff236807504abaa554207dfc1705190321","5bca19e704f2e6ca5744cfccb10e52b862dc7b9d4c18ed5f5cb3a6db8aadab4a","444494997fb175e75e9fe5031d02e1005db910800711116773c890ea24508566","92a5da2f8cbc81f588e231167ae5b66e5f69e255f80be1d13c80ea4152b3dffa","ef266be0f22b7e505563e408fe8b93ab6418ec1255bed6c2d6067f9e74be44c9","e4cdae824eb4f1ee9286f8fd8253b510a84ea7729e12fa96c8b5289b38d18450","dddb8af676cd793653263cd126d9b2b5e88a053b6525e50d8424876133f1e615","a3cde1a611e3408d2f3801da7d6c0e723a998a98ac3a551b7485413f4d9ef896","35678afb51ae9f1c5bc806dd7f1397d4ebde878d3f30adc7685399da386c950b"]'
         run: |
           set -euo pipefail
           trusted_root="$GITHUB_WORKSPACE/trusted-base"
@@ -754,9 +754,9 @@ jobs:
               budgets['implementer'].update(edit='ask', bash='ask')
               budgets['quality-checker']['bash'] = 'ask'
               rank = {'deny': 0, 'ask': 1, 'allow': 2}
-              source_instructions = ('AGENTS.md', 'policy/core.md', 'policy/core.json', 'policy/quality.md',
-                                     'policy/dependencies.md', '.engineering-backbone/project.json',
-                                     'docs/opencode/workflow.md', 'CONTRIBUTING.md')
+              source_instructions = ('AGENTS.md', 'docs/agent-governance/core.md', '.engineering-backbone/core.json', 'docs/quality/policy.md',
+                                     'docs/quality/dependencies.md', '.engineering-backbone/project.json',
+                                     'docs/agent-governance/adapters/opencode/workflow.md', 'CONTRIBUTING.md')
               installed_instructions = ('AGENTS.md', '.engineering-backbone/core.md', '.engineering-backbone/core.json',
                                         '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
                                         '.engineering-backbone/project.json', '.engineering-backbone/opencode-guide.md')
@@ -1116,7 +1116,7 @@ jobs:
                   profile_path = '.engineering-backbone/quality-profile.json'
                   workflows_path = '.engineering-backbone/workflows.json'
                   dependencies_path = '.engineering-backbone/dependencies.json'
-                  dependency_policy_path = ('policy/dependencies.md' if source else
+                  dependency_policy_path = ('docs/quality/dependencies.md' if source else
                                             '.engineering-backbone/dependency-policy.md')
                   missing = object()
 
@@ -1273,7 +1273,7 @@ jobs:
                       return {'path': reference, 'sha256': hashlib.sha256(data).hexdigest()}
 
                   def package(folder, catalog):
-                      prefix = 'standards/technologies' if source else '.engineering-backbone/standards/technologies'
+                      prefix = '.engineering-backbone/standards/technologies'
                       for name in ('sources', 'rules'):
                           wanted = {'schema_version': '1', 'version': catalog['version'], name: catalog[name]}
                           if json_file(folder, prefix + '/' + name + '.json') != wanted:
@@ -1528,8 +1528,8 @@ jobs:
                           fail('Invalid OpenCode native config contract')
                       instructions = sequence(native['instructions'], 'OpenCode instructions', nonempty=True, maximum=64)
                       required = {'AGENTS.md', '.engineering-backbone/project.json'}
-                      required.update({'policy/core.md', 'policy/core.json', 'policy/quality.md',
-                                       'policy/dependencies.md', 'docs/opencode/workflow.md', 'CONTRIBUTING.md'} if source else
+                      required.update({'docs/agent-governance/core.md', '.engineering-backbone/core.json', 'docs/quality/policy.md',
+                                       'docs/quality/dependencies.md', 'docs/agent-governance/adapters/opencode/workflow.md', 'CONTRIBUTING.md'} if source else
                                       {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
                                        '.engineering-backbone/quality-policy.md', '.engineering-backbone/dependency-policy.md',
                                        '.engineering-backbone/opencode-guide.md'})
@@ -1550,7 +1550,7 @@ jobs:
                       name = role.replace('_', '-')
                       paths = {opencode_path, 'opencode.json', '.opencode/agents/backbone-' + name + '.md'}
                       paths.update(native['instructions'])
-                      paths.update({'docs/opencode/workflow.md', 'docs/opencode/opencode-runner-contract.md'} if source else
+                      paths.update({'docs/agent-governance/adapters/opencode/workflow.md', 'docs/agent-governance/adapters/opencode/opencode-runner-contract.md'} if source else
                                    {'.engineering-backbone/opencode-guide.md', '.engineering-backbone/opencode-runner-contract.md'})
                       paths.update('.opencode/skills/' + skill + '/SKILL.md'
                                    for skill in ('task-intake', *opencode_procedures[role]))
@@ -1763,14 +1763,14 @@ jobs:
                                     '.engineering-backbone/project.json'})
                       if opencode_candidate is not None and opencode_candidate['enabled']:
                           paths.update(opencode_paths(packet['role'], json_file(root, 'opencode.json')))
-                      prefix = 'standards' if source else '.engineering-backbone/standards'
+                      prefix = '.engineering-backbone/standards'
                       paths.update({prefix + '/sources.json', prefix + '/rules.json',
                                     prefix + '/technologies/sources.json', prefix + '/technologies/rules.json'})
                       paths.update(prefix + '/profiles/' + key + '.json' for key in quality['profiles'])
                       paths.update(prefix + '/technologies/profiles/' + key + '.json' for key in selected_profiles)
                       paths.update(path for path in quality['documents'].values() if path)
-                      paths.update({'policy/core.md', 'policy/core.json', 'policy/quality.md', 'docs/quality/README.md',
-                                    'docs/quality/technology-profiles.md', 'docs/agent-navigation.md'} if source else
+                      paths.update({'docs/agent-governance/core.md', '.engineering-backbone/core.json', 'docs/quality/policy.md', 'docs/quality/README.md',
+                                    'docs/quality/technology-profiles.md', 'docs/agent-governance/agent-navigation.md'} if source else
                                    {'.engineering-backbone/core.md', '.engineering-backbone/core.json',
                                     '.engineering-backbone/quality-policy.md',
                                     '.engineering-backbone/quality-guide.md', '.engineering-backbone/technology-guide.md',
@@ -2059,7 +2059,7 @@ jobs:
                   return value, rules, profiles
 
               def package(folder, authority, *, central=False):
-                  prefix = folder / ('standards' if central else '.engineering-backbone/standards')
+                  prefix = folder / '.engineering-backbone/standards'
                   for key in ('sources', 'rules'):
                       expected = {'schema_version': '1', 'version': authority['version'],
                                   key: authority[key]}

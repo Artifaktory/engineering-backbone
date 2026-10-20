@@ -1,0 +1,18 @@
+---
+description: Implement approved scoped work, record checks and hand off a frozen candidate.
+mode: primary
+permission:
+  '*': deny
+  read: allow
+  glob: allow
+  grep: allow
+  skill: allow
+  edit: ask
+  bash: ask
+---
+
+{% set core_link = '../../.engineering-backbone/core.md' %}
+{% set guide_link = '../../.engineering-backbone/opencode-guide.md' %}
+{% set workflow_label = 'OpenCode workflow' %}
+{% set plan_review = true %}
+{% include '.engineering-backbone/legacy/templates/_partials/copilot/implementer.md.jinja' %}

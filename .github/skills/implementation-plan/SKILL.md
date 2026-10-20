@@ -3,8 +3,8 @@ name: implementation-plan
 description: Use when preparing or independently reviewing a non-trivial implementation plan before coding.
 ---
 
-Read the [canonical policy](../../../policy/core.md) and
-[Copilot workflow](../../../docs/copilot/workflow.md). This skill supplies a procedure, not additional
+Read the [canonical policy](../../../docs/agent-governance/core.md) and
+[Copilot workflow](../../../docs/agent-governance/adapters/copilot/workflow.md). This skill supplies a procedure, not additional
 permissions, authority or independent approval. Preserve stricter project rules.
 
 ## Inputs and output
@@ -45,7 +45,7 @@ structural validation is not semantic review, certification or human acceptance.
 ## Active document navigation
 
 When `.engineering-backbone/navigation.json` is enabled, follow the navigation
-guide (`docs/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
+guide (`docs/agent-governance/agent-navigation.md` in the source; `.engineering-backbone/navigation-guide.md`
 when installed). After a Task Packet exists, resolve its scoped request with the
 approved guard, verify received context against the current snapshot, then actually
 read every resolved document before scoped work. Transfer the request, complete

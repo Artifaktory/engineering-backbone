@@ -10,9 +10,9 @@ activate the older `cpp17` reference or claim a Google C++17 standard.
 
 | Source repository | Installed consumer |
 |---|---|
-| `standards/technologies/sources.json` | `.engineering-backbone/standards/technologies/sources.json` |
-| `standards/technologies/rules.json` | `.engineering-backbone/standards/technologies/rules.json` |
-| `standards/technologies/profiles/` | `.engineering-backbone/standards/technologies/profiles/` |
+| `.engineering-backbone/standards/technologies/sources.json` | `.engineering-backbone/standards/technologies/sources.json` |
+| `.engineering-backbone/standards/technologies/rules.json` | `.engineering-backbone/standards/technologies/rules.json` |
+| `.engineering-backbone/standards/technologies/profiles/` | `.engineering-backbone/standards/technologies/profiles/` |
 | `docs/quality/technology-profiles.md` | `.engineering-backbone/technology-guide.md` |
 
 The compiler-owned extension is distributed with the same reviewed Backbone
@@ -29,7 +29,7 @@ Framework profiles complement the language profiles; they are not substitutes.
 Language inference from filenames is advisory; the reviewed component inventory
 and affected-path routing must account for all applicable technologies.
 
-Dependency selection follows `policy/dependencies.md` in the source and
+Dependency selection follows `docs/quality/dependencies.md` in the source and
 `.engineering-backbone/dependency-policy.md` when installed. The optional active
 `.engineering-backbone/dependencies.json` connects the same components to real
 manifests, resolution/runtime files, Dockerfiles, compatibility documents and

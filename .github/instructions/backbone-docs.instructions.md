@@ -2,8 +2,8 @@
 applyTo: "*.md,docs/**,plans/**"
 ---
 
-Follow the [canonical policy](../../policy/core.md) and
-[Copilot workflow](../../docs/copilot/workflow.md) together with applicable project instructions.
+Follow the [canonical policy](../../docs/agent-governance/core.md) and
+[Copilot workflow](../../docs/agent-governance/adapters/copilot/workflow.md) together with applicable project instructions.
 
 Keep the audience, requirements and actual behavior consistent. Update affected
 links, interface/workflow diagrams and acceptance-to-evidence mapping. State pending,

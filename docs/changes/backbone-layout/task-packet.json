@@ -1,0 +1,159 @@
+{
+  "schema_version": "1",
+  "id": "BB-LAYOUT-011",
+  "title": "Direct-copy reference repository layout",
+  "objective": "Implement the first reviewable repository layout refactor in engineering-backbone while preserving shared policy and legacy consumer behavior; publish a PR for incremental human inspection.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "212608aa50ee517b3dd3107a9480da997222fd4f",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "User authorization 2026-10-20 to create this refactoring PR",
+    "docs/changes/backbone-layout/plan.md",
+    "docs/changes/backbone-layout/layout-map.json",
+    "AGENTS.md, CONTRIBUTING.md, and policy/core.md at the recorded base"
+  ],
+  "scope": {
+    "include": [
+      ".engineering-backbone/**",
+      ".github/**",
+      ".codex/**",
+      ".opencode/**",
+      "apps/**",
+      "packages/**",
+      "contracts/**",
+      "tst/**",
+      "infra/**",
+      "config/**",
+      "scripts/**",
+      "docs/**",
+      "plans/**",
+      "policy/**",
+      "schemas/**",
+      "standards/**",
+      "tests/**",
+      "templates/**",
+      "examples/**",
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      "SECURITY.md",
+      "Dockerfile",
+      "requirements.txt",
+      "requirements.lock",
+      "copier.yml",
+      "opencode.json",
+      ".gitignore",
+      ".dockerignore",
+      ".gitattributes",
+      ".editorconfig",
+      ".vscode/**"
+    ],
+    "exclude": [
+      "artifacts/**",
+      "External product repositories and orchestration services",
+      "Content edits to mapped preserve_bytes entries"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "All 495 baseline files have a unique explicit destination; historical records, historical fixtures, original provenance JSON, core invariants and dependency pins retain exact bytes.",
+      "verification": "automatic",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-2",
+      "description": "The repository itself exposes the agreed product/reference paths, with native tool paths intact, and no invented product build or runtime claims.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-3",
+      "description": "The moved validator, trusted guards, compilers and dependency checks use the canonical paths, preserve rejection behavior, and regenerate exact reviewed fingerprints.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-4",
+      "description": "Actual direct-copy smoke succeeds; component/dependency/IDE/container placement and project-specific adoption/reset steps are documented.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-5",
+      "description": "Legacy Copier initial/update and historical regression tests remain meaningful; legacy compatibility is maintenance-only and has one canonical policy authority.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-6",
+      "description": "The previous trusted validator is exercised without candidate fallback or projection; its raw path incompatibility remains a visible blocked merge gate in the draft PR, with candidate negative policy tests separately passing.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-7",
+      "description": "The complete deterministic suite and independently frozen behavior/security reviews, triage and any necessary Delta are recorded; missing runtime/container evidence remains visible.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-8",
+      "description": "A scoped draft refactoring PR is published with its exact remote tree, blocked legacy trusted-base gate and real check state; no merge, release, downstream changes or auto-activation occurs.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python .engineering-backbone/src/validate.py",
+      "python .engineering-backbone/src/maintenance/compile_navigation.py --check",
+      "python .engineering-backbone/src/maintenance/compile_quality_framework.py --check",
+      "python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check",
+      "python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check",
+      "python .engineering-backbone/src/check_source_dependencies.py",
+      "python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v",
+      "trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base",
+      "git diff --check"
+    ],
+    "manual_evidence": [
+      "Independent read-only plan review before implementation",
+      "Complete 495-file mapping verification and historical-byte verification",
+      "Actual direct-copy and negative mutation tests, plus retained legacy initial/update tests; raw previous-validator path incompatibility recorded without fallback",
+      "Real container build/smoke or explicit unavailable status",
+      "Frozen base/head/patch digest for behavior and security Full review; separate triage; necessary Delta",
+      "Published PR URL, remote head/tree and actual check statuses"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 8
+  },
+  "stop_conditions": [
+    "Failed required check without diagnosed and documented disposition",
+    "Unresolved confirmed review finding before claiming readiness",
+    "Scope or authorization conflict",
+    "Unexpected overwrite, ambiguous mapping or weakened local policy",
+    "Review budget exhausted without an accepted bounded closeout"
+  ],
+  "forbidden_actions": [
+    "Merge or auto-merge",
+    "Release, deploy or change repository access/settings",
+    "Automatic downstream application or activation",
+    "Changes to Artifaktory, Tars or Agent Orchestrator repositories",
+    "Force push or destructive cleanup",
+    "Claiming old historical PASS records, synthetic tests or structural validation prove new runtime qualification"
+  ],
+  "status": "active"
+}

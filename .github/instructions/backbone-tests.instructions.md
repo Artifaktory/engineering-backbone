@@ -1,9 +1,9 @@
 ---
-applyTo: "tests/**,**/test_*.py,**/*.test.*,**/*.spec.*"
+applyTo: "tst/**,**/tst/**,tests/**,**/test_*.py,**/*.test.*,**/*.spec.*"
 ---
 
-Follow the [canonical policy](../../policy/core.md) and
-[Copilot workflow](../../docs/copilot/workflow.md) together with applicable project instructions.
+Follow the [canonical policy](../../docs/agent-governance/core.md) and
+[Copilot workflow](../../docs/agent-governance/adapters/copilot/workflow.md) together with applicable project instructions.
 
 Read the project's test conventions and commands first. Use smallest meaningful
 fixtures and assert observable contract behavior. For fixes, record the actual

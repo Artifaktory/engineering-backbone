@@ -1,6 +1,0 @@
-name = "backbone_planner"
-description = "Plan an explicitly scoped task and its verification without implementing."
-sandbox_mode = "read-only"
-{% set policy_path = '.engineering-backbone/core.md' %}
-{% set role_text %}{% include 'templates/_partials/planner.md.jinja' %}{% endset %}
-developer_instructions = {{ role_text | tojson }}

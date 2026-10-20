@@ -2,7 +2,7 @@
 
 Observed **2026-10-14** through the primary publisher pages below. The exact
 machine-readable identities, editions and inspected scope are in
-`standards/technologies/sources.json`. All `TECH-*` statements are our own
+`.engineering-backbone/standards/technologies/sources.json`. All `TECH-*` statements are our own
 component requirements. A source reference is not wholesale adoption, a tool
 installation claim or certification. Existing ISO/IEC provenance remains in the
 unchanged core catalog.

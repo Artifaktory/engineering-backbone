@@ -1,6 +1,0 @@
-name = "backbone_reviewer"
-description = "Independently review frozen changes and their downstream effects."
-sandbox_mode = "read-only"
-{% set policy_path = '.engineering-backbone/core.md' %}
-{% set role_text %}{% include 'templates/_partials/reviewer.md.jinja' %}{% endset %}
-developer_instructions = {{ role_text | tojson }}

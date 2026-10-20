@@ -37,20 +37,20 @@ jobs:
       - name: Verify clean locked source environment and tracked inputs
         run: |
           python -m venv .venv
-          .venv/bin/python -m pip install --require-hashes --only-binary=:all: -r requirements.lock
-          .venv/bin/python scripts/check_source_dependencies.py
+          .venv/bin/python -m pip install --require-hashes --only-binary=:all: -r .engineering-backbone/requirements.lock
+          .venv/bin/python .engineering-backbone/src/check_source_dependencies.py
       - name: Build tracked tooling Dockerfile
-        run: docker build --pull --tag backbone-tooling:check --file Dockerfile .
+        run: docker build --pull --tag backbone-tooling:check --file infra/docker/engineering-backbone/Dockerfile .
       - name: Run offline container validation and real Copier smoke
         run: |
           docker run --rm --network none backbone-tooling:check sh -eu -c '
             python -m pip check
-            python scripts/validate.py
-            python scripts/compile_navigation.py --check
-            python scripts/compile_quality_framework.py --check
-            python scripts/compile_workflow_kit.py --check
-            python scripts/compile_toolchain_fingerprint.py --check
-            python -m unittest tests.test_copier -v
+            python .engineering-backbone/src/validate.py
+            python .engineering-backbone/src/maintenance/compile_navigation.py --check
+            python .engineering-backbone/src/maintenance/compile_quality_framework.py --check
+            python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check
+            python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check
+            python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -p test_copier.py -v
           '
 
   trusted-policy:
@@ -77,10 +77,15 @@ jobs:
           python-version: '3.12'
       - name: Check policy with base-owned validator
         run: |
-          if [ -f trusted-base/scripts/validate.py ]; then
+          if [ -f trusted-base/.engineering-backbone/src/validate.py ]; then
+            python -m pip install --require-hashes -r trusted-base/.engineering-backbone/requirements.lock
+            python trusted-base/.engineering-backbone/src/validate.py --root candidate --trusted-base trusted-base
+          elif [ -f trusted-base/scripts/validate.py ]; then
+            # First layout migration: the old trusted validator still runs.
+            # Its old-path incompatibility is a visible merge blocker, never a waiver.
             python -m pip install --require-hashes -r trusted-base/requirements.lock
             python trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base
           else
-            echo '::notice::Bootstrap base contains no validator; independent human bootstrap review is required.'
-            echo 'Bootstrap: no existing trusted policy gate. Human review and repository protection setup are required before release.' >> "$GITHUB_STEP_SUMMARY"
+            echo '::error::No trusted validator baseline; reviewed bootstrap is required.'
+            exit 1
           fi
