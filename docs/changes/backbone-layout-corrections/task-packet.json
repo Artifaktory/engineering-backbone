@@ -8,7 +8,7 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "c50108773ba3195bf0f7503e5dffb2d7bfc78cd3",
-    "head_revision": null
+    "head_revision": "e2bd3c7dc881348967af28a6da99be992e94e122"
   },
   "approved_sources": [
     "User request to correct missed Copilot/root-file handling and red checks on existing PR18",
@@ -65,7 +65,8 @@
       "status": "pending",
       "evidence": [
         "checks.md: old failure reproduced; both committed diffs pass at dbe05e14. Final evidence-commit checks and publication readback must be recorded in PR18 before claiming completion.",
-        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot."
+        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot.",
+        "clone-repair-checks.md: all three committed diffs PASS at e2bd3c7; exact final post-evidence checks must be recorded in PR18 before publication."
       ]
     },
     {
@@ -81,10 +82,10 @@
       "id": "AC-4",
       "description": "Affected positive and negative Copilot checks, canonical structural/compiled-output checks and independent Full/triage/necessary Delta pass without weakening preserved contracts or history.",
       "verification": "hybrid",
-      "status": "pending",
+      "status": "pass",
       "evidence": [
-        "plan-review.md, checks.md, full-review.md, triage.md; no confirmed findings, no repair Delta required.",
-        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot."
+        "Original checks.md/full-review.md/triage.md retained for selector correction.",
+        "clone-repair-checks.md:41tests78.308s and11commandsPASS; clone-repair-full-review.md and clone-repair-review-triage.md record bounded secondFull and separate triage."
       ]
     },
     {
@@ -104,7 +105,8 @@
       "status": "pending",
       "evidence": [
         "Publication and current-head checks remain pending at this evidence commit; PR18 body will record exact final identities and results.",
-        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot."
+        "Confirmed COP-CI-02 repair requires new frozen quality/second Full review and final changed-head publication checks; prior implementation evidence remains valid for its recorded snapshot.",
+        "PR18 current2ddfa803 was verified; clone repair publication/current-head remote qualification remain pending at this commit. Separate prerequisitePR19 is published and independently reviewed."
       ]
     }
   ],
@@ -151,5 +153,5 @@
     "Force push, destructive cleanup or automatic downstream application",
     "Claim pending CI or unrelated-head results prove current-head PASS"
   ],
-  "status": "active"
+  "status": "ready_for_review"
 }
