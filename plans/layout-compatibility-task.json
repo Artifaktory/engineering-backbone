@@ -8,7 +8,7 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "212608aa50ee517b3dd3107a9480da997222fd4f",
-    "head_revision": null
+    "head_revision": "aaa74e3dfc60836f8aae7c2751bc9dd889c52470"
   },
   "approved_sources": [
     "User request 2026-10-20 to correct PR18 Copilot omissions and red checks; prerequisite publication is necessary to resolve the base-owned layout incompatibility.",
@@ -48,50 +48,68 @@
       "id": "AC-1",
       "description": "The prerequisite preserves the old repository layout and exact core invariants, dependency pins, existing historical fixtures and native permission contracts.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/layout-compatibility-checks.md: 413 protected existing blobs and 59 historical fixture blobs unchanged; old layout retained."
+      ]
     },
     {
       "id": "AC-2",
       "description": "Source-only layout resolution independently handles old/new candidate and trusted-base roots while rejecting ambiguous, missing, mixed or aliased canonical authorities without falling back to consumer mode.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/layout-compatibility-checks.md: all four layout combinations and negative authority cases; two independent Full reviews."
+      ]
     },
     {
       "id": "AC-3",
       "description": "The actual previous main validator accepts this prerequisite at its old paths, and the prerequisite trusted validator accepts the exact frozen PR18 new-layout candidate against the old-layout trusted base.",
       "verification": "automatic",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/layout-compatibility-checks.md: actual old-main validator accepts bridge; bridge validates exact c501087 and corrected2ddfa803 against actual old main."
+      ]
     },
     {
       "id": "AC-4",
       "description": "Policy, schema, adapter, permission, dependency and historical-map/hash negative cases remain rejecting; new named task/review artifacts are validated by trusted schemas.",
       "verification": "automatic",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/layout-compatibility-checks.md: 23 new transition/negative cases; security review additional five rejecting probes."
+      ]
     },
     {
       "id": "AC-5",
       "description": "All original 418 test methods/assertions and immutable fixtures remain; affected and complete suites, compilers, source dependency checks and committed-patch whitespace checks pass with actual environment/runtime limits recorded.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/layout-compatibility-checks.md: full441 PASS, 418 original methods/assertions retained, compilers/dependencies/Actionlint/committed patch PASS at reviewed head; final publication checks repeated after evidence commit."
+      ]
     },
     {
       "id": "AC-6",
       "description": "Independent plan review, quality checks, two frozen Full reviews, separate triage and any necessary Delta are recorded against exact revisions and patch digests.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/reviews/layout-compatibility-plan-review.md",
+        "docs/reviews/layout-compatibility-checks.md",
+        "docs/reviews/layout-compatibility-behavior-review.md",
+        "docs/reviews/layout-compatibility-security-review.md",
+        "docs/reviews/layout-compatibility-review-triage.md: no post-Full repairs or Delta required."
+      ]
     },
     {
       "id": "AC-7",
       "description": "A separate prerequisite PR targets main with verified remote tree/check state and explicit human-merge-then-update-PR18 ordering; no merge, release, deployment or downstream activation occurs.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "Separate draft prerequisite publication, final remote tree and actual current-head CI observation remain pending at this evidence preparation. Human merge then actual main integration into PR18 is required."
+      ]
     }
   ],
   "validation": {
@@ -136,5 +154,5 @@
     "Force push, destructive cleanup or rewriting original historical evidence.",
     "Claiming prior PR18 or simulated results prove this prerequisite passed remote checks, native model behavior or OS isolation."
   ],
-  "status": "planned"
+  "status": "ready_for_review"
 }
