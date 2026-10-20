@@ -8,7 +8,7 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "537576f658bbd79c3bc49b26ade948116c664943",
-    "head_revision": null
+    "head_revision": "ab8fa240a1588f68e78d3aebffa0ef531250d638"
   },
   "approved_sources": [
     "User request on 2026-10-20: PR18 now conflicts; continuation of authorized scoped PR18 corrections and Codex review",
@@ -82,57 +82,80 @@
       "id": "AC-1",
       "description": "Conflict-free merge preserves actual main and starting PR18 ancestry, with explicit destinations and byte-preserving incoming-history mapping.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/checks.md",
+        "docs/changes/backbone-layout-integration/review-triage.md"
+      ]
     },
     {
       "id": "AC-2",
       "description": "Integrated new physical layout preserves dual-layout trusted validation, canonical policy rejection, permissions and source/consumer separation; actual merged-main validator checks the exact candidate.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/checks.md",
+        "docs/changes/backbone-layout-integration/review-triage.md"
+      ]
     },
     {
       "id": "AC-3",
       "description": "Confirmed INT-ARCHIVE-01 is reproduced and repaired: absent or linked required history is rejected using executable-owned authority, intact history remains valid, and candidate mapping cannot bypass it.",
       "verification": "automatic",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/checks.md",
+        "docs/changes/backbone-layout-integration/review-triage.md"
+      ]
     },
     {
       "id": "AC-4",
       "description": "Both prior branches' assertions, exact historical fixtures, Copilot correction and real Copier upgrades remain effective; the complete merged suite passes.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/checks.md",
+        "docs/changes/backbone-layout-integration/review-triage.md"
+      ]
     },
     {
       "id": "AC-5",
       "description": "All four compiler checks, dependencies, workflow lint, links, candidate/trusted validation and final committed main-to-head and starting-head-to-head diffs pass with recorded identities.",
       "verification": "automatic",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/checks.md",
+        "docs/changes/backbone-layout-integration/review-triage.md"
+      ]
     },
     {
       "id": "AC-6",
       "description": "Independent plan review, quality checks, frozen behavior/security Full reviews, separate triage and necessary Delta complete without unresolved confirmed in-scope blockers.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/checks.md",
+        "docs/changes/backbone-layout-integration/review-triage.md"
+      ]
     },
     {
       "id": "AC-7",
       "description": "Only existing PR18 is updated without force push; exact remote ancestry/tree/patch, conflict status, current-head checks and visible Codex review status are verified and reported without merge.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "Final publication, remote ancestry/tree readback, current-head CI and Codex result are recorded in PR18 after this evidence commit; no prior-head result qualifies this tree."
+      ]
     },
     {
       "id": "AC-8",
       "description": "Confirmed INT-ARCHIVE-02 has a real fresh core.autocrlf=true Git checkout regression preserving historical archive hashes and source validation; INT-NAV-01 active pointers identify BB-LAYOUT-014. Nested fixture attributes and committed historical bytes remain unchanged.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-layout-integration/checks.md",
+        "docs/changes/backbone-layout-integration/review-triage.md"
+      ]
     }
   ],
   "validation": {
@@ -182,5 +205,5 @@
     "Change dependency versions, product code, native discovery paths or legacy generated consumer contracts beyond reviewed integrated validator bytes",
     "Claim prior-head CI/review results or local simulated trusted bases qualify the final published candidate"
   ],
-  "status": "active"
+  "status": "ready_for_review"
 }
