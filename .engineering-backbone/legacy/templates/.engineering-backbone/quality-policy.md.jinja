@@ -1,1 +1,2 @@
-{% include 'docs/quality/policy.md' %}
+{% set quality_policy %}{% include 'docs/quality/policy.md' %}{% endset %}
+{{ quality_policy | replace('(../agent-governance/architecture.md', '(architecture.md') }}

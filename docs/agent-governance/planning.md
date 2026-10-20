@@ -23,6 +23,13 @@ and verification. Select automatic, manual or hybrid verification explicitly.
 A stated requirement or completed implementation is not proof of verification.
 Use stable local IDs and actual acceptance-to-test/evidence references.
 
+The [architecture contract](architecture.md) defines the required derivation from
+requirements to drivers, decisions, views and planned/actual verification. Use the
+[document kit](../templates/architecture/README.md) for the corresponding records.
+Preserve existing requirement JSON fields and states; provenance, ownership,
+architecture disposition and tool mapping can live in linked companion records.
+Do not add unsupported keys or create a competing requirements specification.
+
 ## Review evidence
 
 [The review schema](../../.engineering-backbone/schemas/review-evidence.schema.json) and
@@ -45,8 +52,10 @@ separately.
 - Risks, dependencies and rollback or safe recovery.
 - Task Packet, deterministic checks, immutable review snapshot and human decision.
 
-The original bootstrap is recorded in [its historical plan](../changes/backbone-bootstrap/plans/bootstrap.md). Add story/ADR templates
-later when projects demonstrate a shared need; preserve their domain-specific data.
+The original bootstrap is recorded in [its historical plan](../changes/backbone-bootstrap/plans/bootstrap.md).
+Use the shared [decision record](../templates/architecture/decision.md) for material
+architecture decisions; story formats remain project-owned. Preserve domain-specific
+data and link existing authoritative architecture instead of duplicating it.
 
 ## Imported planning and review discipline
 

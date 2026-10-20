@@ -1,0 +1,2 @@
+{% set architecture_template %}{% include 'docs/templates/architecture/traceability.md' %}{% endset %}
+{{ architecture_template | replace('(../../agent-governance/architecture.md', '(../architecture.md') | replace('(../../agent-governance/architecture-sources.md', '(../architecture-sources.md') }}

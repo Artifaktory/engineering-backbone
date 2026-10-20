@@ -91,6 +91,12 @@ documentation rules during implementation. Obtain required deterministic results
 before independent Full review; use triage, confirmed repairs and scoped Delta
 reviews as defined by the core policy. Preserve local publication and human gates.
 
+The [architecture contract](../agent-governance/architecture.md) supplies the
+shared requirements-to-design workflow and semantic review criteria. Its document
+rule IDs are references within that contract, not new quality-catalog rules or
+automatically installed checks. Preserve the existing quality profile and
+traceability CSV schema; link architecture records through their existing fields.
+
 ## Tests and evidence
 
 Maintain a project quality plan, test strategy and rule-to-requirement/risk

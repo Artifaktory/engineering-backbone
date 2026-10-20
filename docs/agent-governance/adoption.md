@@ -41,6 +41,16 @@ No product manifest, working application or build is supplied by an empty direct
 
 ## Review the copied project's facts
 
+For requirements and design work, adopt the [architecture contract](architecture.md)
+and [document kit](../templates/architecture/README.md). Declare actual source
+locations, owners, tool/status mappings and review/check responsibilities using the
+project-mapping template. Fill project-owned records at their authoritative paths;
+blank templates and hypothetical examples are not project requirements or evidence.
+Retain established requirements/architecture tools and stricter local controls.
+When navigation is active, register these required documents in the reviewed
+project routes and carry them in resolved context before scoped work. A document
+link alone neither configures native loading nor installs a semantic CI gate.
+
 | Copied area | Required project decision |
 | --- | --- |
 | `.engineering-backbone/project.json` | Set the real project name, target branch, language, frontend/backend facts and validation command. Use only supported schema fields; metadata does not execute a build. |
@@ -91,6 +101,15 @@ Root `copier.yml` remains its discovery entrypoint; templates now live under
 `.engineering-backbone/legacy/templates/` and read the canonical current sources.
 It is not a second starting structure for new direct-copy projects. Existing
 installation choices and preservation behavior remain binding.
+
+Legacy consumers receive managed `.engineering-backbone/architecture.md`,
+`architecture-sources.md` and `architecture-templates/`. These are the same shared
+contract and reusable kit with adjusted links; they do not create or overwrite
+project-owned requirements or architecture. Copy only the needed blank records to
+the project's declared authoritative locations and adjust their links. Existing
+native instruction files remain preserved: integrate the canonical-core reference
+and scoped architecture handoff through the reviewed adoption PR. Do not treat a
+successful Copier update as proof that an agent loaded the new instructions.
 
 ## Before copying
 

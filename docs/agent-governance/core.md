@@ -37,6 +37,14 @@ dependencies, multiple deliveries or risks justify it. Requirement approval,
 implementation and verification are separate states. Automated, manual and hybrid
 verification are valid when explicitly selected and evidenced.
 
+For requirements, architecture and material design changes, agents and human
+reviewers must read and apply the [architecture contract](architecture.md).
+Carry its source requirements, decisions, views, verification plan and open gaps
+in the scoped handoff. Its semantic obligations apply independently of optional
+quality/navigation activation; existing navigation and stricter project gates
+still apply. A template, diagram or successful document build is not design
+approval or evidence of implemented behavior.
+
 ## Checks and evidence
 
 Run the project's relevant deterministic checks before formal review. A bug fix

@@ -1,0 +1,133 @@
+{
+  "schema_version": "1",
+  "id": "BB-ARCH-015",
+  "title": "Tool-agnostic requirements-to-architecture contract",
+  "objective": "Create the agreed shared architecture documents, reusable templates and traceable example, integrate agent entrypoints and publish a reviewed PR without merge.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "ae317bf30576914d4ed53856be4ae496c6ed64b3",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "User authorization 2026-10-20: create the discussed documents and a PR; keep complete and tool agnostic.",
+    "docs/agent-governance/core.md",
+    "docs/agent-governance/planning.md",
+    "docs/quality/policy.md",
+    "docs/quality/testing.md",
+    "docs/changes/backbone-architecture-contract/plan.md"
+  ],
+  "scope": {
+    "include": [
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      "docs/agent-governance/**",
+      "docs/architecture/README.md",
+      "docs/requirements/README.md",
+      "docs/templates/architecture/**",
+      "docs/quality/policy.md",
+      "docs/quality/testing.md",
+      "docs/changes/README.md",
+      "docs/changes/backbone-architecture-contract/**",
+      ".engineering-backbone/legacy/templates/**",
+      ".engineering-backbone/tst/test_architecture_documents.py",
+      ".engineering-backbone/tst/test_copier.py",
+      ".github/copilot-instructions.md"
+    ],
+    "exclude": [
+      ".engineering-backbone/src/**",
+      ".engineering-backbone/schemas/**",
+      ".engineering-backbone/standards/**",
+      ".github/workflows/**",
+      "apps/**",
+      "packages/**",
+      "docs/changes/backbone-layout-integration/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC-1",
+      "description": "Binding, proportionate requirements-to-architecture workflow includes ownership, source authority, iteration, traceability and distinct review/implementation/verification gates.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-2",
+      "description": "Reusable architecture, ADR, quality scenario, traceability, review and tool mapping templates cover the agreed information and project-specific tailoring.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-3",
+      "description": "A clearly hypothetical end-to-end example demonstrates derivation, many-to-many links, planned verification, unresolved decisions and change impact without invented approvals or PASS.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-4",
+      "description": "Official source provenance distinguishes public normative scope from Backbone rules and optional methods; no certification claim or mandatory tool/stack.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-5",
+      "description": "Agent/root/planning/quality/adoption entrypoints and direct-copy/legacy distribution resolve to consistent canonical guidance without overwriting project architecture.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-6",
+      "description": "Relevant deterministic, negative/compatibility and trusted-base checks pass; independent behavior and authority reviews are triaged and confirmed findings repaired with Delta.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC-7",
+      "description": "Published PR binds accessible reviewed commits and patch evidence; actual publication checks and available CI results are recorded; no merge/release.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python .engineering-backbone/src/validate.py",
+      "python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check",
+      "python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check",
+      "python .engineering-backbone/src/maintenance/compile_navigation.py --check",
+      "python .engineering-backbone/src/maintenance/compile_quality_framework.py --check",
+      "python .engineering-backbone/src/check_source_dependencies.py",
+      "python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v",
+      "git diff --check BASE HEAD"
+    ],
+    "manual_evidence": [
+      "Independent plan review before edits",
+      "Independent frozen behavior and authority Full reviews after checks; separate triage and bounded Delta as needed",
+      "Worked-example and tool-mapping semantic walkthrough",
+      "Hosted CI observations on actual published head"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 6
+  },
+  "stop_conditions": [
+    "Scope or trust-boundary expansion requires updated independently reviewed plan.",
+    "Stop if source requirements or authorities conflict, required evidence cannot be obtained, or review budget is exhausted.",
+    "At most two Full rounds for this scope; triage before repair."
+  ],
+  "forbidden_actions": [
+    "No merge, release, deployment, protection changes or automatic downstream apply.",
+    "No new product requirements, invented approval/test evidence, weaker local rules or tool-specific architecture mandate.",
+    "Do not include unrelated local PR18 publication repairs or change historical evidence.",
+    "No schema/catalog/validator/runtime/dependency/CI changes in this scope."
+  ],
+  "status": "active"
+}
