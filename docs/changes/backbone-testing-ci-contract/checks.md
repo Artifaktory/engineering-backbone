@@ -61,3 +61,13 @@ live provider or native Windows execution.
 No native Windows, Docker/container, live provider or remote CI execution is established by these local checks. Unit fixtures that exercise a native-smoke harness do not establish a live native/provider run. This delivery changes no runtime/container/native adapter and does not simulate those claims. Required remote source checks and observed job statuses belong in publication readback.
 
 Later commits limited to this delivery's evidence/acceptance records require candidate and actual base-owned validation plus final committed base-to-published-head whitespace checks. They do not retrospectively enter the earlier implementation Full subject.
+
+The first evidence-only commit `8b15b6669bc5fbbe30caed74cc97f40625a0dc8f`
+and its published equivalent `98ca049ef4b0d1c6f53075ce960f9c34b543e21c` passed
+candidate and actual base-owned validators (exit 0), exact tree/parent/base-patch
+correspondence (exit 0), and committed whitespace from actual base and reviewed
+implementation to each corresponding evidence head (all exit 0). These are
+root-executed publication checks, distinct from independent implementation checks.
+Actual first PR readback found five queued jobs, not CI PASS. This readback-only
+commit again requires final validation/whitespace/correspondence checks and remote
+readback, whose final subject/results are recorded in the PR description.

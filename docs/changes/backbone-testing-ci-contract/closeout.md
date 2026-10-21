@@ -14,7 +14,7 @@ in [publication](publication.md); later records are outside that Full subject.
 | AC4: states and stronger duties preserved | Closed-state tests, status crosswalk, both Fulls | pass |
 | AC5: honest CI/CD mapping and authority | CI-01..07, actual phase/profile comparison, authority Full | pass |
 | AC6: source/render/update/negative compatibility | 487 tests, ten quick gates, protected paths, both Fulls | pass |
-| AC7: publication/readback | Local checks/reviews/triage complete; PR creation/final readback pending initially | pending |
+| AC7: publication/readback | Draft PR #23 created; published identity and all 61 paths matched; final-head checks/readback and required remote CI remain pending at this record | pending |
 
 Independent [plan review](plan-review.md) accepted the bounded plan before
 implementation. [Checks](checks.md) preserve failed and final runs separately:
@@ -30,11 +30,15 @@ and previous delivery records remain unchanged. Optional packages stay optional;
 managed common context is distributed independently. Existing project/native
 documents and workflow selections remain protected during update.
 
-No native Windows, Docker, live-provider or remote CI execution is established by
-the local suite. Remote check states require actual publication readback. Required
-outstanding checks remain gates. Local source runners and no GitHub artifact
+No native Windows, Docker or live-provider execution is established by the local
+suite. Actual first remote readback found five queued jobs across Backbone quality
+and OpenCode native discovery, all on self-hosted Linux/Windows labels with no
+assigned runner. None is reported as passing. See [publication](publication.md)
+and the final PR body for the exact observed heads/runs. Required outstanding
+checks remain gates. Local source runners and no GitHub artifact
 uploads remain project facts; legacy optional hosted/upload workflows are explicitly
 identified and unchanged. No provisioning or automatic downstream adoption.
 
+The reviewable result is [draft PR #23](https://github.com/Artifaktory/engineering-backbone/pull/23).
 Human review and merge/release decisions remain separate. Safe recovery is a
 reviewed revert of this scoped delivery; no force-push or destructive cleanup.
