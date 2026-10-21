@@ -8,7 +8,7 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "1a740604d4a6a68e500da36c4d99935d04a8ce86",
-    "head_revision": null
+    "head_revision": "9972cd8d47079fb8726f4d79edb75f5f1b36cb2d"
   },
   "approved_sources": [
     "User authorization 2026-10-21: combine agreed testing/quality and CI/CD proposals into one PR.",
@@ -58,50 +58,76 @@
       "id": "AC1",
       "description": "Coherent proportionate requirements/architecture/planning-to-testing contract.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/quality/testing.md",
+        "docs/changes/backbone-testing-ci-contract/behavior-review.md"
+      ]
     },
     {
       "id": "AC2",
       "description": "Accurate primary-source provenance and distinction between norms, methods and local rules.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/quality/testing-sources.md",
+        "docs/changes/backbone-testing-ci-contract/authority-review.md",
+        "docs/changes/backbone-testing-ci-contract/behavior-review.md"
+      ]
     },
     {
       "id": "AC3",
       "description": "Reusable original testing templates and coherent hypothetical example without invented evidence.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/templates/testing/README.md",
+        "docs/templates/testing/worked-example.md",
+        "docs/changes/backbone-testing-ci-contract/behavior-review.md"
+      ]
     },
     {
       "id": "AC4",
       "description": "Status, applicability, evidence freshness and gate meanings preserve closed schemas and stronger duties.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/quality/testing.md",
+        "docs/changes/backbone-testing-ci-contract/checks.md",
+        "docs/changes/backbone-testing-ci-contract/authority-review.md"
+      ]
     },
     {
       "id": "AC5",
       "description": "CI/CD evidence mapping accurately covers current support, adoption and operational boundaries.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/quality/ci-cd.md",
+        "docs/changes/backbone-testing-ci-contract/authority-review.md"
+      ]
     },
     {
       "id": "AC6",
       "description": "Real source/rendered copy/update/negative compatibility checks preserve project ownership and protected contracts.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-testing-ci-contract/checks.md",
+        "docs/changes/backbone-testing-ci-contract/check-triage.md",
+        "docs/changes/backbone-testing-ci-contract/authority-review.md"
+      ]
     },
     {
       "id": "AC7",
       "description": "Independent checks/reviews/triage and actual published PR/readback with unresolved evidence explicit.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/changes/backbone-testing-ci-contract/plan-review.md",
+        "docs/changes/backbone-testing-ci-contract/review-triage.md",
+        "docs/changes/backbone-testing-ci-contract/publication.md"
+      ]
     }
   ],
   "validation": {
@@ -136,5 +162,5 @@
     "No fabricated PASS, weakened gates, historical fixture/report rewrites or automatic downstream application.",
     "No hosted-runner fallback or GitHub artifact uploads."
   ],
-  "status": "active"
+  "status": "ready_for_review"
 }
