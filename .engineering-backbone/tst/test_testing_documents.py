@@ -245,8 +245,9 @@ class TestingDocumentTests(unittest.TestCase):
         workflow_path.write_text(json.dumps(workflow), encoding='utf-8')
         result = self.validation_result(target)
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn('workflows.json', result.stdout + result.stderr)
-        self.assertIn('phase', result.stdout + result.stderr)
+        self.assertIn('workflow kit:', result.stdout + result.stderr)
+        self.assertIn('Check kind does not support selected phases',
+                      result.stdout + result.stderr)
         workflow['checks'][0]['phases'] = ['pr']
         workflow_path.write_text(json.dumps(workflow), encoding='utf-8')
         self.validate(target)
