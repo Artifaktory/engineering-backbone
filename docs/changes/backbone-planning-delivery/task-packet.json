@@ -8,7 +8,7 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "4394763d03c1d1302b6b37cef142d0f98f848be4",
-    "head_revision": null
+    "head_revision": "3badd4a15da5c2fb0a5136d234d2475702bb1a75"
   },
   "approved_sources": [
     "User authorization 2026-10-21: implement discussed planning documentation, include independent review points and source hints, create a PR.",
@@ -56,57 +56,86 @@
       "id": "AC-1",
       "description": "Canonical iterative and proportionate requirements/architecture-to-planning-to-delivery handoff, responsibility, coverage and change impact.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-planning-delivery/behavior-review.md",
+        "docs/changes/backbone-planning-delivery/checks.md"
+      ]
     },
     {
       "id": "AC-2",
       "description": "Complete reusable planning kit and coherent hypothetical parallel-delivery example without invented approval or PASS.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-planning-delivery/behavior-review.md",
+        "docs/changes/backbone-planning-delivery/checks.md"
+      ]
     },
     {
       "id": "AC-3",
       "description": "Accurate primary-source notes distinguish public standard scope, optional methods and Backbone-owned rules.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-planning-delivery/behavior-review.md",
+        "docs/changes/backbone-planning-delivery/authority-review.md"
+      ]
     },
     {
       "id": "AC-4",
       "description": "Source and legacy distribution/update preserve context links, project ownership, native instructions and existing schema/state contracts.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-planning-delivery/authority-review.md",
+        "docs/changes/backbone-planning-delivery/checks.md"
+      ]
     },
     {
       "id": "AC-5",
       "description": "Product fixtures are outside governance scanning; malformed governance remains rejected; complete historical bytes survive autocrlf and diagnostics are portable.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-planning-delivery/authority-review.md",
+        "docs/changes/backbone-planning-delivery/checks.md"
+      ]
     },
     {
       "id": "AC-6",
       "description": "Source CI remains repository/trust bound, uses local runners without hosted fallback or uploads, retains checks and reports unavailable evidence honestly.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-planning-delivery/authority-review.md",
+        "docs/changes/backbone-planning-delivery/checks.md"
+      ]
     },
     {
       "id": "AC-7",
       "description": "All incoming review points are triaged; neutral-export and optional-profile follow-up scope/acceptance are explicit.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "docs/changes/backbone-planning-delivery/incoming-review.md",
+        "docs/changes/backbone-planning-delivery/follow-up-packages.md"
+      ]
     },
     {
       "id": "AC-8",
       "description": "Actual checks, independent plan/Full/Delta reviews and triage support the published PR; no merge/release.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "docs/changes/backbone-planning-delivery/plan-review.md",
+        "docs/changes/backbone-planning-delivery/checks.md",
+        "docs/changes/backbone-planning-delivery/behavior-review.md",
+        "docs/changes/backbone-planning-delivery/authority-review.md",
+        "docs/changes/backbone-planning-delivery/review-triage.md",
+        "docs/changes/backbone-planning-delivery/publication.md",
+        "docs/changes/backbone-planning-delivery/closeout.md"
+      ]
     }
   ],
   "validation": {
@@ -141,5 +170,5 @@
     "No schema/state extensions, historical fixture rewrites, automatic downstream application or neutral-export runtime.",
     "No source CI hosted-runner fallback or GitHub artifact upload."
   ],
-  "status": "active"
+  "status": "ready_for_review"
 }
