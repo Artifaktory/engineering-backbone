@@ -68,6 +68,7 @@ class QualityWorkflowTests(unittest.TestCase):
             for name in FILES
         }
         self.original_digest = bundle_digest(self.trusted)
+        self.original_core = (self.trusted / '.engineering-backbone/core.md').read_bytes()
         self.assertIn(self.original_digest, json.loads(self.step['env']['PREVIOUS_TOOLCHAIN_SHA256']))
         self.assertNotIn(b'quality_errors', self.original_tooling['validate.py'])
         # Copy only the new optional package and project-owned declarations,
@@ -78,10 +79,28 @@ class QualityWorkflowTests(unittest.TestCase):
             '.engineering-backbone/quality-profile.schema.json',
             '.engineering-backbone/quality-guard.py',
             '.engineering-backbone/workflows.json',
+            # Current optional documents need their shared managed context,
+            # while the old core and attested tooling stay historical.
+            '.engineering-backbone/architecture.md',
+            '.engineering-backbone/architecture-sources.md',
+            '.engineering-backbone/planning.md',
+            '.engineering-backbone/planning-sources.md',
+            '.engineering-backbone/testing.md',
+            '.engineering-backbone/testing-sources.md',
+            '.engineering-backbone/ci-cd.md',
         ):
             shutil.copyfile(self.rendered / relative, self.candidate / relative)
-        for relative in ('.engineering-backbone/standards', 'docs/quality'):
+        for relative in (
+            '.engineering-backbone/standards', 'docs/quality',
+            '.engineering-backbone/architecture-templates',
+            '.engineering-backbone/planning-templates',
+            '.engineering-backbone/testing-templates',
+        ):
             shutil.copytree(self.rendered / relative, self.candidate / relative)
+        for name in ('requirement.json', 'review-evidence.json', 'task-packet.json'):
+            relative = '.engineering-backbone/examples/' + name
+            (self.candidate / relative).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(self.rendered / relative, self.candidate / relative)
         self.marker = self.workspace / 'candidate-quality-code-executed'
         (self.candidate / '.engineering-backbone/quality-guard.py').write_text(
             f'from pathlib import Path\nPath({str(self.marker)!r}).touch()\n'
@@ -89,6 +108,7 @@ class QualityWorkflowTests(unittest.TestCase):
 
     def assert_tooling_unchanged(self):
         for root in (self.candidate, self.trusted):
+            self.assertEqual(self.original_core, (root / '.engineering-backbone/core.md').read_bytes())
             self.assertEqual(self.original_digest, bundle_digest(root))
             for name, content in self.original_tooling.items():
                 self.assertEqual(content, (root / '.engineering-backbone' / name).read_bytes(), name)

@@ -172,7 +172,7 @@ class CodexConsolidationTests(unittest.TestCase):
                 })
                 self.assertEqual(
                     (target / ".engineering-backbone/core.md").read_bytes().strip(),
-                    (self.source / "docs/agent-governance/core.md").read_bytes().strip().replace(b"(../quality/policy.md)", b"(quality-policy.md)"),
+                    (self.source / "docs/agent-governance/core.md").read_bytes().strip().replace(b"(../quality/policy.md)", b"(quality-policy.md)").replace(b"(../quality/testing.md)", b"(testing.md)").replace(b"(../quality/ci-cd.md)", b"(ci-cd.md)"),
                 )
                 self.assert_shared_fragments(target)
                 self.assert_reviewer_contract(codex_profile(target, "reviewer")["developer_instructions"])
@@ -294,7 +294,7 @@ class CodexConsolidationTests(unittest.TestCase):
         self.assertNotEqual((target / ".engineering-backbone/core.md").read_bytes(), previous_core)
         self.assertEqual(
             (target / ".engineering-backbone/core.md").read_bytes().strip(),
-            (self.source / "docs/agent-governance/core.md").read_bytes().strip().replace(b"(../quality/policy.md)", b"(quality-policy.md)"),
+            (self.source / "docs/agent-governance/core.md").read_bytes().strip().replace(b"(../quality/policy.md)", b"(quality-policy.md)").replace(b"(../quality/testing.md)", b"(testing.md)").replace(b"(../quality/ci-cd.md)", b"(ci-cd.md)"),
         )
         self.assert_shared_fragments(target)
         for name, old_content in previous_fragments.items():

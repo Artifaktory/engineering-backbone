@@ -1,0 +1,2 @@
+{% set canonical %}{% include 'docs/quality/testing-sources.md' %}{% endset %}
+{{ canonical | replace('(../../.engineering-backbone/schemas/', '(schemas/') | replace('(../templates/examples/', '(examples/') | replace('(../templates/testing/', '(testing-templates/') | replace('(../templates/architecture/', '(architecture-templates/') | replace('(../templates/planning/', '(planning-templates/') | replace('(../agent-governance/', '(') | replace('(policy.md)', '(quality-policy.md)') | replace('(dependencies.md)', '(dependency-policy.md)') }}

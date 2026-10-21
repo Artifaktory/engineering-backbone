@@ -1,1 +1,2 @@
-{% include 'docs/quality/policy.md' %}
+{% set canonical %}{% include 'docs/quality/policy.md' %}{% endset %}
+{{ canonical | replace('(../templates/testing/', '(testing-templates/') }}

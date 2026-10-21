@@ -442,3 +442,27 @@ Copier does not copy this source repository's tooling Dockerfile into applicatio
 
 Absent contracts and inactive seeds remain compatible with legacy installations;
 they do not claim dependency-policy adoption or executed compatibility evidence.
+
+## Testing and CI/CD evidence adoption
+
+Adopt the [testing contract](../quality/testing.md),
+[source notes](../quality/testing-sources.md), [CI/CD contract](../quality/ci-cd.md)
+and [testing kit](../templates/testing/README.md) with their reviewed core. Legacy
+Copier always installs managed `testing.md`, `testing-sources.md`, `ci-cd.md` and
+`testing-templates/` beneath `.engineering-backbone/`. This supplies common context
+without creating live product tests, approvals, strategy/results or active workflows.
+
+Project-owned quality plans, strategies, traceability, exceptions, native
+instructions and workflow configuration remain protected on update. Reuse them as
+the authoritative records and manually integrate applicable new questions; common
+templates are optional record shapes. Keep the existing quality/workflow inactive
+seed and separate activation gates. The source CI contract's local runners and
+no-upload policy do not turn legacy consumer workflow assumptions into a ready
+local-runner profile. Review runner permissions, isolation, evidence retention and
+actual required-check settings before activating any receiving project's CI.
+
+The semantic status crosswalk does not change Task Packet, requirement, review,
+quality CSV or workflow schemas. General periodic/release behavior suites, arbitrary
+platform matrices and new result adapters need separately reviewed implementation;
+the new documents do not install those capabilities. Verify actual executed
+results and negative gates on the receiving project before claiming adoption.

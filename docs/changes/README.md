@@ -5,8 +5,10 @@ and repair evidence together under `docs/changes/<delivery>/`. New records repor
 actual revisions and results. A copied plan, an old PASS statement or a valid schema
 is not evidence that the receiving project was checked or approved.
 
-The active delivery is [BB-PLAN-016](backbone-planning-delivery/task-packet.json),
-with its [independently reviewed plan](backbone-planning-delivery/plan.md),
+The active delivery is [BB-TEST-017](backbone-testing-ci-contract/task-packet.json),
+with its [independently reviewed plan](backbone-testing-ci-contract/plan.md).
+The merged [BB-PLAN-016 delivery](backbone-planning-delivery/task-packet.json) retains its
+[plan](backbone-planning-delivery/plan.md),
 [incoming review disposition](backbone-planning-delivery/incoming-review.md) and
 [open consumer follow-ups](backbone-planning-delivery/follow-up-packages.md).
 The merged [BB-ARCH-015 architecture delivery](backbone-architecture-contract/plan.md)
@@ -59,3 +61,10 @@ copy. Omitting or changing required archived files needs an explicit, reviewed
 adoption/migration of that contract. Store the receiving project's new evidence in
 its own delivery directory and replace Backbone-specific active task references in
 root instructions. Never relabel inherited records as that project's results.
+
+## Testing, verification and CI/CD contract delivery
+
+Current scoped delivery: [BB-TEST-017](backbone-testing-ci-contract/task-packet.json)
+and its [independently reviewed plan](backbone-testing-ci-contract/plan.md).
+The earlier planning and architecture deliveries remain historical, revision-bound
+records. Their results do not qualify this new implementation.

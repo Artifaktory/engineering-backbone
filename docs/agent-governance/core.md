@@ -55,6 +55,15 @@ orchestrator, extend Task Packet schemas or override stricter local controls.
 
 ## Checks and evidence
 
+For test planning, execution, result interpretation and completion, apply the
+[testing and verification contract](../quality/testing.md) and its
+[CI/CD evidence mapping](../quality/ci-cd.md). Carry requirement/risk/design IDs,
+procedures, actual revisions/environments, outcomes and unresolved gaps at handoff.
+These semantic duties do not activate an optional quality profile, add schema
+states, install workflows or replace stronger project gates. Small changes may
+combine the applicable records; project tools and test techniques remain local.
+
+
 Run the project's relevant deterministic checks before formal review. A bug fix
 needs a meaningful regression check. Contract or workflow changes need producer /
 consumer and failure-path checks proportional to risk. Preserve assertions,

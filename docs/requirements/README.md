@@ -22,3 +22,9 @@ Use the [planning contract](../agent-governance/planning.md) and
 [planning kit](../templates/planning/README.md) to connect these authoritative
 records to delivery outcomes, dependencies and acceptance. Planning references
 source revisions; it does not create a competing requirement or design authority.
+
+Use the [testing contract](../quality/testing.md) and
+[testing kit](../templates/testing/README.md) to link these authoritative inputs
+to verification design and actual evidence. The [CI/CD mapping](../quality/ci-cd.md)
+records when and where the required checks run; selecting a workflow is not a test
+result or an acceptance decision.

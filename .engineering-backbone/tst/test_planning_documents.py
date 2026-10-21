@@ -34,6 +34,8 @@ def installed_guide_text(text):
         ('(../templates/architecture/', '(architecture-templates/'),
         ('(../templates/planning/', '(planning-templates/'),
         ('(../quality/policy.md', '(quality-policy.md'),
+        ('(../quality/testing.md)', '(testing.md)'),
+        ('(../quality/ci-cd.md)', '(ci-cd.md)'),
     ):
         text = text.replace(source, destination)
     return text.strip()

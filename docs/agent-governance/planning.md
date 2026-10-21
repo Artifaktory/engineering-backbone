@@ -279,3 +279,11 @@ Use available native procedures with the existing role mapping and current proje
 facts; preserve their independent review, triage, budget and human-decision rules.
 
 Source note: Backbone interoperability and handoff contract informed by [P-S01, P-S06 and P-S12](planning-sources.md#reference-register).
+
+## Verification evidence handoff
+
+Use the [testing contract](../quality/testing.md) and
+[CI/CD mapping](../quality/ci-cd.md) to carry planned verification into reproducible
+procedures, actual revision/environment-bound results and completion assessment.
+Keep requirement/design acceptance, execution outcomes and delivery gates distinct;
+a prepared test or workflow binding is not evidence that it ran.
