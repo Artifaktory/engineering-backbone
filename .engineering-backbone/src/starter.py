@@ -99,14 +99,35 @@ def safe_relative(value):
     return value
 
 
+def is_alias(path):
+    # Windows directory junctions are distinct from symbolic links.
+    return path.is_symlink() or path.is_junction()
+
+
+def reject_alias_ancestors(path):
+    if any(is_alias(component) for component in (path, *path.parents)):
+        raise StarterError('linked or junctioned root/path ancestor is not accepted')
+
+
+def contained_path(root, path):
+    reject_alias_ancestors(path)
+    try:
+        if not path.resolve().is_relative_to(root.resolve()):
+            raise StarterError('path resolves outside its project root')
+    except RuntimeError as exc:
+        raise StarterError('path cannot be resolved safely') from exc
+    return path
+
+
 def safe_root(value, *, must_exist=True):
     path = Path(value)
     if '..' in path.parts:
         raise StarterError('parent traversal is not accepted')
     path = path.absolute()
-    for component in (path, *path.parents):
-        if component.is_symlink():
-            raise StarterError('symlinked root or ancestor is not accepted')
+    reject_alias_ancestors(path)
+    # Retain a physical check even if a platform does not classify an alias.
+    if os.path.normcase(str(path.resolve())) != os.path.normcase(str(path)):
+        raise StarterError('root resolves through an unexpected physical alias')
     if must_exist and not path.is_dir():
         raise StarterError('expected an existing directory')
     return path
@@ -115,11 +136,10 @@ def safe_root(value, *, must_exist=True):
 def safe_file(root, relative):
     relative = safe_relative(relative)
     path = root.joinpath(*relative.split('/'))
+    contained_path(root, path)
     current = root
     for part in relative.split('/'):
         current /= part
-        if current.is_symlink():
-            raise StarterError('linked managed/project record: ' + relative)
         if current.parent.is_dir():
             matches = [p.name for p in current.parent.iterdir() if p.name.casefold() == part.casefold()]
             if any(name != part for name in matches):
@@ -280,7 +300,7 @@ def manifest_for(source, plan):
 
 def write_export(source, destination, project_name):
     root = safe_root(destination, must_exist=False)
-    if root == source.root or root.is_relative_to(source.root):
+    if root.resolve() == source.root.resolve() or root.resolve().is_relative_to(source.root.resolve()):
         raise StarterError('export destination must be outside the trusted source')
     if root.exists() and (not root.is_dir() or any(root.iterdir())):
         raise StarterError('export destination must be new or empty')
@@ -291,11 +311,9 @@ def write_export(source, destination, project_name):
     # never replace a file that appeared after this preflight.
     root.mkdir(parents=True, exist_ok=True)
     for path, entry in records.items():
-        destination_path = root.joinpath(*path.split('/'))
+        destination_path = contained_path(root, root.joinpath(*path.split('/')))
         destination_path.parent.mkdir(parents=True, exist_ok=True)
-        for component in (destination_path.parent, *destination_path.parent.parents):
-            if component.is_symlink():
-                raise StarterError('destination changed to a linked path')
+        contained_path(root, destination_path)
         with destination_path.open('xb') as output:
             output.write(entry.data)
     return len(plan)
@@ -359,7 +377,15 @@ def trusted_validator(source):
 def schema_check(module, source, name, data, label):
     raw = source.blobs(['.engineering-backbone/schemas/' + name + '.schema.json'])
     schema = read_json_bytes(next(iter(raw.values())))
-    if not module.Draft202012Validator(schema).is_valid(data):
+    # Reuse the unchanged trusted method's schema AND deterministic cross-field
+    # floors, without its constructor (which reads on-disk bundle schemas) or run().
+    checker = module.RepositoryValidator.__new__(module.RepositoryValidator)
+    checker.schemas = {name: module.Draft202012Validator(schema)}
+    checker.errors = []
+    checker.validate_data(name, data, label)
+    if checker.errors:
+        # Detailed trusted diagnostics can include candidate field values; expose
+        # only the fixed record type/path, never those internal messages.
         raise StarterError('invalid ' + name + ' record: ' + label)
 
 
@@ -411,12 +437,7 @@ def verify_project(source, root):
     environment_structure(source, root)
     check_documentation(root, plan)
     for directory in ENGINEERING_ROOTS:
-        folder = root / directory
-        if not folder.exists():
-            continue
-        if folder.is_symlink():
-            raise StarterError('linked governance directory')
-        for file in folder.rglob('*.json'):
+        for file in governance_json_files(root, directory):
             relative = file.relative_to(root).as_posix()
             safe_file(root, relative)
             data = read_json_bytes(file.read_bytes())
@@ -430,6 +451,31 @@ def verify_project(source, root):
                 raise StarterError('unrecognized governance JSON record: ' + relative)
             schema_check(module, source, kind, data, relative)
     return len([entry for entry in plan.values() if entry.owner == 'managed'])
+
+
+
+def governance_json_files(root, directory):
+    folder = root / directory
+    # Inspect aliases before existence filtering, including dangling links.
+    contained_path(root, folder)
+    if not folder.exists():
+        return
+    if not folder.is_dir():
+        raise StarterError('governance root must be a regular directory')
+    pending = [folder]
+    while pending:
+        current = contained_path(root, pending.pop())
+        with os.scandir(current) as entries:
+            for entry in entries:
+                path = contained_path(root, Path(entry.path))
+                # Do not let recursive glob silently skip linked subdirectories.
+                # Every entry is checked before JSON filename selection/descent.
+                if entry.is_dir(follow_symlinks=False):
+                    pending.append(path)
+                elif not entry.is_file(follow_symlinks=False):
+                    raise StarterError('governance entry must be a regular file/directory')
+                elif path.suffix == '.json':
+                    yield path
 
 
 def check_documentation(root, plan):
@@ -448,7 +494,8 @@ def check_documentation(root, plan):
             resolved = posixpath.normpath(posixpath.join(posixpath.dirname(relative), unquote(parsed.path)))
             safe_relative(resolved)
             linked = root.joinpath(*resolved.split('/'))
-            if linked.is_symlink() or not linked.exists() or not linked.resolve().is_relative_to(root):
+            contained_path(root, linked)
+            if not linked.exists():
                 raise StarterError('broken/escaping local Markdown reference: ' + relative)
             return value
         markdown_targets(file.read_text(encoding='utf-8'), target)
@@ -490,13 +537,20 @@ def old_plan(source_root, source_ref, project_name):
 
 def compare_project(source, previous_root, previous_ref, root):
     root = safe_root(root)
+    previous_root = safe_root(previous_root)
+    # Reject every overlap BEFORE Git-attested OLD code is launched. An exact
+    # ref attests bytes, but does not make a project-contained source acceptable.
+    for trusted_root in (source.root, previous_root):
+        physical_source, physical_project = trusted_root.resolve(), root.resolve()
+        if (physical_source == physical_project
+                or physical_source.is_relative_to(physical_project)
+                or physical_project.is_relative_to(physical_source)):
+            raise StarterError('trusted source checkouts must be outside the project')
     reject_other_installation(root)
     facts = read_json_bytes(safe_file(root, '.engineering-backbone/project.json').read_bytes())
     module = trusted_validator(source)
     schema_check(module, source, 'project', facts, '.engineering-backbone/project.json')
     old, before = old_plan(previous_root, previous_ref, facts['project']['name'])
-    if old.root == root or old.root.is_relative_to(root) or source.root == root or source.root.is_relative_to(root):
-        raise StarterError('trusted source checkouts must be outside the project')
     after = build_plan(source, facts['project']['name'])
     provenance(root, old, before)
     result = []

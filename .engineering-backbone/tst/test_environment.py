@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import importlib.util
+import contextlib
+import io
 import json
 import os
 from pathlib import Path
@@ -135,6 +137,20 @@ class EnvironmentTests(unittest.TestCase):
                 self.assertIn("env file line", result.stderr)
                 self.assert_redacted(result, "UNKNOWN_SECRET_NAME")
 
+    def test_nul_in_comment_fails_before_comment_skipping_and_stays_redacted(self):
+        self.contract([])
+        for line in ("# " + SENTINEL + "\0comment\n", "  # comment\0" + SENTINEL + "\n"):
+            (self.root / ".env").write_text(line, encoding="utf-8")
+            result = self.run_cli("--env-file", ".env")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("env file line 1: NUL is not allowed", result.stderr)
+            self.assert_redacted(result, line)
+        (self.root / ".env").write_text("# ordinary comment\n  # another comment\n\n",
+                                        encoding="utf-8")
+        result = self.run_cli("--env-file", ".env")
+        self.assertEqual(result.returncode, 0)
+        self.assert_redacted(result)
+
     def test_contract_rejects_values_defaults_secret_enums_and_invalid_metadata(self):
         entries = [
             variable(value=SENTINEL), variable(default=SENTINEL),
@@ -201,6 +217,74 @@ class EnvironmentTests(unittest.TestCase):
         with patch.object(Path, "is_symlink", return_value=True):
             with self.assertRaisesRegex(environment.EnvironmentError, "symbolic links"):
                 environment._input_path(self.root, Path("config/environment.json"))
+
+    def test_directory_junctions_are_rejected_at_root_or_ancestor_before_reads(self):
+        self.contract([])
+        register = self.root / "config/environment.json"
+        self.assertEqual(environment._input_path(self.root, Path("config/environment.json")),
+                         register)
+        for alias in (self.root, self.root / "config"):
+            with self.subTest(alias="root" if alias == self.root else "ancestor"):
+                captured = io.StringIO()
+                with patch.object(Path, "is_symlink", return_value=False), \
+                        patch.object(Path, "is_junction", autospec=True,
+                                     side_effect=lambda path: path == alias), \
+                        patch.object(environment, "_read") as read, \
+                        contextlib.redirect_stdout(captured), contextlib.redirect_stderr(captured):
+                    status = environment.main(["--root", str(self.root)])
+                self.assertEqual(status, 1)
+                self.assertIn("directory junction", captured.getvalue())
+                self.assertNotIn(SENTINEL, captured.getvalue())
+                read.assert_not_called()
+
+        # This branch exercises real NTFS junctions when the suite runs natively
+        # on Windows. The modeled checks above still run on every platform.
+        if os.name == "nt":
+            with tempfile.TemporaryDirectory(prefix="backbone-env-junction-") as outside:
+                external = Path(outside)
+                (external / "register.json").write_text(
+                    json.dumps(dict(version=1, variables=[])), encoding="utf-8")
+                link = self.root / "junction"
+                created = subprocess.run(["cmd.exe", "/d", "/c", "mklink", "/J",
+                                          str(link), str(external)],
+                                         capture_output=True, text=True, timeout=10)
+                self.assertEqual(created.returncode, 0, "native junction fixture could not be created")
+                try:
+                    self.assertTrue(link.is_junction())
+                    result = self.run_cli("--contract", "junction/register.json")
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn("directory junction", result.stderr)
+                    self.assert_redacted(result)
+                finally:
+                    link.rmdir()
+
+    def test_resolved_physical_escape_is_rejected_before_input_reads(self):
+        self.contract([])
+        regular = self.root / "config/environment.json"
+        real_resolve = Path.resolve
+        outside = self.root.parent / (self.root.name + "-outside")
+        for args, alias_path, expected_reads in (
+                (["--contract", "config/environment.json"], regular, 0),
+                (["--env-file", ".env"], self.root / ".env", 1)):
+            with self.subTest(input="contract" if expected_reads == 0 else "env"):
+                (self.root / ".env").write_text("# " + SENTINEL + "\n", encoding="utf-8")
+                captured = io.StringIO()
+
+                def redirected_resolve(path, *positional, **keywords):
+                    return outside if path == alias_path else real_resolve(path, *positional, **keywords)
+
+                with patch.object(Path, "is_symlink", return_value=False), \
+                        patch.object(Path, "is_junction", return_value=False), \
+                        patch.object(Path, "resolve", autospec=True, side_effect=redirected_resolve), \
+                        patch.object(environment, "_read", wraps=environment._read) as read, \
+                        contextlib.redirect_stdout(captured), contextlib.redirect_stderr(captured):
+                    status = environment.main(["--root", str(self.root), *args])
+                self.assertEqual(status, 1)
+                self.assertIn("resolves outside", captured.getvalue())
+                self.assertNotIn(SENTINEL, captured.getvalue())
+                self.assertEqual(read.call_count, expected_reads)
+                if expected_reads:
+                    self.assertEqual(read.call_args.args, (regular,))
 
     def test_unknown_cli_argument_is_redacted(self):
         self.contract([])

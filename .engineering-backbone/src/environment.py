@@ -105,9 +105,11 @@ def load_env_file(path: Path, names: set[str]) -> dict[str, str]:
     """Parse literal KEY=VALUE lines, never shell code or dotenv interpolation."""
     values = {}
     for line_number, line in enumerate(_read(path).splitlines(), start=1):
+        if "\0" in line:
+            raise EnvironmentError(f"env file line {line_number}: NUL is not allowed")
         if not line.strip() or line.lstrip().startswith("#"):
             continue
-        if "=" not in line or "\0" in line:
+        if "=" not in line:
             raise EnvironmentError(f"env file line {line_number}: expected literal KEY=VALUE")
         key, value = line.split("=", 1)
         if not NAME.fullmatch(key) or key not in names:
@@ -145,12 +147,18 @@ def validate_values(entries: list[dict], values: dict[str, str], context: str) -
     return errors
 
 
+def _has_alias(path: Path) -> bool:
+    return any(part.is_symlink() or part.is_junction() for part in (path, *path.parents))
+
+
 def _input_path(root: Path, supplied: Path) -> Path:
     path = Path(os.path.abspath(supplied if supplied.is_absolute() else root / supplied))
     if not path.is_relative_to(root):
         raise EnvironmentError("input path must stay inside the selected root")
-    if any(part.is_symlink() for part in (path, *path.parents)):
-        raise EnvironmentError("input path must not contain symbolic links")
+    if _has_alias(path):
+        raise EnvironmentError("input path must not contain symbolic links or directory junctions")
+    if not path.resolve(strict=True).is_relative_to(root.resolve(strict=True)):
+        raise EnvironmentError("input path resolves outside the selected root")
     return path
 
 
@@ -169,8 +177,9 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     try:
         root = Path(os.path.abspath(args.root))
-        if not root.is_dir() or any(part.is_symlink() for part in (root, *root.parents)):
-            raise EnvironmentError("root must be an existing directory without symbolic links")
+        if not root.is_dir() or _has_alias(root):
+            raise EnvironmentError("root must be an existing directory without symbolic links or directory junctions")
+        root = root.resolve(strict=True)
         entries = load_contract(_input_path(root, args.contract))
         names = {entry["name"] for entry in entries}
         values = (load_env_file(_input_path(root, args.env_file), names)

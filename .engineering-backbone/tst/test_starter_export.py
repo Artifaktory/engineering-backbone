@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import importlib.util
+from copy import deepcopy
 import json
 import marshal
+import os
 import struct
 from pathlib import Path
 import shutil
@@ -11,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = '.engineering-backbone/src/starter.py'
@@ -294,6 +297,154 @@ class StarterExportTests(unittest.TestCase):
                             if row['path'] in previous_plan and previous_plan[row['path']].owner == 'project'))
         changed_owner = next(row for row in rows if row['path'] == 'docs/templates/testing/test-design.md')
         self.assertEqual(changed_owner['action'], 'manual-review')
+
+    def test_comparison_rejects_project_nested_old_source_before_descriptor_execution(self):
+        nested = self.project / 'vendor/old-source'
+        (nested / SCRIPT).parent.mkdir(parents=True)
+        marker = self.project.parent / 'descriptor-executed'
+        (nested / SCRIPT).write_text('from pathlib import Path\nPath(' + repr(str(marker))
+                                     + ').write_text("executed")\nprint("{}")\n')
+        git(nested, 'init', '-q')
+        git(nested, 'config', 'user.name', 'Starter test')
+        git(nested, 'config', 'user.email', 'starter-test@example.invalid')
+        nested_ref = commit(nested, 'Explicit but project-contained source')
+        before = file_snapshot(self.project)
+        with self.assertRaisesRegex(starter.StarterError, 'outside the project'):
+            starter.compare_project(self.authority, nested, nested_ref, self.project)
+        self.assertFalse(marker.exists(), 'disallowed descriptor must not execute before rejection')
+        self.assertEqual(before, file_snapshot(self.project))
+        # The same comparison remains valid with the ordinary external source.
+        rows = starter.compare_project(self.authority, self.source, self.ref, self.project)
+        self.assertTrue(rows)
+        self.assertFalse(marker.exists())
+
+    def test_directory_junction_model_refuses_roots_reads_and_export_writes(self):
+        outside = self.project.parent / 'outside-junction-target'
+        outside.mkdir()
+        (outside / 'data.json').write_text('private sentinel')
+        alias = self.project / 'junction'
+        alias.symlink_to(outside, target_is_directory=True)
+        original_symlink = Path.is_symlink
+        # On NTFS a junction is an alias even when is_symlink is false. This
+        # Linux-capable model does not claim an actual native junction execution.
+        def not_symlink(path):
+            return False if path == alias else original_symlink(path)
+        def junction(path):
+            return path == alias
+        with mock.patch.object(Path, 'is_symlink', not_symlink), mock.patch.object(Path, 'is_junction', junction):
+            with self.assertRaises(starter.StarterError):
+                starter.safe_root(alias)
+            with self.assertRaises(starter.StarterError):
+                starter.safe_file(self.project, 'junction/data.json')
+            with self.assertRaises(starter.StarterError):
+                starter.write_export(self.authority, alias / 'new', 'example')
+        self.assertEqual((outside / 'data.json').read_text(), 'private sentinel')
+        self.assertFalse((outside / 'new').exists())
+        # Resolved containment remains a second defense if alias classification
+        # is unavailable or returns false for this modeled directory alias.
+        with mock.patch.object(Path, 'is_symlink', not_symlink), mock.patch.object(Path, 'is_junction', lambda path: False):
+            with self.assertRaises(starter.StarterError):
+                starter.safe_root(alias)
+            with self.assertRaises(starter.StarterError):
+                starter.safe_file(self.project, 'junction/data.json')
+            with self.assertRaises(starter.StarterError):
+                starter.write_export(self.authority, alias / 'new', 'example')
+        self.assertFalse((outside / 'new').exists())
+        if os.name == 'nt':
+            native = self.project / 'native-junction'
+            created = subprocess.run(['cmd', '/c', 'mklink', '/J', str(native), str(outside)],
+                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.assertEqual(created.returncode, 0, 'native NTFS junction setup failed')
+            try:
+                self.assertTrue(native.is_junction())
+                with self.assertRaises(starter.StarterError):
+                    starter.safe_root(native)
+                with self.assertRaises(starter.StarterError):
+                    starter.safe_file(self.project, 'native-junction/data.json')
+                with self.assertRaises(starter.StarterError):
+                    starter.write_export(self.authority, native / 'new', 'example')
+            finally:
+                native.rmdir()
+
+    def test_governance_walk_rejects_nested_and_dangling_directory_aliases(self):
+        outside = self.project.parent / 'governance-outside'
+        outside.mkdir()
+        (outside / 'task-packet.json').write_text('{"scope": {}}')
+        parent = self.project / 'docs/changes/delivery'
+        parent.mkdir()
+        link = parent / 'linked-records'
+        for target in (outside, outside / 'missing'):
+            with self.subTest(target_exists=target.exists()):
+                link.symlink_to(target, target_is_directory=True)
+                with self.assertRaises(starter.StarterError):
+                    starter.verify_project(self.authority, self.project)
+                link.unlink()
+        # The same directory alias modeled as a Windows junction is rejected
+        # before the JSON filter, even though the link is not is_symlink there.
+        link.symlink_to(outside, target_is_directory=True)
+        original = Path.is_symlink
+        with mock.patch.object(Path, 'is_symlink', lambda path: False if path == link else original(path)), \
+                mock.patch.object(Path, 'is_junction', lambda path: path == link):
+            with self.assertRaises(starter.StarterError):
+                starter.verify_project(self.authority, self.project)
+        link.unlink()
+        valid = json.loads((self.project / 'docs/templates/examples/task-packet.json').read_text())
+        record = parent / 'nested/task-packet.json'
+        record.parent.mkdir()
+        record.write_text(json.dumps(valid))
+        starter.verify_project(self.authority, self.project)
+        record.write_text('{"scope": {}}')
+        with self.assertRaisesRegex(starter.StarterError, 'task-packet'):
+            starter.verify_project(self.authority, self.project)
+
+    def test_trusted_record_cross_field_floors_reject_self_review_and_duplicate_ids(self):
+        examples = self.project / 'docs/templates/examples'
+        review = json.loads((examples / 'review-evidence.json').read_text())
+        packet = json.loads((examples / 'task-packet.json').read_text())
+        requirement = json.loads((examples / 'requirement.json').read_text())
+        record = self.project / 'docs/changes/records/record.json'
+        record.parent.mkdir()
+        finding = {'id': 'F-1', 'severity': 'P2',
+                   'location': {'path': 'src/example.py', 'line': 1},
+                   'claim': 'A bounded finding', 'evidence': ['check record'],
+                   'triage': 'untriaged', 'disposition': 'proposed'}
+        cases = []
+        bad = deepcopy(review)
+        bad['implementer'] = bad['reviewers'][0]['id'] = 'private-sentinel-id'
+        cases.append(('review-evidence', bad))
+        bad = deepcopy(review)
+        bad['reviewers'].append(deepcopy(bad['reviewers'][0]))
+        cases.append(('review-evidence', bad))
+        bad = deepcopy(review)
+        bad['findings'] = [deepcopy(finding), deepcopy(finding)]
+        cases.append(('review-evidence', bad))
+        bad = deepcopy(packet)
+        bad['acceptance'].append(deepcopy(bad['acceptance'][0]))
+        cases.append(('task-packet', bad))
+        bad = deepcopy(requirement)
+        bad['acceptance_criteria'].append(deepcopy(bad['acceptance_criteria'][0]))
+        cases.append(('requirement', bad))
+        for original in (review, packet, requirement):
+            record.write_text(json.dumps(original))
+            starter.verify_project(self.authority, self.project)
+        for kind, data in cases:
+            with self.subTest(kind=kind, index=cases.index((kind, data))):
+                record.write_text(json.dumps(data))
+                with self.assertRaisesRegex(starter.StarterError, 'invalid ' + kind) as error:
+                    starter.verify_project(self.authority, self.project)
+                self.assertNotIn('private-sentinel-id', str(error.exception))
+        record.write_text(json.dumps(review))
+        starter.verify_project(self.authority, self.project)
+        # Candidate schema edits still cannot relax either structural or cross-field floors.
+        schema = self.source / '.engineering-backbone/schemas/review-evidence.schema.json'
+        original = schema.read_bytes()
+        try:
+            schema.write_text('{}')
+            record.write_text(json.dumps(cases[0][1]))
+            with self.assertRaisesRegex(starter.StarterError, 'review-evidence'):
+                starter.verify_project(self.authority, self.project)
+        finally:
+            schema.write_bytes(original)
 
     def test_real_cli_and_autocrlf_checkout_preserve_managed_bytes(self):
         command = [sys.executable, '-I', str(self.source / SCRIPT), 'verify', '--source-ref', self.ref, '--root', str(self.project)]
