@@ -42,3 +42,51 @@ unsupported-phase input and the restored valid-`pr` success check. Recheck the
 affected case and five-test distribution suite, then qualify the repaired frozen
 implementation with the required independent full suite. This pre-Full correction
 does not consume a Full review round or weaken any product gate.
+
+## TEST-CHECK-02 — confirmed incomplete historical-consumer test fixture
+
+Checker: `testing_quality`. Independent read-only triager: `testing_check_triage`.
+Failed frozen head: `47cec1a72dbed195cbeb3534f83a80696061e2ff`, against the same actual
+base above. Binary patch SHA-256:
+`afbb4864ff6bc96d8b09d9e8788ac889743b2ae5ab7357c7bba904745e6b9c36`.
+
+All quick gates passed on that head. The full suite was stopped after confirmed
+failures (observed exit 130; 372 test-start markers, 367 OK markers and five FAIL
+markers). It is incomplete, not passed; wrapper duration is unavailable. A bounded
+diagnostic of `test_valid_inactive_package_passes_without_executing_candidate_guard`
+failed with exit 1, one test, 3.401 seconds unittest time / 3.874 seconds wrapper.
+The checker retained both logs/results under ignored `artifacts/testing-quality/`.
+
+`QualityWorkflowTests.setUp()` selectively copies current optional quality documents
+into a historical pre-attestation consumer. Those documents now link shared context
+that its copy list omitted. Six broken-link errors prevented the intended
+quality-authority checks from being reached. Normal current rendering includes
+these documents; no production distribution defect was demonstrated.
+
+Classification: **CONFIRMED, P2, incomplete test fixture**. The authorized repair
+adds only the missing 33-file managed context closure: seven guide/source files
+(`architecture.md`, `architecture-sources.md`, `planning.md`, `planning-sources.md`,
+`testing.md`, `testing-sources.md`, `ci-cd.md`); architecture/planning/testing template
+directories (8/7/8 files); and the three existing pending JSON examples. Keep all
+eight attested tooling files and historical `core.md` byte-identical, with an
+explicit core-preservation assertion alongside the existing tooling assertions.
+Keep poisoned candidate-guard and marker checks, old-validator acceptance and the
+actual workflow rejection assertions. Do not change schemas, archives, runtime
+guards or workflow payloads.
+
+Independent TEMP-only triage verification added exactly that context without
+tracked edits: the actual old validator and current workflow payload both passed,
+the candidate-guard marker stayed absent and tooling/core bytes were unchanged
+(4.682 seconds investigation). All four historical quality workflow methods then
+passed with temporary fixture augmentation, exit 0, 6.360 seconds. This is triage
+evidence, not qualification of a later repaired tracked snapshot.
+
+Root applied this authorized document-copy/assertion correction within the accepted
+test scope. The repaired historical workflow cases, distribution tests and required
+full suite must qualify the next immutable snapshot. This does not adopt a new
+historical core, weaken enforcement or consume a Full round.
+
+Tracked repair integration check: all seven tests in `test_quality_workflows.py`
+passed, exit 0, 7.181 seconds unittest time, using the locked interpreter. Its log
+is retained as `artifacts/testing-distribution/historical-quality-repair.log`.
+This author-side regression result remains distinct from independent qualification.
