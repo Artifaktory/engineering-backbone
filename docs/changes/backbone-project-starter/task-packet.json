@@ -1,0 +1,165 @@
+{
+  "schema_version": "1",
+  "id": "BB-START-018",
+  "title": "Usable neutral project starter and safe configuration",
+  "objective": "Deliver the five authorized starter foundations and environment/secrets support in one reviewable PR.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "4e74c7e5f3a07430768f670c4271c1e1a0e28f68",
+    "head_revision": "ff1279c0c6bf250c28195ba92262e85554522913"
+  },
+  "approved_sources": [
+    "User authorization 2026-10-21: one final combined PR for all five starter foundations including environment.",
+    "docs/agent-governance/core.md",
+    "docs/agent-governance/architecture.md",
+    "docs/agent-governance/planning.md",
+    "docs/quality/testing.md",
+    "docs/changes/backbone-planning-delivery/follow-up-packages.md",
+    "docs/changes/backbone-project-starter/plan.md"
+  ],
+  "scope": {
+    "include": [
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      ".env.example",
+      "config/**",
+      "scripts/**",
+      "docs/operations/**",
+      "docs/templates/operations/**",
+      "docs/agent-governance/adoption.md",
+      "docs/changes/README.md",
+      "docs/changes/backbone-project-starter/**",
+      ".engineering-backbone/src/environment.py",
+      ".engineering-backbone/src/starter.py",
+      ".engineering-backbone/tst/**",
+      ".engineering-backbone/starter/**"
+    ],
+    "exclude": [
+      ".engineering-backbone/src/validate.py",
+      ".engineering-backbone/src/source_layout.py",
+      ".engineering-backbone/schemas/**",
+      ".engineering-backbone/standards/**",
+      ".engineering-backbone/tst/fixtures/**",
+      ".github/workflows/**",
+      ".engineering-backbone/legacy/**",
+      "apps/**",
+      "packages/**",
+      "infra/docker/**",
+      ".engineering-backbone/requirements.txt",
+      ".engineering-backbone/requirements.lock",
+      "docs/changes/backbone-testing-ci-contract/**",
+      "docs/changes/backbone-planning-delivery/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC1",
+      "description": "Safe environment contract, redacted executable validation and explicit agent/loader boundaries.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "final-checks.md: fifteen environment tests and actual explicit example check",
+        "behavior-delta.md: START-BEH-01 closed",
+        "authority-delta.md: environment containment closed"
+      ]
+    },
+    {
+      "id": "AC2",
+      "description": "Working local prerequisite doctor, actionable runner onboarding and honest fleet/CI evidence.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": [
+        "final-checks.md: eleven doctor/example tests; development doctor exit 0; source-linux doctor exit 1, Docker unavailable",
+        "publication.md: five actual self-hosted jobs queued with no assigned runner; operational fleet/native/remote qualification pending"
+      ]
+    },
+    {
+      "id": "AC3",
+      "description": "Neutral canonical-path export and trusted structural verification without history/foreign active tasks.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "final-checks.md: fifteen exporter tests in complete 528-test suite",
+        "behavior-delta.md and authority-delta.md: fresh export and managed baseline controls"
+      ]
+    },
+    {
+      "id": "AC4",
+      "description": "Read-only trusted three-way update report preserves project ownership and reports conflicts/removals.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "authority-delta.md: actual external comparison and nested OLD descriptor nonexecution",
+        "final-checks.md: conflict/ownership/removal regressions"
+      ]
+    },
+    {
+      "id": "AC5",
+      "description": "Reproducible native command map and proportionate security/operations templates with source hints.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "behavior-review.md and authority-review.md: development/lifecycle/templates inspected",
+        "closeout.md: project applicability and unexecuted operational evidence"
+      ]
+    },
+    {
+      "id": "AC6",
+      "description": "Positive/negative distribution and trust tests, original schemas/gates/history preserved.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "final-checks.md: 528 PASS and eleven quick gates including actual base-owned validator; protected paths unchanged",
+        "final-triage.md: all five confirmed IDs closed; native/runtime gaps retained"
+      ]
+    },
+    {
+      "id": "AC7",
+      "description": "Independent plan/check/Full/triage chain plus actual PR publication and remaining gates recorded.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "plan-review.md: independent plan accepted before implementation",
+        "final-triage.md: both scoped Deltas final and independent closure",
+        "publication.md: actual PR24 readback and exact tree/parent/patch correspondence",
+        "closeout.md: acceptance, residual gates and recovery"
+      ]
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python .engineering-backbone/src/validate.py",
+      "python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check",
+      "python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check",
+      "python .engineering-backbone/src/maintenance/compile_navigation.py --check",
+      "python .engineering-backbone/src/maintenance/compile_quality_framework.py --check",
+      "python .engineering-backbone/src/check_source_dependencies.py",
+      "python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v",
+      "git diff --check BASE HEAD"
+    ],
+    "manual_evidence": [
+      "Independent design/plan review before implementation",
+      "Frozen behavior and authority Full reviews, separate triage/Delta if needed",
+      "Real exporter/verifier/update/doctor runs with limits explicit",
+      "Final PR identity and remote job readback"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 6
+  },
+  "stop_conditions": [
+    "Stop affected work on unknown mandatory context or conflicting authority.",
+    "Scope or trust expansion requires an independently reviewed updated plan.",
+    "At most two Full rounds; confirmed findings triaged before repair."
+  ],
+  "forbidden_actions": [
+    "No merge/release/deploy, runner registration, protection/permission change or automatic downstream apply.",
+    "No secrets in Git/chat/logs or artifact uploads, hosted fallback or deployment-runner reuse.",
+    "No source/legacy validator/schema/catalog/fingerprint weakening or historical fixture/report rewrites.",
+    "No candidate-code execution in export verification/update; no self-authorizing manifest mode or autoapply."
+  ],
+  "status": "ready_for_review"
+}

@@ -1,0 +1,22 @@
+# {{PROJECT_NAME}}
+
+This is a neutral project seed. Product requirements, architecture, implementation,
+checks and adoption decisions remain project-owned and pending. No inherited
+Backbone task, PASS statement or source CI result qualifies this project.
+
+Start with [contributing](CONTRIBUTING.md), the
+[development command map](docs/operations/development.md),
+[configuration and secrets](docs/operations/configuration.md), and
+[project facts](.engineering-backbone/project.json).
+
+Keep applicable components under `apps/`, shared libraries under `packages/`,
+component code in `src/` and tests in `tst/`. Remove unused product placeholders.
+Native dependency manifests and lockfiles stay beside their owning components.
+Common engineering policy is in [core](docs/agent-governance/core.md); requirements,
+architecture, planning and testing remain connected through the common document
+kits. This seed launches no host, installs no application or CI and proves no
+native instruction loading or model permissions.
+
+Use the separately reviewed source checkout's starter verifier. This repository
+has no source-history validator or active Backbone workflows. Existing installations
+must keep their own gates; this seed is not a downgrade/migration mechanism.

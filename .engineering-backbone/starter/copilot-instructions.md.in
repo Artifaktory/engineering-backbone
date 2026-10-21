@@ -1,0 +1,15 @@
+# {{PROJECT_NAME}} Copilot instructions
+
+Read ../AGENTS.md and the canonical project context:
+`docs/agent-governance/core.md`, `docs/agent-governance/architecture.md`,
+`docs/agent-governance/planning.md`, `docs/quality/testing.md` and
+`docs/operations/configuration.md`. These paths are repository-root relative.
+Use ../CONTRIBUTING.md and the project-owned development command map for actual
+commands, not Backbone source checks.
+
+Require an authorized Task Packet and independent plan review for non-trivial work.
+Keep implementation, quality, independent review and triage separate; repair
+confirmed findings only and use scoped Delta review. Preserve stricter instructions,
+real revision-bound evidence and human merge/release gates. Do not publish secrets,
+force-push, overwrite unrelated work or assume deployment/provider permission.
+Native role files and skills do not prove actual loading or independent review.

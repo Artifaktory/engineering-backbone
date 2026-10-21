@@ -1,0 +1,10 @@
+# Security reporting for {{PROJECT_NAME}}
+
+Project owner: pending. Private reporting channel: pending. Supported releases and
+response responsibilities: pending. Configure these before an external release.
+Do not put credentials, personal data or exploit-sensitive details into a public
+issue or chat. A placeholder is not an operational reporting channel.
+
+Use the [security and operations kit](docs/operations/lifecycle.md) to record
+applicable threats, access boundaries, incident ownership and recovery. Real
+results and approvals require project-owned evidence.

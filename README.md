@@ -2,8 +2,8 @@
 
 A reusable repository structure with shared engineering policy, agent instructions,
 documentation and validation tools. The files in this repository already occupy
-the paths used by a copied project. New projects start by copying the reviewed tree
-and filling in their own product facts; they do not need to render a template.
+the paths used by a copied project. New projects can export a neutral seed from a reviewed commit and fill in their
+own product facts. The source tree remains available for complete source previews.
 
 The direct-copy layout, architecture contract and planning delivery were human-merged
 in PRs #18, #21 and #22. They connect requirements and design to reviewed delivery
@@ -33,14 +33,16 @@ engineering-backbone/                 # becomes your project's repository root
 ├─ infra/
 │  └─ docker/engineering-backbone/
 │     └─ Dockerfile                   # image for Backbone tooling only
-├─ config/                            # shared product runtime configuration
+├─ config/                            # shared product config and variable register
 ├─ scripts/                           # shared product/repository commands
 ├─ docs/
 │  ├─ agent-governance/               # shared policy, procedures and adapter guides
 │  ├─ templates/                     # reusable engineering document kits
 │  │  ├─ examples/                   # task, requirement and review JSON examples
 │  │  ├─ architecture/               # architecture, decisions, scenarios and reviews
-│  │  └─ planning/                   # delivery plans, work items, dependencies and reviews
+│  │  ├─ planning/                   # delivery plans, work items, dependencies and reviews
+│  │  ├─ testing/                    # strategy, design, run and completion
+│  │  └─ operations/                 # security, release, recovery and local CI
 │  ├─ requirements/                   # product requirements
 │  ├─ architecture/                   # product design and decisions
 │  ├─ changes/                        # plans, reviews and evidence by delivery
@@ -62,6 +64,7 @@ engineering-backbone/                 # becomes your project's repository root
 ├─ .vscode/                           # shared, portable VS Code configuration
 ├─ .codex/                            # native Codex profiles
 ├─ .opencode/                         # native OpenCode profiles and skills
+├─ .env.example                      # safe variable examples; actual .env stays local
 ├─ AGENTS.md                          # project agent entrypoint
 ├─ CONTRIBUTING.md                    # project work and verification commands
 ├─ SECURITY.md
@@ -96,6 +99,31 @@ folder. The following are placement examples, not files already supplied here:
 framework. Its dependencies and tests belong to engineering tooling. Product
 languages, frameworks, dependencies and build systems remain project decisions.
 
+## Start a new project
+
+Use the [neutral project starter](docs/operations/project-starter.md) from a fixed,
+reviewed source checkout. Its exporter keeps the canonical layout, omits Backbone
+history and active source workflows, and creates project-owned entrypoints. A
+separate trusted-source verifier checks the managed starter baseline. A read-only
+update comparison reports upstream/local changes and conflicts; it applies nothing.
+The old source/legacy validation routes remain binding for existing installations.
+
+- [Configuration and secrets](docs/operations/configuration.md): root
+  `.env.example`, project-owned `config/environment.json` and a value-redacting
+  environment checker. No real credentials belong in Git or chat.
+- [Development start](docs/operations/development.md): prerequisites and authoritative
+  native setup/run/build/test/check commands, with unconfigured product work explicit.
+- [Local CI](docs/operations/engineering/source-ci.md): local prerequisite doctor,
+  exact runner labels, group/service onboarding and real execution evidence.
+- [Security and operations](docs/operations/lifecycle.md): proportionate threat,
+  release/support, incident, runbook and backup/restore records from the
+  [operations kit](docs/templates/operations/README.md).
+
+The local doctor does not register a runner. A successful seed or environment check
+is not a product test, hosting approval, secret-access boundary or completed CI.
+Local/no-upload consumer YAML is an inactive adoption example, not a replacement
+for already-adopted stronger workflow-kit gates.
+
 ## Existing files and first adoption
 
 The [complete relocation map](docs/changes/backbone-layout/mapping.md) accounts for
@@ -105,7 +133,7 @@ agent files stay in their tool's discovery paths. Earlier plans and reviews are
 preserved under [change history](docs/changes/README.md), with their original bytes
 and claims; they are not evidence that a copied product has passed its checks.
 
-Follow the [direct-copy adoption guide](docs/agent-governance/adoption.md). It lists
+Follow the [adoption guide](docs/agent-governance/adoption.md). It lists
 what must be changed for a project: project facts, root instructions, active task,
 actual build/test commands, CI and runner settings. Copy dotfolders, exclude Git
 metadata and local output, and preserve existing stricter project instructions.
@@ -118,7 +146,8 @@ See the [source CI contract](docs/operations/engineering/source-ci.md) and
 The retained Copier compatibility assets serve existing generated consumers at
 their previous paths. Their initial-copy/update tests and protection of local
 instructions remain required. They are not the starting path for the new reference
-layout. Automatic updates of directly copied repositories are future work.
+layout. The new starter offers read-only update comparison; actual integration
+remains a reviewed project PR with no automatic application.
 
 ## Validate this repository
 

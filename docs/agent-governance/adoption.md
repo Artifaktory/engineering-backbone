@@ -1,8 +1,9 @@
-# Direct-copy adoption and legacy updates
+# Neutral starter, source copies and legacy updates
 
 The repository itself is the reference structure. Its `apps/`, `docs/`, native
 agent directories and `.engineering-backbone/` tooling already occupy their final
-paths. **Direct copying is the new layout route.** The retained Copier instructions
+paths. New unadopted projects use the **neutral starter** below. Complete source
+copies retain their source validation/history contract. The retained Copier instructions
 later in this guide apply to existing generated consumers with the older bundle
 layout.
 
@@ -12,7 +13,31 @@ Those merges do not establish a released consumer package or downstream adoption
 Inspect a fixed reviewed commit and distinguish source checks from the receiving
 project's own approval, configuration and evidence.
 
-## Preview or copy the reference tree
+## Neutral seed for a new project
+
+Use [the project starter guide](../operations/project-starter.md). Execute export,
+verification and read-only update comparison from independently reviewed immutable
+source checkouts. The executable owns selection, transforms and managed-byte
+expectations; candidate manifests are informational, not a policy switch. The
+export preserves canonical directories while omitting source history/CI/maintenance
+assets and generating neutral project-owned facts and entrypoints.
+
+This route is for a new/empty destination. It cannot waive source archive checks,
+legacy tooling fingerprints, an installed active profile or stronger local controls.
+The seed verifier refuses unsupported optional-contract integration; it does not
+establish product behavior, semantic instruction consistency, native agent loading
+or hosting enforcement. Existing installations keep their current gates. A migration
+from an existing source/legacy copy needs its own reviewed trust transition.
+
+Start with the [configuration contract](../operations/configuration.md),
+[development map](../operations/development.md) and [lifecycle kit](../operations/lifecycle.md).
+Select actual native manifests, loaders and check commands. No source `.env`,
+password or old acceptance result is inherited. Keep credentials out of model
+context and provide them only to authorized task-scoped processes. The inactive
+local-CI example requires project-specific review and verified isolated workers
+before activation; it is not an activated workflow-kit replacement.
+
+## Preview or copy the complete source tree
 
 Use a separate empty destination and a fixed reviewed commit. Include dotfolders;
 exclude `.git`, installed environments, caches, run evidence and generated build
@@ -93,7 +118,9 @@ Project CI adoption and trust establishment require their own reviewed changes.
 Later updates to directly copied projects are explicit, reviewed file integrations.
 No automatic updater or retirement migration for the legacy compatibility assets
 is supplied. The [neutral-export follow-up](../changes/backbone-planning-delivery/follow-up-packages.md)
-records the required ownership, trust, validation and update work. Never automatically
+records the original ownership/trust requirements. The separate neutral starter
+now supplies its bounded export and read-only comparison; complete source copies
+retain the contract above. Never automatically
 apply upstream changes downstream.
 
 ## Governance artifact ownership

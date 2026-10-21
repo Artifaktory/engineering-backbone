@@ -1,0 +1,29 @@
+# {{PROJECT_NAME}} agent instructions
+
+Read [core](docs/agent-governance/core.md),
+[architecture](docs/agent-governance/architecture.md),
+[planning](docs/agent-governance/planning.md),
+[testing](docs/quality/testing.md),
+[configuration](docs/operations/configuration.md), [CONTRIBUTING.md](CONTRIBUTING.md)
+and applicable project/path instructions before scoped work.
+
+There is no active project Task Packet yet. Before non-trivial implementation,
+record actual project requirements, authority, branch/base/head, allowed actions,
+acceptance, checks, risk, roles and stops. Independently review the plan. Use separate
+implementation, quality, independent Full review and triage sessions; repair only
+confirmed findings and use scoped Delta review. Preserve stricter project rules.
+
+Do not publish secrets or read credential files into prompts. A task-authorized
+process may receive scoped credentials without exposing their raw values to the
+model. Git ignore rules do not establish file permissions or OS isolation.
+No merge, release, deployment, runner registration, protection change, credential
+grant or automatic downstream apply follows from this seed. Human decisions and
+actual revision-bound evidence remain required. Do not invent PASS or carry old
+Backbone delivery records as current project authority.
+
+Use [the project command map](docs/operations/development.md). Common managed files
+are checked from a separately reviewed immutable source checkout; do not replace
+existing source/legacy/project gates with this bounded seed verifier. Optional
+quality/navigation/workflow/dependency activation requires its own reviewed
+integration and actual execution evidence. Existing native files do not prove
+host loading, model qualification or runtime isolation.

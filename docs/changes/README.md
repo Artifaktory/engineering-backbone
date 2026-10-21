@@ -5,8 +5,10 @@ and repair evidence together under `docs/changes/<delivery>/`. New records repor
 actual revisions and results. A copied plan, an old PASS statement or a valid schema
 is not evidence that the receiving project was checked or approved.
 
-The active delivery is [BB-TEST-017](backbone-testing-ci-contract/task-packet.json),
-with its [independently reviewed plan](backbone-testing-ci-contract/plan.md).
+The active delivery is [BB-START-018](backbone-project-starter/task-packet.json),
+with its [plan](backbone-project-starter/plan.md).
+The merged [BB-TEST-017 testing and CI delivery](backbone-testing-ci-contract/task-packet.json)
+retains its [plan](backbone-testing-ci-contract/plan.md).
 The merged [BB-PLAN-016 delivery](backbone-planning-delivery/task-packet.json) retains its
 [plan](backbone-planning-delivery/plan.md),
 [incoming review disposition](backbone-planning-delivery/incoming-review.md) and

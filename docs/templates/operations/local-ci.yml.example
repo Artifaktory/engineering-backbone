@@ -1,0 +1,60 @@
+# INACTIVE adoption example. Keep outside .github/workflows until independently reviewed.
+# Select an isolated project runner/group, actual repository/base branch and real
+# native checks. Preserve existing stronger quality/workflow-kit/hosting gates.
+# This is not the installed workflow kit's trusted execution/aggregate replacement.
+name: Local project checks
+
+on:
+  pull_request:
+  push:
+    branches: [main] # Replace with the project's actual reviewed base branch.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: local-project-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    # Admission is evaluated before allocating a local worker. Fork PRs and
+    # privileged/unsupported events are excluded; no pull_request_target route.
+    if: >-
+      github.event_name == 'push' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: [self-hosted, Linux, X64, project-ci]
+    timeout-minutes: 20
+    steps:
+      - name: Require the configured project before checkout
+        shell: bash
+        env:
+          EXPECTED_REPOSITORY: REPLACE_OWNER/REPLACE_REPOSITORY
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_REPOSITORY" != "$EXPECTED_REPOSITORY" ]; then
+            echo '::error::Configure and review this project repository before activation.'
+            exit 1
+          fi
+      - name: Checkout explicit candidate
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Select engineering Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Check local development prerequisites
+        run: python scripts/runner_doctor.py --profile development
+      - name: Required project build, test and quality checks
+        shell: bash
+        run: |
+          echo '::error::Project setup/build/test/check commands are not configured.'
+          exit 1
+      # Supply actual native setup/check commands in the reviewed project copy.
+      # Do not inject production secrets, inherit reusable-workflow secrets,
+      # bypass failures, use hosted fallbacks or exchange GitHub artifacts.
+      # Retain redacted evidence through the approved local channel.
