@@ -8,7 +8,7 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "4e74c7e5f3a07430768f670c4271c1e1a0e28f68",
-    "head_revision": null
+    "head_revision": "ff1279c0c6bf250c28195ba92262e85554522913"
   },
   "approved_sources": [
     "User authorization 2026-10-21: one final combined PR for all five starter foundations including environment.",
@@ -59,50 +59,74 @@
       "id": "AC1",
       "description": "Safe environment contract, redacted executable validation and explicit agent/loader boundaries.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "final-checks.md: fifteen environment tests and actual explicit example check",
+        "behavior-delta.md: START-BEH-01 closed",
+        "authority-delta.md: environment containment closed"
+      ]
     },
     {
       "id": "AC2",
       "description": "Working local prerequisite doctor, actionable runner onboarding and honest fleet/CI evidence.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "final-checks.md: eleven doctor/example tests; development doctor exit 0; source-linux doctor exit 1, Docker unavailable",
+        "publication.md: five actual self-hosted jobs queued with no assigned runner; operational fleet/native/remote qualification pending"
+      ]
     },
     {
       "id": "AC3",
       "description": "Neutral canonical-path export and trusted structural verification without history/foreign active tasks.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "final-checks.md: fifteen exporter tests in complete 528-test suite",
+        "behavior-delta.md and authority-delta.md: fresh export and managed baseline controls"
+      ]
     },
     {
       "id": "AC4",
       "description": "Read-only trusted three-way update report preserves project ownership and reports conflicts/removals.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "authority-delta.md: actual external comparison and nested OLD descriptor nonexecution",
+        "final-checks.md: conflict/ownership/removal regressions"
+      ]
     },
     {
       "id": "AC5",
       "description": "Reproducible native command map and proportionate security/operations templates with source hints.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "behavior-review.md and authority-review.md: development/lifecycle/templates inspected",
+        "closeout.md: project applicability and unexecuted operational evidence"
+      ]
     },
     {
       "id": "AC6",
       "description": "Positive/negative distribution and trust tests, original schemas/gates/history preserved.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "final-checks.md: 528 PASS and eleven quick gates including actual base-owned validator; protected paths unchanged",
+        "final-triage.md: all five confirmed IDs closed; native/runtime gaps retained"
+      ]
     },
     {
       "id": "AC7",
       "description": "Independent plan/check/Full/triage chain plus actual PR publication and remaining gates recorded.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "plan-review.md: independent plan accepted before implementation",
+        "final-triage.md: both scoped Deltas final and independent closure",
+        "publication.md: actual PR24 readback and exact tree/parent/patch correspondence",
+        "closeout.md: acceptance, residual gates and recovery"
+      ]
     }
   ],
   "validation": {
@@ -137,5 +161,5 @@
     "No source/legacy validator/schema/catalog/fingerprint weakening or historical fixture/report rewrites.",
     "No candidate-code execution in export verification/update; no self-authorizing manifest mode or autoapply."
   ],
-  "status": "active"
+  "status": "ready_for_review"
 }
