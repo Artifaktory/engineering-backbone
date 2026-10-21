@@ -10,6 +10,11 @@ For scoped requirements or design work, read the
 [architecture contract](../docs/agent-governance/architecture.md) and carry its
 source/decision/view/verification context into planning and independent review.
 
+For scoped planning or decomposition, read the
+[planning contract](../docs/agent-governance/planning.md), including source revisions,
+start prerequisites, shared-resource conflicts and integration responsibility.
+Carry the linked planning/delivery records with the Task Packet.
+
 - Start with an authorized Task Packet, actual branch/base/head and approved scope.
   Map acceptance to real verification; classify control-plane changes as HIGH risk.
 - Use separate planning, implementation, quality, independent review and triage

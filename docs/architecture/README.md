@@ -21,3 +21,8 @@ evidence. Frozen delivery reviews belong in `docs/changes/<delivery>/`.
 No product architecture, approval or implementation is asserted by this placeholder
 or the hypothetical example in the document kit. Architectural elements describe
 responsibilities and relationships; they are not automatically source directories.
+
+Use the [planning contract](../agent-governance/planning.md) and
+[planning kit](../templates/planning/README.md) to connect these authoritative
+records to delivery outcomes, dependencies and acceptance. Planning references
+source revisions; it does not create a competing requirement or design authority.

@@ -6,10 +6,11 @@ paths. **Direct copying is the new layout route.** The retained Copier instructi
 later in this guide apply to existing generated consumers with the older bundle
 layout.
 
-This refactoring candidate is a draft, not a released or downstream-approved
-foundation. The previous trusted-base validator cannot accept the moved paths;
-that failure remains a visible merge blocker. A local preview can inspect a fixed
-candidate commit, but it is not release approval or proof of product readiness.
+The reference layout was human-merged in PR #18, with its trusted-layout
+compatibility prerequisite in PR #19; the architecture kit followed in PR #21.
+Those merges do not establish a released consumer package or downstream adoption.
+Inspect a fixed reviewed commit and distinguish source checks from the receiving
+project's own approval, configuration and evidence.
 
 ## Preview or copy the reference tree
 
@@ -57,13 +58,13 @@ link alone neither configures native loading nor installs a semantic CI gate.
 | `AGENTS.md`, `CONTRIBUTING.md`, root README | Replace Backbone-specific active task references, operational facts and commands. Preserve the common policy and stricter local instructions. |
 | `docs/requirements/`, `docs/architecture/`, `docs/quality/` | Write the project's requirements, decisions, actual test strategy and evidence. Shared policy and catalogs remain their distinct authority. |
 | `docs/changes/` | Keep inherited Backbone records labelled as history. Create the project's own delivery records; never copy historical PASS or authorization claims into current acceptance. |
-| `.github/workflows/` and Dependabot settings | Review actual runners, triggers, protected checks and dependency paths. The existing source-only workflow is intentionally restricted to `Artifaktory/engineering-backbone`; a copy does not provide activated downstream CI. |
+| `.github/workflows/` and Dependabot settings | Select or omit workflows before the first push. Source entrypoints reject foreign repositories before job allocation and require dedicated local runners. Reusable legacy workflows still have separate hosted-runner/upload assumptions; do not activate them in a local-only/no-upload project. Review triggers, permissions, protected checks and dependency paths explicitly. |
 | `.codex/`, `.github/` agent files, `.opencode/`, `opencode.json` | Preserve native discovery locations and restrictive permissions; review client applicability and local overrides. A file's presence does not prove it was loaded. |
 | `.engineering-backbone/opencode.json` | The companion remains inactive. This does not prevent native file discovery; controlled use requires its existing qualification and activation contract. |
 | `.vscode/` and other native settings | Keep only portable project settings, with no user paths, credentials or automatic commands. |
 | `infra/` and `config/` | Add the project's real Docker/deployment/runtime configuration. The existing tooling Dockerfile is only for Backbone; it does not configure application hosting. |
 
-In this first refactor, retain the mapped historical archive and maintenance assets
+Under the current source-validation contract, retain the mapped historical archive and maintenance assets
 with the tooling while verifying the copy. The source validator checks the archived
 identities and legacy compatibility contract. Removing those files requires a
 separate reviewed adoption/migration, not an unreported deletion. Legacy assets do
@@ -90,8 +91,44 @@ new layout: it expects the old generated bundle and its reviewed fingerprints.
 Project CI adoption and trust establishment require their own reviewed changes.
 
 Later updates to directly copied projects are explicit, reviewed file integrations.
-This first PR does not supply an automatic updater or retirement migration for the
-legacy compatibility assets. Never automatically apply upstream changes downstream.
+No automatic updater or retirement migration for the legacy compatibility assets
+is supplied. The [neutral-export follow-up](../changes/backbone-planning-delivery/follow-up-packages.md)
+records the required ownership, trust, validation and update work. Never automatically
+apply upstream changes downstream.
+
+## Governance artifact ownership
+
+In the reference source layout, automatic JSON/schema recognition is limited to
+`.engineering-backbone/` and `docs/agent-governance`, `docs/changes`, `docs/templates`,
+`docs/requirements`, `docs/plans`, `docs/reviews` and `docs/tasks`. The existing
+artifact filenames/segments remain strict inside these engineering roots. Product
+fixtures under `apps/`, `packages/`, root `tst/` or root `examples/` are not classified
+as governance solely because their names include examples, tasks, reviews or schemas.
+General source text/link/conflict checks still apply.
+
+The retained old source layout also reserves its original root engineering paths;
+legacy generated consumers validate artifacts only inside `.engineering-backbone/`.
+These boundaries belong to the executing validator, not a candidate-controlled
+registry or exemption. A project using different authoritative document locations
+records the mapping and its real verification mechanism; the generic validator does
+not claim automatic schema coverage of every project document.
+
+## Planning adoption and CI boundaries
+
+Adopt the [planning contract](planning.md), [source notes](planning-sources.md) and
+[planning kit](../templates/planning/README.md) together with the reviewed core.
+Declare authoritative requirements/design/plan/item locations, revision links,
+tracker projections, decision owners and execution handoffs in the project mapping.
+Keep project records in their chosen locations; templates and hypothetical examples
+remain examples. Reconcile old WP/issue terminology and any generic template that
+treats required tests or security as optional finishing work.
+
+See the [source CI contract](../operations/engineering/source-ci.md). Repository and
+event guards protect the checked-in source entrypoints; they are not runner sandbox
+controls or proof of provisioning. This source PR does not configure a consumer
+runner group, upload policy, required-check settings or native host qualification.
+An inactive OpenCode companion also does not disable GitHub Actions or native file
+discovery. Review and select each mechanism independently before activation.
 
 ## Legacy Copier adoption and updates
 
@@ -111,6 +148,12 @@ native instruction files remain preserved: integrate the canonical-core referenc
 and scoped architecture handoff through the reviewed adoption PR. Do not treat a
 successful Copier update as proof that an agent loaded the new instructions.
 
+Legacy consumers also receive managed `planning.md`, `planning-sources.md` and
+`planning-templates/`. Their source is the same canonical contract with adjusted
+links. This adds no project-owned plans/issues and no semantic planning engine.
+Preserved native instruction files need reviewed manual integration when their
+existing guidance does not yet reach the adopted core and planning contract.
+
 ## Before copying
 
 Use a clean isolated branch and an explicitly scoped Task Packet. Inventory the
@@ -126,7 +169,7 @@ Do not use floating main or invent a release tag.
 copier copy --vcs-ref APPROVED_COMMIT gh:Artifaktory/engineering-backbone .
 ```
 
-Normal authenticated Git/Copier access to this private repository is required for
+Normal Git/Copier access to the selected repository revision is required for
 the copy/update operation. Never put a token in the URL, answers file or command.
 Questions record project name, base branch, validation command, language and
 frontend/backend metadata, selected providers, optional Copilot Python/frontend

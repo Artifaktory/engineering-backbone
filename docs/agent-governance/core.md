@@ -45,6 +45,14 @@ quality/navigation activation; existing navigation and stricter project gates
 still apply. A template, diagram or successful document build is not design
 approval or evidence of implemented behavior.
 
+For scoped planning, decomposition and delivery handoffs, agents and human
+reviewers must apply the [planning contract](planning.md). Preserve source
+requirements/design authority, versioned outcomes, typed prerequisites, integration
+ownership, required verification and explicit return conditions. Start readiness,
+review readiness, item acceptance and release approval retain distinct meanings.
+Planning records may be combined proportionally; they do not install a tracker or
+orchestrator, extend Task Packet schemas or override stricter local controls.
+
 ## Checks and evidence
 
 Run the project's relevant deterministic checks before formal review. A bug fix

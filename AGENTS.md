@@ -2,8 +2,8 @@
 
 Read [the canonical policy](docs/agent-governance/core.md), [CONTRIBUTING.md](CONTRIBUTING.md), the active
 Task Packet and project instructions before non-trivial work. The current delivery is
-[BB-ARCH-015](docs/changes/backbone-architecture-contract/task-packet.json), with
-[its independently reviewed plan](docs/changes/backbone-architecture-contract/plan.md). This repository is
+[BB-PLAN-016](docs/changes/backbone-planning-delivery/task-packet.json), with
+[its independently reviewed plan](docs/changes/backbone-planning-delivery/plan.md). This repository is
 the shared agent/engineering control plane: its changes are HIGH risk by default.
 
 - Work within an explicitly authorized, scoped Task Packet. Inspect the branch,
@@ -45,13 +45,13 @@ this publication check again.
 Changes target the project-configured base branch (`main` for this repository).
 Run evidence belongs in ignored `artifacts/` directories; durable redacted review
 records belong in `docs/changes/<delivery>/`. Earlier Backbone records are historical
-only. The human requested the architecture documents and a PR for review; this authorizes
-publication, not merge or release. The actual trusted base is human-merged `main`
-`ae317bf30576914d4ed53856be4ae496c6ed64b3`. Run its
+only. The human requested the planning kit, scoped review corrections and a PR; this
+authorizes publication, not merge or release. The actual trusted base is human-merged `main`
+`4394763d03c1d1302b6b37cef142d0f98f848be4`. Run its
 `.engineering-backbone/src/validate.py --root CANDIDATE --trusted-base TRUSTED_BASE`
 from that separate base checkout. Keep the trusted-base result distinct from
 candidate checks; previous delivery results do not qualify this change. See the
-[architecture delivery plan](docs/changes/backbone-architecture-contract/plan.md).
+[planning delivery plan](docs/changes/backbone-planning-delivery/plan.md).
 
 When copying this reference tree into another project, replace these source-specific
 task references and commands with that project's reviewed facts. Follow the

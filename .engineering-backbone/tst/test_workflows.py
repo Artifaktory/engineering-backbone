@@ -38,6 +38,8 @@ LAYOUT_PREDECESSOR_DIGEST = '35678afb51ae9f1c5bc806dd7f1397d4ebde878d3f30adc7685
 LAYOUT_PREDECESSOR_ARCHIVE = 'a67c6db7f5e418a414b09f3433548990c60964bd613c577b3e8abfe49a377ea0'
 LAYOUT_PREDECESSOR_FIXTURE = ROOT / '.engineering-backbone/tst/fixtures/layout-predecessor'
 MERGED_MAIN_DIGEST = 'a9355b863956489a0da750849dd890cdb8745f64172dedb3449f816e844bb524'
+# Actual merged planning baseline 4394763d03c1d1302b6b37cef142d0f98f848be4.
+PLANNING_PREDECESSOR_DIGEST = '94f8f22f4dd66234d5048f2dee51c897fa7b9406694bf38ce44fef5186421120'
 
 
 def predecessor_consumer(destination, *, fixture=PREDECESSOR_FIXTURE,
@@ -447,6 +449,7 @@ class WorkflowTests(unittest.TestCase):
             preceding, merged_copilot, merged_codex_security,
             merged_workflow_kit, merged_quality_framework, merged_technology_navigation,
             PREDECESSOR_DIGEST, reviewed_opencode_seed, LAYOUT_PREDECESSOR_DIGEST,
+            PLANNING_PREDECESSOR_DIGEST,
         })
         self.assertEqual(authority['CURRENT_TOOLCHAIN_SHA256'], rendered_digest(ROOT))
 

@@ -5,8 +5,12 @@ and repair evidence together under `docs/changes/<delivery>/`. New records repor
 actual revisions and results. A copied plan, an old PASS statement or a valid schema
 is not evidence that the receiving project was checked or approved.
 
-The active delivery is [BB-ARCH-015](backbone-architecture-contract/task-packet.json),
-with its [independently reviewed plan](backbone-architecture-contract/plan.md).
+The active delivery is [BB-PLAN-016](backbone-planning-delivery/task-packet.json),
+with its [independently reviewed plan](backbone-planning-delivery/plan.md),
+[incoming review disposition](backbone-planning-delivery/incoming-review.md) and
+[open consumer follow-ups](backbone-planning-delivery/follow-up-packages.md).
+The merged [BB-ARCH-015 architecture delivery](backbone-architecture-contract/plan.md)
+retains its original scope and evidence.
 The merged [BB-LAYOUT-014 integration](backbone-layout-integration/task-packet.json),
 its [incoming-file map](backbone-layout-integration/incoming-map.json), the original
 [BB-LAYOUT-011 refactor](backbone-layout/task-packet.json),

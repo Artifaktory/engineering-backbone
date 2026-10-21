@@ -290,6 +290,12 @@ context using active navigation where adopted; when absent, provide and read the
 explicit document set. A tool receipt or agent reply does not prove that the
 intended native client loaded the instructions or that the task was fulfilled.
 
+The [planning contract](planning.md) governs the next delivery handoff: relate the
+authorized design and requirement revisions to delivery outcomes, dependencies,
+parallel assignments, integration and acceptance. A reviewed architecture does not
+make every work item startable. Feed new design questions or contract changes back
+to their decision owners and reassess affected work before proceeding.
+
 The project mapping MUST distinguish automated structural checks from independent
 semantic assessment and identify the actual project gate for each required claim.
 This document introduces no semantic validator, runtime adapter, profile activation

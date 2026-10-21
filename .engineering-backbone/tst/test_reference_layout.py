@@ -103,6 +103,19 @@ class ReferenceCheckoutTests(unittest.TestCase):
                     actual = (checkout / relative).read_bytes()
                     self.assertEqual(hashlib.sha256(actual).hexdigest(), hashlib.sha256(expected).hexdigest())
                     self.assertNotIn(b'\r\n', actual)
+            # The original 88-document archive is only part of the relocation
+            # contract. Check every byte-preserved input, including inventories,
+            # the core policy JSON and nested manifest, against immutable blobs.
+            mapping_bytes = (ROOT / MAP).read_bytes()
+            self.assertEqual(hashlib.sha256(mapping_bytes).hexdigest(), MAP_SHA256)
+            preserved = [entry for entry in json.loads(mapping_bytes)['entries']
+                         if entry['preserve_bytes']]
+            self.assertEqual(len(preserved), 152)
+            for entry in preserved:
+                with self.subTest(preserved=entry['new_path']):
+                    actual = (checkout / entry['new_path']).read_bytes()
+                    self.assertEqual(len(actual), entry['base_size'])
+                    self.assertEqual(git_blob(actual), entry['base_blob'])
             fixture_root = '.engineering-backbone/tst/fixtures/historical'
             for path in (ROOT / fixture_root).rglob('*'):
                 if path.is_file():
@@ -171,6 +184,24 @@ class DirectCopyTests(unittest.TestCase):
         self.assert_valid()
         self.assert_valid(trusted_source=True)
         assert_reference_ownership(self, self.destination)
+
+    def test_product_json_and_schema_fixtures_remain_product_owned(self):
+        # Names reserved within engineering paths have no governance meaning
+        # within product components or the new layout's root product examples.
+        fixtures = {
+            'apps/backend/tst/examples/request.json': '{"value": 1}\n',
+            'apps/backend/tst/tasks/task-packet.json': '{"scope": {}}\n',
+            'packages/client/tst/reviews/review-evidence.json': '{"reviewers": []}\n',
+            'tst/requirements/request.json': '{"statement": "fixture"}\n',
+            'contracts/examples/invalid.schema.json': '{"type": "made-up"}\n',
+            'examples/malformed.json': '{"unterminated":\n',
+        }
+        for relative, content in fixtures.items():
+            path = self.destination / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content, encoding='utf-8')
+        self.assert_valid()
+        self.assert_valid(trusted_source=True)
 
     def test_pruned_copy_can_execute_its_ownership_and_pruning_regressions(self):
         for relative in ('apps/frontend', '.vscode'):

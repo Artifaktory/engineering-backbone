@@ -16,7 +16,7 @@ combinations and keep their application Dockerfiles under their own control.
 | [quality workflow](../../../.github/workflows/quality.yml) | Clean installation, tracked-input check, image build and offline behavior smoke. |
 
 The supported source tooling line is Python 3.12. The reference container is
-Debian bookworm/Linux; source CI runs on the existing Ubuntu runner selection.
+Debian bookworm/Linux; source CI requires the dedicated local Linux X64 runner selection described below.
 The base image includes Git, which Copier and consumer tests require. Its index
 digest was retrieved from the official Docker Hub registry on 2026-10-14: the
 registry digest header matched a SHA256 of the manifest response. The inspected
@@ -86,3 +86,7 @@ and source CI make these actual files reachable and checked. Installing the shar
 policy in a consumer does not create its application Dockerfile or activate an
 incomplete dependency contract; follow [the navigation guide](../../agent-governance/agent-navigation.md)
 for the consumer's reviewed adoption and handoff path.
+
+Source jobs require the dedicated local labels and host qualification in the
+[source CI contract](source-ci.md). There is no hosted fallback; a queued job does
+not establish that an image build or container smoke executed.

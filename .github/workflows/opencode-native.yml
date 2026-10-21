@@ -16,12 +16,22 @@ concurrency:
 jobs:
   native-smoke:
     name: Native smoke (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 12
+    if: >-
+      github.repository == 'Artifaktory/engineering-backbone' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.full_name == github.repository))
+    runs-on: ${{ matrix.labels }}
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        include:
+          # Display names preserve existing check identities; these are local runners.
+          - os: ubuntu-latest
+            labels: [self-hosted, Linux, X64, backbone-ci]
+          - os: windows-latest
+            labels: [self-hosted, Windows, X64, backbone-ci]
     steps:
       - name: Checkout source snapshot
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -32,15 +42,25 @@ jobs:
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
+      - name: Prepare isolated tooling environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv
+          if [ "$RUNNER_OS" = 'Windows' ]; then
+            echo "$GITHUB_WORKSPACE/.venv/Scripts" >> "$GITHUB_PATH"
+          else
+            echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+          fi
+      - name: Install locked tooling dependencies
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r .engineering-backbone/requirements.lock
+      - name: Test direct-copy and line-ending portability
+        run: python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -p test_reference_layout.py -v
+      - name: Test architecture document portability
+        run: python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -p test_architecture_documents.py -v
       - name: Test smoke failure paths
         run: python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -p test_opencode_native_smoke.py -v
       - name: Exercise pinned native discovery and read-only boundary
         run: python .engineering-backbone/src/opencode_native_smoke.py --report artifacts/opencode-native/report.json
-      - name: Upload actual native evidence
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
-        with:
-          name: opencode-native-${{ matrix.os }}
-          path: artifacts/opencode-native/report.json
-          if-no-files-found: warn
-          retention-days: 14
+      # The report stays in this isolated runner workspace. No GitHub artifact upload.
