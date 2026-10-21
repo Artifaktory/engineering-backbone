@@ -1,0 +1,140 @@
+{
+  "schema_version": "1",
+  "id": "BB-TEST-017",
+  "title": "Tool-neutral testing, verification and CI/CD evidence contract",
+  "objective": "Deliver the approved coherent testing/quality and CI/CD documentation expansion with reusable templates, safe distribution, independent verification and a reviewable PR.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "1a740604d4a6a68e500da36c4d99935d04a8ce86",
+    "head_revision": null
+  },
+  "approved_sources": [
+    "User authorization 2026-10-21: combine agreed testing/quality and CI/CD proposals into one PR.",
+    "docs/agent-governance/core.md",
+    "docs/agent-governance/architecture.md",
+    "docs/agent-governance/planning.md",
+    "docs/quality/policy.md",
+    "docs/quality/testing.md",
+    "docs/changes/backbone-testing-ci-contract/plan.md"
+  ],
+  "scope": {
+    "include": [
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      ".github/copilot-instructions.md",
+      "docs/quality/**",
+      "docs/templates/testing/**",
+      "docs/templates/architecture/README.md",
+      "docs/templates/planning/README.md",
+      "docs/agent-governance/core.md",
+      "docs/agent-governance/architecture.md",
+      "docs/agent-governance/planning.md",
+      "docs/agent-governance/adoption.md",
+      "docs/architecture/README.md",
+      "docs/requirements/README.md",
+      "docs/operations/engineering/workflows/README.md",
+      "docs/changes/README.md",
+      "docs/changes/backbone-testing-ci-contract/**",
+      ".engineering-backbone/legacy/templates/**",
+      ".engineering-backbone/tst/**"
+    ],
+    "exclude": [
+      ".engineering-backbone/src/**",
+      ".engineering-backbone/schemas/**",
+      ".engineering-backbone/standards/**",
+      ".engineering-backbone/tst/fixtures/**",
+      ".github/workflows/**",
+      "apps/**",
+      "packages/**",
+      "docs/changes/backbone-planning-delivery/**",
+      "docs/changes/backbone-architecture-contract/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC1",
+      "description": "Coherent proportionate requirements/architecture/planning-to-testing contract.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC2",
+      "description": "Accurate primary-source provenance and distinction between norms, methods and local rules.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC3",
+      "description": "Reusable original testing templates and coherent hypothetical example without invented evidence.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC4",
+      "description": "Status, applicability, evidence freshness and gate meanings preserve closed schemas and stronger duties.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC5",
+      "description": "CI/CD evidence mapping accurately covers current support, adoption and operational boundaries.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC6",
+      "description": "Real source/rendered copy/update/negative compatibility checks preserve project ownership and protected contracts.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "AC7",
+      "description": "Independent checks/reviews/triage and actual published PR/readback with unresolved evidence explicit.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python .engineering-backbone/src/validate.py",
+      "python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check",
+      "python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check",
+      "python .engineering-backbone/src/maintenance/compile_navigation.py --check",
+      "python .engineering-backbone/src/maintenance/compile_quality_framework.py --check",
+      "python .engineering-backbone/src/check_source_dependencies.py",
+      "python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v",
+      "git diff --check BASE HEAD"
+    ],
+    "manual_evidence": [
+      "Independent pre-implementation plan review",
+      "Frozen independent behavior and authority Full reviews, separate triage and Delta if required",
+      "Semantic example, source/status/CI support walkthrough",
+      "Actual PR publication and remote-check readback"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 6
+  },
+  "stop_conditions": [
+    "Scope, acceptance or trust-boundary expansion requires updated independent plan review.",
+    "Stop on conflicting authorities, unknown mandatory context or exhausted review budget.",
+    "At most two Full rounds for the same scope; triage before repair."
+  ],
+  "forbidden_actions": [
+    "No merge, release, deploy, runner provisioning, protection or permission changes.",
+    "No schema/catalog/runtime/workflow YAML changes, new result engine or generalized scheduler.",
+    "No fabricated PASS, weakened gates, historical fixture/report rewrites or automatic downstream application.",
+    "No hosted-runner fallback or GitHub artifact uploads."
+  ],
+  "status": "active"
+}
