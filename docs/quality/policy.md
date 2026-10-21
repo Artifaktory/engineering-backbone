@@ -107,6 +107,13 @@ or traceability CSV schema.
 
 ## Tests and evidence
 
+Use the [testing contract](testing.md), [CI/CD mapping](ci-cd.md) and
+[original testing templates](../templates/testing/README.md) for the required
+meaning and evidence content. The core's semantic duties and this optional
+profile's activation/binding rules remain distinct. Additional status, execution
+and coverage detail belongs in linked records; keep existing closed JSON and CSV
+contracts unchanged.
+
 Maintain a project quality plan, test strategy and rule-to-requirement/risk
 traceability. Keep established requirements and architecture at their existing
 authoritative paths; link to them instead of creating duplicate specifications.

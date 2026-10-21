@@ -111,7 +111,9 @@ class CopierTests(unittest.TestCase):
                 self.assertEqual(
                     (target / ".engineering-backbone/core.md").read_text().strip(),
                     (self.source / "docs/agent-governance/core.md").read_text().replace(
-                        '(../quality/policy.md)', '(quality-policy.md)').strip(),
+                        '(../quality/policy.md)', '(quality-policy.md)').replace(
+                        '(../quality/testing.md)', '(testing.md)').replace(
+                        '(../quality/ci-cd.md)', '(ci-cd.md)').strip(),
                 )
                 self.assertEqual(
                     (target / ".engineering-backbone/requirements.lock").read_bytes(),

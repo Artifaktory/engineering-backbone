@@ -34,7 +34,9 @@ class ArchitectureDocumentTests(unittest.TestCase):
 
     def assert_package(self, target):
         expected = (self.source / SOURCE_GUIDE).read_text().replace(
-            '(../templates/architecture/', '(architecture-templates/')
+            '(../templates/architecture/', '(architecture-templates/').replace(
+            '(../quality/testing.md)', '(testing.md)').replace(
+            '(../quality/ci-cd.md)', '(ci-cd.md)')
         self.assertEqual((target / INSTALLED_GUIDE).read_text().strip(), expected.strip())
         self.assertEqual((target / INSTALLED_PROVENANCE).read_text().strip(),
                          (self.source / SOURCE_PROVENANCE).read_text().strip())

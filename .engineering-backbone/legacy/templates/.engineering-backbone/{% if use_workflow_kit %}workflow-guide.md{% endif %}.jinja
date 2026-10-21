@@ -22,4 +22,5 @@ The copied `workflow-kit.py` supports local inspection and bounded check
 execution. The pinned GitHub workflows compile their own reviewed source and do
 not execute this candidate-owned copy as a trusted guard.
 
-{% include 'docs/operations/engineering/workflows/README.md' %}
+{% set canonical %}{% include 'docs/operations/engineering/workflows/README.md' %}{% endset %}
+{{ canonical | replace('(../../../quality/ci-cd.md)', '(ci-cd.md)') | replace('(../../../quality/testing.md)', '(testing.md)') }}

@@ -1,2 +1,2 @@
 {% set architecture_text %}{% include 'docs/agent-governance/architecture.md' %}{% endset %}
-{{ architecture_text | replace('(../templates/architecture/', '(architecture-templates/') }}
+{{ architecture_text | replace('(../templates/architecture/', '(architecture-templates/')  | replace('(../quality/testing.md)', '(testing.md)') | replace('(../quality/ci-cd.md)', '(ci-cd.md)') }}

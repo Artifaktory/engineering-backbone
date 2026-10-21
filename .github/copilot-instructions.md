@@ -80,3 +80,8 @@ context and task acceptance/check/stop/return contract at each handoff; resolve 
 new request for a delegated role or narrower scope. Invalid or missing mandatory
 context blocks the affected task. An inactive seed, receipt or agent reply does not
 prove native instruction loading or authorize additional work.
+
+For scoped testing and CI/CD evidence work, follow the
+[testing contract](../docs/quality/testing.md) and [CI/CD mapping](../docs/quality/ci-cd.md).
+Carry actual inputs/revisions, procedures, outcomes, applicability and evidence gaps;
+keep existing profile activation, schema states and project gates intact.

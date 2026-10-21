@@ -5,10 +5,11 @@ documentation and validation tools. The files in this repository already occupy
 the paths used by a copied project. New projects start by copying the reviewed tree
 and filling in their own product facts; they do not need to render a template.
 
-The direct-copy layout was human-merged in PR #18 and the architecture contract
-in PR #21. The current [planning delivery](docs/changes/backbone-planning-delivery/plan.md)
-connects requirements and design to reviewed delivery plans, parallel work and
-integration evidence, with bounded consumer corrections from independent review.
+The direct-copy layout, architecture contract and planning delivery were human-merged
+in PRs #18, #21 and #22. They connect requirements and design to reviewed delivery
+plans, parallel work and integration evidence. The current
+[testing and CI/CD delivery](docs/changes/backbone-testing-ci-contract/plan.md)
+connects those inputs to proportionate verification, actual results and delivery gates.
 A merged layout, a draft document or a previous-head PASS does not establish an
 approved release, product readiness or adoption in another repository.
 
@@ -150,7 +151,7 @@ failed gates stay visible.
 - [Planning and delivery contract](docs/agent-governance/planning.md), [planning kit](docs/templates/planning/README.md), [worked example](docs/templates/planning/worked-example.md) and [source notes](docs/agent-governance/planning-sources.md)
 - [Document navigation](docs/agent-governance/agent-navigation.md)
 - [Requirements-to-architecture contract](docs/agent-governance/architecture.md), [document kit](docs/templates/architecture/README.md) and [worked example](docs/templates/architecture/worked-example.md)
-- [Quality framework](docs/quality/README.md), [testing](docs/quality/testing.md) and [dependency policy](docs/quality/dependencies.md)
+- [Quality framework](docs/quality/README.md), [testing contract](docs/quality/testing.md), [testing kit](docs/templates/testing/README.md), [CI/CD evidence](docs/quality/ci-cd.md), [testing sources](docs/quality/testing-sources.md) and [dependency policy](docs/quality/dependencies.md)
 - [Engineering workflows](docs/operations/engineering/workflows/README.md) and [repository controls](docs/operations/engineering/repository-controls.md)
 - [Contribution process](CONTRIBUTING.md), [source provenance](docs/agent-governance/sources/source-provenance.md) and [security reporting](SECURITY.md)
 

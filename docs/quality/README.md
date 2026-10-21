@@ -205,3 +205,21 @@ organization choices. Google guidance currently targets C++20, so a C++17 subset
 needs separate compatibility work. Living client/guide observations are dated
 2026-10-13; the catalog versions our selected obligations, not an upstream website
 snapshot. No external certification is supplied by this framework.
+
+## Testing and CI/CD evidence
+
+The [testing contract](testing.md), [source register](testing-sources.md) and
+[CI/CD evidence contract](ci-cd.md) connect the existing strategy/rule/check IDs
+to test design, actual execution, anomalies and completion. The common template kit
+is `docs/templates/testing/` in this source and
+`.engineering-backbone/testing-templates/` when installed. It includes a strategy,
+design/procedure reference, run record, completion record, CI mapping, review and
+hypothetical example. Reuse equivalent project records and automated test code;
+no duplicate manual catalogue is required.
+
+These managed documents accompany the adopted core even when optional quality or
+workflow packages are absent. They do not activate those packages, extend the
+quality-profile schema or execute checks. Existing project-owned strategy/quality
+records remain authoritative and need reviewed manual integration of relevant
+updates. Distinguish run results, current evidence applicability, traceability
+claims and gate decisions rather than adding unsupported statuses to the CSV.

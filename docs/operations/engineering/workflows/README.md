@@ -172,3 +172,15 @@ Patterns were inspected in pinned first-party files, not copied wholesale:
 
 These references inform an original implementation. Microsoft-specific runners,
 cloud credentials, domain actions and source code are not redistributed here.
+
+## Testing and verification evidence mapping
+
+Use the [CI/CD evidence contract](../../../quality/ci-cd.md) and
+[testing contract](../../../quality/testing.md) to connect required checks to their
+source/build revisions, environments, evidence and gate claims. Event names and
+kit phases are separate: PR and configured target-branch pushes use `pr`; current
+`maintenance` executes selected dependency/container checks, `release` covers
+integrity/provenance/signature and applicable SBOM duties, and `deploy` covers
+smoke/recovery/monitoring. General scheduled or release behavior suites require
+project-owned integration or a separately reviewed extension. These documents do
+not change the supported phase enums, approved commands or aggregate gate.

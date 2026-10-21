@@ -302,3 +302,11 @@ This document introduces no semantic validator, runtime adapter, profile activat
 or branch-protection change. Until separately implemented checks exist, applicable
 semantic obligations are reviewed and recorded manually through the required
 independent review. Projects must not describe unimplemented enforcement as active.
+
+## Verification evidence handoff
+
+Use the [testing contract](../quality/testing.md) and
+[CI/CD mapping](../quality/ci-cd.md) to carry planned verification into reproducible
+procedures, actual revision/environment-bound results and completion assessment.
+Keep requirement/design acceptance, execution outcomes and delivery gates distinct;
+a prepared test or workflow binding is not evidence that it ran.
