@@ -2,8 +2,8 @@
 
 Read [the canonical policy](docs/agent-governance/core.md), [CONTRIBUTING.md](CONTRIBUTING.md), the active
 Task Packet and project instructions before non-trivial work. The current delivery is
-[BB-TEST-017](docs/changes/backbone-testing-ci-contract/task-packet.json), with
-[its independently reviewed plan](docs/changes/backbone-testing-ci-contract/plan.md). This repository is
+[BB-START-018](docs/changes/backbone-project-starter/task-packet.json), with
+[its independently reviewed plan](docs/changes/backbone-project-starter/plan.md). This repository is
 the shared agent/engineering control plane: its changes are HIGH risk by default.
 
 - Work within an explicitly authorized, scoped Task Packet. Inspect the branch,
@@ -45,13 +45,13 @@ this publication check again.
 Changes target the project-configured base branch (`main` for this repository).
 Run evidence belongs in ignored `artifacts/` directories; durable redacted review
 records belong in `docs/changes/<delivery>/`. Earlier Backbone records are historical
-only. The human requested the combined testing/quality and CI/CD documentation kit and a PR; this
+only. The human requested the five starter foundations, environment support and one PR; this
 authorizes publication, not merge or release. The actual trusted base is human-merged `main`
-`1a740604d4a6a68e500da36c4d99935d04a8ce86`. Run its
+`4e74c7e5f3a07430768f670c4271c1e1a0e28f68`. Run its
 `.engineering-backbone/src/validate.py --root CANDIDATE --trusted-base TRUSTED_BASE`
 from that separate base checkout. Keep the trusted-base result distinct from
 candidate checks; previous delivery results do not qualify this change. See the
-[testing and CI/CD delivery plan](docs/changes/backbone-testing-ci-contract/plan.md).
+[project starter delivery plan](docs/changes/backbone-project-starter/plan.md).
 
 When copying this reference tree into another project, replace these source-specific
 task references and commands with that project's reviewed facts. Follow the

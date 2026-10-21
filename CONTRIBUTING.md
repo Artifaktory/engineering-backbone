@@ -1,8 +1,8 @@
 # Contributing to Engineering Backbone
 
 Read [AGENTS.md](AGENTS.md), [the common policy](docs/agent-governance/core.md),
-the active [BB-TEST-017 Task Packet](docs/changes/backbone-testing-ci-contract/task-packet.json)
-and [its plan](docs/changes/backbone-testing-ci-contract/plan.md). Prior delivery plans and reviews
+the active [BB-START-018 Task Packet](docs/changes/backbone-project-starter/task-packet.json)
+and [its plan](docs/changes/backbone-project-starter/plan.md). Prior delivery plans and reviews
 are preserved in [change history](docs/changes/README.md). Their claims refer to their
 original snapshots and do not authorize or certify this refactor.
 
@@ -40,11 +40,11 @@ patch checks again, including documentation-only commits.
 For a subsequent policy update, run the previous trusted revision's validator
 against the candidate and supply `--trusted-base` with that previous checkout.
 The current actual trusted base is human-merged `main`
-`1a740604d4a6a68e500da36c4d99935d04a8ce86`. From that separate checkout run
+`4e74c7e5f3a07430768f670c4271c1e1a0e28f68`. From that separate checkout run
 `.engineering-backbone/src/validate.py --root CANDIDATE --trusted-base TRUSTED_BASE`.
 Never substitute candidate code or claim that a prior-head run qualifies the new
 tree. Keep actual command results, base/head identities and limitations in the
-[current delivery record](docs/changes/backbone-testing-ci-contract/plan.md).
+[current delivery record](docs/changes/backbone-project-starter/plan.md).
 
 ## Change and review process
 
