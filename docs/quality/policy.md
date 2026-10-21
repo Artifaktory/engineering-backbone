@@ -98,6 +98,13 @@ rule IDs are not new quality-catalog rules or automatically installed checks.
 Preserve the existing quality profile and traceability CSV schema; link architecture
 records through their existing fields.
 
+Planning and decomposition follow the planning contract referenced by the
+project's adopted canonical core. Updating this optional quality package alone
+does not adopt a newer core. Include applicable quality/security work, verification
+environments, integration and evidence ownership in the delivery plan; carry
+existing rule and check IDs through linked records without extending the profile
+or traceability CSV schema.
+
 ## Tests and evidence
 
 Maintain a project quality plan, test strategy and rule-to-requirement/risk

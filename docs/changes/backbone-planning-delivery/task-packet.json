@@ -141,5 +141,5 @@
     "No schema/state extensions, historical fixture rewrites, automatic downstream application or neutral-export runtime.",
     "No source CI hosted-runner fallback or GitHub artifact upload."
   ],
-  "status": "planned"
+  "status": "active"
 }

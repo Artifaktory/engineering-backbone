@@ -171,7 +171,7 @@ class SourceDependencyTests(unittest.TestCase):
     def test_ci_runs_tracking_before_real_image_build_and_offline_smoke(self):
         workflow = yaml.safe_load((ROOT / '.github/workflows/quality.yml').read_text())
         job = workflow['jobs']['source-dependencies']
-        self.assertEqual(job['runs-on'], 'ubuntu-latest')
+        self.assertEqual(job['runs-on'], ['self-hosted', 'Linux', 'X64', 'backbone-ci'])
         steps = job['steps']
         scripts = [step.get('run', '') for step in steps]
         tracking = next(i for i, script in enumerate(scripts) if 'check_source_dependencies.py' in script)

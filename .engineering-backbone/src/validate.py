@@ -4292,9 +4292,9 @@ class RepositoryValidator:
 
     def label(self, path: Path):
         try:
-            return str(path.relative_to(self.root))
+            return path.relative_to(self.root).as_posix()
         except ValueError:
-            return str(path)
+            return path.as_posix()
 
     def load(self, path: Path):
         try:
@@ -4642,9 +4642,34 @@ class RepositoryValidator:
             if not linked.is_relative_to(self.root) or not linked.exists():
                 self.error(f"{self.label(path)}: broken local Markdown link {target}")
 
+    def artifact_roots(self):
+        """Executable-owned engineering boundaries, never product-name heuristics.
+
+        The old source layout reserves its root examples/plans/schema paths;
+        the reference layout places engineering records below explicit docs and
+        tooling roots. Consumer bundles have always owned only their managed
+        directory. Candidate files cannot add an exemption or select this scope.
+        Within these roots the existing artifact recognition remains strict.
+        """
+        if not self.source:
+            return (Path(".engineering-backbone"),)
+        documentation = (
+            "docs/agent-governance", "docs/changes", "docs/templates",
+            "docs/requirements", "docs/plans", "docs/reviews", "docs/tasks",
+        )
+        roots = (".engineering-backbone",) + documentation
+        if self.source_contract["layout"] == "old":
+            roots += ("schemas", "examples", "plans", "requirements", "reviews",
+                      "tasks", "policy", "standards")
+        return tuple(Path(root) for root in roots)
+
     def artifacts(self, paths):
+        roots = self.artifact_roots()
         for path in paths:
-            parts = path.relative_to(self.root).parts
+            relative = path.relative_to(self.root)
+            if not any(relative.is_relative_to(root) for root in roots):
+                continue
+            parts = relative.parts
             if path.name.endswith(".schema.json"):
                 data = self.load(path)
                 if data is not None:

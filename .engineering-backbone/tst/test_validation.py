@@ -6,9 +6,9 @@ import shutil
 import subprocess
 import tempfile
 import unittest
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
-from src.validate import BUNDLE, POLICY_FLOOR, validate_root
+from src.validate import BUNDLE, POLICY_FLOOR, RepositoryValidator, validate_root
 from tst.test_source_layout_compatibility import archived_records
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -149,6 +149,44 @@ class ValidationTests(unittest.TestCase):
 
     def test_valid_source_and_examples(self):
         self.assertEqual([], validate_root(self.root))
+
+    def test_source_product_json_names_do_not_select_governance_schemas(self):
+        for relative, content in {
+            'apps/backend/tst/examples/request.json': '{"value": 1}',
+            'apps/backend/tst/tasks/task-packet.json': '{"scope": {}}',
+            'packages/shared/tst/reviews/review-evidence.json': '{"reviewers": []}',
+            'src/requirements/fixture.json': '{"statement": "product fixture"}',
+            'contracts/invalid.schema.json': '{"type": "made-up"}',
+            'examples/invalid-json.json': '{"incomplete":',
+        }.items():
+            self.write(relative, content)
+        self.assertEqual([], validate_root(self.root))
+
+    def test_reserved_engineering_roots_keep_rejecting_bad_artifacts(self):
+        cases = (
+            ('docs/templates/examples/unknown.json', '{"value": 1}', 'unrecognized governance JSON artifact'),
+            ('docs/changes/new/task-packet.json', '{"scope": {}}', 'scope:'),
+            ('docs/reviews/new/review-evidence.json', '{"reviewers": []}', 'schema_version'),
+            ('docs/requirements/REQ-new.json', '{"statement": 1}', 'statement:'),
+            ('.engineering-backbone/schemas/new.schema.json', '{"type": "made-up"}', 'invalid JSON schema'),
+            ('docs/plans/invalid.json', '{"incomplete":', 'Expecting value'),
+        )
+        for relative, content, message in cases:
+            with self.subTest(path=relative):
+                self.write(relative, content)
+                errors = validate_root(self.root)
+                self.assertTrue(any(relative in error and message in error for error in errors), errors)
+                (self.root / relative).unlink()
+
+    def test_windows_diagnostic_labels_use_repository_portable_paths(self):
+        # Exercise the real formatting method without claiming a Windows run.
+        validator = object.__new__(RepositoryValidator)
+        validator.root = PureWindowsPath('C:/checkout')
+        self.assertEqual(validator.label(PureWindowsPath(
+            'C:/checkout/docs/changes/example/task-packet.json')),
+            'docs/changes/example/task-packet.json')
+        self.assertEqual(validator.label(PureWindowsPath('D:/outside/item.json')),
+                         'D:/outside/item.json')
 
     def test_root_run_artifacts_are_excluded_from_source_validation(self):
         self.write("artifacts/review-run/output.md", "<<<<<<< captured example\n[Captured link](absent.md)\n")

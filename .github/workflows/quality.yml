@@ -16,13 +16,23 @@ concurrency:
 jobs:
   foundation:
     name: Foundation checks
+    if: >-
+      github.repository == 'Artifaktory/engineering-backbone' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.full_name == github.repository))
     uses: ./.github/workflows/governance-checks.yml
     with:
       source_mode: true
 
   source-dependencies:
     name: Source dependencies and container
-    runs-on: ubuntu-latest
+    if: >-
+      github.repository == 'Artifaktory/engineering-backbone' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.full_name == github.repository))
+    runs-on: [self-hosted, Linux, X64, backbone-ci]
     timeout-minutes: 20
     steps:
       - name: Checkout source snapshot
@@ -55,8 +65,11 @@ jobs:
 
   trusted-policy:
     name: Trusted base policy
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    if: >-
+      github.repository == 'Artifaktory/engineering-backbone' &&
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, Linux, X64, backbone-ci]
     timeout-minutes: 10
     steps:
       - name: Checkout trusted base snapshot
@@ -77,14 +90,15 @@ jobs:
           python-version: '3.12'
       - name: Check policy with base-owned validator
         run: |
+          python -m venv .trusted-venv
           if [ -f trusted-base/.engineering-backbone/src/validate.py ]; then
-            python -m pip install --require-hashes -r trusted-base/.engineering-backbone/requirements.lock
-            python trusted-base/.engineering-backbone/src/validate.py --root candidate --trusted-base trusted-base
+            .trusted-venv/bin/python -m pip install --require-hashes -r trusted-base/.engineering-backbone/requirements.lock
+            .trusted-venv/bin/python trusted-base/.engineering-backbone/src/validate.py --root candidate --trusted-base trusted-base
           elif [ -f trusted-base/scripts/validate.py ]; then
             # First layout migration: the old trusted validator still runs.
             # Its old-path incompatibility is a visible merge blocker, never a waiver.
-            python -m pip install --require-hashes -r trusted-base/requirements.lock
-            python trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base
+            .trusted-venv/bin/python -m pip install --require-hashes -r trusted-base/requirements.lock
+            .trusted-venv/bin/python trusted-base/scripts/validate.py --root candidate --trusted-base trusted-base
           else
             echo '::error::No trusted validator baseline; reviewed bootstrap is required.'
             exit 1

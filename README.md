@@ -5,9 +5,10 @@ documentation and validation tools. The files in this repository already occupy
 the paths used by a copied project. New projects start by copying the reviewed tree
 and filling in their own product facts; they do not need to render a template.
 
-The direct-copy layout was human-merged in PR #18. The current
-[architecture-contract delivery](docs/changes/backbone-architecture-contract/plan.md)
-adds the shared route from requirements to justified design and verification.
+The direct-copy layout was human-merged in PR #18 and the architecture contract
+in PR #21. The current [planning delivery](docs/changes/backbone-planning-delivery/plan.md)
+connects requirements and design to reviewed delivery plans, parallel work and
+integration evidence, with bounded consumer corrections from independent review.
 A merged layout, a draft document or a previous-head PASS does not establish an
 approved release, product readiness or adoption in another repository.
 
@@ -37,7 +38,8 @@ engineering-backbone/                 # becomes your project's repository root
 │  ├─ agent-governance/               # shared policy, procedures and adapter guides
 │  ├─ templates/                     # reusable engineering document kits
 │  │  ├─ examples/                   # task, requirement and review JSON examples
-│  │  └─ architecture/               # architecture, decisions, scenarios and reviews
+│  │  ├─ architecture/               # architecture, decisions, scenarios and reviews
+│  │  └─ planning/                   # delivery plans, work items, dependencies and reviews
 │  ├─ requirements/                   # product requirements
 │  ├─ architecture/                   # product design and decisions
 │  ├─ changes/                        # plans, reviews and evidence by delivery
@@ -106,8 +108,11 @@ Follow the [direct-copy adoption guide](docs/agent-governance/adoption.md). It l
 what must be changed for a project: project facts, root instructions, active task,
 actual build/test commands, CI and runner settings. Copy dotfolders, exclude Git
 metadata and local output, and preserve existing stricter project instructions.
-The source-only CI identity restriction remains intentional; copying these files
-does not create ready-to-run downstream CI or authorize provider activation.
+Select workflows before the first push. Source entrypoints are repository-bound
+and require dedicated local runners; reusable legacy workflows retain separate
+hosted/upload assumptions. A copied tree is not an adopted consumer CI profile.
+See the [source CI contract](docs/operations/engineering/source-ci.md) and
+[open consumer packages](docs/changes/backbone-planning-delivery/follow-up-packages.md).
 
 The retained Copier compatibility assets serve existing generated consumers at
 their previous paths. Their initial-copy/update tests and protection of local
@@ -142,7 +147,8 @@ failed gates stay visible.
 
 - [Core policy](docs/agent-governance/core.md) and [quality policy](docs/quality/policy.md)
 - [Agent adapters](docs/agent-governance/agent-adapters.md), [Copilot workflow](docs/agent-governance/adapters/copilot/workflow.md) and [OpenCode contract](docs/agent-governance/adapters/opencode/workflow.md)
-- [Planning and evidence formats](docs/agent-governance/planning.md) and [document navigation](docs/agent-governance/agent-navigation.md)
+- [Planning and delivery contract](docs/agent-governance/planning.md), [planning kit](docs/templates/planning/README.md), [worked example](docs/templates/planning/worked-example.md) and [source notes](docs/agent-governance/planning-sources.md)
+- [Document navigation](docs/agent-governance/agent-navigation.md)
 - [Requirements-to-architecture contract](docs/agent-governance/architecture.md), [document kit](docs/templates/architecture/README.md) and [worked example](docs/templates/architecture/worked-example.md)
 - [Quality framework](docs/quality/README.md), [testing](docs/quality/testing.md) and [dependency policy](docs/quality/dependencies.md)
 - [Engineering workflows](docs/operations/engineering/workflows/README.md) and [repository controls](docs/operations/engineering/repository-controls.md)

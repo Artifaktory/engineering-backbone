@@ -17,3 +17,8 @@ decision is recorded. Use the [project mapping](../templates/architecture/projec
 and [traceability template](../templates/architecture/traceability.md) for information
 not supported by the existing requirement JSON schema. Sphinx-Needs, other tools
 or plain documents can represent the same semantics without changing this contract.
+
+Use the [planning contract](../agent-governance/planning.md) and
+[planning kit](../templates/planning/README.md) to connect these authoritative
+records to delivery outcomes, dependencies and acceptance. Planning references
+source revisions; it does not create a competing requirement or design authority.

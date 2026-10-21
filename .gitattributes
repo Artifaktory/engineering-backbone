@@ -6,3 +6,7 @@
 
 # Byte-attested history must stay identical in Windows autocrlf checkouts.
 docs/changes/** text eol=lf -filter -working-tree-encoding
+.engineering-backbone/core.json text eol=lf -filter -working-tree-encoding
+docs/agent-governance/sources/inventory/artifaktory.json text eol=lf -filter -working-tree-encoding
+docs/agent-governance/sources/inventory/tars.json text eol=lf -filter -working-tree-encoding
+.engineering-backbone/tst/fixtures/opencode-predecessor/manifest.json text eol=lf -filter -working-tree-encoding

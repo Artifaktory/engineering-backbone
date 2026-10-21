@@ -77,3 +77,12 @@ rule bindings identify PR check IDs; additional phase requirements are documente
 and reviewed, not automatically installed by the quality guard. Required repository
 settings enforce merge gates separately. Attach actual reports to the inspected
 revision and preserve limitations in traceability/review closeout.
+
+## Planning and integration handoff
+
+Use the planning contract referenced by the adopted core to map each scoped
+requirement/risk and acceptance criterion to its delivery item, verification method,
+environment, responsible role and expected evidence. Plan integration and negative
+paths alongside implementation. Prepared tests and mocks do not establish assembled
+system behavior; record actual execution on the integrated revision separately.
+An optional testing-package update does not silently adopt a newer core contract.
