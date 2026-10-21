@@ -41,6 +41,59 @@ required before enabling local execution, especially in this public repository.
 This change neither installs those controls nor proves any worker is available.
 No `pull_request_target` or privileged fork execution route is introduced.
 
+## Connect an actual worker
+
+The label arrays describe required workers; they do not register a machine. When
+jobs are queued with no assigned runner and no executed steps, first establish
+allocation. That observation does not identify whether a label is missing, the
+service is offline, capacity is busy or repository/group access is unavailable.
+
+1. An authorized operator selects a dedicated isolated worker and reviews its
+   account, network reach, cleanup and access boundaries. Do not repurpose a
+   deployment host or attach production credentials to make this queue move.
+2. In GitHub's actual repository/organization runner setup, register the selected
+   worker and grant the intended repository access. Supply registration tokens
+   through that setup channel; never paste them into chat, Git, scripts or evidence.
+   Follow the current [platform service setup](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/configure-the-application)
+   after registration. Service installation and account selection are operator
+   actions, not commands performed by this kit.
+3. Assign the complete labels above. All labels are cumulative. For a restricted
+   runner group, also permit the actual job-defining workflow: Foundation jobs
+   are defined in `governance-checks.yml`, not only in the calling `quality.yml`.
+   Follow [runner-group access](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)
+   for the actual immutable workflow/branch policy. A correct label cannot bypass
+   a group restriction.
+4. Under the same account/environment as the service, run the matching local check:
+
+   ```sh
+   python scripts/runner_doctor.py --profile source-linux
+   # On the Windows worker, instead:
+   python scripts/runner_doctor.py --profile source-windows
+   ```
+
+   The doctor checks the observed OS/X64, current Python 3.12 and venv modules,
+   Git/Bash, Linux Docker CLI/daemon or Windows Git Bash/PowerShell. Fixed probes
+   have ten-second timeouts and suppress tool output. It installs/registers
+   nothing and does not verify GitHub labels, group access or host isolation.
+   Verify download access for Actions, locked packages, images and the pinned
+   native smoke separately; no successful network or package-install claim follows
+   from the doctor. A missing prerequisite returns nonzero.
+5. In Settings → Actions → Runners, confirm this repository can see the worker and
+   its full labels. `Idle` means connected/ready, `Active` means executing, and
+   `Offline` needs service/machine/network investigation. A local process or tool
+   PASS alone is not this GitHub observation. Inspect existing queued jobs before
+   creating additional runs.
+6. Observe a real job receiving that runner and completing the required checks.
+   Record repository, run/job URL, exact head, worker OS/labels, observed account
+   boundary, result and limits using the [local CI record](../../templates/operations/local-ci.md).
+   Test an intentional required-check failure during reviewed adoption. Preserve
+   unexecuted Windows, Docker or other required evidence as pending/blocked.
+
+The operator controls runner registration, services and GitHub access. This PR
+does not perform those actions or prove an available fleet. For a consuming
+project, start from the inactive [local example](../../templates/operations/local-ci.yml.example)
+and its explicit limitations; do not activate legacy hosted/upload workflows.
+
 ## Checks and evidence
 
 The foundation job still runs the source validator, all compiler checks and the
@@ -90,6 +143,9 @@ constraint. GitHub's [job condition and runner syntax](https://docs.github.com/e
 and [self-hosted runner security guidance](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions#hardening-for-self-hosted-runners)
 were inspected on 2026-10-21. They explain the mechanism and risks; they do not
 require our project label names or certify this deployment. See also the
+[label routing](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/use-in-a-workflow)
+and [monitoring/troubleshooting](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/monitor-and-troubleshoot)
+guidance inspected on the same date. See the
 [dependency/container contract](dependency-compatibility.md),
 [repository controls](repository-controls.md) and
 [adoption guide](../../agent-governance/adoption.md).

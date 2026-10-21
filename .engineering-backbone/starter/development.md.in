@@ -1,0 +1,32 @@
+# Project development start
+
+Owner and supported native toolchains: pending project adoption. Use
+[configuration](configuration.md), [core](../agent-governance/core.md),
+[architecture](../agent-governance/architecture.md),
+[planning](../agent-governance/planning.md) and [testing](../quality/testing.md).
+
+| Purpose | Working directory | Native command / inputs | Expected result and state |
+| --- | --- | --- | --- |
+| Setup | Project/component root | Select runtime, package manager and reviewed manifest/lock | Unconfigured; document a clean reproducible install |
+| Run | Owning application root | Select the actual application entrypoint | Unconfigured; record startup/readiness and stop behavior |
+| Build | Owning component root | Native compiler/build system | Unconfigured; identify actual output |
+| Test | Owning component or integration root | Selected native suite | Unconfigured; preserve relevant failures and limits |
+| Check | Project root and applicable components | Native lint/type/security plus external trusted starter verifier | Product checks unconfigured; structural seed PASS is limited |
+
+The included `scripts/runner_doctor.py --profile development` checks local
+prerequisites without installing tools. Run it with a supported Python interpreter.
+The environment checker at `.engineering-backbone/src/environment.py` validates
+only declared inputs; it does not load application settings or establish readiness.
+The neutral environment register is initially empty.
+
+Obtain a separately reviewed Backbone source checkout at a fixed full Git commit,
+then use isolated Python (`python -I`) with that checkout's `starter.py verify --source-ref FULL_SHA --root PROJECT`.
+Its Python dependencies are installed from that trusted source's reviewed lock.
+Do not run a source-history validator inside this seed. Keep product commands and
+existing workflow-kit bindings in their established authoritative locations; no
+second command dispatcher is installed here.
+
+Record actual platform/runtime versions, command, exit, revision and coverage.
+Optional CI, quality/navigation/dependency contracts require separately reviewed
+integration; this seed includes no active workflow. Missing required execution
+remains a project gate rather than a successful empty command.

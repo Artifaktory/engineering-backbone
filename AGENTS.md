@@ -89,6 +89,21 @@ new request for a delegated role or narrower scope. Invalid or missing mandatory
 context blocks the affected task. An inactive seed, receipt or agent reply does not
 prove native instruction loading or authorize additional work.
 
+## Configuration, local readiness and new project seeds
+
+For configuration or credential work read [configuration](docs/operations/configuration.md).
+Use the project variable register and actual loader contract. Do not print raw
+credentials, env-file contents or environment dumps. Git ignore rules do not restrict
+agent/OS read access. Planner/reviewer generally require no credentials; authorized
+processes receive only task-scoped access without exposing raw values to model context.
+For operating changes read [lifecycle guidance](docs/operations/lifecycle.md).
+
+The [project starter](docs/operations/project-starter.md) is a separate new-project
+route. Run its verifier from an independently reviewed immutable source checkout;
+candidate provenance cannot choose a weaker mode or replace source/legacy checks.
+Update comparison is read-only. A local doctor establishes prerequisites only,
+not runner registration, permissions, isolation or completed CI.
+
 ## Dependency and container inputs
 
 For dependency, runtime or container work, read [the shared dependency policy](docs/quality/dependencies.md)

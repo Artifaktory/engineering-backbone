@@ -1,0 +1,6 @@
+# Project change records
+
+No project delivery is active yet. Record authorized plans, Task Packets, actual
+checks, frozen independent reviews, triage and scoped repair evidence under
+`docs/changes/<delivery>/`. Keep real base/head identities and pending gaps visible.
+A copied example or template is not an approved assignment, PASS or release decision.

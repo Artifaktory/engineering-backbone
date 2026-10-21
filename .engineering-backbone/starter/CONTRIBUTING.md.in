@@ -1,0 +1,23 @@
+# Contributing to {{PROJECT_NAME}}
+
+Read [AGENTS.md](AGENTS.md), [core](docs/agent-governance/core.md),
+[architecture](docs/agent-governance/architecture.md),
+[planning](docs/agent-governance/planning.md), [testing](docs/quality/testing.md)
+and [configuration](docs/operations/configuration.md).
+
+Complete the project-owned [development command map](docs/operations/development.md)
+with selected runtimes, native manifests/locks, supported platforms, owners and
+actual setup/run/build/test/check commands. Missing product commands remain
+unconfigured; document checks cannot substitute for required software execution.
+
+The starter verifier runs from a separately reviewed source checkout at an exact
+immutable commit. It compares common managed bytes and supported structural
+records, not product behavior, meaningful local instructions or human approval.
+The project contains no Backbone source-history validator, source regression suite
+or active source CI. Preserve existing stronger gates during any later adoption.
+
+Keep delivery plans, Task Packets, actual checks, independent reviews and triage
+under `docs/changes/<delivery>/`. Run relevant checks, freeze the same base/head/
+patch for reviewers and triage before repairs. Before publication, check the actual
+committed base/head diff including later evidence commits. A human decides merge,
+release and deployment separately. Updates are reviewed changes; no automatic apply.

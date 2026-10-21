@@ -46,6 +46,22 @@ Never substitute candidate code or claim that a prior-head run qualifies the new
 tree. Keep actual command results, base/head identities and limitations in the
 [current delivery record](docs/changes/backbone-project-starter/plan.md).
 
+## Development, configuration and local CI
+
+Use [the development guide](docs/operations/development.md) for native setup and
+commands, [configuration](docs/operations/configuration.md) for the variable register
+and secret-supply boundaries, and [source CI](docs/operations/engineering/source-ci.md)
+for local runner prerequisites and onboarding. Run `python scripts/runner_doctor.py --profile development` for a local prerequisite check; this does not execute the
+required suite or prove runner access. No credentials are required by this source's
+empty application environment register. The normal source validation above remains
+required; a neutral-seed verifier cannot substitute for it.
+
+New projects use [the neutral starter](docs/operations/project-starter.md), retain
+one native command authority and choose their own stack. Existing source/legacy
+installations keep their validators, history and stricter gates until a separately
+reviewed migration. The [operations kit](docs/templates/operations/README.md) supplies
+small project-owned records as applicable, without imposing a server or database.
+
 ## Change and review process
 
 1. Record a bounded task/plan and acceptance-to-verification mapping.
