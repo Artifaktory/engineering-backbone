@@ -13,7 +13,7 @@ equivalent `3badd4a15da5c2fb0a5136d234d2475702bb1a75`; actual base
 | AC-5: consumer defects | Pass for tested scope: product/governance positives and negatives, all 152 immutable byte identities under Linux autocrlf checkout, portable diagnostics. Native Windows execution remains separate. |
 | AC-6: source CI contract | Pass for configuration and documented limits: local-only guarded source allocation, no source uploads, substantive checks retained, source-CI tests and authority review. Actual runner execution is not claimed. |
 | AC-7: incoming reviews | Pass: complete disposition ledger and concrete neutral-export/profile/skill follow-up scope; deferred runtime work remains open. |
-| AC-8: final publication/runtime evidence | Pending: local quality and independent reviews are complete; publication readback and required runtime/remote evidence remain separate gates. |
+| AC-8: final publication/runtime evidence | Pending: Draft PR #22 is published and read back; local quality and independent reviews are complete. All five initially observed remote jobs were queued. Required runtime/remote evidence remains open. |
 
 The independent quality checker ran all 482 tests successfully, without failures,
 errors or skips, plus all required local quick gates and the actual base-owned
@@ -26,6 +26,10 @@ equivalent. It is not `completed`: pending required runtime/CI evidence is not w
 This status binds review identity and does not grant implementation, merge or release
 permission. Later evidence-only commits describe the earlier reviewed implementation;
 they do not retroactively become part of those Full reviews.
+
+[PR #22](https://github.com/Artifaktory/engineering-backbone/pull/22) contains the
+complete proposed change and review records. Publication is complete; merge/release
+acceptance is not. The final PR description binds its final head and check readback.
 
 See [checks](checks.md), [behavior review](behavior-review.md),
 [authority review](authority-review.md), [triage](review-triage.md),

@@ -134,7 +134,8 @@
         "docs/changes/backbone-planning-delivery/authority-review.md",
         "docs/changes/backbone-planning-delivery/review-triage.md",
         "docs/changes/backbone-planning-delivery/publication.md",
-        "docs/changes/backbone-planning-delivery/closeout.md"
+        "docs/changes/backbone-planning-delivery/closeout.md",
+        "https://github.com/Artifaktory/engineering-backbone/pull/22"
       ]
     }
   ],

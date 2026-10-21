@@ -49,3 +49,14 @@ The checker freshly rendered actual merged base `4394763d03c1d1302b6b37cef142d0f
 No native Windows, Docker image/smoke, live OpenCode/provider or GitHub runner execution was established by this local run. Real autocrlf checkouts and portable-path tests exercise their named conditions on Linux; they are not native Windows certification. Remote CI availability and results belong in the publication record. Missing required runtime/CI evidence remains a merge gate, not a waiver.
 
 Later evidence-only commits require candidate/base-owned validation and the actual final base-to-head committed whitespace check again. Full implementation reviews bind the frozen implementation above; later reports must not claim they reviewed themselves.
+
+## Evidence-only publication validation
+
+Candidate and actual base-owned validation both passed after adding the review and
+acceptance records. Committed whitespace passed for local evidence head
+`df0460199ecf8a3918728e350f2b8d0c5afac56a` and its fetched published equivalent
+`e24d8f656b52641440b753f19eb3790560128b9a`, each against the actual base above.
+Their trees match exactly; the published parent is the mapped reviewed repair.
+These checks do not replace the implementation suite; they cover the subsequent
+evidence-only delta. The final readback-only commit repeats these publication gates,
+with its resolved published head/patch result recorded in the PR description.
