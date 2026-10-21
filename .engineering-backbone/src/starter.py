@@ -9,7 +9,6 @@ import argparse
 import base64
 from dataclasses import dataclass
 import hashlib
-import importlib.util
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -17,6 +16,7 @@ import posixpath
 import re
 import subprocess
 import sys
+from types import ModuleType
 from urllib.parse import quote, unquote, urlsplit
 
 
@@ -336,15 +336,24 @@ def provenance(root, source, plan):
             raise StarterError('provenance cannot alter trusted ownership/content: ' + path)
 
 
+
+def compile_trusted_module(data, filename, name):
+    # Compile precisely the approved Git blob. SourceFileLoader could execute an
+    # unrelated timestamp/size-valid __pycache__ entry despite matching .py bytes.
+    # This path neither reads nor rewrites local bytecode caches.
+    module = ModuleType(name)
+    module.__file__ = str(filename)
+    exec(compile(data, str(filename), 'exec'), module.__dict__)
+    return module
+
+
 def trusted_validator(source):
     relative = '.engineering-backbone/src/validate.py'
     path = safe_file(source.root, relative)
     if path.read_bytes() != source.blobs([relative])[relative]:
         raise StarterError('trusted validation helper differs from Git')
-    spec = importlib.util.spec_from_file_location('_trusted_starter_validation', path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    return compile_trusted_module(source.blobs([relative])[relative], path,
+                                  '_trusted_starter_validation')
 
 
 def schema_check(module, source, name, data, label):
@@ -360,9 +369,8 @@ def environment_structure(source, root):
     path = safe_file(source.root, relative)
     if path.read_bytes() != source.blobs([relative])[relative]:
         raise StarterError('trusted environment helper differs from Git')
-    spec = importlib.util.spec_from_file_location('_trusted_starter_environment', path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    module = compile_trusted_module(source.blobs([relative])[relative], path,
+                                    '_trusted_starter_environment')
     try:
         module.load_contract(safe_file(root, 'config/environment.json'))
     except module.EnvironmentError as exc:

@@ -13,8 +13,9 @@ Use it with [adoption](../agent-governance/adoption.md),
 Use a separately reviewed source checkout and an immutable full 40-character Git
 commit. The executing checkout's HEAD and `starter.py` bytes must match that
 commit. Selected data are read from tracked Git blobs, not dirty working files.
-The trusted native validation helper is also Git-attested; schemas come from
-trusted Git blobs. Use the source's hash-locked Python environment and isolated
+The trusted native validation helper is also Git-attested; its approved Git source
+is compiled directly, ignoring local bytecode caches. Schemas come from trusted
+Git blobs. Use the source's hash-locked Python environment and isolated
 `-I` invocation. The interpreter, installed dependencies and host themselves must
 be trusted; a ref check cannot authenticate arbitrary Python startup injection. An agent cannot
 make a candidate manifest or a claimed hash into an approved source authority.
@@ -91,9 +92,12 @@ removes or automatically applies an update. Actual local `.env` values are outsi
 the comparison plan and are neither read nor printed. A missing/altered provenance
 inventory is an explicit reconciliation error, not permission to guess a base.
 
-Review the report and prepare the project update PR manually, with changed common
-files, preserved project work, reconciled ownership/obsolete files and regenerated
-informational provenance. Run the new trusted verifier and actual project checks,
+To obtain the exact transformed new files and new informational provenance, run
+`export` from the new trusted checkout into a second empty temporary destination
+with the actual project name. Review the comparison, then manually transfer only
+the approved common-file changes and new provenance into the project update PR.
+Preserve project-owned work and reconcile ownership/obsolete files explicitly;
+copying the temporary seed wholesale would overwrite local decisions. Run the new trusted verifier and actual project checks,
 then the independent review/triage/repair chain. Runtime/native/CI evidence stays
 pending until actually executed. Recovery is a reviewed revert of that update;
 there is no automatic update transaction or downstream application.

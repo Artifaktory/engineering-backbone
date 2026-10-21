@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import marshal
+import struct
 from pathlib import Path
 import shutil
 import subprocess
@@ -213,13 +215,42 @@ class StarterExportTests(unittest.TestCase):
         finally:
             helper.write_bytes(original)
 
+    def test_git_attested_helpers_ignore_poisoned_timestamp_valid_bytecode(self):
+        for relative in ('.engineering-backbone/src/validate.py',
+                         '.engineering-backbone/src/environment.py'):
+            with self.subTest(helper=relative):
+                helper = self.source / relative
+                marker = self.workspace / (helper.stem + '-cached-code-executed')
+                cache = Path(importlib.util.cache_from_source(str(helper)))
+                cache.parent.mkdir(exist_ok=True)
+                original_cache = cache.read_bytes() if cache.exists() else None
+                metadata = helper.stat()
+                payload = compile('from pathlib import Path\nPath(' + repr(str(marker)) + ').write_text("poison")\n',
+                                  str(helper), 'exec')
+                poisoned = (importlib.util.MAGIC_NUMBER
+                            + struct.pack('<III', 0, int(metadata.st_mtime), metadata.st_size)
+                            + marshal.dumps(payload))
+                cache.write_bytes(poisoned)
+                try:
+                    # Both source bytes still exactly match the trusted Git blob.
+                    self.assertEqual(helper.read_bytes(), self.authority.blobs([relative])[relative])
+                    starter.verify_project(self.authority, self.project)
+                    self.assertFalse(marker.exists(), 'unattested cache code must never execute')
+                    self.assertEqual(cache.read_bytes(), poisoned, 'verification must not rewrite caches')
+                finally:
+                    if original_cache is None:
+                        cache.unlink(missing_ok=True)
+                    else:
+                        cache.write_bytes(original_cache)
+                    marker.unlink(missing_ok=True)
+
     def test_compare_uses_two_trusted_revisions_and_never_applies_or_reads_real_env(self):
         newer = self.project.parent / 'new-trusted'
         git(self.source, 'clone', '--quiet', str(self.source), str(newer))
         git(newer, 'config', 'user.name', 'Starter test')
         git(newer, 'config', 'user.email', 'starter-test@example.invalid')
         # One unchanged upstream managed file modified locally.
-        local_only = 'docs/quality/testing.md'
+        local_only = '.engineering-backbone/schemas/requirement.schema.json'
         (self.project / local_only).write_bytes((self.project / local_only).read_bytes() + b'\nlocal note\n')
         # One upstream-only and one conflicting managed change.
         upstream = 'docs/quality/policy.md'
@@ -258,7 +289,11 @@ class StarterExportTests(unittest.TestCase):
         self.assertEqual(statuses['docs/templates/testing/new-guide.md'], 'new-upstream')
         self.assertEqual(statuses[removed], 'removed-upstream')
         self.assertEqual(statuses['docs/templates/testing/test-design.md'], 'ownership-change')
-        self.assertTrue(all(row['action'] == 'preserve-project-owned' for row in rows if row['owner'] == 'project'))
+        previous_plan = starter.build_plan(self.authority, 'example')
+        self.assertTrue(all(row['action'] == 'preserve-project-owned' for row in rows
+                            if row['path'] in previous_plan and previous_plan[row['path']].owner == 'project'))
+        changed_owner = next(row for row in rows if row['path'] == 'docs/templates/testing/test-design.md')
+        self.assertEqual(changed_owner['action'], 'manual-review')
 
     def test_real_cli_and_autocrlf_checkout_preserve_managed_bytes(self):
         command = [sys.executable, '-I', str(self.source / SCRIPT), 'verify', '--source-ref', self.ref, '--root', str(self.project)]

@@ -60,3 +60,15 @@ No source/legacy validator, schemas, catalog, active workflow, dependency/contai
 inputs, historical fixture or old delivery record has been changed. Protected-path
 preflight passed. No final Full, native Windows, Docker image, actual runner fleet
 or completed remote CI result is established by these author checks.
+
+## Pre-Full repair completion
+
+Independent [check triage](check-triage.md) confirmed START-CHECK-01/-03 as narrow
+test-fixture expectations and START-CHECK-02 as a P1 cache-versus-source attestation
+defect. The authorized single repair iteration compiles the actual trusted Git
+blobs directly, adds both-helper poisoned-cache nonexecution/no-write coverage,
+and corrects only the two precise comparison expectations. All eleven repaired
+export tests pass, exit 0, 6.251 seconds. Initial evidence is preserved. The source
+and legacy engines remain unchanged. A fresh committed snapshot is now required
+for independent deterministic checks and both first Full reviews; author results
+do not replace those gates.
