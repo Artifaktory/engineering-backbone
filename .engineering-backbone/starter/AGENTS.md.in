@@ -16,6 +16,8 @@ confirmed findings and use scoped Delta review. Preserve stricter project rules.
 Do not publish secrets or read credential files into prompts. A task-authorized
 process may receive scoped credentials without exposing their raw values to the
 model. Git ignore rules do not establish file permissions or OS isolation.
+Keep generated outputs under `artifacts/<tool-or-run>/`; they are ignored and
+non-authoritative, not evidence or approval.
 No merge, release, deployment, runner registration, protection change, credential
 grant or automatic downstream apply follows from this seed. Human decisions and
 actual revision-bound evidence remain required. Do not invent PASS or carry old

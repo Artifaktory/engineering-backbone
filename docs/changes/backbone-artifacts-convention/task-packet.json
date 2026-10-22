@@ -1,0 +1,129 @@
+{
+  "schema_version": "1",
+  "id": "BB-ART-019",
+  "title": "Ignored artifacts convention in starter and guidelines",
+  "objective": "Define the ignored artifacts/ convention in the neutral starter, contracts, templates and operations/quality guidance without weakening validators or schemas.",
+  "role": "implementer",
+  "risk": "high",
+  "repository": {
+    "base_branch": "main",
+    "base_revision": "f6b950b6cc628535062578ef2f4ff3229cc8b59c",
+    "head_revision": "e87c5e4c97d2b42d518302e7ed8d3164c09a40a7"
+  },
+  "approved_sources": [
+    "User authorization 2026-10-22: implement the ignored artifacts/ convention and publish one PR.",
+    "docs/agent-governance/core.md",
+    "docs/agent-governance/architecture.md",
+    "docs/agent-governance/planning.md",
+    "docs/quality/testing.md",
+    "docs/changes/backbone-artifacts-convention/plan.md"
+  ],
+  "scope": {
+    "include": [
+      ".gitignore",
+      "artifacts/**",
+      ".engineering-backbone/src/starter.py",
+      ".engineering-backbone/starter/**",
+      ".engineering-backbone/tst/**",
+      "docs/agent-governance/core.md",
+      "docs/agent-governance/architecture.md",
+      "docs/agent-governance/planning.md",
+      "docs/agent-governance/agent-adapters.md",
+      "docs/templates/architecture/project-mapping.md",
+      "docs/templates/planning/project-mapping.md",
+      "docs/templates/operations/README.md",
+      "docs/operations/project-starter.md",
+      "docs/operations/engineering/repository-controls.md",
+      "docs/quality/testing.md",
+      "docs/quality/ci-cd.md",
+      "docs/changes/backbone-artifacts-convention/**"
+    ],
+    "exclude": [
+      ".engineering-backbone/schemas/**",
+      ".engineering-backbone/standards/**",
+      ".engineering-backbone/src/validate.py",
+      ".engineering-backbone/src/source_layout.py",
+      ".engineering-backbone/legacy/**",
+      ".engineering-backbone/tst/fixtures/**",
+      ".github/workflows/**",
+      ".engineering-backbone/requirements.txt",
+      ".engineering-backbone/requirements.lock",
+      "apps/**",
+      "packages/**",
+      "infra/**",
+      "docs/changes/backbone-project-starter/**",
+      "docs/changes/backbone-testing-ci-contract/**",
+      "docs/changes/backbone-planning-delivery/**"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "AC1",
+      "description": "The starter generates artifacts/* plus !artifacts/README.md and a tracked artifacts/README.md; a tool/run subdirectory is documented.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "verification.md: test_export_seeds_ignored_artifacts_convention and starter export inspection"
+      ]
+    },
+    {
+      "id": "AC2",
+      "description": "Contracts, templates and operations/quality guidance state the purpose, non-authority, ignored contents and no-secret/no-upload boundary.",
+      "verification": "hybrid",
+      "status": "pass",
+      "evidence": [
+        "verification.md: contract, template and operations/quality document inspection"
+      ]
+    },
+    {
+      "id": "AC3",
+      "description": "Existing validator exclusion, schemas, managed baseline and stricter gates are preserved; targeted tests pass.",
+      "verification": "automatic",
+      "status": "pass",
+      "evidence": [
+        "verification.md: validate.py, trusted-base validator, maintenance checks and targeted tests; pre-existing Windows-only cases reproduce on pristine main"
+      ]
+    },
+    {
+      "id": "AC4",
+      "description": "Actual checks, frozen content subject, PR identity and remaining independent-review/human gates are recorded.",
+      "verification": "hybrid",
+      "status": "pending",
+      "evidence": [
+        "verification.md: local deterministic results and limits; independent review and PR readback pending"
+      ]
+    }
+  ],
+  "validation": {
+    "commands": [
+      "python .engineering-backbone/src/validate.py",
+      "python .engineering-backbone/src/maintenance/compile_toolchain_fingerprint.py --check",
+      "python .engineering-backbone/src/maintenance/compile_workflow_kit.py --check",
+      "python .engineering-backbone/src/maintenance/compile_navigation.py --check",
+      "python .engineering-backbone/src/maintenance/compile_quality_framework.py --check",
+      "python .engineering-backbone/src/check_source_dependencies.py",
+      "python -m unittest discover -s .engineering-backbone/tst -t .engineering-backbone -v",
+      "git diff --check BASE HEAD"
+    ],
+    "manual_evidence": [
+      "Independent plan and Full review after deterministic checks",
+      "Separate triage before confirmed repairs",
+      "Actual PR base/head/patch readback"
+    ]
+  },
+  "execution_budget": {
+    "max_iterations": 3
+  },
+  "stop_conditions": [
+    "Stop on scope or trust expansion beyond the recorded paths.",
+    "Stop if a required schema, validator, managed baseline or historical fixture must change.",
+    "Stop on unresolved confirmed findings or missing required evidence."
+  ],
+  "forbidden_actions": [
+    "No merge, release, deployment, runner registration, protection or permission change.",
+    "No automatic downstream apply, credential exposure or artifact upload.",
+    "No weakening of validators, schemas, catalogs or historical records.",
+    "No force-push or destructive Git cleanup."
+  ],
+  "status": "ready_for_review"
+}

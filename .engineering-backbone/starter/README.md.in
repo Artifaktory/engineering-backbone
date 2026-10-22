@@ -12,6 +12,8 @@ Start with [contributing](CONTRIBUTING.md), the
 Keep applicable components under `apps/`, shared libraries under `packages/`,
 component code in `src/` and tests in `tst/`. Remove unused product placeholders.
 Native dependency manifests and lockfiles stay beside their owning components.
+Generated local outputs stay under `artifacts/<tool-or-run>/`; only
+`artifacts/README.md` is tracked, and the outputs are not evidence or approval.
 Common engineering policy is in [core](docs/agent-governance/core.md); requirements,
 architecture, planning and testing remain connected through the common document
 kits. This seed launches no host, installs no application or CI and proves no

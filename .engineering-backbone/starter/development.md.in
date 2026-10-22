@@ -19,6 +19,14 @@ The environment checker at `.engineering-backbone/src/environment.py` validates
 only declared inputs; it does not load application settings or establish readiness.
 The neutral environment register is initially empty.
 
+## Generated outputs
+
+Local generated outputs live under `artifacts/<tool-or-run>/`. The directory
+contents are ignored and only `artifacts/README.md` is tracked. These outputs are
+derived and non-authoritative: they are not requirements, design, review evidence,
+PASS or approval. Keep credentials, private transcripts and personal data out of
+them, and do not upload them as CI artifacts.
+
 Obtain a separately reviewed Backbone source checkout at a fixed full Git commit,
 then use isolated Python (`python -I`) with that checkout's `starter.py verify --source-ref FULL_SHA --root PROJECT`.
 Its Python dependencies are installed from that trusted source's reviewed lock.

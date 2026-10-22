@@ -31,6 +31,7 @@ existing stricter controls remain separate and mandatory where applicable.
 | Decisions and history | `TBD` | `TBD` | `TBD` |
 | Requirement/design/test relations | `TBD` | `TBD` | `TBD` |
 | Implementation and actual verification results | `TBD` | `TBD` | `TBD` |
+| Generated tool/run outputs | `TBD` ignored root and tool/run subdirectory | `TBD` | `TBD` contents ignored, tracked README, non-authoritative, no secrets or uploads |
 | Reviews, triage and project decisions | `TBD` | `TBD` | `TBD` |
 
 Declare where to edit an item and which other representations are generated. Record

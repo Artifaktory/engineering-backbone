@@ -23,7 +23,10 @@ Copy selected templates into project-owned locations such as `docs/operations/`
 and repair relative links there. Preserve the common kit during updates; never put
 actual incident data or operating results into managed templates. Identify source
 requirements/design, component/revision, responsible roles and actual evidence.
-Keep secrets, personal data and production access material out of reports.
+Keep secrets, personal data and production access material out of reports. Local
+generated tool/run outputs belong under a declared ignored root such as
+`artifacts/<tool-or-run>/`; only a tracked README explains the convention, and
+those outputs are not operating evidence or approval.
 
 The [local workflow example](local-ci.yml.example) is deliberately outside active
 workflow paths and requires reviewed project configuration. It does not replace an

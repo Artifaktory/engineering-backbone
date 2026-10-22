@@ -1,7 +1,8 @@
 __pycache__/
 *.py[cod]
 .venv/
-artifacts/
+artifacts/*
+!artifacts/README.md
 .coverage
 .pytest_cache/
 

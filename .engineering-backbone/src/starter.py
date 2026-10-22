@@ -47,6 +47,7 @@ SEEDS = {
     '.github/copilot-instructions.md': 'copilot-instructions.md.in',
     'docs/changes/README.md': 'changes-README.md.in',
     'docs/operations/development.md': 'development.md.in',
+    'artifacts/README.md': 'artifacts-README.md.in',
 }
 # This profile includes all distributed native instructions. Existence is not
 # evidence of host loading, model qualification or authority to launch a host.
@@ -284,7 +285,7 @@ def build_plan(source, project_name='new-project'):
         'agents': {'codex': True, 'copilot': True},
     }
     plan['.engineering-backbone/project.json'] = Entry('project', (json.dumps(project, indent=2) + '\n').encode())
-    plan['.gitignore'] = Entry('project', b'.env\n.env.*\n!.env.example\n.venv/\nnode_modules/\nartifacts/\ndist/\nbuild/\n__pycache__/\n*.py[cod]\n')
+    plan['.gitignore'] = Entry('project', b'.env\n.env.*\n!.env.example\n.venv/\nnode_modules/\nartifacts/*\n!artifacts/README.md\ndist/\nbuild/\n__pycache__/\n*.py[cod]\n')
     plan['.gitattributes'] = Entry('managed', b'# Keep managed starter bytes stable under core.autocrlf.\ndocs/** text eol=lf -filter -working-tree-encoding\n.engineering-backbone/** text eol=lf -filter -working-tree-encoding\n.codex/** text eol=lf -filter -working-tree-encoding\n.github/** text eol=lf -filter -working-tree-encoding\n.opencode/** text eol=lf -filter -working-tree-encoding\nscripts/runner_doctor.py text eol=lf -filter -working-tree-encoding\nopencode.json text eol=lf -filter -working-tree-encoding\n.gitattributes text eol=lf -filter -working-tree-encoding\n')
     paths = set(plan)
     if len({p.casefold() for p in paths}) != len(paths):

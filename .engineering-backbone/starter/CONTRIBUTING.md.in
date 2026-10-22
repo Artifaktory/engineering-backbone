@@ -9,6 +9,9 @@ Complete the project-owned [development command map](docs/operations/development
 with selected runtimes, native manifests/locks, supported platforms, owners and
 actual setup/run/build/test/check commands. Missing product commands remain
 unconfigured; document checks cannot substitute for required software execution.
+Generated local outputs belong under `artifacts/<tool-or-run>/`; only
+`artifacts/README.md` is tracked, and these outputs are not review evidence or
+approval.
 
 The starter verifier runs from a separately reviewed source checkout at an exact
 immutable commit. It compares common managed bytes and supported structural

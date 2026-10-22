@@ -46,6 +46,7 @@ actual client discovery/permissions.
 | --- | --- |
 | Common policy, schema/catalog, templates, native roles and included helpers | Managed: exact expected bytes reconstructed from trusted source; local changes require a reviewed common-baseline migration |
 | Project entrypoints/facts, environment register/examples, development map and product placeholders | Project-owned: preserve edits; required supported records and canonical context references remain checked |
+| Root `artifacts/` convention | Project-owned: tracked README; ignored contents; one subdirectory per tool or run; not evidence, approval or upload material |
 | `.engineering-backbone/starter-manifest.json` | Informational provenance/ownership inventory, never the selector of acceptable content or omitted checks |
 | Source-only Markdown targets | Rewritten deterministically to immutable source URLs; common local links stay local |
 

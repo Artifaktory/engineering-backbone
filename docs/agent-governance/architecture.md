@@ -281,7 +281,10 @@ properties. The project defines which source is edited and which outputs are
 derived; contradictory parallel originals are not acceptable. Tool migrations
 preserve semantic IDs, relationships, status meanings and decision history, or
 provide a reviewed crosswalk for changed identifiers. They must not silently drop
-gaps or turn planned verification into actual evidence.
+gaps or turn planned verification into actual evidence. The project MUST declare
+its ignored derived-output root and tool/run subdirectory convention, for example
+`artifacts/<tool-or-run>/`; those outputs remain non-authoritative and cannot
+satisfy a review or verification gate.
 
 Each handoff MUST carry the Task Packet, authorized scope, source/design revisions,
 applicable rule context, resolved documents, owners, pending questions, acceptance
