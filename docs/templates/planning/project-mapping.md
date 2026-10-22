@@ -36,6 +36,7 @@ when planning itself is delegated; its result can then define later execution it
 | Issue/work-board tracking | `TBD` authoritative fields versus projections | `TBD` | `TBD` |
 | Task Packets and execution attempts | `TBD` | `TBD` | `TBD` |
 | Quality criteria, reviews, decisions and actual evidence | `TBD` | `TBD` | `TBD` |
+| Generated tool/run outputs | `TBD` ignored root and tool/run subdirectory | `TBD` | `TBD` contents ignored, tracked README, not plans, evidence or approval |
 
 Use existing project locations; they need not follow these template filenames.
 For external systems, bind a frozen accessible export or versioned record rather

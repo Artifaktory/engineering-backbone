@@ -173,7 +173,9 @@ procedures, target/configuration identity, time, observed results, relevant exit
 codes and accessible evidence. Use a [test-run record](../templates/testing/test-run.md)
 or an equivalent report; redact sensitive output and preserve enough information
 for independent assessment. Planned checks, generated receipts and fixture-based
-smoke messages are not live execution evidence.
+smoke messages are not live execution evidence. Generated local outputs under a
+declared ignored artifacts root are raw or derived aids; they are not evidence
+unless a reviewed record explicitly binds and assesses them.
 
 When an anomaly occurs, preserve the failure and its inputs. Triage product defects,
 test defects and environment/tool failures before repair. Link findings, decisions,

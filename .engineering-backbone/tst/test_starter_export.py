@@ -93,6 +93,15 @@ class StarterExportTests(unittest.TestCase):
         shutil.rmtree(self.project / 'apps/frontend')
         starter.verify_project(self.authority, self.project)
 
+    def test_export_seeds_ignored_artifacts_convention(self):
+        gitignore = (self.project / '.gitignore').read_text()
+        self.assertIn('artifacts/*\n!artifacts/README.md\n', gitignore)
+        readme = self.project / 'artifacts/README.md'
+        self.assertTrue(readme.is_file())
+        text = readme.read_text()
+        self.assertIn('subdirectory', text)
+        self.assertIn('non-authoritative', text)
+
     def test_export_refuses_existing_content_symlinks_and_traversal_without_overwrite(self):
         before = file_snapshot(self.project)
         with self.assertRaises(starter.StarterError):

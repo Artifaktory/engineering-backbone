@@ -40,6 +40,8 @@ Recommended GitHub About description:
   advisory to the formal frozen review chain.
 - Record the reviewed commit, actual CI results, live native-profile discovery and
   remaining limitations before a human creates a release/tag.
+- Keep local generated run outputs under the ignored root `artifacts/`; only its
+  README is tracked, and those outputs are not evidence or upload material.
 
 If those release controls are unresolved, do not classify this bootstrap as approved
 for downstream distribution. CI can still provide evidence for reviewing the PR.

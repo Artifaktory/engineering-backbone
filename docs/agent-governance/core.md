@@ -74,6 +74,13 @@ checks, findings, limitations and acceptance coverage. A plan, test name, genera
 file, schema-valid report or model output is not a PASS or proof of runtime behavior.
 Redact sensitive information. Missing tools or absent evidence remain visible.
 
+Generated and derived outputs MUST use a declared ignored location such as the
+repository-level `artifacts/` tree: the directory stays visible in Git with one
+tracked README, its contents are ignored, and each tool or run uses its own
+subdirectory. Such outputs are not requirements, design, review evidence, PASS or
+approval, and no credential, private transcript or personal data belongs there or
+in an artifact upload.
+
 ## Full, triage, repair and delta review
 
 Freeze the same base, head and patch digest for all reviewers in one Full round.

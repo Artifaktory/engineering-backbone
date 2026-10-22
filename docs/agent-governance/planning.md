@@ -260,6 +260,9 @@ using the [project-mapping template](../templates/planning/project-mapping.md).
 Markdown, a requirements tool, an architecture tool, a tracker or a combination can
 represent this contract. Tool migrations preserve meaning/history or provide a
 reviewed crosswalk; no project must adopt Sphinx-Needs, LikeC4, Spec Kit or AO.
+Declare the ignored generated-output root and its tool/run subdirectory convention
+with the same mapping, for example `artifacts/<tool-or-run>/`; those outputs are
+not plans, review evidence, acceptance or approval.
 
 Every human/agent handoff MUST carry the scoped Task Packet, authoritative plan/item
 revision, requirement/design context, applicable rules, resolved documents,

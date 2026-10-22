@@ -153,6 +153,8 @@ native data.
 
 Source mode retains the existing root `artifacts/` raw-evidence exclusion, including
 historical review checkouts; those are not supported source execution directories.
+That convention keeps the directory visible in Git with a tracked README while its
+contents stay ignored, and each tool or run uses its own subdirectory.
 Consumer mode has no such exception. Explicit config-file references are inspected
 even when they target source artifacts. Host-global and live session configuration
 remain outside repository validation and need the intended-client check below.

@@ -107,6 +107,8 @@ project choices, not general external norm requirements. Missing suitable runner
 remain pending evidence; do not add a hosted fallback to obtain a result. Arrange
 an authorized, accessible, access-controlled evidence store and retention period
 instead of assuming a GitHub upload. Redact secrets and sensitive test data.
+Generated local outputs under a declared ignored artifacts root are not CI
+evidence and are not uploaded.
 
 The retained optional legacy reusable consumer workflows still have their documented
 hosted-runner and artifact-exchange assumptions. This semantic contract does not
