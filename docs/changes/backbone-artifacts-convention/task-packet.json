@@ -8,7 +8,7 @@
   "repository": {
     "base_branch": "main",
     "base_revision": "f6b950b6cc628535062578ef2f4ff3229cc8b59c",
-    "head_revision": null
+    "head_revision": "e87c5e4c97d2b42d518302e7ed8d3164c09a40a7"
   },
   "approved_sources": [
     "User authorization 2026-10-22: implement the ignored artifacts/ convention and publish one PR.",
@@ -61,29 +61,37 @@
       "id": "AC1",
       "description": "The starter generates artifacts/* plus !artifacts/README.md and a tracked artifacts/README.md; a tool/run subdirectory is documented.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "verification.md: test_export_seeds_ignored_artifacts_convention and starter export inspection"
+      ]
     },
     {
       "id": "AC2",
       "description": "Contracts, templates and operations/quality guidance state the purpose, non-authority, ignored contents and no-secret/no-upload boundary.",
       "verification": "hybrid",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "verification.md: contract, template and operations/quality document inspection"
+      ]
     },
     {
       "id": "AC3",
       "description": "Existing validator exclusion, schemas, managed baseline and stricter gates are preserved; targeted tests pass.",
       "verification": "automatic",
-      "status": "pending",
-      "evidence": []
+      "status": "pass",
+      "evidence": [
+        "verification.md: validate.py, trusted-base validator, maintenance checks and targeted tests; pre-existing Windows-only cases reproduce on pristine main"
+      ]
     },
     {
       "id": "AC4",
       "description": "Actual checks, frozen content subject, PR identity and remaining independent-review/human gates are recorded.",
       "verification": "hybrid",
       "status": "pending",
-      "evidence": []
+      "evidence": [
+        "verification.md: local deterministic results and limits; independent review and PR readback pending"
+      ]
     }
   ],
   "validation": {
@@ -117,5 +125,5 @@
     "No weakening of validators, schemas, catalogs or historical records.",
     "No force-push or destructive Git cleanup."
   ],
-  "status": "active"
+  "status": "ready_for_review"
 }

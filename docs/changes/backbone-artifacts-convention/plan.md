@@ -60,7 +60,8 @@ git diff --check BASE HEAD
 ```
 
 The full suite runs in source CI. Independent plan/Full review and triage remain
-separate; this plan records no review result.
+separate; this plan records no review result. Actual local commands and limits are
+recorded in [verification.md](verification.md).
 
 ## Risks, budget and recovery
 
